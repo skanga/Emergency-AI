@@ -237,25 +237,37 @@ def github_latest_assets(repo):
 
 
 # ---------------------------------------------------------------- components
+def _llama_pick(plat, assets):
+    for key in LLAMA_ASSETS[plat]:
+        rx = re.compile(rf"^llama-.*-bin-{re.escape(key)}\.(zip|tar\.gz)$")
+        match = [a for a in assets if rx.match(a[0])]
+        if match:
+            return match[0]
+    return None
+
+
 def get_llama(plat, tr):
     dest = os.path.join(RUNTIME_DIR, "llama.cpp", plat)
     if os.path.isdir(dest) and any("llama-server" in f for _, _, fs in os.walk(dest) for f in fs):
         print(tr["skip"].format(f=f"llama.cpp ({plat})"))
         return True
     try:
-        tag, assets = github_latest_assets(LLAMA_REPO)
-        for key in LLAMA_ASSETS[plat]:
-            rx = re.compile(rf"^llama-.*-bin-{re.escape(key)}\.(zip|tar\.gz)$")
-            match = [a for a in assets if rx.match(a[0])]
-            if match:
-                name, url, size = match[0]
-                archive = os.path.join(RUNTIME_DIR, "_downloads", name)
-                download(url, archive, expected_size=size)
-                extract(archive, dest)
-                os.remove(archive)
-                print(f"  ✓ llama.cpp {tag} ({plat})")
-                return True
-        raise RuntimeError("asset not found for " + plat)
+        releases = get_json(f"https://api.github.com/repos/{LLAMA_REPO}/releases?per_page=10", timeout=30)
+        for rel in releases:
+            tag = rel.get("tag_name", "")
+            assets = [(a["name"], a["browser_download_url"], a.get("size")) for a in rel.get("assets", [])]
+            found = _llama_pick(plat, assets)
+            if found:
+                break
+        else:
+            raise RuntimeError("asset not found for " + plat)
+        name, url, size = found
+        archive = os.path.join(RUNTIME_DIR, "_downloads", name)
+        download(url, archive, expected_size=size)
+        extract(archive, dest)
+        os.remove(archive)
+        print(f"  ✓ llama.cpp {tag} ({plat})")
+        return True
     except Exception as e:
         print(tr["fail"].format(f=f"llama.cpp ({plat})", e=e))
         print(tr["manual"].format(u=f"https://github.com/{LLAMA_REPO}/releases", d=dest))
