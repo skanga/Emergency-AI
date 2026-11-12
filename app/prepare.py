@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import tempfile
 import time
 import urllib.parse
 import urllib.request
@@ -246,12 +247,15 @@ def _llama_pick(plat, assets):
     return None
 
 
+def _has_llama_server(folder, plat):
+    name = "llama-server.exe" if plat.startswith("windows-") else "llama-server"
+    return any(name in files for _, _, files in os.walk(folder))
+
+
 def get_llama(plat, tr):
     dest = os.path.join(RUNTIME_DIR, "llama.cpp", plat)
-    if os.path.isdir(dest) and any("llama-server" in f for _, _, fs in os.walk(dest) for f in fs):
-        print(tr["skip"].format(f=f"llama.cpp ({plat})"))
-        return True
     try:
+        # Always check online, even when an older or unversioned engine is installed.
         releases = get_json(f"https://api.github.com/repos/{LLAMA_REPO}/releases?per_page=10", timeout=30)
         for rel in releases:
             tag = rel.get("tag_name", "")
@@ -262,9 +266,42 @@ def get_llama(plat, tr):
         else:
             raise RuntimeError("asset not found for " + plat)
         name, url, size = found
+        release = {"tag": tag, "asset": name}
+        installed = load_json(os.path.join(dest, "release.json"), {})
+        if installed == release and _has_llama_server(dest, plat):
+            print(tr["skip"].format(f=f"llama.cpp {tag} ({plat})"))
+            return True
         archive = os.path.join(RUNTIME_DIR, "_downloads", name)
         download(url, archive, expected_size=size)
-        extract(archive, dest)
+        if size is not None and os.path.getsize(archive) != size:
+            raise RuntimeError("download size mismatch for " + name)
+        parent = os.path.dirname(dest)
+        os.makedirs(parent, exist_ok=True)
+        # Extract separately so interrupted updates cannot corrupt the working kit.
+        staging = tempfile.mkdtemp(prefix=".llama-update-", dir=parent)
+        fresh = os.path.join(staging, "new")
+        previous = os.path.join(staging, "previous")
+        try:
+            extract(archive, fresh)
+            if not _has_llama_server(fresh, plat):
+                raise RuntimeError("archive does not contain llama-server for " + plat)
+            with open(os.path.join(fresh, "release.json"), "w", encoding="utf-8") as f:
+                json.dump(release, f, indent=2)
+            had_previous = os.path.exists(dest)
+            if had_previous:
+                os.replace(dest, previous)
+            try:
+                os.replace(fresh, dest)
+            except OSError:
+                if had_previous:
+                    os.replace(previous, dest)
+                raise
+            if had_previous:
+                shutil.rmtree(previous)
+        finally:
+            # If rollback itself fails, retain the backup for recovery.
+            if not os.path.exists(previous):
+                shutil.rmtree(staging, ignore_errors=True)
         os.remove(archive)
         print(f"  ✓ llama.cpp {tag} ({plat})")
         return True

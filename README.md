@@ -55,6 +55,8 @@ cd Survival-AI
 | **macOS** | double-click `prepare-kit.command` (first time: right-click › Open) |
 | **Linux** | `./prepare-kit.sh` |
 
+Each preparation run checks for the newest available llama.cpp build for the selected platforms, upgrades older installations, and skips re-downloading the current build. Normal offline startup never checks for updates.
+
 The preparer asks for:
 
 1. **AI model:** `light` (light, 1 GB, 4 GB RAM), `standard` (default, 2 GB, 8 GB RAM — recommended), `strong` (strong, 4.7 GB, 16 GB RAM).
