@@ -1,4 +1,4 @@
-"""Motor de respostas: busca (RAG) nos guias do kit + Kiwix e gera a resposta com o modelo local."""
+"""Answer engine: retrieve kit guides and Kiwix articles (RAG), then generate an answer with the local model."""
 
 import threading
 import time
@@ -20,7 +20,7 @@ class Engine:
         self._kiwix_checked = 0
         self._lock = threading.Lock()
 
-    # ---------- disponibilidade (com cache curto) ----------
+    # ---------- availability (briefly cached) ----------
     def llm(self, force=False):
         with self._lock:
             if force or time.time() - self._llm_checked > 15:
@@ -48,7 +48,7 @@ class Engine:
             "knowledge": self.kb.stats(),
         }
 
-    # ---------- recuperação ----------
+    # ---------- retrieval ----------
     def retrieve(self, question, lang, history=None, use_kiwix=True):
         query = question
         if history and len(tokenize(question)) < 4:
@@ -71,7 +71,7 @@ class Engine:
                     })
             except Exception:
                 pass
-        # Numera e corta para caber no contexto do modelo.
+        # Number and trim sources to fit the model context.
         budget = int(self.settings.get("context_chars", 7000))
         out = []
         for s in sources:
@@ -85,7 +85,7 @@ class Engine:
             out.append(s)
         return out
 
-    # ---------- geração ----------
+    # ---------- generation ----------
     @staticmethod
     def is_medical(text):
         t = strip_accents(text.lower())
@@ -116,9 +116,9 @@ class Engine:
             parts.append(f"### [{s['n']}] {s['doc_title']} › {s['section']}\n\n{text}\n")
         return "\n".join(parts)
 
-    def answer(self, question, lang="pt", history=None, use_kiwix=True, use_llm=True):
-        """Gerador de eventos: ('sources', [...]), ('token', str), ('done', {...})."""
-        lang = lang if lang in i18n.SYSTEM_PROMPT else "pt"
+    def answer(self, question, lang="en", history=None, use_kiwix=True, use_llm=True):
+        """Event generator: ('sources', [...]), ('token', str), ('done', {...})."""
+        lang = lang if lang in i18n.SYSTEM_PROMPT else "en"
         t0 = time.time()
         sources = self.retrieve(question, lang, history, use_kiwix)
         yield "sources", sources
@@ -146,7 +146,7 @@ class Engine:
         yield "done", {"mode": mode, "seconds": round(time.time() - t0, 1),
                        "llm": llm.describe() if llm else None}
 
-    def answer_text(self, question, lang="pt", **kw):
+    def answer_text(self, question, lang="en", **kw):
         text, sources, info = [], [], {}
         for kind, data in self.answer(question, lang, **kw):
             if kind == "sources":

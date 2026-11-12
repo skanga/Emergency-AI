@@ -1,178 +1,161 @@
-# IA da Sobrevivência
+# Survival AI
 
-**Um assistente de sobrevivência que funciona 100% sem internet** — no Windows, Linux e macOS.
+**A survival assistant that works 100% without internet** — on Windows, Linux and macOS.
 
-🇧🇷 Português · [🇺🇸 English](README.en.md) · [🇪🇸 Español](README.es.md)
+🇺🇸 English · [🇧🇷 Português](README.pt.md) · [🇪🇸 Español](README.es.md)
 
-Se a internet, a energia e os serviços pararem, este kit continua funcionando num notebook ou pendrive:
+If the internet, power and services go down, this kit keeps working on a laptop or USB drive:
 
-- 📚 **Guias práticos com fontes citadas** (PT, EN e ES): água, fogo, abrigo, comida, horta e criação, coleta/pesca/caça, **primeiros socorros e medicina**, higiene e sabão caseiro, **álcool** (fermentação, destilação, antisséptico e combustível), energia solar, rádio e navegação, ferramentas e nós, saúde mental e comunidade, e checklists para 72 horas e **1 ano**.
-- 🤖 **IA local** que responde qualquer pergunta em linguagem natural, **citando as fontes** — roda no próprio computador (llama.cpp ou Ollama), nada vai para a internet.
-- 🌐 **Bibliotecas offline do Kiwix**: Wikipedia de medicina, manuais pós-desastre, *Where There Is No Doctor*, wikiHow, iFixit e outras — a IA busca nelas também.
-- 📱 **Interface web** que abre no navegador e pode ser compartilhada na rede local (outros celulares acessam pelo Wi-Fi, mesmo sem internet).
-- 🔍 **Modo sem IA**: mesmo sem modelo baixado, a busca nos guias funciona em qualquer PC com Python.
+- 📚 **Practical guides with cited sources** (EN, PT, ES): water, fire, shelter, food, gardening and livestock, foraging/fishing/hunting, **first aid and medicine**, hygiene and homemade soap, **alcohol** (fermentation, distillation, antiseptic and fuel), solar power, radio and navigation, tools and knots, mental health and community, and checklists for 72 hours and **1 year**.
+- 🤖 **Local AI** that answers any question in natural language, **citing its sources** — it runs on your own computer (llama.cpp or Ollama); nothing goes to the internet.
+- 🌐 **Kiwix offline libraries**: medical Wikipedia, post-disaster manuals, *Where There Is No Doctor*, wikiHow, iFixit and more — the AI searches them too.
+- 📱 **Web interface** in your browser, shareable over the local network (other phones connect via Wi-Fi, even with no internet).
+- 🔍 **No-AI mode**: even without a model, guide search works on any PC with Python.
 
-> ⚠️ **Aviso:** conteúdo educativo. Não substitui médicos, bombeiros ou defesa civil. As orientações de saúde seguem diretrizes públicas (OMS, Cruz Vermelha/IFRC, AHA, Ministério da Saúde, CDC, Hesperian…) citadas em cada seção.
+> ⚠️ **Disclaimer:** educational content. It does not replace doctors, firefighters or emergency services. Health guidance follows public guidelines (WHO, Red Cross/IFRC, AHA, CDC, Hesperian…) cited in each section.
 
 ---
 
-## Como funciona
+## How it works
 
 ```
- Pergunta ──► busca nos guias do kit (BM25) ─┐
-          └─► busca no Kiwix (arquivos .zim) ─┼─► modelo de linguagem local ──► resposta com [1] [2] fontes
-                                              └─► (sem modelo? mostra os trechos mais relevantes)
+ Question ──► search kit guides (BM25) ──────┐
+          └─► search Kiwix (.zim files) ──────┼─► local language model ──► answer with [1] [2] sources
+                                              └─► (no model? shows the most relevant passages)
 ```
 
-| Peça | O que é | Onde fica |
+| Part | What it is | Where |
 |---|---|---|
-| `sobrevivencia.py` + `app/` | A IA (só biblioteca padrão do Python, sem `pip install`) | repositório |
-| `knowledge/pt|en|es/` | Guias de sobrevivência em Markdown | repositório |
-| `knowledge/extra/` | **Seus** documentos `.md`/`.txt` (entram na busca e na IA) | repositório |
-| `runtime/llama.cpp/` | Motor que roda o modelo de IA | baixado pelo preparador |
-| `models/*.gguf` | Modelo de linguagem (1–5 GB) | baixado pelo preparador |
-| `runtime/kiwix-tools/` + `zim/*.zim` | Servidor e bibliotecas do Kiwix | baixado pelo preparador |
-| `runtime/python/` | Python portátil (para PCs sem Python) | baixado pelo preparador |
+| `survival.py` + `app/` | The AI (Python standard library only, no `pip install`) | repository |
+| `knowledge/pt|en|es/` | Survival guides in Markdown | repository |
+| `knowledge/extra/` | **Your** `.md`/`.txt` documents (searched and cited by the AI) | repository |
+| `runtime/llama.cpp/` | Engine that runs the AI model | downloaded by the preparer |
+| `models/*.gguf` | Language model (1–5 GB) | downloaded by the preparer |
+| `runtime/kiwix-tools/` + `zim/*.zim` | Kiwix server and libraries | downloaded by the preparer |
+| `runtime/python/` | Portable Python (for PCs without Python) | downloaded by the preparer |
 
-Os arquivos grandes **não vão para o git** (veja `.gitignore`): o repositório fica leve, e cada pessoa monta o seu kit com o preparador.
-
----
-
-## Começo rápido
-
-### 1. Baixe o repositório
-
-```bash
-git clone https://github.com/sdalberto/ia-da-sobrevivencia.git
-cd ia-da-sobrevivencia
-```
-
-### 2. Prepare o kit (com internet, só uma vez)
-
-| Sistema | Como rodar |
-|---|---|
-| **Windows** | clique duas vezes em `preparar-kit.bat` |
-| **macOS** | clique duas vezes em `preparar-kit.command` (1ª vez: botão direito › Abrir) |
-| **Linux** | `./preparar-kit.sh` |
-
-O preparador pergunta:
-
-1. **Modelo de IA:** `leve` (1 GB, PCs com 4 GB de RAM), `padrao` (2 GB, 8 GB de RAM — recomendado), `forte` (4,7 GB, 16 GB de RAM).
-2. **Bibliotecas Kiwix:** `minimo` (~3–5 GB), `recomendado` (~25–40 GB) ou `completo` (100+ GB, inclui a Wikipedia inteira).
-3. **Sistemas:** só este computador, ou **Windows + Linux + macOS** (kit universal para pendrive).
-4. **Python portátil:** para o kit abrir em computadores sem Python.
-
-Sem perguntas (ex.: para automatizar):
-
-```bash
-python sobrevivencia.py prepare --model padrao --zims recomendado --os all --python
-```
-
-> Se faltar Python para rodar o preparador: instale em <https://www.python.org/downloads/> (no Windows marque *Add python.exe to PATH*). Depois o kit leva um Python portátil junto.
-
-### 3. Use (sem internet)
-
-| Sistema | Como abrir |
-|---|---|
-| **Windows** | `iniciar.bat` |
-| **macOS** | `iniciar.command` |
-| **Linux** | `./iniciar.sh` |
-
-O navegador abre em <http://127.0.0.1:8090>. Para inglês ou espanhol: `iniciar.bat --lang en` / `./iniciar.sh --lang es` (ou use os botões PT/EN/ES na interface).
-
-### 4. Leve no pendrive
-
-Copie **a pasta inteira** para um pendrive ou HD externo (formatado em **exFAT**, que funciona nos três sistemas e aceita arquivos com mais de 4 GB). Pronto: é só abrir o `iniciar` correspondente em qualquer computador.
+Keep downloaded models, libraries and runtimes out of git: the repository stays small and everyone builds their own kit with the preparer.
 
 ---
 
-## Outras formas de usar
+## Quick start
+
+### 1. Get the repository
 
 ```bash
-python sobrevivencia.py chat                       # conversa no terminal
-python sobrevivencia.py ask "como fazer soro caseiro?"
-python sobrevivencia.py search queimadura          # busca rápida nos guias
-python sobrevivencia.py status                     # o que está instalado e ativo
-python sobrevivencia.py start --host 0.0.0.0       # compartilhar na rede local (Wi-Fi)
-python sobrevivencia.py prepare --search survival  # descobrir mais bases no catálogo Kiwix
+git clone https://github.com/skanga/Survival-AI.git
+cd Survival-AI
 ```
 
-**Compartilhar com a comunidade:** com `--host 0.0.0.0`, qualquer celular conectado ao mesmo roteador (mesmo sem internet) abre o endereço mostrado no terminal, ex.: `http://192.168.0.10:8090`.
+### 2. Prepare the kit (online, once)
 
-### Usando Ollama em vez do llama.cpp
+| System | How to run |
+|---|---|
+| **Windows** | double-click `prepare-kit.bat` |
+| **macOS** | double-click `prepare-kit.command` (first time: right-click › Open) |
+| **Linux** | `./prepare-kit.sh` |
 
-Se você já usa [Ollama](https://ollama.com): `ollama pull qwen2.5:3b` e pronto — a IA detecta o Ollama sozinha. Para outro modelo, crie `config/settings.local.json`:
+The preparer asks for:
+
+1. **AI model:** `light` (light, 1 GB, 4 GB RAM), `standard` (default, 2 GB, 8 GB RAM — recommended), `strong` (strong, 4.7 GB, 16 GB RAM).
+2. **Kiwix libraries:** `minimal` (~3–5 GB), `recommended` (~25–40 GB) or `full` (100+ GB, full Wikipedia).
+3. **Systems:** this computer only, or **Windows + Linux + macOS** (universal USB kit).
+4. **Portable Python:** so the kit opens on computers without Python.
+
+Non-interactive:
+
+```bash
+python survival.py prepare --model standard --zims recommended --os all --python
+```
+
+### 3. Use it (offline)
+
+| System | How to open |
+|---|---|
+| **Windows** | `start.bat` (or double-click it) |
+| **macOS** | `start.command` |
+| **Linux** | `./start.sh` |
+
+Your browser opens <http://127.0.0.1:8090>. Switch language anytime with the PT/EN/ES buttons. English is the default. Select Portuguese or Spanish with `--lang pt` or `--lang es`, or use the language buttons.
+
+### 4. Carry it on a USB drive
+
+Copy **the whole folder** to a USB drive or external disk formatted as **exFAT** (works on all three systems and supports files over 4 GB).
+
+---
+
+## Other ways to use it
+
+```bash
+python survival.py chat                   # terminal chat
+python survival.py ask "how do I make oral rehydration solution?"
+python survival.py search burn
+python survival.py status
+python survival.py start --host 0.0.0.0             # share on the local network
+python survival.py prepare --search survival        # find more Kiwix libraries
+```
+
+**Ollama:** if you use [Ollama](https://ollama.com), run `ollama pull qwen2.5:3b` — it is detected automatically. Any local OpenAI-compatible server (LM Studio, llamafile, KoboldCpp, Jan) also works: set `llm_url`.
+
+**Kiwix Desktop:** [Kiwix Desktop](https://kiwix.org) can open the `.zim` files in `zim/`. To let the AI use its *Local Kiwix Server*, set `{ "kiwix_url": "http://127.0.0.1:<port>" }` in `config/settings.local.json`. The Windows Kiwix Desktop package (~150 MB) exceeds GitHub's 100 MB per-file limit — publish it as a **Release asset** instead of committing it.
+
+## Add your own knowledge
+
+Drop `.md` or `.txt` files in `knowledge/extra/` (family recipes, local maps, contacts, equipment manuals). They are indexed and cited by the AI.
+
+To translate or expand the bundled guides, edit `knowledge/<language>/` and keep the same filenames across all three languages.
+
+## Configuration
+
+`config/settings.json` contains the defaults. Put overrides in `config/settings.local.json` to keep machine-specific choices separate from the shared settings. Keep that local file out of version control.
+
+| Key | Default | Purpose |
+|---|---|---|
+| `language` | `en` | Default language (`en`, `pt`, `es`) |
+| `web_port` | `8090` | Web interface port |
+| `llm_backend` | `auto` | `auto`, `openai` (llama.cpp etc.), `ollama` or `none` |
+| `model_file` | unset | Select a `.gguf` filename when several are installed |
+| `llm_context` | `8192` | Model context size |
+| `llm_threads` | `0` | CPU threads (0 = automatic) |
+| `kiwix_url` | `http://127.0.0.1:8092` | Kiwix server address |
+| `search_results` | `5` | Guide passages sent to the AI |
+
+For example, to select a different Ollama model:
 
 ```json
 { "ollama_model": "llama3.2:3b" }
 ```
 
-Também funciona com qualquer servidor compatível com a API da OpenAI rodando localmente (LM Studio, llamafile, KoboldCpp, Jan): ajuste `llm_url`.
+With `--host 0.0.0.0`, devices connected to the same router can open the address printed in the terminal, such as `http://192.168.0.10:8090`, even without internet.
 
-### Usando o Kiwix Desktop
+If Python is missing, install Python 3.8+ from <https://www.python.org/downloads/>. On Windows, select **Add python.exe to PATH**. The preparer can then include portable Python in the kit.
 
-O [Kiwix Desktop](https://kiwix.org) abre os arquivos `.zim` da pasta `zim/` com uma interface de leitura completa. Se preferir que a IA use o servidor do Kiwix Desktop (menu *Servidor local / Local Kiwix Server*), coloque a porta dele em `config/settings.local.json`:
+## English entry points
 
-```json
-{ "kiwix_url": "http://127.0.0.1:8080" }
-```
+The launchers are now `start.bat`, `start.sh` and `start.command`; setup uses `prepare-kit.bat`, `prepare-kit.sh` and `prepare-kit.command`. The Python entry point is `survival.py`. Update existing shortcuts or scripts to these names.
 
-> 💡 O instalador do Kiwix Desktop para Windows (~150 MB) é maior que o limite de 100 MB por arquivo do GitHub. Para distribuí-lo junto, publique-o como **anexo de uma Release** do repositório (limite de 2 GB por arquivo) em vez de fazer commit.
+Model IDs are `light`, `standard`, `strong` and `llama3b`. Library profiles are `minimal`, `recommended` and `full`. Use `none` to skip a model or library download. Existing downloaded model and ZIM filenames stay unchanged.
 
----
+## Requirements
 
-## Adicionando seu próprio conhecimento
+- **Minimum (search only):** any PC with Python 3.8+.
+- **With AI:** 4 GB RAM (light model), 8 GB recommended; x86-64 CPU with AVX2 or Apple Silicon/ARM64. No GPU needed.
+- **Disk:** 3 GB (minimal kit) to 100+ GB (full kit).
 
-Coloque arquivos `.md` ou `.txt` em `knowledge/extra/` (receitas da família, mapa do bairro, contatos, manuais de equipamentos, bulas). Eles entram no índice e a IA passa a citá-los. Para traduzir ou ampliar os guias oficiais, edite `knowledge/<idioma>/` mantendo os mesmos nomes de arquivo nos três idiomas.
-
-## Configuração
-
-`config/settings.json` tem os padrões. Para mudar algo sem mexer no arquivo versionado, crie `config/settings.local.json` só com o que quer alterar (ele é ignorado pelo git). Principais opções:
-
-| Chave | Padrão | Para quê |
-|---|---|---|
-| `language` | `pt` | idioma padrão (`pt`, `en`, `es`) |
-| `web_port` | `8090` | porta da interface |
-| `llm_backend` | `auto` | `auto`, `openai` (llama.cpp etc.), `ollama` ou `none` |
-| `model_file` | — | nome do `.gguf` a usar quando houver vários |
-| `llm_context` | `8192` | tamanho do contexto do modelo |
-| `llm_threads` | `0` | núcleos de CPU (0 = automático) |
-| `kiwix_url` | `http://127.0.0.1:8092` | servidor Kiwix |
-| `search_results` | `5` | trechos dos guias enviados à IA |
-
-## Requisitos
-
-- **Mínimo (só busca):** qualquer PC com Python 3.8+.
-- **Com IA:** 4 GB de RAM (modelo leve), 8 GB recomendados; CPU x86-64 com AVX2 ou Apple Silicon/ARM64. Não precisa de placa de vídeo.
-- **Disco:** 3 GB (kit mínimo) até 100+ GB (kit completo).
-
-## Testes
+## Tests
 
 ```bash
 python -m unittest discover -s tests
 ```
 
-## Estrutura
+## Licenses
 
-```
-ia-da-sobrevivencia/
-├── iniciar.bat / iniciar.sh / iniciar.command          ← abrir o kit
-├── preparar-kit.bat / preparar-kit.sh / .command       ← baixar modelo e bases (com internet)
-├── sobrevivencia.py                                    ← ponto de entrada (CLI)
-├── app/          knowledge.py (busca) · engine.py (RAG) · llm.py · kiwix.py · server.py · launcher.py · prepare.py
-├── web/          interface (HTML/CSS/JS sem dependências)
-├── knowledge/    pt/ en/ es/ (guias) · extra/ (seus documentos)
-├── config/       settings.json · models.json · zims.json
-├── models/  zim/  runtime/                             ← preenchidos pelo preparador (fora do git)
-└── tests/
-```
+Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded by the preparer have their own licenses. The default model (Qwen2.5 3B) uses the *Qwen Research License*; for commercial use choose `light` or `strong` (Apache 2.0).
 
-## Licenças
+## Contributing
 
-- Código: [MIT](LICENSE).
-- Guias em `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md).
-- Modelos, Kiwix, llama.cpp e bases ZIM baixados pelo preparador têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto). O modelo `padrao` (Qwen2.5 3B) usa a *Qwen Research License*; para uso comercial prefira `leve` ou `forte` (Apache 2.0).
+Corrections with sources, new guides and translations are welcome. Keep a `> Source:` line in each English section containing technical or health guidance, and use the equivalent source label in translated guides.
 
-## Contribua
+## Attribution
 
-Correções com fonte, novos guias e traduções são bem-vindos. Mantenha uma linha `> Fonte:` em cada seção com orientação técnica ou de saúde.
+This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-sobrevivencia) by Silviano Dalberto Pessi (Ideias Livres Desenvolvimentos) and contributors. This version makes English the default and translates entry points, help, documentation and developer comments. Original license and copyright notices are retained.

@@ -1,7 +1,7 @@
-"""Base de conhecimento local: carrega os guias Markdown, divide em trechos e busca com BM25.
+"""Local knowledge base: load Markdown guides, split into passages and search with BM25.
 
-Sem dependências externas. Também indexa documentos extras (.md / .txt) colocados em
-knowledge/extra/ — eles aparecem nas buscas de todos os idiomas.
+No external dependencies. Also index extra documents (.md / .txt) placed in
+knowledge/extra/ — they appear in searches in every language.
 """
 
 import math
@@ -28,7 +28,7 @@ STOPWORDS = set(
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 
-# Sinônimos simples para melhorar a busca (aplicados à pergunta, não aos documentos).
+# Simple search synonyms (applied to the question, not the documents).
 SYNONYMS = [
     ("purificar", "desinfetar", "tratar", "potavel", "ferver", "purify", "disinfect", "potable", "boil", "desinfectar", "potable", "hervir"),
     ("sangramento", "hemorragia", "sangrar", "torniquete", "bleeding", "bleed", "tourniquet", "sangrado"),
@@ -73,7 +73,7 @@ def strip_accents(text):
 
 
 def tokenize(text):
-    """Minúsculas, sem acentos, sem stopwords, com 'stemming' por prefixo (bom para PT/ES/EN)."""
+    """Lowercase, strip accents and stopwords, and stem by prefix (works for PT/ES/EN)."""
     text = strip_accents(text.lower())
     out = []
     for tok in TOKEN_RE.findall(text):
@@ -96,7 +96,7 @@ class Chunk:
         self.section = section
         self.anchor = anchor
         self.text = text
-        # O título do guia e da seção contam em dobro.
+        # Guide and section titles carry double weight.
         self.tokens = tokenize(f"{doc_title} {section} {section} {text}")
         self.tf = Counter(self.tokens)
         self.length = len(self.tokens)
@@ -123,11 +123,11 @@ class Chunk:
 def slugify(text):
     text = strip_accents(text.lower())
     text = re.sub(r"[^a-z0-9]+", "-", text).strip("-")
-    return text or "secao"
+    return text or "section"
 
 
 def split_markdown(md_text, max_chars=2600):
-    """Divide um guia em (titulo_doc, [(secao, ancora, texto)])."""
+    """Split a guide into (doc_title, [(section, anchor, text)])."""
     lines = md_text.splitlines()
     title = ""
     sections = []
@@ -159,7 +159,7 @@ def split_markdown(md_text, max_chars=2600):
         if len(body) <= max_chars:
             result.append((sec_title, anchor, body))
             continue
-        # Seções grandes: divide por ### ou por parágrafos.
+        # Split large sections at ### headings or paragraphs.
         parts = re.split(r"\n(?=### )", body)
         acc = ""
         for part in parts:
@@ -192,7 +192,7 @@ class KnowledgeBase:
         self.avgdl = {lang: 1.0 for lang in LANGS}
         self.load()
 
-    # ---------- carregamento ----------
+    # ---------- loading ----------
     def load(self):
         extra = self._load_extra()
         for lang in LANGS:
@@ -246,15 +246,15 @@ class KnowledgeBase:
                 seen.append({"title": sec, "anchor": anchor})
         self.docs[lang].append({"id": doc_id, "title": title, "sections": seen, "extra": extra})
 
-    # ---------- consulta ----------
+    # ---------- queries ----------
     def list_docs(self, lang):
         return self.docs.get(lang, [])
 
     def get_doc(self, lang, doc_id):
         return self.raw.get((lang, doc_id))
 
-    def search(self, query, lang="pt", k=5):
-        lang = lang if lang in self.chunks else "pt"
+    def search(self, query, lang="en", k=5):
+        lang = lang if lang in self.chunks else "en"
         q_tokens = tokenize(query)
         if not q_tokens:
             return []
@@ -263,7 +263,7 @@ class KnowledgeBase:
         df = self.df[lang]
         avgdl = self.avgdl[lang]
         q_counts = Counter(q_tokens)
-        # Sinônimos entram com meio peso e não contam para a "cobertura".
+        # Synonyms carry half weight and do not count toward coverage.
         syn_weight = {}
         for tok in list(q_counts):
             for s in _SYN_INDEX.get(tok, ()):
@@ -283,7 +283,7 @@ class KnowledgeBase:
                 denom = f + self.K1 * (1 - self.B + self.B * ch.length / avgdl)
                 score += w * idf * (f * (self.K1 + 1)) / denom * (1 + 0.2 * (qtf - 1))
             if score > 0:
-                # Bônus quando vários termos diferentes da pergunta aparecem no trecho.
+                # Boost passages containing multiple distinct query terms.
                 coverage = sum(1 for t in q_counts if t in ch.tf) / len(q_counts)
                 scored.append((score * (0.6 + 0.4 * coverage), ch))
         scored.sort(key=lambda x: x[0], reverse=True)
@@ -294,7 +294,7 @@ class KnowledgeBase:
 
 
 def best_passages(text, query, max_chars=1500):
-    """Escolhe os parágrafos mais relevantes de um texto longo (ex.: artigo do Kiwix)."""
+    """Select the most relevant paragraphs from a long text (e.g. a Kiwix article)."""
     q = set(tokenize(query))
     paras = [p.strip() for p in re.split(r"\n\s*\n|\n", text) if len(p.strip()) > 40]
     if not paras:

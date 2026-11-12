@@ -1,4 +1,4 @@
-"""Inicia os motores locais (llama.cpp e kiwix-serve) que estiverem no kit."""
+"""Start the local engines (llama.cpp and kiwix-serve) available in the kit."""
 
 import glob
 import os
@@ -32,7 +32,7 @@ def find_llama_server():
     found = _find_in(os.path.join(RUNTIME_DIR, "llama.cpp", plat), names)
     if found:
         return found, "llama.cpp"
-    # llamafile (um único executável para todos os sistemas)
+    # llamafile (one executable for all systems)
     for pattern in ("llamafile*", "llamafile*.exe"):
         for p in sorted(glob.glob(os.path.join(RUNTIME_DIR, pattern))):
             if os.path.isfile(p) and not p.endswith((".gguf", ".zip", ".part")):
@@ -67,7 +67,7 @@ def find_model(settings):
             for f in files:
                 if os.path.basename(f) == m.get("file"):
                     return f
-    # Senão, o maior modelo presente (tende a ser o melhor que a pessoa escolheu baixar).
+    # Otherwise, use the largest available model (usually the best one the user downloaded).
     return max(files, key=os.path.getsize)
 
 
@@ -90,7 +90,7 @@ def _env_for(binary):
         env["DYLD_LIBRARY_PATH"] = bindir + os.pathsep + env.get("DYLD_LIBRARY_PATH", "")
     elif not is_windows():
         env["LD_LIBRARY_PATH"] = bindir + os.pathsep + env.get("LD_LIBRARY_PATH", "")
-    # Serviços locais não devem usar proxy.
+    # Local services must not use a proxy.
     env["NO_PROXY"] = "127.0.0.1,localhost"
     return env
 
@@ -113,23 +113,23 @@ class Launcher:
     def start_llm(self):
         port = int(self.settings.get("llm_port", 8091))
         if port_in_use(port):
-            self.say(f"  • Motor de IA já está rodando na porta {port}.")
+            self.say(f"  • AI engine is already running on port {port}.")
             return True
         binary, kind = find_llama_server()
         model = find_model(self.settings)
         if not binary or not model:
             if not binary:
-                self.say("  • Motor de IA (llama.cpp) não encontrado em runtime/ — rode o 'preparar-kit'.")
+                self.say("  • AI engine (llama.cpp) not found in runtime/ — run 'prepare-kit'.")
             if not model:
-                self.say("  • Nenhum modelo .gguf em models/ — rode o 'preparar-kit'.")
-            self.say("    (Se você usa Ollama, ele será detectado automaticamente.)")
+                self.say("  • No .gguf model in models/ — run 'prepare-kit'.")
+            self.say("    (If you use Ollama, it will be detected automatically.)")
             return False
         _ensure_exec(binary)
         ctx = str(self.settings.get("llm_context", 8192))
         if kind == "llamafile":
             cmd = [binary, "--server", "--nobrowser", "-m", model, "--host", "127.0.0.1", "--port", str(port), "-c", ctx]
             if is_windows() and not binary.lower().endswith(".exe"):
-                self.say("  • No Windows o llamafile precisa terminar em .exe — renomeie o arquivo.")
+                self.say("  • On Windows, llamafile must end in .exe — rename the file.")
                 return False
         else:
             cmd = [binary, "-m", model, "--host", "127.0.0.1", "--port", str(port), "-c", ctx]
@@ -138,10 +138,10 @@ class Launcher:
             cmd += ["-t", str(threads)]
         try:
             self.procs.append(_spawn(cmd, "llm.log"))
-            self.say(f"  • Iniciando motor de IA: {os.path.basename(model)} (pode levar até 1 minuto para carregar)")
+            self.say(f"  • Starting AI engine: {os.path.basename(model)} (loading may take up to 1 minute)")
             return True
         except OSError as e:
-            self.say(f"  • Falha ao iniciar o motor de IA: {e} (veja logs/llm.log)")
+            self.say(f"  • Failed to start AI engine: {e} (see logs/llm.log)")
             return False
 
     def start_kiwix(self):
@@ -149,25 +149,25 @@ class Launcher:
             return False
         port = int(self.settings.get("kiwix_port", 8092))
         if port_in_use(port):
-            self.say(f"  • Kiwix já está rodando na porta {port}.")
+            self.say(f"  • Kiwix is already running on port {port}.")
             return True
         zims = find_zims()
         if not zims:
-            self.say("  • Nenhuma base .zim em zim/ — a IA usará apenas os guias do kit.")
+            self.say("  • No .zim libraries in zim/ — the AI will use only the kit guides.")
             return False
         binary = find_kiwix_serve()
         if not binary:
-            self.say("  • kiwix-serve não encontrado. Rode o 'preparar-kit' ou ative o 'Servidor local' no Kiwix Desktop")
-            self.say(f"    e ajuste kiwix_url em config/settings.local.json (atual: {self.settings.get('kiwix_url')}).")
+            self.say("  • kiwix-serve not found. Run 'prepare-kit' or enable 'Local Kiwix Server' in Kiwix Desktop")
+            self.say(f"    and set kiwix_url in config/settings.local.json (current: {self.settings.get('kiwix_url')}).")
             return False
         _ensure_exec(binary)
         cmd = [binary, "--address", "127.0.0.1", "--port", str(port)] + zims
         try:
             self.procs.append(_spawn(cmd, "kiwix.log"))
-            self.say(f"  • Iniciando biblioteca Kiwix com {len(zims)} base(s).")
+            self.say(f"  • Starting Kiwix with {len(zims)} library/libraries.")
             return True
         except OSError as e:
-            self.say(f"  • Falha ao iniciar o kiwix-serve: {e} (veja logs/kiwix.log)")
+            self.say(f"  • Failed to start kiwix-serve: {e} (see logs/kiwix.log)")
             return False
 
     def stop(self):

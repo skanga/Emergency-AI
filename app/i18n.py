@@ -1,4 +1,4 @@
-"""Textos do lado do servidor (prompts e mensagens) em PT, EN e ES."""
+"""Server-side prompts and messages in English, Portuguese and Spanish."""
 
 SYSTEM_PROMPT = {
     "pt": (

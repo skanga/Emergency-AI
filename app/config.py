@@ -1,4 +1,4 @@
-"""Caminhos, configurações e detecção de plataforma."""
+"""Paths, settings and platform detection."""
 
 import json
 import os
@@ -14,7 +14,7 @@ ZIM_DIR = os.path.join(ROOT, "zim")
 RUNTIME_DIR = os.path.join(ROOT, "runtime")
 LOG_DIR = os.path.join(ROOT, "logs")
 
-LANGS = ("pt", "en", "es")
+LANGS = ("en", "pt", "es")
 
 SETTINGS_FILE = os.path.join(CONFIG_DIR, "settings.json")
 LOCAL_SETTINGS_FILE = os.path.join(CONFIG_DIR, "settings.local.json")
@@ -29,7 +29,7 @@ def load_json(path, default=None):
 
 
 def load_settings():
-    """settings.json + settings.local.json (o local, ignorado pelo git, tem prioridade)."""
+    """settings.json + settings.local.json (local settings, ignored by git, take priority)."""
     settings = load_json(SETTINGS_FILE, {}) or {}
     local = load_json(LOCAL_SETTINGS_FILE, {}) or {}
     settings.update(local)
@@ -44,7 +44,7 @@ def save_local_settings(changes):
 
 
 def platform_key():
-    """Ex.: windows-x86_64, linux-arm64, macos-arm64."""
+    """Example: windows-x86_64, linux-arm64, macos-arm64."""
     system = platform.system().lower()
     if system.startswith("win"):
         osname = "windows"

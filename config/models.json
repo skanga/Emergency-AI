@@ -1,9 +1,9 @@
 {
-  "_comment": "Modelos GGUF para o motor llama.cpp. Troque ou adicione modelos aqui. 'default' é usado quando nenhum é escolhido.",
-  "default": "padrao",
+  "_comment": "GGUF models for llama.cpp. Replace or add models here. 'default' is used when no model is selected.",
+  "default": "standard",
   "models": [
     {
-      "id": "leve",
+      "id": "light",
       "name": "Qwen2.5 1.5B Instruct (Q4_K_M)",
       "file": "Qwen2.5-1.5B-Instruct-Q4_K_M.gguf",
       "url": "https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf",
@@ -17,13 +17,13 @@
       }
     },
     {
-      "id": "padrao",
+      "id": "standard",
       "name": "Qwen2.5 3B Instruct (Q4_K_M)",
       "file": "Qwen2.5-3B-Instruct-Q4_K_M.gguf",
       "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q4_K_M.gguf",
       "size_gb": 1.9,
       "ram_gb": 6,
-      "license": "Qwen Research License (uso pessoal/pesquisa)",
+      "license": "Qwen Research License (personal/research use)",
       "desc": {
         "pt": "Padrão: bom equilíbrio para notebooks com 8 GB de RAM. Fala bem português, inglês e espanhol.",
         "en": "Default: good balance for laptops with 8 GB RAM. Good in Portuguese, English and Spanish.",
@@ -31,7 +31,7 @@
       }
     },
     {
-      "id": "forte",
+      "id": "strong",
       "name": "Qwen2.5 7B Instruct (Q4_K_M)",
       "file": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
       "url": "https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf",

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-# IA da Sobrevivência — iniciar no Linux/macOS:  ./iniciar.sh   (opções: --lang en | --lang es)
-# Subcomandos: ./iniciar.sh chat | ask "pergunta" | status | prepare
+# Survival AI — start on Linux/macOS:  ./start.sh   (options: --lang pt | --lang es)
+# Subcommands: ./start.sh chat | ask "question" | status | prepare
 cd "$(dirname "$0")" || exit 1
 
 case "$(uname -s)" in
@@ -22,12 +22,12 @@ elif command -v python >/dev/null 2>&1; then
   PY="python"
 fi
 if [ -z "$PY" ]; then
-  echo "Python 3 não encontrado. Rode ./preparar-kit.sh com internet (ou instale python3)."
+  echo "Python 3 not found. Run ./prepare-kit.sh online (or install python3)."
   exit 1
 fi
 
-# Sem subcomando => interface web
+# No subcommand => web interface
 case "$1" in
-  start|chat|ask|search|status|prepare) exec "$PY" sobrevivencia.py "$@" ;;
-  *) exec "$PY" sobrevivencia.py "$@" start ;;
+  start|chat|ask|search|status|prepare) exec "$PY" survival.py "$@" ;;
+  *) exec "$PY" survival.py "$@" start ;;
 esac

@@ -1,4 +1,4 @@
-/* IA da Sobrevivência — interface (sem bibliotecas externas, funciona offline) */
+/* Survival AI — UI (no external libraries, works offline) */
 (function () {
   "use strict";
 
@@ -73,8 +73,8 @@
 
   const $ = (s) => document.querySelector(s);
   const params = new URLSearchParams(location.search);
-  let lang = params.get("lang") || store("lang") || "pt";
-  if (!I18N[lang]) lang = "pt";
+  let lang = params.get("lang") || store("lang") || "en";
+  if (!I18N[lang]) lang = "en";
   let guides = [];
   let chatHistory = [];
   let busy = false;
@@ -86,14 +86,14 @@
       localStorage.setItem("ias:" + k, v);
     } catch (e) { return null; }
   }
-  const t = (k) => I18N[lang][k] ?? I18N.pt[k] ?? k;
+  const t = (k) => I18N[lang][k] ?? I18N.en[k] ?? k;
 
   // ---------------- markdown ----------------
   function esc(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
   function slugify(s) {
-    return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "secao";
+    return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
   }
   function inline(s, opts) {
     s = esc(s);
@@ -222,7 +222,7 @@
     });
   }
 
-  // ---------------- guias ----------------
+  // ---------------- guides ----------------
   async function openGuide(id, anchor) {
     const data = await api(`/api/guide?lang=${lang}&id=${encodeURIComponent(id)}`);
     const doc = $("#doc");
@@ -331,7 +331,7 @@
     }
   }
 
-  // ---------------- busca lateral ----------------
+  // ---------------- sidebar search ----------------
   let searchTimer;
   async function sideSearch(q) {
     const box = $("#searchResults");
@@ -342,7 +342,7 @@
       : `<small style="color:var(--muted);padding:8px;display:block">${t("noResults")}</small>`;
   }
 
-  // ---------------- idioma ----------------
+  // ---------------- language ----------------
   function applyLang() {
     document.documentElement.lang = lang === "pt" ? "pt-BR" : lang;
     document.title = t("title");
@@ -360,11 +360,11 @@
     if (!$("#guideView").classList.contains("hidden")) showChat();
   }
 
-  // ---------------- menu celular ----------------
+  // ---------------- mobile menu ----------------
   function openSide() { $("#side").classList.add("open"); $("#scrim").classList.add("open"); }
   function closeSide() { $("#side").classList.remove("open"); $("#scrim").classList.remove("open"); }
 
-  // ---------------- eventos ----------------
+  // ---------------- events ----------------
   document.addEventListener("click", (e) => {
     const g = e.target.closest("[data-guide]");
     if (g) {
@@ -404,7 +404,7 @@
   $("#useKiwix").checked = store("kiwix") !== "0";
   $("#useKiwix").addEventListener("change", (e) => store("kiwix", e.target.checked ? "1" : "0"));
 
-  // ---------------- início ----------------
+  // ---------------- initialization ----------------
   applyLang();
   loadGuides().then(() => {
     const h = location.hash.slice(1);

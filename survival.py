@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""IA da Sobrevivência — ponto de entrada.
+"""Survival AI — command-line entry point.
 
-Uso:
-  python sobrevivencia.py start              # inicia motores + interface web (padrão)
-  python sobrevivencia.py chat               # conversa no terminal
-  python sobrevivencia.py ask "pergunta"     # pergunta única no terminal
-  python sobrevivencia.py search "termos"    # busca nos guias
-  python sobrevivencia.py prepare            # (com internet) baixa modelo, motores e bases Kiwix
-  python sobrevivencia.py status             # mostra o que está instalado/ativo
+Usage:
+  python survival.py start              # start engines and web interface (default)
+  python survival.py chat               # terminal chat
+  python survival.py ask "question"     # single question in the terminal
+  python survival.py search "terms"    # search the guides
+  python survival.py prepare            # download the model, engines and Kiwix libraries (requires internet)
+  python survival.py status             # show installed and running components
 
-Opções comuns: --lang pt|en|es   --host 0.0.0.0 (compartilhar na rede local)   --port 8090
+Common options: --lang en|pt|es   --host 0.0.0.0 (share on the local network)   --port 8090
 """
 
 import argparse
@@ -20,11 +20,11 @@ import time
 import webbrowser
 
 if sys.version_info < (3, 8):
-    sys.exit("Python 3.8+ is required / É necessário Python 3.8 ou superior.")
+    sys.exit("Python 3.8+ is required.")
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# Garante saída UTF-8 em terminais Windows antigos.
+# Ensure UTF-8 output in older Windows terminals.
 for stream in (sys.stdout, sys.stderr):
     try:
         stream.reconfigure(encoding="utf-8", errors="replace")
@@ -36,8 +36,8 @@ from app.config import LANGS, load_settings, platform_key  # noqa: E402
 
 BANNER = r"""
   +--------------------------------------------------------------+
-  |   IA DA SOBREVIVENCIA  ·  SURVIVAL AI  ·  IA SUPERVIVENCIA   |
-  |       conhecimento offline  ·  offline knowledge             |
+  |                       SURVIVAL AI                       |
+  |                    offline knowledge                        |
   +--------------------------------------------------------------+
 """
 
@@ -86,7 +86,7 @@ def cmd_start(args, settings):
         httpd = serve(engine, settings, host, port)
     except OSError:
         url = f"http://127.0.0.1:{port}/?lang={args.lang}"
-        print(f"\n  A interface já parece estar aberta / UI already running: {url}")
+        print(f"\n  UI already running: {url}")
         if settings.get("open_browser", True) and not args.no_browser:
             webbrowser.open(url)
         launcher.stop()
@@ -142,7 +142,7 @@ def _engine_with_launcher(args, settings):
         launcher.start_kiwix()
         engine = Engine(settings)
         if started and launcher.procs:
-            for _ in range(90):  # aguarda o modelo carregar
+            for _ in range(90):  # wait for the model to load
                 if engine.llm(force=True):
                     break
                 time.sleep(1)
@@ -196,20 +196,20 @@ def cmd_search(args, settings):
 def cmd_status(args, settings):
     from app.engine import Engine
     from app.launcher import find_kiwix_serve, find_llama_server, find_model, find_zims
-    print(f"IA da Sobrevivência v{__version__} — {platform_key()}")
+    print(f"Survival AI v{__version__} — {platform_key()}")
     binary, kind = find_llama_server()
-    print(f"  Motor de IA ({kind or 'llama.cpp'}): {binary or '—'}")
-    print(f"  Modelo: {find_model(settings) or '—'}")
+    print(f"  AI engine ({kind or 'llama.cpp'}): {binary or '—'}")
+    print(f"  Model: {find_model(settings) or '—'}")
     print(f"  kiwix-serve: {find_kiwix_serve() or '—'}")
     zims = find_zims()
-    print(f"  Bases ZIM: {len(zims)}")
+    print(f"  ZIM libraries: {len(zims)}")
     for z in zims:
         print(f"    - {os.path.basename(z)}  ({os.path.getsize(z) / 1024 ** 3:.2f} GB)")
     st = Engine(settings).status()
-    print(f"  IA ativa agora: {st['llm'] or 'não (modo busca)'}")
-    print(f"  Kiwix ativo agora: {'sim' if st['kiwix'] else 'não'}")
+    print(f"  Active AI: {st['llm'] or 'no (search mode)'}")
+    print(f"  Active Kiwix: {'yes' if st['kiwix'] else 'no'}")
     for lang, s in st["knowledge"].items():
-        print(f"  Guias [{lang}]: {s['docs']} documentos, {s['chunks']} trechos")
+        print(f"  Guides [{lang}]: {s['docs']} documents, {s['chunks']} passages")
 
 
 def cmd_prepare(args, settings):
@@ -220,38 +220,38 @@ def cmd_prepare(args, settings):
 
 def main():
     settings = load_settings()
-    p = argparse.ArgumentParser(description="IA da Sobrevivência — offline survival assistant")
-    p.add_argument("--lang", choices=LANGS, default=settings.get("language", "pt"))
-    p.add_argument("--no-engines", action="store_true", help="não iniciar llama.cpp/kiwix-serve")
+    p = argparse.ArgumentParser(description="Survival AI — offline survival assistant")
+    p.add_argument("--lang", choices=LANGS, default=settings.get("language", "en"))
+    p.add_argument("--no-engines", action="store_true", help="do not start llama.cpp/kiwix-serve")
     sub = p.add_subparsers(dest="cmd")
 
-    s = sub.add_parser("start", help="interface web")
+    s = sub.add_parser("start", help="web interface")
     s.add_argument("--host")
     s.add_argument("--port", type=int)
     s.add_argument("--no-browser", action="store_true")
 
-    sub.add_parser("chat", help="conversa no terminal")
-    a = sub.add_parser("ask", help="pergunta única")
+    sub.add_parser("chat", help="terminal chat")
+    a = sub.add_parser("ask", help="single question")
     a.add_argument("text", nargs="+")
-    se = sub.add_parser("search", help="busca nos guias")
+    se = sub.add_parser("search", help="search the guides")
     se.add_argument("text", nargs="+")
     se.add_argument("-k", type=int, default=5)
-    sub.add_parser("status", help="o que está instalado")
+    sub.add_parser("status", help="show installed components")
 
-    pr = sub.add_parser("prepare", help="baixar modelo, motores e bases (precisa de internet)")
-    pr.add_argument("--model", help="id do modelo em config/models.json ou 'nenhum'")
-    pr.add_argument("--zims", help="minimo | recomendado | completo | nenhum")
-    pr.add_argument("--os", help="this | all | lista separada por vírgula (ex.: windows-x86_64,macos-arm64)")
-    pr.add_argument("--python", action="store_true", default=None, help="incluir Python portátil")
-    pr.add_argument("--yes", action="store_true", help="não perguntar nada (usa padrões)")
-    pr.add_argument("--search", help="procurar bases no catálogo do Kiwix")
-    pr.add_argument("--skip-tools", action="store_true", help="baixar só modelo e ZIMs")
+    pr = sub.add_parser("prepare", help="download model, engines and libraries (requires internet)")
+    pr.add_argument("--model", help="model ID in config/models.json or 'none'")
+    pr.add_argument("--zims", help="minimal | recommended | full | none")
+    pr.add_argument("--os", help="this | all | comma-separated list (e.g. windows-x86_64,macos-arm64)")
+    pr.add_argument("--python", action="store_true", default=None, help="include portable Python")
+    pr.add_argument("--yes", action="store_true", help="skip prompts (use defaults)")
+    pr.add_argument("--search", help="search the Kiwix library catalog")
+    pr.add_argument("--skip-tools", action="store_true", help="download only the model and ZIMs")
 
-    # Aceita opções em qualquer ordem (ex.: iniciar.bat --host 0.0.0.0  =>  "--host 0.0.0.0 start").
+    # Accept options in any order (e.g. start.bat --host 0.0.0.0  =>  "--host 0.0.0.0 start").
     argv = sys.argv[1:]
     cmds = ("start", "chat", "ask", "search", "status", "prepare")
     if argv and argv[-1] == "start" and any(a in cmds for a in argv[:-1]):
-        argv = argv[:-1]  # os scripts .bat/.sh acrescentam "start" por padrão
+        argv = argv[:-1]  # .bat/.sh scripts append "start" by default
     pos = next((i for i, a in enumerate(argv) if a in cmds), None)
     if pos:
         argv = [argv[pos]] + argv[:pos] + argv[pos + 1:]

@@ -1,3 +1,3 @@
-"""IA da Sobrevivência — assistente de sobrevivência 100% offline."""
+"""Survival AI — a fully offline survival assistant."""
 
 __version__ = "1.0.0"

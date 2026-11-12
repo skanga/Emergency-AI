@@ -1,4 +1,4 @@
-"""Servidores falsos para testes: um LLM compatível com OpenAI e um kiwix-serve mínimo."""
+"""Test servers: an OpenAI-compatible LLM and a minimal kiwix-serve."""
 
 import json
 import threading

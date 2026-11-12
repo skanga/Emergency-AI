@@ -1,4 +1,4 @@
-"""Servidor web local (somente biblioteca padrão): interface + API."""
+"""Local web server (standard library only): UI and API."""
 
 import json
 import mimetypes
@@ -20,7 +20,7 @@ def make_handler(engine, settings):
     class Handler(BaseHTTPRequestHandler):
         server_version = "IA-da-Sobrevivencia/" + __version__
 
-        def log_message(self, fmt, *args):  # silencioso
+        def log_message(self, fmt, *args):  # quiet
             pass
 
         # ---------- helpers ----------
@@ -43,8 +43,8 @@ def make_handler(engine, settings):
             return parsed.path, {k: v[0] for k, v in urllib.parse.parse_qs(parsed.query).items()}
 
         def _lang(self, q):
-            lang = q.get("lang", settings.get("language", "pt"))
-            return lang if lang in LANGS else "pt"
+            lang = q.get("lang", settings.get("language", "en"))
+            return lang if lang in LANGS else "en"
 
         # ---------- GET ----------
         def do_GET(self):
@@ -52,7 +52,7 @@ def make_handler(engine, settings):
             try:
                 if path == "/api/status":
                     st = engine.status()
-                    st.update({"version": __version__, "language": settings.get("language", "pt")})
+                    st.update({"version": __version__, "language": settings.get("language", "en")})
                     return self._send(200, st)
                 if path == "/api/guides":
                     return self._send(200, engine.kb.list_docs(self._lang(q)))
@@ -91,7 +91,7 @@ def make_handler(engine, settings):
                 self._send(200, f.read(), ctype)
 
         def _proxy_kiwix(self, subpath, query):
-            """Permite abrir artigos do Kiwix mesmo quando a interface é acessada por outro aparelho da rede."""
+            """Allow Kiwix articles to open when another device on the network accesses the UI."""
             url = engine.kiwix.base_url + subpath + ("?" + query if query else "")
             try:
                 with open_url(url, timeout=15) as r:
@@ -115,7 +115,7 @@ def make_handler(engine, settings):
 
         def _ask_stream(self, body):
             question = (body.get("q") or "").strip()[:2000]
-            lang = body.get("lang") if body.get("lang") in LANGS else settings.get("language", "pt")
+            lang = body.get("lang") if body.get("lang") in LANGS else settings.get("language", "en")
             if not question:
                 return self._send(400, {"error": "empty question"})
             self.send_response(200)

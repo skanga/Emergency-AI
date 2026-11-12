@@ -38,7 +38,7 @@ a { color: var(--accent); }
 .hidden { display: none !important; }
 .scrim { display: none; }
 
-/* ---------- topo ---------- */
+/* ---------- header ---------- */
 .top {
   position: sticky; top: 0; z-index: 20; height: 60px; display: flex; align-items: center; gap: 12px;
   padding: 0 16px; background: var(--panel); border-bottom: 1px solid var(--line);
@@ -118,7 +118,7 @@ a { color: var(--accent); }
 .send:disabled { opacity: .5; }
 .opt { display: block; max-width: 820px; margin: 6px auto 0; color: var(--muted); font-size: 13px; }
 
-/* ---------- conteúdo markdown ---------- */
+/* ---------- markdown content ---------- */
 .md h1, .md h2, .md h3, .md h4 { font-family: var(--serif); line-height: 1.25; scroll-margin-top: 16px; }
 .md h1 { font-size: 32px; margin: 0 0 12px; }
 .md h2 { font-size: 23px; margin: 30px 0 8px; padding-top: 8px; border-top: 1px solid var(--line); }
@@ -149,7 +149,7 @@ a { color: var(--accent); }
 .flash { animation: flash 1.6s ease-out; }
 @keyframes flash { from { background: var(--accent-soft); } to { background: transparent; } }
 
-/* ---------- celular ---------- */
+/* ---------- mobile ---------- */
 @media (max-width: 860px) {
   .layout { grid-template-columns: 1fr; }
   .icon-btn { display: inline-flex; }

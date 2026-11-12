@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IA da Sobrevivência</title>
+<title>Survival AI</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -14,14 +14,14 @@
   </button>
   <a class="brand" href="#" id="homeLink">
     <img src="icon.svg" alt="" width="30" height="30">
-    <span><b data-i18n="title">IA da Sobrevivência</b><small data-i18n="subtitle">funciona sem internet</small></span>
+    <span><b data-i18n="title">Survival AI</b><small data-i18n="subtitle">works without internet</small></span>
   </a>
   <div class="status" id="status">
     <span class="chip" id="chipLlm"><i></i><span>…</span></span>
     <span class="chip" id="chipKiwix"><i></i><span>…</span></span>
   </div>
-  <div class="langs" role="group" aria-label="Idioma">
-    <button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="es">ES</button>
+  <div class="langs" role="group" aria-label="Language">
+    <button data-lang="en">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button>
   </div>
 </header>
 
@@ -29,15 +29,15 @@
   <aside class="side" id="side">
     <button class="ask-btn" id="askBtn">
       <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 5h16v11H8l-4 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-      <span data-i18n="ask">Perguntar à IA</span>
+      <span data-i18n="ask">Ask the AI</span>
     </button>
     <div class="filter">
-      <input type="search" id="filter" data-i18n-ph="filter" placeholder="Buscar nos guias…" autocomplete="off">
+      <input type="search" id="filter" data-i18n-ph="filter" placeholder="Search the guides…" autocomplete="off">
     </div>
     <div id="searchResults" class="search-results"></div>
-    <h3 class="side-h" data-i18n="index">Índice</h3>
+    <h3 class="side-h" data-i18n="index">Contents</h3>
     <nav id="toc" class="toc"></nav>
-    <p class="side-foot" data-i18n="foot">Imprima os guias críticos: papel não precisa de energia.</p>
+    <p class="side-foot" data-i18n="foot">Print the critical guides: paper needs no power.</p>
   </aside>
   <div class="scrim" id="scrim"></div>
 
@@ -47,28 +47,28 @@
       <div class="chat" id="chat">
         <div class="welcome" id="welcome">
           <div class="sos">
-            <b data-i18n="emerg">Emergência?</b>
-            <span data-i18n="emergTxt">Se houver telefone: SAMU 192 · Bombeiros 193 · Europa 112 · EUA 911</span>
+            <b data-i18n="emerg">Emergency?</b>
+            <span data-i18n="emergTxt">If phones work: US/Canada 911 · Europe 112 · UK 999 · Brazil 192/193</span>
           </div>
-          <h1 data-i18n="hello">Pergunte qualquer coisa sobre sobrevivência</h1>
-          <p class="lead" data-i18n="helloTxt">Respostas baseadas nos guias do kit e nas bibliotecas offline, com as fontes citadas.</p>
+          <h1 data-i18n="hello">Ask anything about survival</h1>
+          <p class="lead" data-i18n="helloTxt">Answers based on the kit guides and offline libraries, with sources cited.</p>
           <div class="quick" id="quick"></div>
         </div>
       </div>
       <form class="composer" id="composer">
-        <textarea id="q" rows="1" data-i18n-ph="placeholder" placeholder="Ex.: como purificar água da chuva?" required></textarea>
-        <button type="submit" id="send" class="send" aria-label="Enviar">
+        <textarea id="q" rows="1" data-i18n-ph="placeholder" placeholder="E.g. how do I purify rainwater?" required></textarea>
+        <button type="submit" id="send" class="send" aria-label="Send">
           <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 12l16-8-6 16-2-6z" fill="currentColor"/></svg>
         </button>
-        <label class="opt"><input type="checkbox" id="useKiwix" checked> <span data-i18n="useKiwix">usar bibliotecas Kiwix</span></label>
+        <label class="opt"><input type="checkbox" id="useKiwix" checked> <span data-i18n="useKiwix">use Kiwix libraries</span></label>
       </form>
     </section>
 
-    <!-- GUIA -->
+    <!-- GUIDE -->
     <section id="guideView" class="view hidden">
       <div class="guide-bar">
-        <button class="link-btn" id="backBtn">← <span data-i18n="back">Voltar para a IA</span></button>
-        <button class="link-btn" id="printBtn" data-i18n="print">Imprimir</button>
+        <button class="link-btn" id="backBtn">← <span data-i18n="back">Back to the AI</span></button>
+        <button class="link-btn" id="printBtn" data-i18n="print">Print</button>
       </div>
       <article class="doc" id="doc"></article>
     </section>

@@ -2,7 +2,7 @@
 
 **Un asistente de supervivencia que funciona 100 % sin internet** — en Windows, Linux y macOS.
 
-[🇧🇷 Português](README.md) · [🇺🇸 English](README.en.md) · 🇪🇸 Español
+[🇧🇷 Português](README.pt.md) · [🇺🇸 English](README.en.md) · 🇪🇸 Español
 
 Si internet, la electricidad y los servicios se caen, este kit sigue funcionando en una laptop o un pendrive:
 
@@ -33,38 +33,38 @@ Los archivos grandes (modelos, bases ZIM, motores) **no van al git**: el reposit
 ### 1. Descarga el repositorio
 
 ```bash
-git clone https://github.com/sdalberto/ia-da-sobrevivencia.git
-cd ia-da-sobrevivencia
+git clone https://github.com/skanga/Survival-AI.git
+cd Survival-AI
 ```
 
 ### 2. Prepara el kit (con internet, una sola vez)
 
 | Sistema | Cómo ejecutar |
 |---|---|
-| **Windows** | doble clic en `preparar-kit.bat` |
-| **macOS** | doble clic en `preparar-kit.command` (la 1.ª vez: clic derecho › Abrir) |
-| **Linux** | `./preparar-kit.sh --lang es` |
+| **Windows** | doble clic en `prepare-kit.bat` |
+| **macOS** | doble clic en `prepare-kit.command` (la 1.ª vez: clic derecho › Abrir) |
+| **Linux** | `./prepare-kit.sh --lang es` |
 
 El preparador pregunta:
 
-1. **Modelo de IA:** `leve` (1 GB, 4 GB de RAM), `padrao` (2 GB, 8 GB de RAM — recomendado), `forte` (4,7 GB, 16 GB de RAM).
-2. **Bibliotecas Kiwix:** `minimo` (~3–5 GB), `recomendado` (~25–40 GB) o `completo` (100+ GB, Wikipedia completa).
+1. **Modelo de IA:** `light` (1 GB, 4 GB de RAM), `standard` (2 GB, 8 GB de RAM — recomendado), `strong` (4,7 GB, 16 GB de RAM).
+2. **Bibliotecas Kiwix:** `minimal` (~3–5 GB), `recommended` (~25–40 GB) o `full` (100+ GB, Wikipedia completa).
 3. **Sistemas:** solo esta computadora, o **Windows + Linux + macOS** (kit universal para pendrive).
 4. **Python portátil:** para que el kit abra en computadoras sin Python.
 
 Sin preguntas:
 
 ```bash
-python sobrevivencia.py --lang es prepare --model padrao --zims recomendado --os all --python
+python survival.py --lang es prepare --model standard --zims recommended --os all --python
 ```
 
 ### 3. Úsalo (sin internet)
 
 | Sistema | Cómo abrir |
 |---|---|
-| **Windows** | `iniciar.bat --lang es` (o doble clic en `iniciar.bat` y botón **ES**) |
-| **macOS** | `iniciar.command` |
-| **Linux** | `./iniciar.sh --lang es` |
+| **Windows** | `start.bat --lang es` (o doble clic en `start.bat` y botón **ES**) |
+| **macOS** | `start.command` |
+| **Linux** | `./start.sh --lang es` |
 
 El navegador abre <http://127.0.0.1:8090>. Para dejar el español como predeterminado, crea `config/settings.local.json` con `{ "language": "es" }`.
 
@@ -77,12 +77,12 @@ Copia **toda la carpeta** a un pendrive o disco externo formateado en **exFAT** 
 ## Otras formas de uso
 
 ```bash
-python sobrevivencia.py --lang es chat                    # chat en la terminal
-python sobrevivencia.py --lang es ask "¿cómo preparo suero oral casero?"
-python sobrevivencia.py --lang es search quemadura
-python sobrevivencia.py status
-python sobrevivencia.py start --host 0.0.0.0              # compartir en la red local
-python sobrevivencia.py prepare --search survival         # buscar más bibliotecas Kiwix
+python survival.py --lang es chat                    # chat en la terminal
+python survival.py --lang es ask "¿cómo preparo suero oral casero?"
+python survival.py --lang es search quemadura
+python survival.py status
+python survival.py start --host 0.0.0.0              # compartir en la red local
+python survival.py prepare --search survival         # buscar más bibliotecas Kiwix
 ```
 
 **Ollama:** si usas [Ollama](https://ollama.com), ejecuta `ollama pull qwen2.5:3b` — se detecta automáticamente. También funciona cualquier servidor local compatible con la API de OpenAI (LM Studio, llamafile, KoboldCpp, Jan): ajusta `llm_url`.
@@ -107,4 +107,4 @@ python -m unittest discover -s tests
 
 ## Licencias
 
-Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados por el preparador tienen sus propias licencias. El modelo predeterminado (Qwen2.5 3B) usa la *Qwen Research License*; para uso comercial elige `leve` o `forte` (Apache 2.0).
+Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados por el preparador tienen sus propias licencias. El modelo predeterminado (Qwen2.5 3B) usa la *Qwen Research License*; para uso comercial elige `light` o `strong` (Apache 2.0).

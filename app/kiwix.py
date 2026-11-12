@@ -1,7 +1,7 @@
-"""Integração com o servidor do Kiwix (kiwix-serve ou o "Servidor local" do Kiwix Desktop).
+"""Kiwix server integration (kiwix-serve or the Kiwix Desktop "Local Kiwix Server").
 
-Usa a API pública de busca em texto completo: /search?pattern=...&format=xml
-e baixa o conteúdo dos artigos para alimentar a IA.
+Use the public full-text search API: /search?pattern=...&format=xml
+and download article content as context for the AI.
 """
 
 import html
@@ -65,7 +65,7 @@ class KiwixClient:
         return is_up(self.base_url + "/catalog/v2/entries?count=1", timeout=1.5)
 
     def books(self):
-        """Lista de livros (ZIMs) servidos: [{name, title, lang}]."""
+        """List served books (ZIMs): [{name, title, lang}]."""
         if self._books is not None:
             return self._books
         books = []
@@ -84,15 +84,15 @@ class KiwixClient:
         self._books = books
         return books
 
-    def search(self, query, lang="pt", limit=3):
-        """Busca em todos os ZIMs. Prefere livros no idioma pedido, depois inglês."""
+    def search(self, query, lang="en", limit=3):
+        """Search all ZIMs. Prefer the requested language, then English."""
         books = self.books()
         if not books:
             return []
         want = LANG3.get(lang, lang)
         ordered = [b for b in books if want in b["lang"]] + [b for b in books if want not in b["lang"]]
         results = []
-        # Uma consulta por livro (até 6 livros), para não depender da ordem de relevância global.
+        # Query each book (up to 6) to avoid relying on global relevance ordering.
         for book in ordered[:6]:
             if len(results) >= limit * 2:
                 break

@@ -1,4 +1,4 @@
-"""Testes: python -m unittest discover -s tests"""
+"""Tests: python -m unittest discover -s tests"""
 
 import json
 import os
@@ -35,10 +35,10 @@ class KnowledgeTests(unittest.TestCase):
             md = self.kb.get_doc(lang, "07-first-aid-medicine")
             doc_title, sections = split_markdown(md)
             for title, _, text in sections:
-                # Introdução (aviso) e lista de kit não são orientações clínicas.
+                # The introduction (disclaimer) and kit list are not clinical guidance.
                 if title == doc_title or any(w in title.lower() for w in ("kit", "botiqu")):
                     continue
-                self.assertIn(word, text, f"{lang}: seção sem fonte: {title}")
+                self.assertIn(word, text, f"{lang}: section missing a source: {title}")
 
     def test_tokenize_accents(self):
         self.assertEqual(tokenize("Água"), tokenize("agua"))
@@ -89,7 +89,7 @@ class EngineTests(unittest.TestCase):
         text, sources, info = eng.answer_text("desidratação por diarreia", "pt")
         self.assertEqual(info["mode"], "llm")
         self.assertIn("Ferva a água", text)
-        self.assertIn("⚠️", text)  # aviso médico
+        self.assertIn("⚠️", text)  # medical disclaimer
         kinds = {s["kind"] for s in sources}
         self.assertEqual(kinds, {"kit", "kiwix"})
         kiwix_src = [s for s in sources if s["kind"] == "kiwix"][0]
@@ -124,7 +124,8 @@ class ServerTests(unittest.TestCase):
             return r.read().decode()
 
     def test_pages_and_api(self):
-        self.assertIn("IA da Sobrevivência", self.get("/"))
+        self.assertIn("Survival AI", self.get("/"))
+        self.assertIn('<html lang="en">', self.get("/"))
         self.assertIn("function", self.get("/app.js"))
         guides = json.loads(self.get("/api/guides?lang=es"))
         self.assertEqual(len([g for g in guides if not g["extra"]]), 15)
@@ -132,6 +133,10 @@ class ServerTests(unittest.TestCase):
         self.assertTrue(doc["markdown"].startswith("# "))
         st = json.loads(self.get("/api/status"))
         self.assertIsNone(st["llm"])
+        self.assertEqual(st["language"], "en")
+        for path in ("/api/guides", "/api/guides?lang=unknown"):
+            guides = json.loads(self.get(path))
+            self.assertIn("Water", next(g["title"] for g in guides if g["id"] == "01-water"))
 
     def test_path_traversal_blocked(self):
         with self.assertRaises(Exception):

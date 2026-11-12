@@ -1,12 +1,12 @@
-"""Pequenos utilitários HTTP (somente biblioteca padrão)."""
+"""Small HTTP utilities (standard library only)."""
 
 import json
 import urllib.error
 import urllib.request
 
-USER_AGENT = "IA-da-Sobrevivencia/1.0"
+USER_AGENT = "Survival-AI/1.0"
 
-# Serviços locais nunca devem passar por proxy do sistema.
+# Local services must never use the system proxy.
 _LOCAL_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 

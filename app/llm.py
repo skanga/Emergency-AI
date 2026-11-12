@@ -1,10 +1,10 @@
-"""Clientes para modelos de linguagem locais.
+"""Clients for local language models.
 
-Suporta:
-  * llama.cpp `llama-server`, llamafile, LM Studio, KoboldCpp, Jan... (API compatível com OpenAI)
-  * Ollama (API nativa)
+Supports:
+  * llama.cpp `llama-server`, llamafile, LM Studio, KoboldCpp, Jan... (OpenAI-compatible API)
+  * Ollama (native API)
 
-Tudo roda na própria máquina — nenhuma chamada sai para a internet.
+Everything runs on this computer — no requests go to the internet.
 """
 
 import json
@@ -124,7 +124,7 @@ class Ollama:
 
 
 def detect_llm(settings):
-    """Retorna um cliente disponível ou None (modo somente busca)."""
+    """Return an available client or None (search-only mode)."""
     backend = settings.get("llm_backend", "auto")
     max_tokens = settings.get("llm_max_tokens", 900)
     temperature = settings.get("llm_temperature", 0.2)

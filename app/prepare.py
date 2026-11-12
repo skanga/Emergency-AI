@@ -1,7 +1,7 @@
-"""Preparador do kit (rode COM internet, uma vez): baixa motor de IA, modelo, bases Kiwix e Python portátil.
+"""Kit preparer (run online once): download the AI engine, model, Kiwix libraries and portable Python.
 
-Tudo vai para dentro da pasta do repositório (models/, zim/, runtime/), então basta copiar a pasta
-inteira para um pendrive/HD e ela funciona offline em Windows, Linux e macOS.
+Everything goes inside the repository (models/, zim/, runtime/). Copy the whole folder
+to a USB drive or disk to use it offline on Windows, Linux and macOS.
 """
 
 import hashlib
@@ -25,7 +25,7 @@ LLAMA_REPO = "ggml-org/llama.cpp"
 PYTHON_REPO = "astral-sh/python-build-standalone"
 KIWIX_TOOLS_DIR = "https://download.kiwix.org/release/kiwix-tools/"
 
-# Padrões de nome dos binários pré-compilados do llama.cpp (versão só-CPU, roda em qualquer máquina).
+# Filename patterns for prebuilt llama.cpp binaries (CPU-only builds).
 LLAMA_ASSETS = {
     "windows-x86_64": ["win-cpu-x64", "win-avx2-x64", "win-x64"],
     "windows-arm64": ["win-cpu-arm64", "win-arm64"],
@@ -34,7 +34,7 @@ LLAMA_ASSETS = {
     "macos-arm64": ["macos-arm64"],
     "macos-x86_64": ["macos-x64"],
 }
-# Python portátil (python-build-standalone, "install_only").
+# Portable Python (python-build-standalone, "install_only").
 PYTHON_TRIPLES = {
     "windows-x86_64": "x86_64-pc-windows-msvc",
     "windows-arm64": "aarch64-pc-windows-msvc",
@@ -43,7 +43,7 @@ PYTHON_TRIPLES = {
     "macos-arm64": "aarch64-apple-darwin",
     "macos-x86_64": "x86_64-apple-darwin",
 }
-# kiwix-tools (contém o kiwix-serve).
+# kiwix-tools (includes kiwix-serve).
 KIWIX_ASSETS = {
     "windows-x86_64": ["win-x86_64", "win-i686"],
     "windows-arm64": ["win-x86_64", "win-i686"],
@@ -68,7 +68,7 @@ T = {
         "confirm": "Continuar? [S/n] ",
         "choice": "Escolha [{d}]: ",
         "partial": "Alguns itens falharam (veja acima). Verifique a internet e rode o preparador de novo: ele retoma de onde parou.",
-        "done": "Kit pronto! Rode 'iniciar' para usar. Copie a pasta inteira para um pendrive/HD para levar.",
+        "done": "Kit pronto! Rode 'start' para usar. Copie a pasta inteira para um pendrive/HD para levar.",
         "skip": "  ↷ já existe, pulando: {f}",
         "fail": "  ✗ falhou: {f} ({e})",
         "manual": "    Baixe manualmente em {u} e coloque em {d}",
@@ -112,7 +112,7 @@ T = {
         "confirm": "¿Continuar? [S/n] ",
         "choice": "Elige [{d}]: ",
         "partial": "Algunos elementos fallaron (ver arriba). Revisa la conexión y ejecuta el preparador de nuevo: continúa donde se detuvo.",
-        "done": "¡Kit listo! Ejecuta 'iniciar' para usarlo. Copia toda la carpeta a un pendrive/disco para llevarlo.",
+        "done": "¡Kit listo! Ejecuta 'start' para usarlo. Copia toda la carpeta a un pendrive/disco para llevarlo.",
         "skip": "  ↷ ya existe, omitiendo: {f}",
         "fail": "  ✗ falló: {f} ({e})",
         "manual": "    Descárgalo manualmente desde {u} y ponlo en {d}",
@@ -133,7 +133,7 @@ def _human(n):
 
 
 def download(url, dest, expected_size=None, sha256=None, retries=5):
-    """Baixa com retomada (.part). Usa curl se existir (mais robusto), senão urllib."""
+    """Download with resume support (.part). Prefer curl when available; otherwise use urllib."""
     if os.path.exists(dest) and (not expected_size or os.path.getsize(dest) == expected_size):
         return dest
     os.makedirs(os.path.dirname(dest), exist_ok=True)
@@ -150,7 +150,7 @@ def download(url, dest, expected_size=None, sha256=None, retries=5):
             if rc == 0:
                 ok = True
                 break
-            if rc == 33:  # servidor não aceita retomada: recomeça
+            if rc == 33:  # server does not support resume: restart
                 try:
                     os.remove(part)
                 except OSError:
@@ -161,7 +161,7 @@ def download(url, dest, expected_size=None, sha256=None, retries=5):
     if not ok:
         raise RuntimeError("download failed")
     if sha256:
-        print("    verificando sha256…")
+        print("    verifying sha256…")
         h = hashlib.sha256()
         with open(part, "rb") as f:
             for block in iter(lambda: f.read(1 << 20), b""):
@@ -204,7 +204,7 @@ def _download_urllib(url, part, retries):
                 sys.stdout.write("\n")
             return True
         except Exception as e:
-            print(f"    tentativa {attempt + 1}/{retries} falhou: {e}")
+            print(f"    attempt {attempt + 1}/{retries} failed: {e}")
             time.sleep(3)
     return False
 
@@ -220,7 +220,7 @@ def extract(archive, dest):
                 t.extractall(dest, filter="data")
             except TypeError:
                 t.extractall(dest)
-    # zip não preserva permissão de execução
+    # ZIP does not preserve executable permissions
     for dirpath, _, files in os.walk(dest):
         for f in files:
             p = os.path.join(dirpath, f)
@@ -236,7 +236,7 @@ def github_latest_assets(repo):
     return data.get("tag_name", ""), [(a["name"], a["browser_download_url"], a.get("size")) for a in data.get("assets", [])]
 
 
-# ---------------------------------------------------------------- componentes
+# ---------------------------------------------------------------- components
 def get_llama(plat, tr):
     dest = os.path.join(RUNTIME_DIR, "llama.cpp", plat)
     if os.path.isdir(dest) and any("llama-server" in f for _, _, fs in os.walk(dest) for f in fs):
@@ -282,7 +282,7 @@ def get_python(plat, tr):
         download(url, archive, expected_size=size)
         extract(archive, dest)
         os.remove(archive)
-        print(f"  ✓ Python portátil ({plat})")
+        print(f"  ✓ Portable Python ({plat})")
         return True
     except Exception as e:
         print(tr["fail"].format(f=f"Python ({plat})", e=e))
@@ -336,7 +336,7 @@ def get_model(model, tr):
 
 
 def catalog_lookup(catalog_url, name=None, query=None, lang=None, count=1):
-    """Consulta o catálogo OPDS do Kiwix. Retorna [{name,title,url,size,lang,summary}]."""
+    """Query the Kiwix OPDS catalog. Return [{name,title,url,size,lang,summary}]."""
     params = {"count": count}
     if name:
         params["name"] = name
@@ -391,11 +391,11 @@ def get_zim(entry, catalog_url, tr):
     item = found[0]
     fname = os.path.basename(urllib.parse.urlparse(item["url"]).path)
     dest = os.path.join(ZIM_DIR, fname)
-    # Remove versões antigas da mesma base.
+    # Remove older versions of the same library.
     prefix = entry["name"] + "_"
     for old in os.listdir(ZIM_DIR) if os.path.isdir(ZIM_DIR) else []:
         if old.startswith(prefix) and old.endswith(".zim") and old != fname:
-            print(f"  ↻ versão nova disponível, substituindo {old}")
+            print(f"  ↻ new version available, replacing {old}")
             os.remove(os.path.join(ZIM_DIR, old))
     if os.path.exists(dest):
         print(tr["skip"].format(f=fname))
@@ -436,8 +436,8 @@ def _yes(prompt, tr):
         return True
 
 
-def run(lang="pt", model=None, zims=None, oses=None, python=None, yes=False, search=None, skip_tools=False):
-    tr = T.get(lang, T["pt"])
+def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, search=None, skip_tools=False):
+    tr = T.get(lang, T["en"])
     models_cfg = load_json(os.path.join(CONFIG_DIR, "models.json"), {})
     zims_cfg = load_json(os.path.join(CONFIG_DIR, "zims.json"), {})
     catalog = zims_cfg.get("catalog_url", "https://library.kiwix.org/catalog/v2/entries")
@@ -448,7 +448,7 @@ def run(lang="pt", model=None, zims=None, oses=None, python=None, yes=False, sea
         for r in results:
             size = _human(r["size"]) if r["size"] else "?"
             print(f"- {r['name']:45s} {r['lang']:8s} {size:>10s}  {r['title']}")
-        print("\nAdicione o 'name' desejado em config/zims.json para baixar.")
+        print("\nAdd the desired 'name' to config/zims.json to download it.")
         return
 
     print("=" * 64)
@@ -458,12 +458,12 @@ def run(lang="pt", model=None, zims=None, oses=None, python=None, yes=False, sea
 
     interactive = model is None and zims is None and oses is None and not yes
 
-    # Modelo
+    # Model
     if model is None:
         if interactive:
-            opts = [(m["id"], f"{m['name']} — {m['size_gb']} GB — {m['desc'].get(lang, m['desc']['pt'])}")
+            opts = [(m["id"], f"{m['name']} — {m['size_gb']} GB — {m['desc'].get(lang, m['desc']['en'])}")
                     for m in models_cfg["models"]]
-            opts.append(("nenhum", tr["none"]))
+            opts.append(("none", tr["none"]))
             default = 1 + [o[0] for o in opts].index(models_cfg.get("default", opts[0][0]))
             model = _ask(tr["model_q"], opts, default, tr)
         else:
@@ -474,13 +474,13 @@ def run(lang="pt", model=None, zims=None, oses=None, python=None, yes=False, sea
     if zims is None:
         if interactive:
             opts = [(k, f"{k}: {v}") for k, v in zims_cfg["profiles"].items()]
-            opts.append(("nenhum", tr["none"].split("(")[0].strip()))
+            opts.append(("none", tr["none"].split("(")[0].strip()))
             zims = _ask(tr["zim_q"], opts, 2, tr)
         else:
-            zims = "minimo"
-    chosen_zims = [z for z in zims_cfg["zims"] if zims in z.get("profiles", [])] if zims != "nenhum" else []
+            zims = "minimal"
+    chosen_zims = [z for z in zims_cfg["zims"] if zims in z.get("profiles", [])] if zims != "none" else []
 
-    # Sistemas
+    # Systems
     if oses is None:
         if interactive:
             oses = _ask(tr["os_q"], [("this", tr["os_this"].format(p=here)), ("all", tr["os_all"])], 2, tr)
@@ -488,7 +488,7 @@ def run(lang="pt", model=None, zims=None, oses=None, python=None, yes=False, sea
             oses = "this"
     platforms = list(ALL_PLATFORMS) if oses == "all" else [here] if oses == "this" else oses.split(",")
 
-    # Python portátil
+    # Portable Python
     if python is None:
         python = _yes(tr["py_q"], tr) if interactive else (oses == "all")
 
@@ -511,7 +511,7 @@ def run(lang="pt", model=None, zims=None, oses=None, python=None, yes=False, sea
             if python:
                 results.append(get_python(plat, tr))
     if chosen_model:
-        print("\n[modelo / model]")
+        print("\n[model]")
         results.append(get_model(chosen_model, tr))
     if chosen_zims:
         print("\n[Kiwix ZIM]")
