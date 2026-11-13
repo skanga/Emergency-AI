@@ -7,6 +7,12 @@ from app.kiwix import KiwixClient
 
 
 class KiwixLinkTests(unittest.TestCase):
+    def test_result_without_article_link_is_ignored(self):
+        client = KiwixClient("http://localhost:8092")
+        client._books = [{"name": "book", "title": "Book", "lang": "eng"}]
+        with patch("app.kiwix.get_text", return_value='<rss><item><title>Missing link</title></item></rss>'):
+            self.assertEqual(client.search("page"), [])
+
     def test_absolute_search_result_is_normalized(self):
         client = KiwixClient("http://localhost:8092")
         client._books = [{"name": "book", "title": "Book", "lang": "eng"}]

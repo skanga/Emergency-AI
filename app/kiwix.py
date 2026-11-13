@@ -68,6 +68,8 @@ class KiwixClient:
 
     def local_link(self, link):
         """Normalize same-service links; never fetch arbitrary search-result URLs."""
+        if not link:
+            return None
         base = urllib.parse.urlsplit(self.base_url)
         url = urllib.parse.urlsplit(urllib.parse.urljoin(self.base_url + "/", link))
         if (url.scheme, url.netloc) != (base.scheme, base.netloc):
