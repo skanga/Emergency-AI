@@ -12,6 +12,26 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class LauncherTests(unittest.TestCase):
+    @unittest.skipUnless(os.name == "nt", "Windows architecture dispatch")
+    def test_arm_windows_prefers_arm_portable_python_in_universal_kit(self):
+        with tempfile.TemporaryDirectory(prefix="Survival kit ") as folder:
+            root = Path(folder)
+            shutil.copy2(ROOT / "start.bat", root / "start.bat")
+            (root / "survival.py").write_text("print('native interpreter selected')\n")
+            arm = root / "runtime/python/windows-arm64/python"
+            x64 = root / "runtime/python/windows-x86_64/python"
+            arm.mkdir(parents=True)
+            x64.mkdir(parents=True)
+            # Test path selection with the test interpreter, not ARM execution.
+            shutil.copy2(sys.executable, arm / "python.exe")
+            (x64 / "python.exe").write_bytes(b"wrong interpreter")
+            env = dict(os.environ, PYTHONHOME=sys.base_prefix, PROCESSOR_ARCHITECTURE="AMD64",
+                       PROCESSOR_ARCHITEW6432="ARM64")
+            result = subprocess.run(["cmd", "/c", "start.bat"], cwd=root, env=env, input="\n",
+                                    text=True, capture_output=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn("native interpreter selected", result.stdout)
+
     def test_launcher_preserves_interpreter_path_arguments_and_exit_status(self):
         with tempfile.TemporaryDirectory(prefix="Survival kit ") as folder:
             root = Path(folder)
@@ -25,6 +45,13 @@ class LauncherTests(unittest.TestCase):
                 exe = portable / "python.exe"
                 shutil.copy2(sys.executable, exe)
                 env = dict(os.environ, PYTHONHOME=sys.base_prefix)
+                # A universal kit may contain both architectures. The other
+                # executable must not override the native interpreter.
+                other = root / "runtime/python/windows-arm64/python"
+                other.mkdir(parents=True)
+                (other / "python.exe").write_bytes(b"not an x64 executable")
+                env["PROCESSOR_ARCHITECTURE"] = "AMD64"
+                env.pop("PROCESSOR_ARCHITEW6432", None)
                 scripts = ("start.bat", "prepare-kit.bat")
             else:
                 env = os.environ.copy()

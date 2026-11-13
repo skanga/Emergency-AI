@@ -132,3 +132,12 @@ class InstallationTests(unittest.TestCase):
 
     def test_explicit_search_only_preparation_succeeds(self):
         self.assertEqual(prepare.run(model="none", zims="none", oses="this", python=False, yes=True), 0)
+
+    def test_setup_preferences_survive_interruption_before_manifest(self):
+        with patch.object(prepare, "get_model", side_effect=KeyboardInterrupt):
+            with self.assertRaises(KeyboardInterrupt):
+                prepare.run(model="standard", zims="none", oses="this", python=False,
+                            yes=True, skip_tools=True)
+        saved = self.root / "runtime" / "setup.json"
+        self.assertTrue(saved.exists(), "Save choices before starting downloads")
+        self.assertEqual(json.loads(saved.read_text())["model"], "standard")

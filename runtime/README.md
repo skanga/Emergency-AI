@@ -1,6 +1,6 @@
 # runtime/
 
-Engines downloaded by `prepare-kit`, organized by platform:
+Engines downloaded by `start prepare`, organized by platform:
 
 - `llama.cpp/<platform>/` — AI model server (`llama-server`)
 - `kiwix-tools/<platform>/` — library server (`kiwix-serve`)

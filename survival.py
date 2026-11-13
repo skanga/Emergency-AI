@@ -68,30 +68,49 @@ def lan_ip():
 
 def cmd_start(args, settings):
     from app.engine import Engine
-    from app.launcher import Launcher
+    from app.launcher import Launcher, port_in_use
+    from app.net import open_url
     from app.server import serve
+    from app.startup import ensure_ready
+
+    host = args.host or settings.get("web_host", "127.0.0.1")
+    port = args.port if args.port is not None else settings.get("web_port", 8090)
+    browser_host = "127.0.0.1" if host in ("0.0.0.0", "localhost") else host
+    url = f"http://{browser_host}:{port}/?lang={args.lang}"
+    if port and port_in_use(int(port), browser_host):
+        try:
+            with open_url(url, timeout=2) as response:
+                ours = response.headers.get("Server", "").startswith("Survival-AI/")
+        except Exception:
+            ours = False
+        if not ours:
+            print(f"Port {port} is occupied by another service. Use 'start --port <number>'.")
+            return 1
+        print(f"UI already running: {url}")
+        if settings.get("open_browser", True) and not args.no_browser:
+            webbrowser.open(url)
+        return 0
 
     m = MSG[args.lang]
     print(BANNER)
     print(f"  v{__version__} — {platform_key()}\n")
     print(m["starting"])
+    report = ensure_ready(settings, args.lang) if not args.no_engines else {}
     launcher = Launcher(settings)
     if not args.no_engines:
-        launcher.start_llm()
-        launcher.start_kiwix()
+        if not report.get("external_llm") and settings.get("llm_backend", "auto") in ("auto", "llamacpp", "openai"):
+            launcher.start_llm()
+        if not report.get("external_kiwix"):
+            launcher.start_kiwix()
     engine = Engine(settings)
-    host = args.host or settings.get("web_host", "127.0.0.1")
-    port = args.port or settings.get("web_port", 8090)
     try:
         httpd = serve(engine, settings, host, port)
-    except OSError:
-        url = f"http://127.0.0.1:{port}/?lang={args.lang}"
-        print(f"\n  UI already running: {url}")
-        if settings.get("open_browser", True) and not args.no_browser:
-            webbrowser.open(url)
+    except OSError as e:
+        print(f"Unable to open the app on {host}:{port}: {e}")
         launcher.stop()
-        return
-    url = f"http://127.0.0.1:{port}/?lang={args.lang}"
+        return 1
+    port = httpd.server_address[1]
+    url = f"http://{browser_host}:{port}/?lang={args.lang}"
     print(f"\n  {m['open']}  {url}")
     if host == "0.0.0.0":
         ip = lan_ip()
@@ -197,6 +216,13 @@ def cmd_status(args, settings):
     from app.engine import Engine
     from app.launcher import find_kiwix_serve, find_llama_server, find_model, find_zims
     print(f"Survival AI v{__version__} — {platform_key()}")
+    from app.startup import inspect
+    report = inspect(settings)
+    print("  Setup state: " + report["state"].replace("_", " "))
+    for item in report["missing"]:
+        print("  Missing: " + item)
+    if report["state"] in ("first_run", "incomplete"):
+        print("  Included guides remain available. Use 'start prepare' to configure or '--resume' to repair.")
     binary, kind = find_llama_server()
     print(f"  AI engine ({kind or 'llama.cpp'}): {binary or '—'}")
     print(f"  Model: {find_model(settings) or '—'}")
@@ -216,7 +242,8 @@ def cmd_prepare(args, settings):
     from app import prepare
     try:
         return prepare.run(lang=args.lang, model=args.model, zims=args.zims, oses=args.os, python=args.python,
-                           yes=args.yes, search=args.search, skip_tools=args.skip_tools, archives=args.archives)
+                           yes=args.yes, search=args.search, skip_tools=args.skip_tools, archives=args.archives,
+                           resume=args.resume)
     except (ValueError, OSError) as e:
         print(f"Preparation failed: {e}", file=sys.stderr)
         return 1
@@ -252,15 +279,20 @@ def main():
     pr.add_argument("--yes", action="store_true", help="skip prompts (use defaults)")
     pr.add_argument("--search", help="search the Kiwix library catalog")
     pr.add_argument("--skip-tools", action="store_true", help="download only the model and ZIMs")
+    pr.add_argument("--resume", action="store_true", help="reuse saved choices; repair this platform by default")
 
-    # Accept options in any order (e.g. start.bat --host 0.0.0.0  =>  "--host 0.0.0.0 start").
+    # Launchers forward arguments unchanged; no subcommand means start.
     argv = sys.argv[1:]
     cmds = ("start", "chat", "ask", "search", "status", "prepare")
-    if argv and argv[-1] == "start" and any(a in cmds for a in argv[:-1]):
-        argv = argv[:-1]  # .bat/.sh scripts append "start" by default
     pos = next((i for i, a in enumerate(argv) if a in cmds), None)
     if pos:
         argv = [argv[pos]] + argv[:pos] + argv[pos + 1:]
+    elif pos is None and not any(a in ("-h", "--help") for a in argv):
+        argv = ["start"] + argv
+    for token in list(argv):
+        if token.startswith("--lang="):
+            argv.remove(token)
+            argv.insert(0, token)
     if "--lang" in argv:
         i = argv.index("--lang")
         if i + 1 < len(argv):

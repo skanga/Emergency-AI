@@ -119,9 +119,9 @@ class Launcher:
         model = find_model(self.settings)
         if not binary or not model:
             if not binary:
-                self.say("  • AI engine (llama.cpp) not found in runtime/ — run 'prepare-kit'.")
+                self.say("  • AI engine (llama.cpp) not found in runtime/ — run 'start prepare'.")
             if not model:
-                self.say("  • No .gguf model in models/ — run 'prepare-kit'.")
+                self.say("  • No .gguf model in models/ — run 'start prepare'.")
             self.say("    (If you use Ollama, it will be detected automatically.)")
             return False
         _ensure_exec(binary)
@@ -157,7 +157,7 @@ class Launcher:
             return False
         binary = find_kiwix_serve()
         if not binary:
-            self.say("  • kiwix-serve not found. Run 'prepare-kit' or enable 'Local Kiwix Server' in Kiwix Desktop")
+            self.say("  • kiwix-serve not found. Run 'start prepare' or enable 'Local Kiwix Server' in Kiwix Desktop")
             self.say(f"    and set kiwix_url in config/settings.local.json (current: {self.settings.get('kiwix_url')}).")
             return False
         _ensure_exec(binary)

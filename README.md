@@ -60,17 +60,33 @@ git clone https://github.com/skanga/Survival-AI.git
 cd Survival-AI
 ```
 
-### 2. Prepare the kit (online, once)
+### 2. Open the kit
 
 | System | How to run |
 |---|---|
-| **Windows** | double-click `prepare-kit.bat` |
-| **macOS** | double-click `prepare-kit.command` (first time: right-click › Open) |
-| **Linux** | `./prepare-kit.sh` |
+| **Windows** | double-click `start.bat` |
+| **macOS** | double-click `start.command` (first time: right-click › Open) |
+| **Linux** | `./start.sh` |
+
+Use the same launcher for first use and every later visit. On first use, choose to download optional components or open the included guides immediately. The guide-only choice is remembered. If selected components are missing or setup was interrupted, the launcher offers to resume for the current computer or continue with what is available. Without an interactive terminal, it starts available components without prompting or downloading.
+
+Python 3.8+ must already be installed, or the kit must contain portable Python for this platform. The launcher explains how to obtain it if missing; it cannot download Python before Python is available.
+
+### 3. Add or repair components (when online)
+
+| Action | Windows | Linux / macOS terminal |
+|---|---|---|
+| Choose components | `start.bat prepare` | `./start.sh prepare` |
+| Resume saved choices | `start.bat prepare --resume` | `./start.sh prepare --resume` |
+| Inspect the kit | `start.bat status` | `./start.sh status` |
+
+The old `prepare-kit` launchers remain compatibility shortcuts. New instructions use `start` for both setup and everyday use.
 
 Each preparation run checks for the newest available llama.cpp build for the selected platforms, upgrades older installations, and skips re-downloading the current build. Normal offline startup never checks for updates.
 
 Preparation verifies model checksums and Kiwix metalink sizes/checksums. A failed ZIM update keeps the previous library, and interrupted downloads remain available for retry. Invalid selections and failed preparation return a nonzero exit code; `runtime/kit-info.json` records the result of each requested component.
+
+Your latest setup choices are saved in `runtime/setup.json` before downloads begin. `--resume` reuses them and targets this computer unless you specify `--os`. Startup checks installed files and configured services instead of trusting a previous successful setup on another machine. These are quick presence and size checks; full download integrity checks happen during preparation. An available configured Ollama/OpenAI-compatible service can provide the AI without a bundled model. Restart the app after adding libraries; an independently managed Kiwix server must also load the new files.
 
 The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are absent from the current official catalog (checked November 12, 2026), but older copies are available as [optional archived libraries](#optional-archived-libraries). Archives are excluded from every profile, including `full`. Profile sizes below exclude the model and runtimes and change with upstream releases.
 
@@ -88,7 +104,7 @@ Non-interactive:
 python survival.py prepare --model standard --zims recommended --os all --python
 ```
 
-### 3. Use it (offline)
+### 4. Use it (offline)
 
 | System | How to open |
 |---|---|
@@ -98,7 +114,7 @@ python survival.py prepare --model standard --zims recommended --os all --python
 
 Your browser opens <http://127.0.0.1:8090>. Switch language anytime with the PT/EN/ES buttons. English is the default. Select Portuguese or Spanish with `--lang pt` or `--lang es`, or use the language buttons.
 
-### 4. Carry it on a USB drive
+### 5. Carry it on a USB drive
 
 Copy **the whole folder** to a USB drive or external disk formatted as **exFAT** (works on all three systems and supports files over 4 GB).
 
@@ -179,7 +195,7 @@ If Python is missing, install Python 3.8+ from <https://www.python.org/downloads
 
 ## English entry points
 
-The launchers are now `start.bat`, `start.sh` and `start.command`; setup uses `prepare-kit.bat`, `prepare-kit.sh` and `prepare-kit.command`. The Python entry point is `survival.py`. Update existing shortcuts or scripts to these names.
+Use `start.bat`, `start.sh` or `start.command` for startup, setup and status. Append `prepare` to configure downloads, `prepare --resume` to reuse saved choices, or `status` to inspect the kit. The Python entry point is `survival.py`; the older `prepare-kit` scripts remain compatibility shortcuts.
 
 Model IDs are `light`, `standard`, `strong` and `llama3b`. Library profiles are `minimal`, `recommended` and `full`. Use `none` to skip a model or library download. Existing downloaded model and ZIM filenames stay unchanged.
 
@@ -229,5 +245,5 @@ This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-
 | **llama.cpp / Ollama** | Programs that run an AI model on your computer. The preparer installs llama.cpp; Ollama is an optional alternative if you already use it. |
 | **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
 | **Python / portable Python** | Python runs the Survival AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
-| **Preparer / profile** | The preparer is the setup tool launched by `prepare-kit`. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
+| **Preparer / profile** | The preparer is the setup tool opened by `start prepare` or the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
 | **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes in this README are approximate; leave extra room for the model, software and future updates. |

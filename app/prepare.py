@@ -554,7 +554,17 @@ def _yes(prompt, tr):
 
 
 def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, search=None, skip_tools=False,
-        archives=None):
+        archives=None, resume=False):
+    from .startup import load_selection, save_selection
+    if resume:
+        saved = load_selection(RUNTIME_DIR)
+        if not saved:
+            raise ValueError("No saved setup choices. Run 'start prepare' first.")
+        model = model if model is not None else saved.get("model", "none")
+        zims = zims if zims is not None else saved.get("zims", "none")
+        archives = archives if archives is not None else saved.get("archives", "none")
+        python = python if python is not None else saved.get("python", False)
+        oses = oses or "this"
     tr = T.get(lang, T["en"])
     models_cfg = load_json(os.path.join(CONFIG_DIR, "models.json"), {})
     zims_cfg = load_json(os.path.join(CONFIG_DIR, "zims.json"), {})
@@ -645,6 +655,10 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         return 1
 
     results = []
+
+    # Save intent before any network operation so interrupted setup is resumable.
+    save_selection({"model": model, "zims": zims, "python": bool(python),
+                    "archives": ",".join(a["id"] for a in chosen_archives) or "none"}, RUNTIME_DIR)
 
     def record(name, operation, *args):
         results.append({"name": name, "ok": bool(operation(*args))})

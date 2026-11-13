@@ -22,12 +22,10 @@ elif command -v python >/dev/null 2>&1; then
   PY="python"
 fi
 if [ -z "$PY" ]; then
-  echo "Python 3 not found. Run ./prepare-kit.sh online (or install python3)."
+  echo "Python 3.8+ not found. Install Python 3 from https://www.python.org/downloads/ or your system package manager."
+  echo "Alternatively, copy a kit containing portable Python for $OS-$ARCH. Then run ./start.sh again."
   exit 1
 fi
 
-# No subcommand => web interface
-case "$1" in
-  start|chat|ask|search|status|prepare) exec "$PY" survival.py "$@" ;;
-  *) exec "$PY" survival.py "$@" start ;;
-esac
+# Python handles first use, recovery, subcommands and the default web interface.
+exec "$PY" survival.py "$@"

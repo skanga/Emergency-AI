@@ -1,6 +1,6 @@
 # zim/
 
-Kiwix offline libraries (`.zim`), downloaded by `prepare-kit` or manually from https://library.kiwix.org. Every `.zim` placed here is served automatically and searched by the AI.
+Kiwix offline libraries (`.zim`), downloaded by `start prepare` or manually from https://library.kiwix.org. Every `.zim` placed here is served automatically and searched by the AI.
 
 A ZIM is a compressed collection of saved pages and images; Kiwix is the software that reads and searches it offline. The files preserve the content as it was when the collection was made.
 

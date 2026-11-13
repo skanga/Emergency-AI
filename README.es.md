@@ -37,13 +37,17 @@ git clone https://github.com/skanga/Survival-AI.git
 cd Survival-AI
 ```
 
-### 2. Prepara el kit (con internet, una sola vez)
+### 2. Abre el kit
 
 | Sistema | Cómo ejecutar |
 |---|---|
-| **Windows** | doble clic en `prepare-kit.bat` |
-| **macOS** | doble clic en `prepare-kit.command` (la 1.ª vez: clic derecho › Abrir) |
-| **Linux** | `./prepare-kit.sh --lang es` |
+| **Windows** | doble clic en `start.bat` |
+| **macOS** | doble clic en `start.command` (la 1.ª vez: clic derecho › Abrir) |
+| **Linux** | `./start.sh --lang es` |
+
+En el primer uso, elige descargar los componentes opcionales (con internet) o abrir las guías incluidas. Se recuerda la elección de usar solo las guías. Si falta algún componente seleccionado, puedes reanudar la preparación o continuar con lo disponible. Sin una terminal interactiva, la aplicación inicia sin preguntas ni descargas.
+
+Usa `start.bat prepare` en Windows o `./start.sh prepare` en Linux/macOS para elegir componentes. Añade `--resume` para reanudar las opciones guardadas en esta computadora; usa `status` para revisar el kit. Los scripts `prepare-kit` siguen como accesos de compatibilidad. Se necesita Python 3.8+ instalado o una copia portátil compatible dentro del kit.
 
 El preparador pregunta:
 
