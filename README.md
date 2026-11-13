@@ -114,7 +114,7 @@ flowchart TD
 |---|---|---|
 | `emergency.py` + `app/` | Application and search logic (Python standard library only, no `pip install`) | repository |
 | `knowledge/en/`, `knowledge/pt/`, `knowledge/es/` | Survival guides in Markdown | repository |
-| `knowledge/extra/` | **Your** `.md`/`.txt` documents (searched and cited by the AI) | repository |
+| `knowledge/extra/` | **Your** personal `.md`/`.txt` documents (searched and cited by the AI) | repository |
 | `runtime/llama.cpp/` | Engine that runs the AI model | downloaded with `prepare` |
 | `models/*.gguf` | Language model (1–5 GB) | downloaded with `prepare` |
 | `runtime/kiwix-tools/` + `zim/*.zim` | Kiwix server and libraries | downloaded with `prepare` |
