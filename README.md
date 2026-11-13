@@ -18,41 +18,6 @@ Prepare the kit while you have internet, then use it when connectivity or servic
 
 ---
 
-## How it works
-
-The kit combines **documents to read**, **software to search them**, and an optional **AI model to write answers**. You download the extra parts while you have internet, then use the saved copies offline. The included survival guides work without downloading a model or extra libraries.
-
-See the [Glossary](#glossary) for explanations of the component names and file formats.
-
-```mermaid
-flowchart TD
-    Q["You ask a question"] --> S["Search the included guides<br/>and any installed Kiwix libraries"]
-    S --> R["Retrieve relevant passages<br/>and their source links"]
-    R --> M{"AI model available?"}
-    M -->|Yes| A["Generate an answer using those passages"]
-    M -->|No| P["Show the passages directly"]
-    A --> V["Read the response and open its sources"]
-    P --> V
-```
-
-- **Works offline after setup:** guides, downloaded libraries, and the optional AI model stay on your computer.
-- **The AI is optional:** it turns retrieved material into a conversational answer. Guide search works without it.
-- **Sources remain visible:** readers can check the original material. If nothing relevant is found, the app says so.
-
-| Part | What it is | Where |
-|---|---|---|
-| `survival.py` + `app/` | Application and search logic (Python standard library only, no `pip install`) | repository |
-| `knowledge/en/`, `knowledge/pt/`, `knowledge/es/` | Survival guides in Markdown | repository |
-| `knowledge/extra/` | **Your** `.md`/`.txt` documents (searched and cited by the AI) | repository |
-| `runtime/llama.cpp/` | Engine that runs the AI model | downloaded by the preparer |
-| `models/*.gguf` | Language model (1–5 GB) | downloaded by the preparer |
-| `runtime/kiwix-tools/` + `zim/*.zim` | Kiwix server and libraries | downloaded by the preparer |
-| `runtime/python/` | Portable Python (for PCs without Python) | downloaded by the preparer |
-
-Keep downloaded models, libraries and runtimes out of git: the repository stays small and everyone builds their own kit with the preparer.
-
----
-
 ## Quick start
 
 ### 1. Get the repository
@@ -119,6 +84,41 @@ Your browser opens <http://127.0.0.1:8090>. Switch language anytime with the PT/
 ### 5. Carry it on a USB drive
 
 Copy **the whole folder** to a USB drive or external disk formatted as **exFAT** (works on all three systems and supports files over 4 GB).
+
+---
+
+## How it works
+
+The kit combines **documents to read**, **software to search them**, and an optional **AI model to write answers**. You download the extra parts while you have internet, then use the saved copies offline. The included survival guides work without downloading a model or extra libraries.
+
+See the [Glossary](#glossary) for explanations of the component names and file formats.
+
+```mermaid
+flowchart TD
+    Q["You ask a question"] --> S["Search the included guides<br/>and any installed Kiwix libraries"]
+    S --> R["Retrieve relevant passages<br/>and their source links"]
+    R --> M{"AI model available?"}
+    M -->|Yes| A["Generate an answer using those passages"]
+    M -->|No| P["Show the passages directly"]
+    A --> V["Read the response and open its sources"]
+    P --> V
+```
+
+- **Works offline after setup:** guides, downloaded libraries, and the optional AI model stay on your computer.
+- **The AI is optional:** it turns retrieved material into a conversational answer. Guide search works without it.
+- **Sources remain visible:** readers can check the original material. If nothing relevant is found, the app says so.
+
+| Part | What it is | Where |
+|---|---|---|
+| `survival.py` + `app/` | Application and search logic (Python standard library only, no `pip install`) | repository |
+| `knowledge/en/`, `knowledge/pt/`, `knowledge/es/` | Survival guides in Markdown | repository |
+| `knowledge/extra/` | **Your** `.md`/`.txt` documents (searched and cited by the AI) | repository |
+| `runtime/llama.cpp/` | Engine that runs the AI model | downloaded by the preparer |
+| `models/*.gguf` | Language model (1–5 GB) | downloaded by the preparer |
+| `runtime/kiwix-tools/` + `zim/*.zim` | Kiwix server and libraries | downloaded by the preparer |
+| `runtime/python/` | Portable Python (for PCs without Python) | downloaded by the preparer |
+
+Keep downloaded models, libraries and runtimes out of git: the repository stays small and everyone builds their own kit with the preparer.
 
 ---
 
