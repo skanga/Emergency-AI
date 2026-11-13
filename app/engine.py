@@ -102,9 +102,31 @@ class Engine:
         messages = [{"role": "system", "content": i18n.SYSTEM_PROMPT[lang]}]
         for h in (history or [])[-4:]:
             if h.get("role") in ("user", "assistant") and h.get("content"):
-                messages.append({"role": h["role"], "content": h["content"][:1500]})
+                messages.append({"role": h["role"], "content": h["content"]})
         messages.append({"role": "user", "content": user})
         return messages
+
+    def fit_messages(self, llm, question, lang, sources, history=None):
+        """Reserve generation space; omit old turns, then whole source sections."""
+        options = llm.options()
+        budget = options['context'] - options['max_tokens'] - options['context_margin']
+        history = list(history or [])[-4:]
+        sources = [dict(s) for s in sources]
+        dropped_history = False
+        while True:
+            messages = self.build_messages(question, lang, sources, history)
+            count = llm.count_prompt(messages)
+            if count <= budget:
+                return messages, sources, {'input_tokens': count, 'history_omitted': dropped_history,
+                                          'sources_omitted': [s['n'] for s in sources if s.get('context_omitted')]}
+            if history:
+                history = history[2:]
+                dropped_history = True
+                continue
+            included = [s for s in sources if not s.get('context_omitted')]
+            if not included:
+                raise LLMError('The question exceeds the available input context budget')
+            included[-1].update(context_omitted=True, text=i18n.READ_FULL_SOURCE[lang])
 
     def extractive_answer(self, lang, sources):
         if not sources:
@@ -120,21 +142,35 @@ class Engine:
         lang = lang if lang in i18n.SYSTEM_PROMPT else "en"
         t0 = time.time()
         sources = self.retrieve(question, lang, history, use_kiwix)
-        yield "sources", sources
         llm = self.llm() if use_llm and any(not s.get("context_omitted") for s in sources) else None
         mode = "llm" if llm else "search"
+        generation = {}
         if llm:
-            messages = self.build_messages(question, lang, sources, history)
+            try:
+                messages, fitted, generation = self.fit_messages(llm, question, lang, sources, history)
+                if any(not s.get('context_omitted') for s in fitted):
+                    sources = fitted
+                else:
+                    llm, mode = None, 'search'
+            except (LLMError, OSError) as e:
+                yield 'token', i18n.LLM_ERROR[lang].format(err=str(e)[:120])
+                llm, mode = None, 'search'
+        yield "sources", sources
+        if llm:
             got = False
             try:
-                for tok in llm.stream_chat(messages):
+                for tok in llm.stream_chat(messages, generation):
                     got = True
                     yield "token", tok
             except (LLMError, OSError) as e:
+                generation.update(incomplete=True, finish_reason='error')
                 self._llm_checked = 0
                 yield "token", i18n.LLM_ERROR[lang].format(err=str(e)[:120])
                 yield "token", self.extractive_answer(lang, sources)
                 mode = "search"
+            if generation.get('incomplete'):
+                key = 'limit' if generation.get('finish_reason') == 'length' else 'interrupted'
+                yield 'token', i18n.INCOMPLETE_ANSWER[lang][key]
             if not got and mode == "llm":
                 yield "token", self.extractive_answer(lang, sources)
                 mode = "search"
@@ -143,7 +179,7 @@ class Engine:
         if self.is_medical(question):
             yield "token", i18n.MEDICAL_FOOTER[lang]
         yield "done", {"mode": mode, "seconds": round(time.time() - t0, 1),
-                       "llm": llm.describe() if llm else None}
+                       "llm": llm.describe() if llm else None, "generation": generation}
 
     def answer_text(self, question, lang="en", **kw):
         text, sources, info = [], [], {}

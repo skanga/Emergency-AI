@@ -174,9 +174,12 @@ To translate or expand the bundled guides, edit `knowledge/<language>/` and keep
 |---|---|---|
 | `language` | `en` | Default language (`en`, `pt`, `es`) |
 | `web_port` | `8090` | Web interface port |
-| `llm_backend` | `auto` | `auto`, `openai` (llama.cpp etc.), `ollama` or `none` |
+| `llm_backend` | `auto` | `auto`, `llamacpp`, `openai` (generic compatible server), `ollama` or `none` |
 | `model_file` | unset | Select a `.gguf` filename when several are installed |
 | `llm_context` | `8192` | Model context size |
+| `llm_max_tokens` | `2048` | Total generation allowance, including thinking where the backend counts it |
+| `llm_context_margin` | `256` | Additional tokens reserved for template/counting differences |
+| `llm_thinking` | backend-dependent | `false` for llama.cpp/Ollama; unset for generic compatible servers. See below. |
 | `llm_threads` | `0` | CPU threads (0 = automatic) |
 | `kiwix_url` | `http://127.0.0.1:8092` | Kiwix server address |
 | `search_results` | `5` | Guide passages sent to the AI |
@@ -188,6 +191,34 @@ For example, to select a different Ollama model:
 ```json
 { "ollama_model": "llama3.2:3b" }
 ```
+
+### Generation and thinking
+
+Generation settings can be overridden per backend and per exact model. Precedence is global `llm_*` settings, then `llm_backend_settings`, then `llm_model_settings`. For example:
+
+```json
+{
+  "llm_backend_settings": {
+    "llamacpp": { "max_tokens": 4096, "context": 16384, "thinking": false },
+    "ollama": { "max_tokens": 4096, "context": 16384, "thinking": false }
+  },
+  "llm_model_settings": {
+    "ollama": {
+      "qwen3:4b": { "thinking": true, "max_tokens": 6144 }
+    }
+  }
+}
+```
+
+This example configures an already-installed model; it does not download one or change the catalogue. Override keys are `max_tokens`, `context`, `temperature`, `thinking` and `context_margin`. Model keys are the GGUF filename for the managed llama.cpp launcher, the exact server-reported model identifier for generic servers, or the full Ollama tag including `:latest` when applicable. A llama.cpp server using an alias needs that alias as its client-side model key. Restart the kit after editing settings; a larger context can require more memory.
+
+For llama.cpp and Ollama, `thinking` accepts `true`, `false`, `null` (server/model default), or a supported effort name. Generic `openai` servers accept `null` or an effort name supported by that server; llama.cpp-specific fields are not sent to them. `auto` identifies llama.cpp through its server properties, otherwise treats the endpoint as generic. Use `llm_backend: "llamacpp"` if a proxy hides those properties. Thinking controls depend on the model/template; a model that always reasons may not honor an off request. See the [llama.cpp server documentation](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md) and [Ollama thinking documentation](https://docs.ollama.com/capabilities/thinking).
+
+Reasoning fields are consumed separately and discarded, never added to the visible answer or conversation history. Inline `<think>` blocks are also filtered. There is no universal separate reasoning-token budget across these APIs: `max_tokens` is the total generation allowance, so enable thinking with enough room for the final answer. The app never automatically retries or continues an incomplete answer.
+
+Before generation, the app reserves output space and the context margin, removes oldest conversation turns if needed, then omits entire lower-ranked source sections while keeping their links. It never shortens the current question or cuts a source section mid-procedure. If the question cannot fit, or no complete source fits, it shows source passages instead. llama.cpp uses its rendered prompt and tokenizer when available and respects a smaller reported server context. Other servers, including Ollama, use a conservative UTF-8 byte estimate plus message overhead. This estimate is not an exact token count; configure the context no larger than the model/server supports. Ollama receives the configured context on each request; an external server's context must be configured separately.
+
+Token-limit stops and streams without a confirmed normal finish display an **Incomplete answer** notice in both the browser and terminal. The API's final `done` event includes `generation` metadata with the finish reason, completion status and budgets. If a model produces only reasoning, the app falls back to source passages.
 
 The server limits request bodies to 64 KiB, accepts one answer stream at a time, and returns HTTP 503 while another answer is running. Share only with trusted devices: LAN clients can read all indexed documents, including `knowledge/extra/`.
 

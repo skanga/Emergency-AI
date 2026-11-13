@@ -125,7 +125,12 @@ class Launcher:
             self.say("    (If you use Ollama, it will be detected automatically.)")
             return False
         _ensure_exec(binary)
-        ctx = str(self.settings.get("llm_context", 8192))
+        from .generation import generation_options
+        try:
+            ctx = str(generation_options(self.settings, 'llamacpp', os.path.basename(model))['context'])
+        except ValueError as e:
+            self.say('  Invalid generation settings: ' + str(e))
+            return False
         if kind == "llamafile":
             cmd = [binary, "--server", "--nobrowser", "-m", model, "--host", "127.0.0.1", "--port", str(port), "-c", ctx]
             if is_windows() and not binary.lower().endswith(".exe"):

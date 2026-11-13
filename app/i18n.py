@@ -81,6 +81,21 @@ MEDICAL_WORDS = (
     "sangre", "herid", "quemad", "fiebre", "medicament", "mordedura", "serpiente", "alacran", "alergi",
     "atragant", "deshidrat", "hipoterm", "infecc", "dolor", "convulsi", "desmay",
 )
+INCOMPLETE_ANSWER = {
+    "en": {
+        "limit": "\n\n> **Incomplete answer:** generation reached its token limit. Read the linked sources for complete instructions.",
+        "interrupted": "\n\n> **Incomplete answer:** the model did not confirm a complete response. Read the linked sources for complete instructions.",
+    },
+    "pt": {
+        "limit": "\n\n> **Resposta incompleta:** a geração atingiu o limite de tokens. Leia as fontes vinculadas para obter instruções completas.",
+        "interrupted": "\n\n> **Resposta incompleta:** o modelo não confirmou uma resposta completa. Leia as fontes vinculadas para obter instruções completas.",
+    },
+    "es": {
+        "limit": "\n\n> **Respuesta incompleta:** la generación alcanzó el límite de tokens. Lea las fuentes enlazadas para obtener instrucciones completas.",
+        "interrupted": "\n\n> **Respuesta incompleta:** el modelo no confirmó una respuesta completa. Lea las fuentes enlazadas para obtener instrucciones completas.",
+    },
+}
+
 READ_FULL_SOURCE = {
     "en": "Open the full source below. This section is unavailable or too long to include safely as a complete passage.",
     "pt": "Abra a fonte completa abaixo. Esta seção está indisponível ou é longa demais para ser incluída na íntegra.",
