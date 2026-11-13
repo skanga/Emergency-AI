@@ -27,6 +27,14 @@
 
 <div class="layout">
   <aside class="side" id="side">
+    <section class="model-picker" aria-labelledby="modelLabel">
+      <label id="modelLabel" for="modelSelect" data-i18n="modelLabel">AI model</label>
+      <select id="modelSelect" aria-describedby="modelNote modelState" disabled></select>
+      <button id="modelSwitch" type="button" data-i18n="modelSwitch" disabled>Switch model</button>
+      <progress id="modelProgress" class="hidden" aria-label="Loading model" data-i18n-aria="modelProgress"></progress>
+      <p id="modelState" role="status" aria-live="polite"></p>
+      <small id="modelNote" data-i18n="modelNote">Applies to everyone using this kit. One model stays loaded at a time.</small>
+    </section>
     <button class="ask-btn" id="askBtn">
       <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 5h16v11H8l-4 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
       <span data-i18n="ask">Ask the AI</span>

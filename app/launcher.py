@@ -97,11 +97,11 @@ def _env_for(binary):
 
 def _spawn(cmd, logname):
     os.makedirs(LOG_DIR, exist_ok=True)
-    log = open(os.path.join(LOG_DIR, logname), "ab")
-    kwargs = {"stdout": log, "stderr": subprocess.STDOUT, "stdin": subprocess.DEVNULL, "env": _env_for(cmd[0])}
-    if is_windows():
-        kwargs["creationflags"] = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-    return subprocess.Popen(cmd, **kwargs)
+    with open(os.path.join(LOG_DIR, logname), "ab") as log:
+        kwargs = {"stdout": log, "stderr": subprocess.STDOUT, "stdin": subprocess.DEVNULL, "env": _env_for(cmd[0])}
+        if is_windows():
+            kwargs["creationflags"] = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        return subprocess.Popen(cmd, **kwargs)
 
 
 class Launcher:
@@ -109,14 +109,18 @@ class Launcher:
         self.settings = settings
         self.say = say
         self.procs = []
+        self.llm_process = None
+        self.llm_model = None
 
-    def start_llm(self):
+    def start_llm(self, model_file=None):
         port = int(self.settings.get("llm_port", 8091))
         if port_in_use(port):
             self.say(f"  • AI engine is already running on port {port}.")
             return True
         binary, kind = find_llama_server()
-        model = find_model(self.settings)
+        model = os.path.join(MODELS_DIR, model_file) if model_file else find_model(self.settings)
+        if model_file and not os.path.isfile(model):
+            model = None
         if not binary or not model:
             if not binary:
                 self.say("  • AI engine (llama.cpp) not found in runtime/ — run 'python emergency.py prepare'.")
@@ -142,7 +146,9 @@ class Launcher:
         if threads > 0:
             cmd += ["-t", str(threads)]
         try:
-            self.procs.append(_spawn(cmd, "llm.log"))
+            self.llm_process = _spawn(cmd, "llm.log")
+            self.llm_model = os.path.basename(model)
+            self.procs.append(self.llm_process)
             self.say(f"  • Starting AI engine: {os.path.basename(model)} (loading may take up to 1 minute)")
             return True
         except OSError as e:
@@ -175,14 +181,31 @@ class Launcher:
             self.say(f"  • Failed to start kiwix-serve: {e} (see logs/kiwix.log)")
             return False
 
+    @staticmethod
+    def _stop_process(process):
+        if process.poll() is None:
+            process.terminate()
+        try:
+            process.wait(timeout=5)
+        except (subprocess.TimeoutExpired, TimeoutError):
+            process.kill()
+            # Confirm exit before another model can allocate memory.
+            process.wait(timeout=5)
+
+    def stop_llm(self):
+        if self.llm_process is not None:
+            process = self.llm_process
+            self._stop_process(process)
+            self.procs.remove(process)
+            self.llm_process = None
+        self.llm_model = None
+
     def stop(self):
-        for p in self.procs:
+        for process in list(self.procs):
             try:
-                p.terminate()
-                p.wait(timeout=5)
-            except Exception:
-                try:
-                    p.kill()
-                except Exception:
-                    pass
+                self._stop_process(process)
+            except (OSError, subprocess.TimeoutExpired):
+                pass
         self.procs = []
+        self.llm_process = None
+        self.llm_model = None

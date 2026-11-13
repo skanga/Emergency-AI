@@ -8,6 +8,13 @@
       index: "Índice", foot: "Imprima os guias críticos: papel não precisa de energia.", emerg: "Emergência?",
       emergTxt: "Se houver telefone: SAMU 192 · Bombeiros 193 · Europa 112 · EUA 911",
       hello: "Como posso ajudar?",
+      modelLabel: "Modelo de IA", modelSwitch: "Trocar modelo", modelProgress: "Carregando modelo",
+      modelNote: "Vale para todos que usam este kit. Apenas um modelo fica carregado por vez.",
+      modelChoose: "Escolha um modelo instalado", modelEmpty: "Nenhum modelo GGUF instalado. Execute o preparador para adicionar um.",
+      modelDisabled: "Troca indisponível para IA externa ou desativada.", modelEngine: "Instale o llama.cpp com o preparador para trocar modelos aqui.",
+      modelQueued: "Aguardando a resposta atual terminar…", modelStopping: "Descarregando o modelo atual…",
+      modelLoading: "Carregando {model}… {seconds}s", modelReady: "Selecionado: {model}",
+      modelFailed: "Falha na troca. Tente novamente ou escolha outro modelo. ", modelOffline: "Não foi possível consultar os modelos. Reconectando…",
       helloTxt: "Conhecimento e assistência offline quando os serviços ficam indisponíveis. As respostas citam os guias do kit e as bibliotecas offline.",
       placeholder: "Ex.: como purificar água da chuva?", useKiwix: "usar bibliotecas Kiwix", back: "Voltar para a IA",
       print: "Imprimir", sources: "Fontes", kit: "guia", kiwix: "Kiwix", thinking: "Procurando nas fontes…",
@@ -30,6 +37,13 @@
       index: "Contents", foot: "Print the critical guides: paper needs no power.", emerg: "Emergency?",
       emergTxt: "If phones work: US/Canada 911 · Europe 112 · UK 999 · Brazil 192/193",
       hello: "How can I help?",
+      modelLabel: "AI model", modelSwitch: "Switch model", modelProgress: "Loading model",
+      modelNote: "Applies to everyone using this kit. One model stays loaded at a time.",
+      modelChoose: "Choose an installed model", modelEmpty: "No GGUF models installed. Run the preparer to add one.",
+      modelDisabled: "Switching is unavailable for externally managed or disabled AI engines.", modelEngine: "Install llama.cpp with the preparer to switch models here.",
+      modelQueued: "Waiting for the current answer to finish…", modelStopping: "Unloading the current model…",
+      modelLoading: "Loading {model}… {seconds}s", modelReady: "Selected: {model}",
+      modelFailed: "Switch failed. Retry or choose another model. ", modelOffline: "Cannot check models. Reconnecting…",
       helloTxt: "Offline knowledge and assistance when services go down. Answers cite the kit guides and offline libraries.",
       placeholder: "E.g. how do I purify rainwater?", useKiwix: "use Kiwix libraries", back: "Back to the AI",
       print: "Print", sources: "Sources", kit: "guide", kiwix: "Kiwix", thinking: "Searching the sources…",
@@ -52,6 +66,13 @@
       index: "Índice", foot: "Imprime las guías críticas: el papel no necesita energía.", emerg: "¿Emergencia?",
       emergTxt: "Si hay teléfono: 112 Europa · 911 gran parte de América · Brasil 192/193",
       hello: "¿Cómo puedo ayudar?",
+      modelLabel: "Modelo de IA", modelSwitch: "Cambiar modelo", modelProgress: "Cargando modelo",
+      modelNote: "Se aplica a todos los que usan este kit. Solo se carga un modelo a la vez.",
+      modelChoose: "Elige un modelo instalado", modelEmpty: "No hay modelos GGUF instalados. Ejecuta el preparador para añadir uno.",
+      modelDisabled: "El cambio no está disponible para motores de IA externos o desactivados.", modelEngine: "Instala llama.cpp con el preparador para cambiar modelos aquí.",
+      modelQueued: "Esperando a que termine la respuesta actual…", modelStopping: "Descargando el modelo actual de la memoria…",
+      modelLoading: "Cargando {model}… {seconds}s", modelReady: "Seleccionado: {model}",
+      modelFailed: "El cambio falló. Reintenta o elige otro modelo. ", modelOffline: "No se pueden consultar los modelos. Reconectando…",
       helloTxt: "Conocimiento y asistencia sin internet cuando los servicios dejan de funcionar. Las respuestas citan las guías del kit y las bibliotecas offline.",
       placeholder: "P. ej.: ¿cómo purifico agua de lluvia?", useKiwix: "usar bibliotecas Kiwix", back: "Volver a la IA",
       print: "Imprimir", sources: "Fuentes", kit: "guía", kiwix: "Kiwix", thinking: "Buscando en las fuentes…",
@@ -79,6 +100,10 @@
   let chatHistory = [];
   let busy = false;
   let status = null;
+  let modelState = null;
+  let modelRequest = false;
+  let modelFetch = 0;
+  let modelActionError = null;
 
   function store(k, v) {
     try {
@@ -212,6 +237,80 @@
     return r.json();
   }
 
+  const modelSwitching = () => modelRequest || (modelState && ["queued", "stopping", "loading"].includes(modelState.phase));
+
+  function renderModels() {
+    const select = $("#modelSelect"), button = $("#modelSwitch"), state = $("#modelState");
+    const switching = modelSwitching();
+    $("#send").disabled = busy || !!switching;
+    $("#modelProgress").classList.toggle("hidden", !switching);
+    if (!modelState) { select.disabled = button.disabled = true; return; }
+    const previous = select.value;
+    const items = modelState.models || [];
+    // Preserve an unsubmitted choice while polling other clients' state.
+    const chosen = switching ? modelState.target : (previous || modelState.active || modelState.selected);
+    select.replaceChildren(new Option(t("modelChoose"), ""));
+    for (const model of items) {
+      const gb = (model.size_bytes / 1024 ** 3).toFixed(1);
+      select.add(new Option(`${model.name} (${gb} GiB)`, model.file));
+    }
+    select.value = items.some((m) => m.file === chosen) ? chosen : "";
+    select.disabled = !modelState.enabled || !items.length || !!switching;
+    button.disabled = select.disabled || !select.value || (select.value === modelState.active && modelState.phase !== "error");
+    state.className = modelActionError || modelState.phase === "error" ? "error" : "";
+    if (modelActionError) state.textContent = t("modelFailed") + modelActionError;
+    else if (!modelState.enabled) state.textContent = t(modelState.reason === "missing_engine" ? "modelEngine" : "modelDisabled");
+    else if (!items.length) state.textContent = t("modelEmpty");
+    else if (modelState.phase === "queued") state.textContent = t("modelQueued");
+    else if (modelState.phase === "stopping") state.textContent = t("modelStopping");
+    else if (modelState.phase === "loading") state.textContent = t("modelLoading").replace("{model}", modelState.target).replace("{seconds}", Math.floor(modelState.elapsed));
+    else if (modelState.phase === "error") state.textContent = t("modelFailed") + (modelState.error || "");
+    else state.textContent = modelState.active ? t("modelReady").replace("{model}", modelState.active) : t("modelChoose");
+  }
+
+  async function loadModels() {
+    const request = ++modelFetch;
+    try {
+      const next = await api("/api/models");
+      if (request !== modelFetch) return;
+      const oldPhase = modelState && modelState.phase;
+      if (modelState && modelState.active !== next.active && $("#modelSelect").value === modelState.active) $("#modelSelect").value = "";
+      modelState = next;
+      renderModels();
+      if (oldPhase !== next.phase && ["ready", "error"].includes(next.phase)) loadStatus();
+    } catch (e) {
+      if (request !== modelFetch) return;
+      $("#modelSelect").disabled = $("#modelSwitch").disabled = true;
+      $("#modelState").textContent = t("modelOffline");
+    }
+  }
+
+  async function switchModel() {
+    const filename = $("#modelSelect").value;
+    if (!filename || modelSwitching()) return;
+    modelRequest = true;
+    modelActionError = null;
+    ++modelFetch;
+    renderModels();
+    try {
+      const response = await fetch("/api/models", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ model: filename }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "HTTP " + response.status);
+      modelState = data;
+    } catch (e) {
+      modelActionError = e.message;
+    } finally {
+      modelRequest = false;
+      renderModels();
+      loadModels();
+    }
+  }
+
+  async function pollModels() {
+    if (!modelRequest) await loadModels();
+    setTimeout(pollModels, modelSwitching() ? 1000 : 3000);
+  }
+
   async function loadStatus() {
     try {
       status = await api("/api/status");
@@ -289,7 +388,7 @@
   }
 
   async function ask(question) {
-    if (busy || !question.trim()) return;
+    if (busy || modelSwitching() || !question.trim()) return;
     busy = true;
     $("#send").disabled = true;
     $("#welcome") && $("#welcome").remove();
@@ -345,7 +444,7 @@
       out.textContent = t("error") + e.message;
     } finally {
       busy = false;
-      $("#send").disabled = false;
+      renderModels();
     }
   }
 
@@ -366,9 +465,11 @@
     document.title = t("title");
     document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
     document.querySelectorAll("[data-i18n-ph]").forEach((el) => (el.placeholder = t(el.dataset.i18nPh)));
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
     document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
     const quick = $("#quick");
     if (quick) quick.innerHTML = t("quick").map(([k, q]) => `<button data-q="${esc(q)}"><b>${esc(k)}</b>${esc(q)}</button>`).join("");
+    renderModels();
   }
   async function setLang(l) {
     lang = l; store("lang", l);
@@ -403,6 +504,7 @@
   });
   $("#composer").addEventListener("submit", (e) => {
     e.preventDefault();
+    if (busy || modelSwitching()) return;
     const q = $("#q").value;
     $("#q").value = ""; autoGrow();
     ask(q);
@@ -421,6 +523,8 @@
   $("#scrim").addEventListener("click", closeSide);
   $("#useKiwix").checked = store("kiwix") !== "0";
   $("#useKiwix").addEventListener("change", (e) => store("kiwix", e.target.checked ? "1" : "0"));
+  $("#modelSelect").addEventListener("change", () => { modelActionError = null; renderModels(); });
+  $("#modelSwitch").addEventListener("click", switchModel);
 
   // ---------------- initialization ----------------
   applyLang();
@@ -433,5 +537,6 @@
     if (guide) openGuide(guide.id, h.slice(guide.id.length + 1));
   });
   loadStatus();
+  pollModels();
   setInterval(loadStatus, 20000);
 })();

@@ -56,7 +56,7 @@ class BoundedHTTPServer(ThreadingHTTPServer):
             self.slots.release()
 
 
-def make_handler(engine, settings):
+def make_handler(engine, settings, models=None):
     answer_slot = threading.BoundedSemaphore(1)
 
     class Handler(BaseHTTPRequestHandler):
@@ -97,6 +97,9 @@ def make_handler(engine, settings):
                     st = engine.status()
                     st.update({"version": __version__, "language": settings.get("language", "en")})
                     return self._send(200, st)
+                if path == "/api/models":
+                    state = models.status() if models else {"enabled": False, "reason": "disabled", "models": []}
+                    return self._send(200, state)
                 if path == "/api/guides":
                     return self._send(200, engine.kb.list_docs(self._lang(q)))
                 if path == "/api/guide":
@@ -159,7 +162,7 @@ def make_handler(engine, settings):
         # ---------- POST ----------
         def do_POST(self):
             path, q = self._query()
-            if path != "/api/ask":
+            if path not in ("/api/ask", "/api/models"):
                 return self._send(404, {"error": "not found"})
             origin = self.headers.get("Origin")
             if origin and origin != "http://" + self.headers.get("Host", ""):
@@ -180,6 +183,17 @@ def make_handler(engine, settings):
                 return self._send(400, {"error": "invalid json"})
             except TimeoutError:
                 return self._send(408, {"error": "request timed out"})
+            if path == "/api/models":
+                if not isinstance(body, dict) or not isinstance(body.get("model"), str):
+                    return self._send(400, {"error": "model must be a filename"})
+                if models is None:
+                    return self._send(409, {"error": "model switching is disabled"})
+                try:
+                    return self._send(202, models.request(body["model"]))
+                except ValueError as e:
+                    return self._send(400, {"error": str(e)})
+                except RuntimeError as e:
+                    return self._send(409, {"error": str(e)})
             if not isinstance(body, dict) or not isinstance(body.get("q"), str):
                 return self._send(400, {"error": "q must be a string"})
             history = body.get("history", [])
@@ -190,12 +204,16 @@ def make_handler(engine, settings):
                     or any(k in body and not isinstance(body[k], bool) for k in ("use_llm", "use_kiwix"))
                     or ("lang" in body and body["lang"] not in LANGS)):
                 return self._send(400, {"error": "invalid question, history or options"})
-            if not answer_slot.acquire(blocking=False):
-                return self._send(503, {"error": "another answer is in progress"}, extra={"Retry-After": "2"})
+            acquired = models.begin_answer() if models else answer_slot.acquire(blocking=False)
+            if not acquired:
+                return self._send(503, {"error": "another answer or model switch is in progress"}, extra={"Retry-After": "2"})
             try:
                 return self._ask_stream(body)
             finally:
-                answer_slot.release()
+                if models:
+                    models.end_answer()
+                else:
+                    answer_slot.release()
 
         def _ask_stream(self, body):
             question = (body.get("q") or "").strip()[:2000]
@@ -232,9 +250,9 @@ def make_handler(engine, settings):
     return Handler
 
 
-def serve(engine, settings, host=None, port=None):
+def serve(engine, settings, host=None, port=None, models=None):
     host = host or settings.get("web_host", "127.0.0.1")
     port = int(settings.get("web_port", 8090) if port is None else port)
-    httpd = BoundedHTTPServer((host, port), make_handler(engine, settings))
+    httpd = BoundedHTTPServer((host, port), make_handler(engine, settings, models))
     httpd.daemon_threads = True
     return httpd

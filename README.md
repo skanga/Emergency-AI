@@ -81,6 +81,8 @@ python emergency.py prepare --model gemma4-e2b --zims recommended --os all --pyt
 
 Your browser opens <http://127.0.0.1:8090>. Switch language anytime with the PT/EN/ES buttons. English is the default. Select Portuguese or Spanish with `--lang pt` or `--lang es`, or use the language buttons.
 
+To change AI models, choose an installed GGUF in the sidebar's **AI model** dropdown and click **Switch model**. On phones, open the menu first. A switch waits for any current answer to finish, unloads the previous model, then shows loading progress and elapsed time. Guide browsing and search remain available. The choice applies to everyone connected to the kit and is saved in `config/settings.local.json` after the new model loads successfully. Only one app-managed model stays loaded at a time. Switching controls are disabled for externally managed AI servers (such as Ollama or LM Studio) and when using `--no-engines`.
+
 ### 5. Carry it on a USB drive
 
 Copy **the whole folder** to a USB drive or external disk formatted as **exFAT** (works on all three systems and supports files over 4 GB).

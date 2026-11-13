@@ -21,6 +21,11 @@ class Engine:
         self._lock = threading.Lock()
 
     # ---------- availability (briefly cached) ----------
+    def reset_llm(self):
+        with self._lock:
+            self._llm = None
+            self._llm_checked = 0
+
     def llm(self, force=False):
         with self._lock:
             if force or time.time() - self._llm_checked > 15:

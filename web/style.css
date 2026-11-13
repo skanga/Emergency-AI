@@ -61,6 +61,17 @@ a { color: var(--accent); }
 /* ---------- layout ---------- */
 .layout { display: grid; grid-template-columns: 300px 1fr; height: calc(100% - 60px); }
 .side { border-right: 1px solid var(--line); background: var(--panel); overflow-y: auto; padding: 16px; }
+.model-picker { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.model-picker label { display: block; font-weight: 600; margin-bottom: 5px; }
+.model-picker select, .model-picker button { width: 100%; font: inherit; font-size: 14px; border: 1px solid var(--line);
+  border-radius: 8px; padding: 8px; background: var(--bg); color: var(--ink); }
+.model-picker select { text-overflow: ellipsis; }
+.model-picker button { margin-top: 6px; color: var(--accent); }
+.model-picker button:disabled, .model-picker select:disabled { opacity: .6; cursor: default; }
+.model-picker progress { display: block; width: 100%; height: 6px; margin-top: 10px; accent-color: var(--accent); }
+.model-picker p { margin: 7px 0; font-size: 13px; overflow-wrap: anywhere; }
+.model-picker small { display: block; color: var(--muted); font-size: 12px; }
+.model-picker .error { color: var(--danger); }
 .main { overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
 .view { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 

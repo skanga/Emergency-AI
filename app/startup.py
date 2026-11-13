@@ -65,10 +65,14 @@ def inspect(settings):
         models = load_json(os.path.join(CONFIG_DIR, "models.json"), {}).get("models", [])
         libraries = load_json(os.path.join(CONFIG_DIR, "zims.json"), {})
         model_id = selection.get("model", "none")
-        if model_id != "none" and settings.get("llm_backend", "auto") != "none" and not external_llm:
-            model = next((m for m in models if m["id"] == model_id), None)
-            if not model or not _present(os.path.join(MODELS_DIR, model["file"]), model.get("size_bytes")):
-                missing.append("Model: " + str(model_id))
+        preferred = settings.get("model_file")
+        if (preferred or model_id != "none") and settings.get("llm_backend", "auto") != "none" and not external_llm:
+            model = next((m for m in models if m["file"] == preferred), None) if preferred else next(
+                (m for m in models if m["id"] == model_id), None)
+            filename = preferred or (model["file"] if model else None)
+            if (not filename or os.path.basename(filename) != filename
+                    or not _present(os.path.join(MODELS_DIR, filename), model.get("size_bytes") if model else None)):
+                missing.append("Model: " + str(preferred or model_id))
             if not binary:
                 missing.append("AI engine for " + platform_key())
         profile = selection.get("zims", "none")

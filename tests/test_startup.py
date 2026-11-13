@@ -84,6 +84,18 @@ class StartupTests(unittest.TestCase):
         self.assertEqual(report["state"], "incomplete")
         self.assertFalse(any("Kiwix server" in m for m in report["missing"]))
 
+    def test_saved_gui_model_takes_priority_over_old_download_selection(self):
+        self.save(model="gemma4-e2b")
+        self.settings['model_file'] = 'custom.gguf'
+        (self.root / 'models' / 'custom.gguf').write_bytes(b'GGUF')
+        self.llama.return_value = ('llama-server', 'llama.cpp')
+        with patch('builtins.input', return_value='2') as ask, patch.object(prepare, 'run') as setup:
+            report = self.startup.ensure_ready(self.settings, interactive=True)
+        self.assertEqual(report['state'], 'ready')
+        self.assertEqual(self.settings['model_file'], 'custom.gguf')
+        ask.assert_not_called()
+        setup.assert_not_called()
+
     def test_model_selection_checks_file_size_and_current_platform_engine(self):
         self.save(model="gemma4-e2b")
         model = next(m for m in prepare.load_json(str(Path(prepare.CONFIG_DIR) / "models.json"))["models"] if m["id"] == "gemma4-e2b")

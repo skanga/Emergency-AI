@@ -4,6 +4,7 @@ import json
 import os
 import platform
 import sys
+import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_DIR = os.path.join(ROOT, "config")
@@ -39,8 +40,15 @@ def load_settings():
 def save_local_settings(changes):
     local = load_json(LOCAL_SETTINGS_FILE, {}) or {}
     local.update(changes)
-    with open(LOCAL_SETTINGS_FILE, "w", encoding="utf-8") as f:
-        json.dump(local, f, indent=2, ensure_ascii=False)
+    path = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=CONFIG_DIR, delete=False) as f:
+            path = f.name
+            json.dump(local, f, indent=2, ensure_ascii=False)
+        os.replace(path, LOCAL_SETTINGS_FILE)
+    finally:
+        if path and os.path.exists(path):
+            os.unlink(path)
 
 
 def platform_key():

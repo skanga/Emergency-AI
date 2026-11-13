@@ -71,6 +71,7 @@ def lan_ip():
 
 def cmd_start(args, settings):
     from app.engine import Engine
+    from app.models import ModelManager
     from app.launcher import Launcher, port_in_use
     from app.net import open_url
     from app.server import serve
@@ -106,8 +107,9 @@ def cmd_start(args, settings):
         if not report.get("external_kiwix"):
             launcher.start_kiwix()
     engine = Engine(settings)
+    models = ModelManager(engine, launcher, enabled=not args.no_engines and not report.get("external_llm"))
     try:
-        httpd = serve(engine, settings, host, port)
+        httpd = serve(engine, settings, host, port, models=models)
     except OSError as e:
         print(f"Unable to open the app on {host}:{port}: {e}")
         launcher.stop()
@@ -128,6 +130,7 @@ def cmd_start(args, settings):
         print("\n" + m["bye"])
     finally:
         httpd.server_close()
+        models.close()
         launcher.stop()
 
 
