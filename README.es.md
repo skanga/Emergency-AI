@@ -73,7 +73,7 @@ python emergency.py --lang es prepare --model gemma4-e2b --zims recommended --os
 | **macOS** | `run.command` |
 | **Linux** | `./run.sh --lang es` |
 
-El navegador abre <http://127.0.0.1:8090>. Para dejar el español como predeterminado, crea `config/settings.local.json` con `{ "language": "es" }`.
+El navegador abre <http://127.0.0.1:8090>. El acceso desde la red local está activado de forma predeterminada. La consola muestra la dirección de red y un código QR para teléfonos en la misma red, incluso sin internet. Usa `--local-only` para permitir el acceso solo desde esta computadora. Para dejar el español como predeterminado, crea `config/settings.local.json` con `{ "language": "es" }`.
 
 ### 4. Llévalo en un pendrive
 
@@ -88,7 +88,7 @@ python emergency.py --lang es chat                    # chat en la terminal
 python emergency.py --lang es ask "¿cómo preparo suero oral casero?"
 python emergency.py --lang es search quemadura
 python emergency.py status
-python emergency.py start --host 0.0.0.0              # compartir en la red local
+python emergency.py start --local-only                # desactivar el acceso desde la red local
 python emergency.py prepare --search survival         # buscar más bibliotecas Kiwix
 ```
 

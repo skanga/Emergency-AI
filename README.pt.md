@@ -100,11 +100,11 @@ python emergency.py chat                       # conversa no terminal
 python emergency.py ask "como fazer soro caseiro?"
 python emergency.py search queimadura          # busca rápida nos guias
 python emergency.py status                     # o que está instalado e ativo
-python emergency.py start --host 0.0.0.0       # compartilhar na rede local (Wi-Fi)
+python emergency.py start --local-only         # desativar o compartilhamento na rede local
 python emergency.py prepare --search survival  # descobrir mais bases no catálogo Kiwix
 ```
 
-**Compartilhar com a comunidade:** com `--host 0.0.0.0`, qualquer celular conectado ao mesmo roteador (mesmo sem internet) abre o endereço mostrado no terminal, ex.: `http://192.168.0.10:8090`.
+**Compartilhar com a comunidade:** o compartilhamento na rede local fica ativado por padrão. Qualquer celular conectado ao mesmo roteador (mesmo sem internet) abre o endereço mostrado no terminal, ex.: `http://192.168.0.10:8090`, ou lê o código QR mostrado no console. Use `--local-only` para permitir acesso apenas neste computador.
 
 ### Usando Ollama em vez do llama.cpp
 

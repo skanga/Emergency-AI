@@ -1,6 +1,6 @@
 {
   "language": "en",
-  "web_host": "127.0.0.1",
+  "web_host": "0.0.0.0",
   "web_port": 8090,
   "open_browser": true,
 

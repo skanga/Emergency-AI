@@ -79,9 +79,9 @@ python emergency.py prepare --model gemma4-e2b --zims recommended --os all --pyt
 | **macOS** | `run.command` |
 | **Linux** | `./run.sh` |
 
-Your browser opens <http://127.0.0.1:8090>. Switch language anytime with the PT/EN/ES buttons. English is the default. Select Portuguese or Spanish with `--lang pt` or `--lang es`, or use the language buttons.
+Your browser opens <http://127.0.0.1:8090>. Local-network sharing is enabled by default: the console also shows a LAN address and an offline-generated QR code for phones on the same network. To use only this computer, run `.\run.bat --local-only` (Windows) or `./run.sh --local-only` (Linux/macOS). Switch language anytime with the PT/EN/ES buttons. English is the default. Select Portuguese or Spanish with `--lang pt` or `--lang es`, or use the language buttons.
 
-To change AI models, choose an installed GGUF in the sidebar's **AI model** dropdown and click **Switch model**. On phones, open the menu first. A switch waits for any current answer to finish, unloads the previous model, then shows loading progress and elapsed time. Guide browsing and search remain available. The choice applies to everyone connected to the kit and is saved in `config/settings.local.json` after the new model loads successfully. Only one app-managed model stays loaded at a time. Switching controls are disabled for externally managed AI servers (such as Ollama or LM Studio) and when using `--no-engines`.
+To change AI models, click the current model indicator in the top bar and choose an installed GGUF from its menu. The same control is available on phones. A switch waits for any current answer to finish, unloads the previous model, then shows loading progress and elapsed time. Guide browsing and search remain available. The choice applies to everyone connected to the kit and is saved in `config/settings.local.json` after the new model loads successfully. Only one app-managed model stays loaded at a time. Switching controls are disabled for externally managed AI servers (such as Ollama or LM Studio) and when using `--no-engines`.
 
 ### 5. Carry it on a USB drive
 
@@ -154,7 +154,7 @@ python emergency.py chat                   # terminal chat
 python emergency.py ask "how do I make oral rehydration solution?"
 python emergency.py search burn
 python emergency.py status
-python emergency.py start --host 0.0.0.0             # share on the local network
+python emergency.py start --local-only               # turn off local-network sharing
 python emergency.py prepare --search survival        # find more Kiwix libraries
 ```
 
@@ -193,6 +193,7 @@ See the [tier comparison](docs/model-tier-evaluation-2026-11-13.md) for the test
 | Key | Default | Purpose |
 |---|---|---|
 | `language` | `en` | Default language (`en`, `pt`, `es`) |
+| `web_host` | `0.0.0.0` | Share on the local network; use `127.0.0.1` for this computer only |
 | `web_port` | `8090` | Web interface port |
 | `llm_backend` | `auto` | `auto`, `llamacpp`, `openai` (generic compatible server), `ollama` or `none` |
 | `model_file` | unset | Select a `.gguf` filename when several are installed |
@@ -242,7 +243,7 @@ Token-limit stops and streams without a confirmed normal finish display an **Inc
 
 The server limits request bodies to 64 KiB, accepts one answer stream at a time, and returns HTTP 503 while another answer is running. Share only with trusted devices: LAN clients can read all indexed documents, including `knowledge/extra/`.
 
-With `--host 0.0.0.0`, devices connected to the same router can open the address printed in the terminal, such as `http://192.168.0.10:8090`, even without internet.
+Devices connected to the same router can open the LAN address or scan the QR code printed in the terminal, even without internet. The link uses the detected network address and actual server port, such as `http://192.168.0.10:8090`. No QR code is shown for localhost-only use or when no LAN address is found. Use `--local-only` to turn sharing off, or set `{ "web_host": "127.0.0.1" }` in `config/settings.local.json`. Multiple network adapters or VPNs can affect the detected address; `--host <LAN-IP>` selects a specific IPv4 interface. Allow the app on your local network if your firewall asks.
 
 If Python is missing, install Python 3.8+ from <https://www.python.org/downloads/>. On Windows, select **Add python.exe to PATH**. The preparer can then include portable Python in the kit.
 
@@ -282,6 +283,8 @@ Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md)
 Corrections with sources, new guides and translations are welcome. Keep a `> Source:` line in each English section containing technical or health guidance, and use the equivalent source label in translated guides.
 
 ## Attribution
+
+Console QR codes use Project Nayuki's MIT-licensed [QR encoder](app/vendor/README.md), bundled so generation works offline without installing packages.
 
 This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-sobrevivencia) by Silviano Dalberto Pessi (Ideias Livres Desenvolvimentos) and contributors. This version makes English the default and translates entry points, help, documentation and developer comments. Original license and copyright notices are retained.
 

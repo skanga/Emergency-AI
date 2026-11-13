@@ -11,7 +11,7 @@ Usage:
 
 Common options:
 --lang en|pt|es
---host 0.0.0.0 (share on the local network)
+--local-only (turn off local-network sharing)
 --port 8090
 """
 
@@ -59,14 +59,53 @@ MSG = {
 
 def lan_ip():
     import socket
+    import ipaddress
+
+    def usable(ip):
+        addr = ipaddress.ip_address(ip)
+        return not (addr.is_loopback or addr.is_unspecified or addr.is_multicast or addr.is_link_local)
+
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("10.255.255.255", 1))
-        ip = s.getsockname()[0]
-        s.close()
-        return ip
-    except Exception:
-        return None
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            # UDP connect selects a route; it does not send a packet or require internet.
+            sock.connect(("192.0.2.1", 1))
+            ip = sock.getsockname()[0]
+            if usable(ip):
+                return ip
+    except OSError:
+        pass
+    try:
+        for result in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET):
+            ip = result[4][0]
+            if usable(ip):
+                return ip
+    except OSError:
+        pass
+    return None
+
+
+def print_connection_info(host, port, lang, stream=None):
+    import ipaddress
+    from app.qr import terminal_colors, terminal_qr
+
+    stream = stream or sys.stdout
+    m = MSG[lang]
+    browser_host = '127.0.0.1' if host in ('0.0.0.0', 'localhost') else host
+    print(f"\n  {m['open']}  http://{browser_host}:{port}/?lang={lang}", file=stream)
+    ip = lan_ip() if host == '0.0.0.0' else host
+    try:
+        addr = ipaddress.ip_address(ip) if ip else None
+    except ValueError:
+        addr = None
+    if addr and not (addr.is_loopback or addr.is_unspecified or addr.is_link_local):
+        url = f'http://{ip}:{port}/?lang={lang}'
+        print(f"  {m['lan']}  {url}", file=stream)
+        qr = terminal_qr(url, color=terminal_colors(stream))
+        try:
+            qr.encode(getattr(stream, 'encoding', None) or 'utf-8')
+        except UnicodeEncodeError:
+            return  # The clickable URL still works in consoles without block characters.
+        print(qr, file=stream)
 
 
 def cmd_start(args, settings):
@@ -77,7 +116,7 @@ def cmd_start(args, settings):
     from app.server import serve
     from app.startup import ensure_ready
 
-    host = args.host or settings.get("web_host", "127.0.0.1")
+    host = args.host or settings.get("web_host", "0.0.0.0")
     port = args.port if args.port is not None else settings.get("web_port", 8090)
     browser_host = "127.0.0.1" if host in ("0.0.0.0", "localhost") else host
     url = f"http://{browser_host}:{port}/?lang={args.lang}"
@@ -85,12 +124,18 @@ def cmd_start(args, settings):
         try:
             with open_url(url, timeout=2) as response:
                 ours = response.headers.get("Server", "").startswith("Emergency-AI/")
+                running_host = response.headers.get('X-Emergency-AI-Bind', '127.0.0.1')
         except Exception:
             ours = False
         if not ours:
             print(f"Port {port} is occupied by another service. Use 'start --port <number>'.")
             return 1
+        if running_host != ('127.0.0.1' if host == 'localhost' else host):
+            print("The running server uses a different network binding. Stop it with Ctrl+C in its console,")
+            print("then restart with the requested sharing option (or choose a different --port).")
+            return 1
         print(f"UI already running: {url}")
+        print_connection_info(running_host, port, args.lang)
         if settings.get("open_browser", True) and not args.no_browser:
             webbrowser.open(url)
         return 0
@@ -116,11 +161,7 @@ def cmd_start(args, settings):
         return 1
     port = httpd.server_address[1]
     url = f"http://{browser_host}:{port}/?lang={args.lang}"
-    print(f"\n  {m['open']}  {url}")
-    if host == "0.0.0.0":
-        ip = lan_ip()
-        if ip:
-            print(f"  {m['lan']}  http://{ip}:{port}/?lang={args.lang}")
+    print_connection_info(httpd.server_address[0], port, args.lang)
     print(f"  {m['stop']}\n")
     if settings.get("open_browser", True) and not args.no_browser:
         threading.Timer(1.0, lambda: webbrowser.open(url)).start()
@@ -263,7 +304,10 @@ def main():
     sub = p.add_subparsers(dest="cmd")
 
     s = sub.add_parser("start", help="web interface")
-    s.add_argument("--host")
+    sharing = s.add_mutually_exclusive_group()
+    sharing.add_argument("--host", help="address to bind (default: all local-network interfaces)")
+    sharing.add_argument("--local-only", dest="host", action="store_const", const="127.0.0.1",
+                         help="turn off local-network sharing; use this computer only")
     s.add_argument("--port", type=int)
     s.add_argument("--no-browser", action="store_true")
 

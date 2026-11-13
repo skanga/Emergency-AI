@@ -8,7 +8,7 @@
       index: "Índice", foot: "Imprima os guias críticos: papel não precisa de energia.", emerg: "Emergência?",
       emergTxt: "Se houver telefone: SAMU 192 · Bombeiros 193 · Europa 112 · EUA 911",
       hello: "Como posso ajudar?",
-      modelLabel: "Modelo de IA", modelSwitch: "Trocar modelo", modelProgress: "Carregando modelo",
+      modelLabel: "Modelo de IA", modelProgress: "Carregando modelo", modelLoadingShort: "Carregando…", modelQueuedShort: "Troca na fila…",
       modelNote: "Vale para todos que usam este kit. Apenas um modelo fica carregado por vez.",
       modelChoose: "Escolha um modelo instalado", modelEmpty: "Nenhum modelo GGUF instalado. Execute o preparador para adicionar um.",
       modelDisabled: "Troca indisponível para IA externa ou desativada.", modelEngine: "Instale o llama.cpp com o preparador para trocar modelos aqui.",
@@ -37,7 +37,7 @@
       index: "Contents", foot: "Print the critical guides: paper needs no power.", emerg: "Emergency?",
       emergTxt: "If phones work: US/Canada 911 · Europe 112 · UK 999 · Brazil 192/193",
       hello: "How can I help?",
-      modelLabel: "AI model", modelSwitch: "Switch model", modelProgress: "Loading model",
+      modelLabel: "AI model", modelProgress: "Loading model", modelLoadingShort: "Loading…", modelQueuedShort: "Switch queued…",
       modelNote: "Applies to everyone using this kit. One model stays loaded at a time.",
       modelChoose: "Choose an installed model", modelEmpty: "No GGUF models installed. Run the preparer to add one.",
       modelDisabled: "Switching is unavailable for externally managed or disabled AI engines.", modelEngine: "Install llama.cpp with the preparer to switch models here.",
@@ -66,7 +66,7 @@
       index: "Índice", foot: "Imprime las guías críticas: el papel no necesita energía.", emerg: "¿Emergencia?",
       emergTxt: "Si hay teléfono: 112 Europa · 911 gran parte de América · Brasil 192/193",
       hello: "¿Cómo puedo ayudar?",
-      modelLabel: "Modelo de IA", modelSwitch: "Cambiar modelo", modelProgress: "Cargando modelo",
+      modelLabel: "Modelo de IA", modelProgress: "Cargando modelo", modelLoadingShort: "Cargando…", modelQueuedShort: "Cambio en espera…",
       modelNote: "Se aplica a todos los que usan este kit. Solo se carga un modelo a la vez.",
       modelChoose: "Elige un modelo instalado", modelEmpty: "No hay modelos GGUF instalados. Ejecuta el preparador para añadir uno.",
       modelDisabled: "El cambio no está disponible para motores de IA externos o desactivados.", modelEngine: "Instala llama.cpp con el preparador para cambiar modelos aquí.",
@@ -104,6 +104,8 @@
   let modelRequest = false;
   let modelFetch = 0;
   let modelActionError = null;
+  let modelMenuSignature = "";
+  let modelUnavailable = false;
 
   function store(k, v) {
     try {
@@ -239,26 +241,65 @@
 
   const modelSwitching = () => modelRequest || (modelState && ["queued", "stopping", "loading"].includes(modelState.phase));
 
+  function renderModelChip() {
+    const chip = $("#chipLlm");
+    let label;
+    if (modelSwitching()) {
+      label = t(modelState && modelState.phase === "queued" ? "modelQueuedShort" : "modelLoadingShort");
+      if (modelState && modelState.elapsed) label += " " + Math.floor(modelState.elapsed) + "s";
+      chip.className = "chip mid";
+    } else if (modelState && modelState.phase === "error") {
+      label = t("llmOff");
+      chip.className = "chip mid";
+    } else {
+      const active = modelState && modelState.active || status && status.llm && status.llm.model;
+      label = active ? t("llmOn") + active.replace(/\.gguf$/i, "") : t("llmOff");
+      chip.className = status && status.llm ? "chip on" : "chip mid";
+    }
+    chip.querySelector("span").textContent = label;
+    chip.setAttribute("aria-label", t("modelLabel") + ": " + label);
+    chip.title = label + "\n" + t("modelChoose");
+  }
+
   function renderModels() {
-    const select = $("#modelSelect"), button = $("#modelSwitch"), state = $("#modelState");
+    const options = $("#modelOptions"), state = $("#modelState");
     const switching = modelSwitching();
     $("#send").disabled = busy || !!switching;
     $("#modelProgress").classList.toggle("hidden", !switching);
-    if (!modelState) { select.disabled = button.disabled = true; return; }
-    const previous = select.value;
+    renderModelChip();
+    if (!modelState) return;
     const items = modelState.models || [];
-    // Preserve an unsubmitted choice while polling other clients' state.
-    const chosen = switching ? modelState.target : (previous || modelState.active || modelState.selected);
-    select.replaceChildren(new Option(t("modelChoose"), ""));
-    for (const model of items) {
-      const gb = (model.size_bytes / 1024 ** 3).toFixed(1);
-      select.add(new Option(`${model.name} (${gb} GiB)`, model.file));
+    const disabled = !modelState.enabled || !!switching || modelUnavailable;
+    const signature = JSON.stringify([lang, items, disabled, modelState.active]);
+    // Leave focused menu options in place between background polls.
+    if (signature !== modelMenuSignature) {
+      modelMenuSignature = signature;
+      options.replaceChildren();
+      for (const model of items) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "model-option";
+        button.dataset.modelFile = model.file;
+        button.title = model.file;
+        const selected = model.file === modelState.active;
+        button.setAttribute("aria-pressed", String(selected));
+        button.disabled = disabled || selected;
+        const check = document.createElement("span");
+        check.className = "model-check";
+        check.textContent = selected ? "\u2713" : "";
+        check.setAttribute("aria-hidden", "true");
+        const name = document.createElement("span");
+        name.className = "model-name";
+        name.textContent = model.name;
+        const size = document.createElement("small");
+        size.textContent = (model.size_bytes / 1024 ** 3).toFixed(1) + " GiB";
+        button.append(check, name, size);
+        options.appendChild(button);
+      }
     }
-    select.value = items.some((m) => m.file === chosen) ? chosen : "";
-    select.disabled = !modelState.enabled || !items.length || !!switching;
-    button.disabled = select.disabled || !select.value || (select.value === modelState.active && modelState.phase !== "error");
     state.className = modelActionError || modelState.phase === "error" ? "error" : "";
-    if (modelActionError) state.textContent = t("modelFailed") + modelActionError;
+    if (modelUnavailable) state.textContent = t("modelOffline");
+    else if (modelActionError) state.textContent = t("modelFailed") + modelActionError;
     else if (!modelState.enabled) state.textContent = t(modelState.reason === "missing_engine" ? "modelEngine" : "modelDisabled");
     else if (!items.length) state.textContent = t("modelEmpty");
     else if (modelState.phase === "queued") state.textContent = t("modelQueued");
@@ -274,19 +315,19 @@
       const next = await api("/api/models");
       if (request !== modelFetch) return;
       const oldPhase = modelState && modelState.phase;
-      if (modelState && modelState.active !== next.active && $("#modelSelect").value === modelState.active) $("#modelSelect").value = "";
+      const activeChanged = modelState && modelState.active !== next.active;
+      modelUnavailable = false;
       modelState = next;
       renderModels();
-      if (oldPhase !== next.phase && ["ready", "error"].includes(next.phase)) loadStatus();
+      if ((activeChanged || oldPhase !== next.phase) && ["ready", "error"].includes(next.phase)) loadStatus();
     } catch (e) {
       if (request !== modelFetch) return;
-      $("#modelSelect").disabled = $("#modelSwitch").disabled = true;
-      $("#modelState").textContent = t("modelOffline");
+      modelUnavailable = true;
+      renderModels();
     }
   }
 
-  async function switchModel() {
-    const filename = $("#modelSelect").value;
+  async function switchModel(filename) {
     if (!filename || modelSwitching()) return;
     modelRequest = true;
     modelActionError = null;
@@ -297,6 +338,8 @@
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "HTTP " + response.status);
       modelState = data;
+      $("#modelMenu").open = false;
+      $("#chipLlm").focus();
     } catch (e) {
       modelActionError = e.message;
     } finally {
@@ -315,11 +358,8 @@
     try {
       status = await api("/api/status");
     } catch (e) { status = null; }
-    const cl = $("#chipLlm"), ck = $("#chipKiwix");
-    if (status && status.llm) {
-      cl.className = "chip on"; cl.querySelector("span").textContent = t("llmOn") + status.llm.model.replace(/\.gguf$/i, "");
-      cl.title = status.llm.backend + " — " + status.llm.url;
-    } else { cl.className = "chip mid"; cl.querySelector("span").textContent = t("llmOff"); cl.title = t("llmTip"); }
+    renderModelChip();
+    const ck = $("#chipKiwix");
     if (status && status.kiwix && status.kiwix.books.length) {
       ck.className = "chip on"; ck.querySelector("span").textContent = t("kiwixOn").replace("{n}", status.kiwix.books.length);
       ck.title = status.kiwix.books.map((b) => b.title).join("\n");
@@ -485,6 +525,13 @@
 
   // ---------------- events ----------------
   document.addEventListener("click", (e) => {
+    if (!e.target.closest("#modelMenu")) $("#modelMenu").open = false;
+    if (e.target.closest("#chipLlm")) closeSide();
+    const model = e.target.closest("[data-model-file]");
+    if (model) {
+      if (!model.disabled) switchModel(model.dataset.modelFile);
+      return;
+    }
     const g = e.target.closest("[data-guide]");
     if (g) {
       if (g.tagName === "SUMMARY") { openGuide(g.dataset.guide); return; }
@@ -523,8 +570,12 @@
   $("#scrim").addEventListener("click", closeSide);
   $("#useKiwix").checked = store("kiwix") !== "0";
   $("#useKiwix").addEventListener("change", (e) => store("kiwix", e.target.checked ? "1" : "0"));
-  $("#modelSelect").addEventListener("change", () => { modelActionError = null; renderModels(); });
-  $("#modelSwitch").addEventListener("click", switchModel);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && $("#modelMenu").open) {
+      $("#modelMenu").open = false;
+      $("#chipLlm").focus();
+    }
+  });
 
   // ---------------- initialization ----------------
   applyLang();
