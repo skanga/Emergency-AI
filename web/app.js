@@ -89,6 +89,23 @@
   const t = (k) => I18N[lang][k] ?? I18N.en[k] ?? k;
 
   // ---------------- markdown ----------------
+  function normalizeArrows(s) {
+    const arrows = {
+      rightarrow: "→", longrightarrow: "→", to: "→",
+      leftarrow: "←", longleftarrow: "←", gets: "←",
+      leftrightarrow: "↔", longleftrightarrow: "↔",
+      Rightarrow: "⇒", Longrightarrow: "⇒", implies: "⇒",
+      Leftarrow: "⇐", Longleftarrow: "⇐",
+      Leftrightarrow: "⇔", Longleftrightarrow: "⇔", iff: "⇔",
+      uparrow: "↑", downarrow: "↓", updownarrow: "↕",
+    };
+    const names = Object.keys(arrows).join("|");
+    const command = String.raw`\\(${names})(?![A-Za-z])`;
+    // Strip math delimiters only around a single supported arrow expression.
+    const wrapped = new RegExp(String.raw`\$\$\s*${command}\s*\$\$|\$\s*${command}\s*\$|\\\(\s*${command}\s*\\\)|\\\[\s*${command}\s*\\\]`, "g");
+    s = s.replace(wrapped, (match) => arrows[match.match(/\\([A-Za-z]+)/)[1]]);
+    return s.replace(new RegExp(command, "g"), (_, name) => arrows[name]);
+  }
   function esc(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
@@ -99,6 +116,7 @@
     s = esc(s);
     const codes = [];
     s = s.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return "\u0000" + (codes.length - 1) + "\u0000"; });
+    s = normalizeArrows(s);
     s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
     s = s.replace(/(^|[\s(])_([^_\n]+)_(?=[\s).,;:!?]|$)/g, "$1<em>$2</em>");
