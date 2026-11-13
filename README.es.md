@@ -47,7 +47,7 @@ cd Emergency-AI
 
 En el primer uso, elige descargar los componentes opcionales (con internet) o abrir las guías incluidas. Se recuerda la elección de usar solo las guías. Si falta algún componente seleccionado, puedes reanudar la preparación o continuar con lo disponible. Sin una terminal interactiva, la aplicación inicia sin preguntas ni descargas.
 
-Usa `.\run.bat prepare` en Windows o `./run.sh prepare` en Linux/macOS para elegir componentes. Añade `--resume` para reanudar las opciones guardadas en esta computadora; usa `status` para revisar el kit. Los scripts `prepare-kit` siguen como accesos de compatibilidad. Se necesita Python 3.8+ instalado o una copia portátil compatible dentro del kit.
+Usa `.\run.bat prepare` en Windows o `./run.sh prepare` en Linux/macOS para elegir componentes. Añade `--resume` para reanudar las opciones guardadas en esta computadora; usa `status` para revisar el kit. Se necesita Python 3.8+ instalado o una copia portátil compatible dentro del kit.
 
 El preparador pregunta:
 
@@ -114,4 +114,4 @@ python -m unittest discover -s tests
 
 ## Licencias
 
-Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados por el preparador tienen sus propias licencias.  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. Legacy `standard`: Qwen Research License. [Details](README.md#model-choices).
+Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados por el preparador tienen sus propias licencias.  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](README.md#model-choices).

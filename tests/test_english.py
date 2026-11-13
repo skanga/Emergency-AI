@@ -36,9 +36,11 @@ class EnglishDefaultsTests(unittest.TestCase):
         self.assertTrue(all(chunk.lang == "en" for _, chunk in results))
 
     def test_english_entry_points_and_help(self):
-        for stem in ("run", "prepare-kit"):
+        for stem in ("run",):
             for suffix in (".bat", ".sh", ".command"):
                 self.assertTrue((ROOT / (stem + suffix)).is_file())
+        for suffix in (".bat", ".sh", ".command"):
+            self.assertFalse((ROOT / ("prepare-kit" + suffix)).exists())
         result = subprocess.run([sys.executable, str(ROOT / "survival.py"), "prepare", "--help"],
                                 capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -47,7 +49,7 @@ class EnglishDefaultsTests(unittest.TestCase):
     def test_english_download_profiles(self):
         models = json.loads((ROOT / "config/models.json").read_text(encoding="utf-8"))
         self.assertIn(models["default"], {m["id"] for m in models["models"]})
-        self.assertTrue({"light", "standard", "strong"} <= {m["id"] for m in models["models"]})
+        self.assertTrue({"lfm3-1.7b", "gemma4-e2b", "qwen35-9b"} <= {m["id"] for m in models["models"]})
         zims = json.loads((ROOT / "config/zims.json").read_text(encoding="utf-8"))
         self.assertEqual(set(zims["profiles"]), {"minimal", "recommended", "full"})
 
@@ -57,9 +59,9 @@ class EnglishDefaultsTests(unittest.TestCase):
                 patch.object(prepare, "get_model", return_value=True) as get_model, \
                 patch.object(prepare, "get_zim", return_value=True) as get_zim, \
                 contextlib.redirect_stdout(io.StringIO()) as output:
-            prepare.run(model="standard", zims="minimal", oses="this", python=False,
+            prepare.run(model="gemma4-e2b", zims="minimal", oses="this", python=False,
                         yes=True, skip_tools=True)
-            self.assertEqual(get_model.call_args.args[0]["id"], "standard")
+            self.assertEqual(get_model.call_args.args[0]["id"], "gemma4-e2b")
             self.assertGreater(get_zim.call_count, 0)
             self.assertTrue(all("minimal" in c.args[0]["profiles"] for c in get_zim.call_args_list))
             self.assertIn("Kit preparer — Emergency AI", output.getvalue())

@@ -82,7 +82,7 @@ Python 3.8+ must already be installed, or the kit must contain portable Python f
 | Resume saved choices | `.\run.bat prepare --resume` | `./run.sh prepare --resume` |
 | Inspect the kit | `.\run.bat status` | `./run.sh status` |
 
-The old `prepare-kit` launchers remain compatibility shortcuts. Use `.\run.bat` in Windows Command Prompt or PowerShell, and `./run.sh` in Linux/macOS terminals. The explicit path avoids shell aliases and PATH conflicts. The Python `start` subcommand is unchanged.
+Use `.\run.bat` in Windows Command Prompt or PowerShell, and `./run.sh` in Linux/macOS terminals. The explicit path avoids shell aliases and PATH conflicts. The Python `start` subcommand is unchanged.
 
 Each preparation run checks for the newest available llama.cpp build for the selected platforms, upgrades older installations, and skips re-downloading the current build. Normal offline startup never checks for updates.
 
@@ -94,7 +94,7 @@ The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are abse
 
 The preparer asks for:
 
-1. **AI model:** `light` (light, 1 GB, 4 GB RAM), `standard` (default, 2 GB, 8 GB RAM — recommended), `strong` (strong, 4.7 GB, 16 GB RAM).
+1. **AI model:** `lfm3-1.7b` (lightweight, ~1.1 GB download, 8 GB system RAM), `gemma4-e2b` (balanced/default, ~3.2 GB, 16 GB RAM), or `qwen35-9b` (larger, ~6.2 GB, 24 GB RAM). See [model choices](#model-choices) for licenses and alternatives.
 2. **Kiwix libraries:** `minimal` (~3 GiB), `recommended` (~8 GiB) or `full` (~77 GiB, Wikipedia without images).
 3. **Optional archived libraries:** older WikEM/wikiHow snapshots; **None** is the default. Each option shows its date and size.
 4. **Systems:** this computer only, or **Windows + Linux + macOS** (universal USB kit).
@@ -178,7 +178,7 @@ These are the recommended starting points from our CPU source-following tests, n
 
 RAM figures include estimated operating-system headroom and are recommendations, not validated minimums. Tests ran on a 64 GB Windows computer. Gemma's E2B name refers to effective computation; its total weights are larger. The app does not automatically choose a model based on your RAM.
 
-For a lightweight Apache-licensed alternative, choose `qwen35-2b`. `qwen3-4b` offers a smaller balanced download and a non-thinking model; `ministral3-8b` is another larger option. `qwen38-27b` offers official Qwen3.8 27B in Unsloth UD-Q4_K_XL (~17.7 GB download, 32 GB RAM recommended); it is much slower on CPU and is an advanced option, not the default. The preparation menu includes these alternatives and labels older choices as legacy. Saved selections and existing files for legacy IDs retain their meaning; resuming `standard` does not download the new default. New setup selects `gemma4-e2b` by default. To change an existing kit explicitly, run `.\run.bat prepare --model gemma4-e2b` on Windows or `./run.sh prepare --model gemma4-e2b` on Linux/macOS.
+For a lightweight Apache-licensed alternative, choose `qwen35-2b`. `qwen3-4b` offers a smaller balanced download and a non-thinking model; `ministral3-8b` is another larger option. `qwen38-27b` offers official Qwen3.8 27B in Unsloth UD-Q4_K_XL (~17.7 GB download, 32 GB RAM recommended); it is much slower on CPU and is an advanced option, not the default. The preparation menu lists only the current models. Old model IDs have been removed; choose a current model with `.\run.bat prepare` (Windows) or `./run.sh prepare` (Linux/macOS) if an existing setup refers to a removed ID. New setup selects `gemma4-e2b` by default. To change an existing kit explicitly, run `.\run.bat prepare --model gemma4-e2b` on Windows or `./run.sh prepare --model gemma4-e2b` on Linux/macOS.
 
 Sampler presets accompany the verified filenames, so model-specific sampling is used during normal llama.cpp inference. Explicit backend/model settings take priority. Weights are pinned to artifact revisions and hashes; the separate llama.cpp runtime is still refreshed to the latest compatible release on preparation.
 
@@ -246,9 +246,9 @@ If Python is missing, install Python 3.8+ from <https://www.python.org/downloads
 
 ## English entry points
 
-Use `.\run.bat`, `run.sh` or `run.command` for startup, setup and status. Append `prepare` to configure downloads, `prepare --resume` to reuse saved choices, or `status` to inspect the kit. The Python entry point is `survival.py`; the older `prepare-kit` scripts remain compatibility shortcuts.
+Use `.\run.bat`, `run.sh` or `run.command` for startup, setup and status. Append `prepare` to configure downloads, `prepare --resume` to reuse saved choices, or `status` to inspect the kit. The Python entry point is `survival.py`.
 
-Recommended model IDs are `lfm3-1.7b`, `gemma4-e2b` and `qwen35-9b`. Alternatives include `qwen35-2b`, `qwen3-4b` and `ministral3-8b`. Legacy IDs `light`, `standard`, `strong` and `llama3b` retain their original model files. Library profiles are `minimal`, `recommended` and `full`. Use `none` to skip a model or library download. Existing downloaded model and ZIM filenames stay unchanged.
+Recommended model IDs are `lfm3-1.7b`, `gemma4-e2b` and `qwen35-9b`. Alternatives include `qwen35-2b`, `qwen3-4b` and `ministral3-8b`. Library profiles are `minimal`, `recommended` and `full`. Use `none` to skip a model or library download. Existing downloaded model and ZIM filenames stay unchanged.
 
 ## Requirements
 
@@ -273,7 +273,7 @@ Real-model checks run separately: see the [manual harness](tests/manual/README.m
 
 ## Licenses
 
-Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded by the preparer have their own licenses. The default Gemma 4 E2B and the Qwen/Ministral alternatives use Apache 2.0. LFM3 uses the [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM3-1.7B); review its terms for your use. The legacy `standard` model retains its Qwen Research License.
+Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded by the preparer have their own licenses. The default Gemma 4 E2B and the Qwen/Ministral alternatives use Apache 2.0. LFM3 uses the [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM3-1.7B); review its terms for your use.
 
 ## Contributing
 

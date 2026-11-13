@@ -1,5 +1,7 @@
 # Model recommendations by size: November 13, 2026
 
+> Later cleanup: obsolete launchers, legacy catalogue IDs and old setup migration were removed at the owner's request. Compatibility statements below describe the catalogue when these measurements were recorded; the measurements and baseline manifests remain historical evidence.
+
 ## Selected catalogue
 
 | Tier | Catalogue ID | Choice | Recommended system RAM |

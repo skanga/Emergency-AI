@@ -57,7 +57,7 @@ cd Emergency-AI
 
 No primeiro uso, escolha baixar os componentes opcionais (com internet) ou abrir os guias incluídos. A escolha de usar apenas os guias é lembrada. Se faltar algum componente selecionado, você pode retomar a preparação ou continuar com o que está disponível. Sem terminal interativo, o aplicativo inicia sem perguntas nem downloads.
 
-Use `.\run.bat prepare` no Windows ou `./run.sh prepare` no Linux/macOS para escolher componentes. Acrescente `--resume` para retomar as escolhas salvas neste computador; use `status` para verificar o kit. Os scripts `prepare-kit` continuam como atalhos de compatibilidade. É necessário Python 3.8+ instalado ou uma cópia portátil compatível no kit.
+Use `.\run.bat prepare` no Windows ou `./run.sh prepare` no Linux/macOS para escolher componentes. Acrescente `--resume` para retomar as escolhas salvas neste computador; use `status` para verificar o kit. É necessário Python 3.8+ instalado ou uma cópia portátil compatível no kit.
 
 O preparador pergunta:
 
@@ -164,7 +164,6 @@ python -m unittest discover -s tests
 ```
 Emergency-AI/
 ├── run.bat / run.sh / run.command          ← abrir o kit
-├── prepare-kit.bat / prepare-kit.sh / .command       ← baixar modelo e bases (com internet)
 ├── survival.py                                    ← ponto de entrada (CLI)
 ├── app/          knowledge.py (busca) · engine.py (RAG) · llm.py · kiwix.py · server.py · launcher.py · prepare.py
 ├── web/          interface (HTML/CSS/JS sem dependências)
@@ -178,7 +177,7 @@ Emergency-AI/
 
 - Código: [MIT](LICENSE).
 - Guias em `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md).
-- Modelos, Kiwix, llama.cpp e bases ZIM baixados pelo preparador têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto).  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. Legacy `standard`: Qwen Research License. [Details](README.md#model-choices).
+- Modelos, Kiwix, llama.cpp e bases ZIM baixados pelo preparador têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto).  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](README.md#model-choices).
 
 ## Contribua
 

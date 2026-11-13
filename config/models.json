@@ -1,5 +1,5 @@
 {
-  "_comment": "Verified GGUF artifacts. Model IDs are permanent: do not remap a previously published ID to a different file. RAM values are recommended total system RAM, not guaranteed minimums. Recommendations are starting points from the recorded CPU smoke tests.",
+  "_comment": "Verified GGUF artifacts and sampler presets. RAM values are recommended total system RAM, not guaranteed minimums. Recommendations are starting points from recorded CPU smoke tests.",
   "default": "gemma4-e2b",
   "recommendations": {
     "lightweight": "lfm3-1.7b",
@@ -162,70 +162,6 @@
         "pt": "Modelo avancado; 32 GB de RAM recomendados. Mais lento em CPU.",
         "es": "Modelo avanzado; 32 GB de RAM recomendados. Mas lento en CPU."
       }
-    },
-    {
-      "id": "light",
-      "name": "Qwen2.5 1.5B Instruct (Q4_K_M) [legacy]",
-      "file": "Qwen2.5-1.5B-Instruct-Q4_K_M.gguf",
-      "url": "https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf",
-      "size_gb": 1.0,
-      "ram_gb": 3,
-      "license": "Apache-2.0",
-      "desc": {
-        "en": "Legacy compatibility model, retained for existing kits; not a current recommendation. Apache-2.0",
-        "pt": "Modelo antigo mantido para kits existentes; veja os modelos recomendados. Apache-2.0",
-        "es": "Modelo anterior para kits existentes; consulte los modelos recomendados. Apache-2.0"
-      },
-      "size_bytes": 986048768,
-      "sha256": "1adf0b11065d8ad2e8123ea110d1ec956dab4ab038eab665614adba04b6c3370"
-    },
-    {
-      "id": "standard",
-      "name": "Qwen2.5 3B Instruct (Q4_K_M) [legacy]",
-      "file": "Qwen2.5-3B-Instruct-Q4_K_M.gguf",
-      "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q4_K_M.gguf",
-      "size_gb": 1.9,
-      "ram_gb": 6,
-      "license": "Qwen Research License (personal/research use)",
-      "desc": {
-        "en": "Legacy compatibility model, retained for existing kits; not a current recommendation. Qwen Research License (personal/research use)",
-        "pt": "Modelo antigo mantido para kits existentes; veja os modelos recomendados. Qwen Research License (personal/research use)",
-        "es": "Modelo anterior para kits existentes; consulte los modelos recomendados. Qwen Research License (personal/research use)"
-      },
-      "size_bytes": 1929903264,
-      "sha256": "9c9f56a391a3abbd5b89d0245bf6106081bcc3173119d4229235dd9d23253f94"
-    },
-    {
-      "id": "strong",
-      "name": "Qwen2.5 7B Instruct (Q4_K_M) [legacy]",
-      "file": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
-      "url": "https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf",
-      "size_gb": 4.7,
-      "ram_gb": 10,
-      "license": "Apache-2.0",
-      "desc": {
-        "en": "Legacy compatibility model, retained for existing kits; not a current recommendation. Apache-2.0",
-        "pt": "Modelo antigo mantido para kits existentes; veja os modelos recomendados. Apache-2.0",
-        "es": "Modelo anterior para kits existentes; consulte los modelos recomendados. Apache-2.0"
-      },
-      "size_bytes": 4683074240,
-      "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423"
-    },
-    {
-      "id": "llama3b",
-      "name": "Llama 3.2 3B Instruct (Q4_K_M) [legacy]",
-      "file": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-      "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-      "size_gb": 2.0,
-      "ram_gb": 6,
-      "license": "Llama 3.2 Community License",
-      "desc": {
-        "en": "Legacy compatibility model, retained for existing kits; not a current recommendation. Llama 3.2 Community License",
-        "pt": "Modelo antigo mantido para kits existentes; veja os modelos recomendados. Llama 3.2 Community License",
-        "es": "Modelo anterior para kits existentes; consulte los modelos recomendados. Llama 3.2 Community License"
-      },
-      "size_bytes": 2019377696,
-      "sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff"
     }
   ]
 }

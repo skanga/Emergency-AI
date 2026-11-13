@@ -85,8 +85,8 @@ class StartupTests(unittest.TestCase):
         self.assertFalse(any("Kiwix server" in m for m in report["missing"]))
 
     def test_model_selection_checks_file_size_and_current_platform_engine(self):
-        self.save(model="standard")
-        model = next(m for m in prepare.load_json(str(Path(prepare.CONFIG_DIR) / "models.json"))["models"] if m["id"] == "standard")
+        self.save(model="gemma4-e2b")
+        model = next(m for m in prepare.load_json(str(Path(prepare.CONFIG_DIR) / "models.json"))["models"] if m["id"] == "gemma4-e2b")
         path = self.root / "models" / model["file"]
         path.write_bytes(b"truncated")
         report = self.startup.inspect(self.settings)
@@ -130,7 +130,7 @@ class StartupTests(unittest.TestCase):
         self.assertIn("available", self.output.getvalue().lower())
 
     def test_offline_repair_failure_does_not_block_available_guides(self):
-        self.save(model="standard")
+        self.save(model="gemma4-e2b")
         with patch("builtins.input", return_value="1"), patch.object(prepare, "run", side_effect=OSError("offline")):
             report = self.startup.ensure_ready(self.settings, interactive=True)
         self.assertEqual(report["state"], "incomplete")
@@ -144,10 +144,10 @@ class StartupTests(unittest.TestCase):
         model.assert_not_called()
         zim.assert_not_called()
 
-    def test_legacy_manifest_preserves_intentional_none(self):
+    def test_old_manifest_is_not_used_as_setup(self):
         (self.root / "runtime" / "kit-info.json").write_text(
             '{"model": null, "zim_profile": "none", "archives": [], "ready": true}')
-        self.assertEqual(self.startup.inspect(self.settings)["state"], "ready")
+        self.assertIsNone(self.startup.load_selection(str(self.root / "runtime")))
 
     def test_invalid_saved_selection_is_reported_without_crashing(self):
         self.save(model="removed-model")

@@ -123,7 +123,7 @@ class InstallationTests(unittest.TestCase):
         partial.parent.mkdir()
         partial.write_bytes(b"partial download")
         with patch.object(prepare, "get_llama", return_value=False), patch.object(prepare, "get_model", return_value=True):
-            status = prepare.run(model="standard", zims="none", oses="this", python=False, yes=True)
+            status = prepare.run(model="gemma4-e2b", zims="none", oses="this", python=False, yes=True)
         self.assertEqual(status, 1)
         self.assertTrue(partial.exists())
         manifest = json.loads((self.root / "runtime" / "kit-info.json").read_text())
@@ -136,8 +136,8 @@ class InstallationTests(unittest.TestCase):
     def test_setup_preferences_survive_interruption_before_manifest(self):
         with patch.object(prepare, "get_model", side_effect=KeyboardInterrupt):
             with self.assertRaises(KeyboardInterrupt):
-                prepare.run(model="standard", zims="none", oses="this", python=False,
+                prepare.run(model="gemma4-e2b", zims="none", oses="this", python=False,
                             yes=True, skip_tools=True)
         saved = self.root / "runtime" / "setup.json"
         self.assertTrue(saved.exists(), "Save choices before starting downloads")
-        self.assertEqual(json.loads(saved.read_text())["model"], "standard")
+        self.assertEqual(json.loads(saved.read_text())["model"], "gemma4-e2b")

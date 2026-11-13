@@ -5,18 +5,21 @@ Usage:
   python survival.py start              # start engines and web interface (default)
   python survival.py chat               # terminal chat
   python survival.py ask "question"     # single question in the terminal
-  python survival.py search "terms"    # search the guides
+  python survival.py search "terms"     # search the guides
   python survival.py prepare            # download the model, engines and Kiwix libraries (requires internet)
   python survival.py status             # show installed and running components
 
-Common options: --lang en|pt|es   --host 0.0.0.0 (share on the local network)   --port 8090
+Common options:
+--lang en|pt|es
+--host 0.0.0.0 (share on the local network)
+--port 8090
 """
 
-import argparse
 import os
 import sys
-import threading
 import time
+import argparse
+import threading
 import webbrowser
 
 if sys.version_info < (3, 8):
@@ -35,10 +38,10 @@ from app import __version__  # noqa: E402
 from app.config import LANGS, load_settings, platform_key  # noqa: E402
 
 BANNER = r"""
-  +--------------------------------------------------------------+
-  |                         EMERGENCY AI                         |
-  | Offline knowledge and assistance when services go down.       |
-  +--------------------------------------------------------------+
+  +--------------------------------------------------------------------------+
+  |                              EMERGENCY AI                                |
+  | Offline knowledge and assistance when services (power/internet) go down. |
+  +--------------------------------------------------------------------------+
 """
 
 MSG = {
@@ -80,7 +83,7 @@ def cmd_start(args, settings):
     if port and port_in_use(int(port), browser_host):
         try:
             with open_url(url, timeout=2) as response:
-                ours = response.headers.get("Server", "").startswith(("Emergency-AI/", "Survival-AI/"))
+                ours = response.headers.get("Server", "").startswith("Emergency-AI/")
         except Exception:
             ours = False
         if not ours:

@@ -29,15 +29,7 @@ def load_selection(runtime_dir=None):
                                                for k in ("model", "zims", "archives")):
             raise ValueError("Invalid saved setup choices; run 'python survival.py prepare' to choose again.")
         return saved
-    # Preserve choices from kits prepared before unified startup was introduced.
-    manifest = load_json(os.path.join(directory, "kit-info.json"), {}) or {}
-    if not isinstance(manifest, dict) or "zim_profile" not in manifest:
-        return None
-    models = load_json(os.path.join(CONFIG_DIR, "models.json"), {}).get("models", [])
-    filename = manifest.get("model")
-    model = next((m["id"] for m in models if m["file"] == filename), filename or "none")
-    return {"model": model, "zims": manifest["zim_profile"], "python": False,
-            "archives": ",".join(a["id"] for a in manifest.get("archives", [])) or "none"}
+    return None
 
 
 def _present(path, size=None):

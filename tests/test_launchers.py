@@ -52,10 +52,10 @@ class LauncherTests(unittest.TestCase):
                 (other / "python.exe").write_bytes(b"not an x64 executable")
                 env["PROCESSOR_ARCHITECTURE"] = "AMD64"
                 env.pop("PROCESSOR_ARCHITEW6432", None)
-                scripts = ("run.bat", "prepare-kit.bat")
+                scripts = ("run.bat",)
             else:
                 env = os.environ.copy()
-                scripts = ("run.sh", "prepare-kit.sh")
+                scripts = ("run.sh",)
             for name in scripts:
                 shutil.copy2(ROOT / name, root / name)
             for name in scripts:

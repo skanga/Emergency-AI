@@ -1,4 +1,4 @@
-"""Model recommendations must preserve previously saved selections."""
+"""Model recommendations and current preparation defaults."""
 import json
 from pathlib import Path
 import unittest
@@ -20,16 +20,9 @@ class ModelCatalogTests(unittest.TestCase):
             prepare.run(zims='none', oses='this', python=False, yes=True, skip_tools=True)
         self.assertEqual(download.call_args.args[0]['id'], cfg['recommendations']['balanced'])
 
-    def test_legacy_ids_keep_their_original_artifacts(self):
+    def test_obsolete_choices_are_not_in_catalogue(self):
         cfg = json.loads((ROOT / 'config/models.json').read_text(encoding='utf-8'))
-        original = json.loads((ROOT / 'tests/manual/model_manifest.json').read_text(encoding='utf-8'))[0]
-        models = {m['id']: m for m in cfg['models']}
-        self.assertEqual(models['standard']['file'], original['file'])
-        self.assertEqual(models['standard']['sha256'], original['sha256'])
-        for mid, filename in [('light', 'Qwen2.5-1.5B-Instruct-Q4_K_M.gguf'),
-                              ('strong', 'Qwen2.5-7B-Instruct-Q4_K_M.gguf'),
-                              ('llama3b', 'Llama-3.2-3B-Instruct-Q4_K_M.gguf')]:
-            self.assertEqual(models[mid]['file'], filename)
+        self.assertFalse({'light', 'standard', 'strong', 'llama3b'} & {m['id'] for m in cfg['models']})
 
     def test_each_tier_has_a_verified_recommendation(self):
         cfg = json.loads((ROOT / 'config/models.json').read_text(encoding='utf-8'))
