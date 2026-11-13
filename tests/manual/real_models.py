@@ -50,6 +50,15 @@ CASES = [
   'history':[{'role':'user','content':'old irrelevant history '*2500},{'role':'assistant','content':'old answer '*2500}]},
 ]
 
+CASES.extend([
+    {'id':'link_not_evidence','lang':'en',
+     'question':'What is the fictional ZX-41 activation code? Use only the supplied passage and cite it. Answer in at most 60 words.',
+     'sources':[source('Fictional ZX-41 operating manual: https://example.invalid/ZX41. The linked manual contents have not been supplied. No activation code is recorded here.')]},
+    {'id':'unsupported_power','lang':'en',
+     'question':'Does this inventory establish that a laptop can operate without any electricity? Explain only what the supplied inventory supports, with a citation. At most 60 words.',
+     'sources':[source('This fictional inventory records USB and external-drive backup locations. It documents no electricity supply, battery charge or operating runtime.')]},
+])
+
 # Controlled retrieval: feed the same relevant complete section to each model.
 from app.knowledge import split_markdown
 for lang, marker in [('en', 'Devices and data'), ('pt', 'Dispositivos e dados'), ('es', 'Dispositivos y datos')]:
@@ -63,7 +72,7 @@ for lang, marker in [('en', 'Devices and data'), ('pt', 'Dispositivos e dados'),
         'n':1,'kind':'kit','lang':lang,'doc_id':'10-energy-light','doc_title':title,
         'section':heading,'anchor':anchor,'text':text}]))
 
-def run(model):
+def run(model, include_thinking=True, output_prefix=""):
     if port_in_use(PORT):
         raise RuntimeError('Benchmark port is already in use: '+str(PORT))
     binary,_=find_llama_server()
@@ -76,7 +85,7 @@ def run(model):
             digest.update(block)
     if digest.hexdigest() != model['sha256']:
         raise RuntimeError('Model checksum mismatch: '+str(modelpath))
-    key=model['id']
+    key=output_prefix+model['id']
     logpath=OUT/(key+'.server.log')
     command=[binary,'-m',str(modelpath),'--host','127.0.0.1','--port',str(PORT),'-c','8192','-t','8','-tb','8','-ngl','0','--seed','42','--parallel','1']
     report={'model':model,'command':command,'cases':[], 'runtime_version':subprocess.check_output([binary,'--version'],stderr=subprocess.STDOUT,text=True)}
@@ -96,7 +105,7 @@ def run(model):
             assert warm.available()
             report['warmup']=''.join(warm.stream_chat([{'role':'user','content':'Reply with exactly READY.'}]))
             cases=list(CASES)
-            if '3.5' in key:
+            if include_thinking and '3.5' in model['id']:
                 cases += [dict(CASES[0],id='thinking_on',thinking=True,max_tokens=2048)]
             for case in cases:
                 settings={'llm_backend':'llamacpp','llm_url':'http://127.0.0.1:'+str(PORT)+'/v1',
@@ -132,7 +141,11 @@ if __name__=='__main__':
     parser.add_argument('models', nargs='*', help='Optional manifest model IDs')
     parser.add_argument('--thinking-temperature', type=float, help='Run only the Qwen3.5 arithmetic thinking follow-up')
     parser.add_argument('--thinking-max-tokens', type=int, default=2048, help='Output limit for the isolated thinking follow-up')
+    parser.add_argument('--skip-thinking-case', action='store_true', help='Compare the common cases only')
+    parser.add_argument('--output-prefix', default='', help='Result filename prefix for a separate comparison')
     args = parser.parse_args()
+    if any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-' for c in args.output_prefix):
+        parser.error('Output prefix must contain only letters, digits, underscore or hyphen')
     if args.thinking_temperature is not None:
         if args.models or not 0 <= args.thinking_temperature <= 2 or not 1 <= args.thinking_max_tokens < 7936:
             parser.error('Use --thinking-temperature alone with a value between 0 and 2')
@@ -147,4 +160,4 @@ if __name__=='__main__':
             parser.error('Unknown model IDs: '+', '.join(sorted(unknown)))
         for model in models:
             if not args.models or model['id'] in args.models:
-                run(model)
+                run(model, include_thinking=not args.skip_thinking_case, output_prefix=args.output_prefix)

@@ -30,6 +30,8 @@ TOKEN_RE = re.compile(r"[a-z0-9]+")
 
 # Simple search synonyms (applied to the question, not the documents).
 SYNONYMS = [
+    ("offline", "backup", "backups", "dados", "datos", "data", "files", "arquivos", "archivos", "pendrive", "usb", "kiwix"),
+    ("information", "informacao", "informacoes", "informacion", "dados", "datos", "data"),
     ("purificar", "desinfetar", "tratar", "potavel", "ferver", "purify", "disinfect", "potable", "boil", "desinfectar", "potable", "hervir"),
     ("sangramento", "hemorragia", "sangrar", "torniquete", "bleeding", "bleed", "tourniquet", "sangrado"),
     ("rcp", "massagem", "cardiaca", "reanimacao", "parada", "cpr", "resuscitation", "reanimacion", "masaje"),
@@ -255,6 +257,7 @@ class KnowledgeBase:
         scored = []
         for ch in chunks:
             score = 0.0
+            section_tokens = set(tokenize(ch.section))
             for tok, w in weights.items():
                 f = ch.tf.get(tok)
                 if not f:
@@ -263,6 +266,9 @@ class KnowledgeBase:
                 idf = math.log(1 + (n - df[tok] + 0.5) / (df[tok] + 0.5))
                 denom = f + self.K1 * (1 - self.B + self.B * ch.length / avgdl)
                 score += w * idf * (f * (self.K1 + 1)) / denom * (1 + 0.2 * (qtf - 1))
+                # A section heading is a stronger topic signal than a body mention.
+                if tok in section_tokens:
+                    score += 2 * w * idf
             if score > 0:
                 # Boost passages containing multiple distinct query terms.
                 coverage = sum(1 for t in q_counts if t in ch.tf) / len(q_counts)
