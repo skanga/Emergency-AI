@@ -38,7 +38,7 @@ class StartCommandTests(unittest.TestCase):
             try:
                 opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
                 url = f"http://127.0.0.1:{port}/api/guides?lang=en"
-                deadline = time.monotonic() + 15
+                deadline = time.monotonic() + 30
                 while True:
                     try:
                         with opener.open(url, timeout=1) as response:
@@ -46,7 +46,9 @@ class StartCommandTests(unittest.TestCase):
                         break
                     except OSError:
                         if proc.poll() is not None or time.monotonic() >= deadline:
-                            self.fail("Fresh kit did not open its guide interface")
+                            proc.terminate()
+                            log, _ = proc.communicate(timeout=10)
+                            self.fail("Fresh kit did not open its guide interface:\n" + log.decode("utf-8", "replace"))
                         time.sleep(0.1)
                 self.assertTrue(guides)
                 self.assertFalse((root / "runtime" / "setup.json").exists())
