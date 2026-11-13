@@ -7,6 +7,7 @@ to a USB drive or disk to use it offline on Windows, Linux and macOS.
 import hashlib
 import json
 import os
+import posixpath
 import re
 import shutil
 import subprocess
@@ -265,10 +266,42 @@ def extract(archive, dest):
             z.extractall(dest)
     else:
         with tarfile.open(archive) as t:
+            members = t.getmembers()
+            # Linux Python includes case-only terminfo aliases. On Windows these
+            # symlinks can point back to themselves; copy their archived contents
+            # instead, also avoiding the need for Windows symlink privileges.
+            links = [m for m in members if m.issym() or m.islnk()] if os.name == "nt" else []
+            ordinary = [m for m in members if not (m.issym() or m.islnk())] if links else members
             try:
-                t.extractall(dest, filter="data")
+                t.extractall(dest, members=ordinary, filter="data")
             except TypeError:
-                t.extractall(dest)
+                t.extractall(dest, members=ordinary)
+            for member in links:
+                if hasattr(tarfile, "data_filter"):
+                    tarfile.data_filter(member, dest)
+                path = os.path.realpath(os.path.join(dest, member.name))
+                base = os.path.realpath(dest)
+                if os.path.commonpath([base, path]) != base:
+                    raise ValueError("Archive link escapes destination: " + member.name)
+                # Resolve using case-sensitive archive names. All ordinary files
+                # are already extracted, so copying avoids repeatedly seeking
+                # backwards through a large gzip archive for each alias.
+                target = member
+                seen = set()
+                while target.issym() or target.islnk():
+                    if target.name in seen:
+                        raise ValueError("Cyclic archive link: " + member.name)
+                    seen.add(target.name)
+                    name = target.linkname
+                    if target.issym():
+                        name = posixpath.join(posixpath.dirname(target.name), name)
+                    target = t.getmember(posixpath.normpath(name))
+                source = os.path.realpath(os.path.join(dest, target.name))
+                if os.path.commonpath([base, source]) != base:
+                    raise ValueError("Archive link target escapes destination: " + member.name)
+                if os.path.normcase(source) != os.path.normcase(path):
+                    os.makedirs(os.path.dirname(path), exist_ok=True)
+                    shutil.copy2(source, path)
     # ZIP does not preserve executable permissions
     for dirpath, _, files in os.walk(dest):
         for f in files:
@@ -361,7 +394,9 @@ def get_llama(plat, tr):
 
 def get_python(plat, tr):
     dest = os.path.join(RUNTIME_DIR, "python", plat)
-    if os.path.isdir(os.path.join(dest, "python")):
+    executable = os.path.join(dest, "python", "python.exe" if plat.startswith("windows-") else "bin/python3")
+    installed = load_json(os.path.join(dest, "installation.json"), {})
+    if installed.get("complete") and os.path.isfile(executable):
         print(tr["skip"].format(f=f"Python ({plat})"))
         return True
     triple = PYTHON_TRIPLES[plat]
@@ -377,7 +412,32 @@ def get_python(plat, tr):
         name, url, size = sorted(match)[-1]
         archive = os.path.join(RUNTIME_DIR, "_downloads", name)
         download(url, archive, expected_size=size)
-        extract(archive, dest)
+        parent = os.path.dirname(dest)
+        os.makedirs(parent, exist_ok=True)
+        staging = tempfile.mkdtemp(prefix=".python-install-", dir=parent)
+        fresh = os.path.join(staging, "new")
+        previous = os.path.join(staging, "previous")
+        try:
+            extract(archive, fresh)
+            relative_exe = os.path.relpath(executable, dest)
+            if not os.path.isfile(os.path.join(fresh, relative_exe)):
+                raise RuntimeError("archive does not contain Python for " + plat)
+            with open(os.path.join(fresh, "installation.json"), "w", encoding="utf-8") as f:
+                json.dump({"complete": True, "asset": name}, f)
+            had_previous = os.path.exists(dest)
+            if had_previous:
+                os.replace(dest, previous)
+            try:
+                os.replace(fresh, dest)
+            except OSError:
+                if had_previous:
+                    os.replace(previous, dest)
+                raise
+            if had_previous:
+                shutil.rmtree(previous)
+        finally:
+            if not os.path.exists(previous):
+                shutil.rmtree(staging, ignore_errors=True)
         os.remove(archive)
         print(f"  ✓ Portable Python ({plat})")
         return True

@@ -32,6 +32,25 @@ Los archivos grandes (modelos, bases ZIM, motores) **no van al git**: el reposit
 
 ### 1. Descarga el repositorio
 
+**Sin Git ni Python instalado:** abre una terminal en la carpeta donde quieras guardar el kit. El instalador crea una nueva subcarpeta `Emergency-AI`, con el código, los lanzadores y Python portátil para esta computadora.
+
+Windows (PowerShell):
+
+```powershell
+curl.exe -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.bat -o install.bat
+if ($LASTEXITCODE -eq 0) { .\install.bat }
+```
+
+Linux / macOS:
+
+```sh
+curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -o install.sh && sh install.sh
+```
+
+Necesita internet, sin permisos de administrador. Rechaza carpetas existentes; no actualiza un kit instalado. Python tiene una versión fija y SHA-256 verificado. Los modelos y las bibliotecas son opcionales al abrir el kit. Consulta [requisitos y detalles](README.md#1-download-the-kit-no-git-or-python-required). El script se guarda antes de ejecutarlo para permitir su revisión. En Windows, todo está en un único archivo `.bat`, con código PowerShell integrado.
+
+Alternativa para quienes ya usan Git y Python:
+
 ```bash
 git clone https://github.com/skanga/Emergency-AI.git
 cd Emergency-AI

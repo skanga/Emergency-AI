@@ -13,4 +13,6 @@ When preparing a kit with an AI model, the `prepare` command checks the newest a
 
 Starting the kit offline does not check for or download updates.
 
+Portable Python is extracted into a temporary folder and activated only after extraction succeeds. `python/<platform>/installation.json` records completion; older folders without this record are rebuilt once when Python is next requested. This also repairs interrupted installations. When preparing Linux/macOS Python on Windows, archive links are copied as ordinary files so case-only aliases do not create circular Windows symlinks. POSIX hosts preserve archive links.
+
 `kit-info.json` records whether the last requested preparation completed and lists component results. Failed downloads remain in `_downloads/` as `.part` files for retry. Models, ZIMs, runtimes, logs, local settings and extra personal guides are excluded from Git by `.gitignore`.

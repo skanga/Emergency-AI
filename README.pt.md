@@ -42,6 +42,25 @@ Os arquivos grandes **não vão para o git** (veja `.gitignore`): o repositório
 
 ### 1. Baixe o repositório
 
+**Sem Git nem Python instalado:** abra um terminal na pasta onde deseja guardar o kit. O instalador cria uma nova subpasta `Emergency-AI`, com o código, os inicializadores e Python portátil para este computador.
+
+Windows (PowerShell):
+
+```powershell
+curl.exe -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.bat -o install.bat
+if ($LASTEXITCODE -eq 0) { .\install.bat }
+```
+
+Linux / macOS:
+
+```sh
+curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -o install.sh && sh install.sh
+```
+
+Precisa de internet, sem administrador. Recusa pastas existentes; não atualiza um kit instalado. O Python tem versão fixa e SHA-256 verificado. Modelos e bibliotecas são opcionais no primeiro uso. Veja [requisitos e detalhes](README.md#1-download-the-kit-no-git-or-python-required). O script é salvo antes da execução para permitir revisão. No Windows, tudo está em um único arquivo `.bat`, com código PowerShell embutido.
+
+Alternativa para quem já usa Git e Python:
+
 ```bash
 git clone https://github.com/skanga/Emergency-AI.git
 cd Emergency-AI

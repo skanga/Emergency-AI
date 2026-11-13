@@ -20,7 +20,30 @@ Prepare the kit while you have internet, then use it when connectivity or servic
 
 ## Quick start
 
-### 1. Get the repository
+### 1. Download the kit (no Git or Python required)
+
+Open a terminal in the folder where you want to keep the kit. The installer creates a new `Emergency-AI` subfolder, downloads the application and launchers, and adds a checksum-verified portable Python for this computer. It needs internet and no administrator rights.
+
+**Windows (PowerShell):**
+
+```powershell
+curl.exe -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.bat -o install.bat
+if ($LASTEXITCODE -eq 0) { .\install.bat }
+```
+
+**Linux / macOS:**
+
+```sh
+curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -o install.sh && sh install.sh
+```
+
+These commands save the installer before running it. You can download and inspect it first. The Windows installer is a single batch file with embedded PowerShell code. Only run installers from a source you trust.
+
+To choose another new folder, run `.\install.bat "My kit"` or `sh install.sh "My kit"`. Its parent folder must already exist. Existing destinations are refused, including empty folders: this installs a new kit and does not update or overwrite one. Failed installations clean up temporary files; rerun to retry downloads.
+
+Supported: Windows 10/11 with PowerShell, `curl.exe` and `tar.exe`; Linux with glibc, `curl`, `tar` and `sha256sum`; macOS with `curl`, `tar` and `shasum`. All support x86-64 and ARM64. Python is pinned to 3.12.16 from the [official standalone Python release](https://github.com/astral-sh/python-build-standalone/releases/tag/20261110); its SHA-256 is checked before extraction. Application code comes from the current `main` branch over HTTPS. The installer downloads neither models nor Kiwix libraries; choose those when opening the kit below.
+
+**Alternative for developers:** clone with Git (requires Python 3.8+ already installed or a compatible portable Python in the kit):
 
 ```bash
 git clone https://github.com/skanga/Emergency-AI.git
@@ -37,7 +60,7 @@ cd Emergency-AI
 
 Use the same launcher for first use and every later visit. On first use, choose to download optional components or open the included guides immediately. The guide-only choice is remembered. If selected components are missing or setup was interrupted, the launcher offers to resume for the current computer or continue with what is available. Without an interactive terminal, it starts available components without prompting or downloading.
 
-Python 3.8+ must already be installed, or the kit must contain portable Python for this platform. The launcher explains how to obtain it if missing; it cannot download Python before Python is available.
+The installer includes portable Python for this computer. If you downloaded the source ZIP or cloned with Git instead, Python 3.8+ must already be installed, or the kit must contain portable Python for this platform. The launcher explains how to obtain it if missing.
 
 ### 3. Add or repair components (when online)
 
