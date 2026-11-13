@@ -6,4 +6,4 @@ A ZIM is a compressed collection of saved pages and images; Kiwix is the softwar
 
 Historical WikEM (June 2020) and wikiHow (2023/2024) snapshots are available only by explicitly selecting `--archives`. They may be outdated and are labeled in setup and source citations. See the [archive dates, sizes and commands](../README.md#optional-archived-libraries). Archive downloads verify exact size and the embedded ZIM checksum before installation.
 
-To stop searching an installed archive, move its `.zim` file out of this directory and restart Survival AI. Selecting `--archives none` skips new archive downloads; it does not remove existing files.
+To stop searching an installed archive, move its `.zim` file out of this directory and restart Emergency AI. Selecting `--archives none` skips new archive downloads; it does not remove existing files.

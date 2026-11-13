@@ -1,10 +1,10 @@
-/* Survival AI — UI (no external libraries, works offline) */
+/* Emergency AI — UI (no external libraries, works offline) */
 (function () {
   "use strict";
 
   const I18N = {
     pt: {
-      title: "IA da Sobrevivência", subtitle: "funciona sem internet", ask: "Perguntar à IA", filter: "Buscar nos guias…",
+      title: "Emergency AI", subtitle: "Conhecimento e assistência offline quando os serviços ficam indisponíveis.", ask: "Perguntar à IA", filter: "Buscar nos guias…",
       index: "Índice", foot: "Imprima os guias críticos: papel não precisa de energia.", emerg: "Emergência?",
       emergTxt: "Se houver telefone: SAMU 192 · Bombeiros 193 · Europa 112 · EUA 911",
       hello: "Pergunte qualquer coisa sobre sobrevivência",
@@ -26,7 +26,7 @@
       ],
     },
     en: {
-      title: "Survival AI", subtitle: "works without internet", ask: "Ask the AI", filter: "Search the guides…",
+      title: "Emergency AI", subtitle: "Offline knowledge and assistance when services go down.", ask: "Ask the AI", filter: "Search the guides…",
       index: "Contents", foot: "Print the critical guides: paper needs no power.", emerg: "Emergency?",
       emergTxt: "If phones work: US/Canada 911 · Europe 112 · UK 999 · Brazil 192/193",
       hello: "Ask anything about survival",
@@ -48,7 +48,7 @@
       ],
     },
     es: {
-      title: "IA de la Supervivencia", subtitle: "funciona sin internet", ask: "Preguntar a la IA", filter: "Buscar en las guías…",
+      title: "Emergency AI", subtitle: "Conocimiento y asistencia sin internet cuando los servicios dejan de funcionar.", ask: "Preguntar a la IA", filter: "Buscar en las guías…",
       index: "Índice", foot: "Imprime las guías críticas: el papel no necesita energía.", emerg: "¿Emergencia?",
       emergTxt: "Si hay teléfono: 112 Europa · 911 gran parte de América · Brasil 192/193",
       hello: "Pregunta lo que quieras sobre supervivencia",

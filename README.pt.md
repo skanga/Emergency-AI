@@ -1,6 +1,6 @@
-# IA da Sobrevivência
+# Emergency AI
 
-**Um assistente de sobrevivência que funciona 100% sem internet** — no Windows, Linux e macOS.
+**Conhecimento e assistência offline quando os serviços ficam indisponíveis.** — no Windows, Linux e macOS.
 
 [🇺🇸 English](README.md) · 🇧🇷 Português · [🇪🇸 Español](README.es.md)
 
@@ -43,8 +43,8 @@ Os arquivos grandes **não vão para o git** (veja `.gitignore`): o repositório
 ### 1. Baixe o repositório
 
 ```bash
-git clone https://github.com/skanga/Survival-AI.git
-cd Survival-AI
+git clone https://github.com/skanga/Emergency-AI.git
+cd Emergency-AI
 ```
 
 ### 2. Abra o kit
@@ -162,7 +162,7 @@ python -m unittest discover -s tests
 ## Estrutura
 
 ```
-Survival-AI/
+Emergency-AI/
 ├── start.bat / start.sh / start.command          ← abrir o kit
 ├── prepare-kit.bat / prepare-kit.sh / .command       ← baixar modelo e bases (com internet)
 ├── survival.py                                    ← ponto de entrada (CLI)

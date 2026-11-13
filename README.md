@@ -1,10 +1,12 @@
-# Survival AI
+# Emergency AI
 
-**A survival assistant that works 100% without internet** — on Windows, Linux and macOS.
+**Offline knowledge and assistance when services go down.**
+
+For Windows, Linux and macOS.
 
 🇺🇸 English · [🇧🇷 Português](README.pt.md) · [🇪🇸 Español](README.es.md)
 
-If the internet, power and services go down, this kit keeps working on a laptop or USB drive:
+Prepare the kit while you have internet, then use it when connectivity or services are unavailable. It runs on a powered computer, including a battery-powered laptop during an outage; a USB drive can store the kit for use on another computer:
 
 - 📚 **Practical guides with cited sources** (EN, PT, ES): water, fire, shelter, food, gardening and livestock, foraging/fishing/hunting, **first aid and medicine**, hygiene and homemade soap, **alcohol** (fermentation, distillation, antiseptic and fuel), solar power, radio and navigation, tools and knots, mental health and community, and checklists for 72 hours and **1 year**.
 - 🤖 **Local AI** that answers any question in natural language, **citing its sources** — it runs on your own computer (llama.cpp or Ollama); nothing goes to the internet.
@@ -56,8 +58,8 @@ Keep downloaded models, libraries and runtimes out of git: the repository stays 
 ### 1. Get the repository
 
 ```bash
-git clone https://github.com/skanga/Survival-AI.git
-cd Survival-AI
+git clone https://github.com/skanga/Emergency-AI.git
+cd Emergency-AI
 ```
 
 ### 2. Open the kit
@@ -244,6 +246,6 @@ This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-
 | **AI model / language model** | A large file of learned patterns that lets the computer generate text. It can make mistakes; the source links let you check its answers. You can use guide search without it. |
 | **llama.cpp / Ollama** | Programs that run an AI model on your computer. The preparer installs llama.cpp; Ollama is an optional alternative if you already use it. |
 | **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
-| **Python / portable Python** | Python runs the Survival AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
+| **Python / portable Python** | Python runs the Emergency AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
 | **Preparer / profile** | The preparer is the setup tool opened by `start prepare` or the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
 | **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes in this README are approximate; leave extra room for the model, software and future updates. |

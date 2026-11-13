@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Survival AI — start on Linux/macOS:  ./start.sh   (options: --lang pt | --lang es)
+# Emergency AI — start on Linux/macOS:  ./start.sh   (options: --lang pt | --lang es)
 # Subcommands: ./start.sh chat | ask "question" | status | prepare
 cd "$(dirname "$0")" || exit 1
 

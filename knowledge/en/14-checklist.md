@@ -17,7 +17,7 @@ Use these lists to prepare **before** and to take inventory **during** a crisis.
 - [ ] Hygiene: soap, hand sanitizer gel, toilet paper, toothbrush and toothpaste, pads
 - [ ] Documents in a plastic bag, cash in small bills, contact list on paper
 - [ ] Portable charger (power bank) and cables
-- [ ] USB flash drive with this kit (IA da Sobrevivência + Kiwix databases)
+- [ ] USB flash drive with this kit (Emergency AI + Kiwix databases)
 - [ ] Printed map of the region and compass
 - [ ] Items for babies, elderly people and pets
 

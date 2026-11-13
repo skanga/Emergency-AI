@@ -1,5 +1,5 @@
 #!/bin/sh
-# macOS: double-click this file to open Survival AI.
+# macOS: double-click this file to open Emergency AI.
 # (First time: right-click > Open to allow it through Gatekeeper.)
 cd "$(dirname "$0")" || exit 1
 # Remove macOS quarantine from kit binaries copied from a USB drive or downloaded ZIP.

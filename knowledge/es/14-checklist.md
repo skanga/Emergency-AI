@@ -17,7 +17,7 @@ Use estas listas para prepararse **antes** y para hacer inventario **durante** u
 - [ ] Higiene: jabón, alcohol en gel, papel higiénico, cepillo y pasta de dientes, toallas sanitarias
 - [ ] Documentos en bolsa plástica, dinero en billetes pequeños, lista de contactos en papel
 - [ ] Batería portátil (power bank) y cables
-- [ ] Memoria USB con este kit (IA da Sobrevivência + bases Kiwix)
+- [ ] Memoria USB con este kit (Emergency AI + bases Kiwix)
 - [ ] Mapa impreso de la región y brújula
 - [ ] Artículos para bebés, adultos mayores y mascotas
 

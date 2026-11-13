@@ -17,7 +17,7 @@ Use estas listas para se preparar **antes** e para fazer inventário **durante**
 - [ ] Higiene: sabonete, álcool gel, papel higiênico, escova e pasta, absorventes
 - [ ] Documentos em saco plástico, dinheiro em notas pequenas, lista de contatos em papel
 - [ ] Carregador portátil (power bank) e cabos
-- [ ] Pendrive com este kit (IA da Sobrevivência + bases Kiwix)
+- [ ] Pendrive com este kit (Emergency AI + bases Kiwix)
 - [ ] Mapa impresso da região e bússola
 - [ ] Itens para bebês, idosos e pets
 

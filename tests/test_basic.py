@@ -127,7 +127,7 @@ class ServerTests(unittest.TestCase):
             return r.read().decode()
 
     def test_pages_and_api(self):
-        self.assertIn("Survival AI", self.get("/"))
+        self.assertIn("Emergency AI", self.get("/"))
         self.assertIn('<html lang="en">', self.get("/"))
         self.assertIn("function", self.get("/app.js"))
         guides = json.loads(self.get("/api/guides?lang=es"))

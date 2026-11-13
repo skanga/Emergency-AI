@@ -47,7 +47,7 @@ Wiring: panel → controller → battery → loads. Use a fuse near the battery.
 
 ## Devices and data
 
-- Keep this kit (IA da Sobrevivência + Kiwix databases) on a **USB flash drive and an external hard drive**, and a copy on a low-power laptop.
+- Keep this kit (Emergency AI + Kiwix databases) on a **USB flash drive and an external hard drive**, and a copy on a low-power laptop.
 - A laptop running the local AI uses ~30–60 W while answering; a small computer (mini PC, Raspberry Pi 5) uses ~5–15 W.
 - Protect electronics from moisture (silica gel, airtight bags) and from power surges.
 

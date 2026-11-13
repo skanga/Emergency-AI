@@ -60,7 +60,7 @@ def make_handler(engine, settings):
     answer_slot = threading.BoundedSemaphore(1)
 
     class Handler(BaseHTTPRequestHandler):
-        server_version = "Survival-AI/" + __version__
+        server_version = "Emergency-AI/" + __version__
         timeout = 15
 
         def log_message(self, fmt, *args):  # quiet

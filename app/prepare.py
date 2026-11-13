@@ -56,7 +56,7 @@ KIWIX_ASSETS = {
 
 T = {
     "pt": {
-        "title": "Preparador do kit — IA da Sobrevivência",
+        "title": "Preparador do kit — Emergency AI",
         "need_net": "Este passo precisa de internet. Depois disso, tudo funciona offline.",
         "model_q": "Qual modelo de IA baixar?",
         "none": "Nenhum (só busca nos guias, sem IA generativa)",
@@ -78,7 +78,7 @@ T = {
         "yes": ("s", "sim", "y", "yes", ""),
     },
     "en": {
-        "title": "Kit preparer — Survival AI",
+        "title": "Kit preparer — Emergency AI",
         "need_net": "This step needs internet. After that, everything works offline.",
         "model_q": "Which AI model to download?",
         "none": "None (guide search only, no generative AI)",
@@ -100,7 +100,7 @@ T = {
         "yes": ("y", "yes", "s", "sim", ""),
     },
     "es": {
-        "title": "Preparador del kit — IA de la Supervivencia",
+        "title": "Preparador del kit — Emergency AI",
         "need_net": "Este paso necesita internet. Después, todo funciona sin conexión.",
         "model_q": "¿Qué modelo de IA descargar?",
         "none": "Ninguno (solo búsqueda en las guías, sin IA generativa)",

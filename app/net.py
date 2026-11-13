@@ -4,7 +4,7 @@ import json
 import urllib.error
 import urllib.request
 
-USER_AGENT = "Survival-AI/1.0"
+USER_AGENT = "Emergency-AI/1.0"
 
 # Local services must never use the system proxy.
 _LOCAL_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))

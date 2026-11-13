@@ -1,6 +1,6 @@
-# IA de la Supervivencia (IA da Sobrevivência)
+# Emergency AI
 
-**Un asistente de supervivencia que funciona 100 % sin internet** — en Windows, Linux y macOS.
+**Conocimiento y asistencia sin internet cuando los servicios dejan de funcionar.** — en Windows, Linux y macOS.
 
 [🇧🇷 Português](README.pt.md) · [🇺🇸 English](README.md) · 🇪🇸 Español
 
@@ -33,8 +33,8 @@ Los archivos grandes (modelos, bases ZIM, motores) **no van al git**: el reposit
 ### 1. Descarga el repositorio
 
 ```bash
-git clone https://github.com/skanga/Survival-AI.git
-cd Survival-AI
+git clone https://github.com/skanga/Emergency-AI.git
+cd Emergency-AI
 ```
 
 ### 2. Abre el kit

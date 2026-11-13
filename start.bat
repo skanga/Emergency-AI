@@ -1,6 +1,6 @@
 @echo off
 setlocal
-REM Survival AI - start on Windows (double-click)
+REM Emergency AI - start on Windows (double-click)
 chcp 65001 >nul
 cd /d "%~dp0"
 set "PY="

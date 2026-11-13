@@ -81,7 +81,7 @@ class StartCommandTests(unittest.TestCase):
 
     def test_occupied_port_checked_before_setup_or_engine_launch(self):
         args = argparse.Namespace(lang="en", host=None, port=8090, no_browser=True, no_engines=False)
-        for server_name, expected in (("Survival-AI/1.0", 0), ("UnrelatedService/1.0", 1)):
+        for server_name, expected in (("Emergency-AI/1.0", 0), ("Survival-AI/1.0", 0), ("UnrelatedService/1.0", 1)):
             response = Mock()
             response.headers = {"Server": server_name}
             response.__enter__ = Mock(return_value=response)

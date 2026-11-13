@@ -47,7 +47,7 @@ Conexiones: panel → controlador → batería → cargas. Use un fusible cerca 
 
 ## Dispositivos y datos
 
-- Mantenga este kit (IA da Sobrevivência + bases Kiwix) en una **memoria USB y un disco duro externo**, y una copia en una laptop de bajo consumo.
+- Mantenga este kit (Emergency AI + bases Kiwix) en una **memoria USB y un disco duro externo**, y una copia en una laptop de bajo consumo.
 - Una laptop ejecutando la IA local gasta ~30–60 W mientras responde; una computadora pequeña (mini PC, Raspberry Pi 5) gasta ~5–15 W.
 - Proteja los aparatos electrónicos de la humedad (sílica gel, bolsas herméticas) y de los picos de tensión.
 

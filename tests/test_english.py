@@ -62,7 +62,7 @@ class EnglishDefaultsTests(unittest.TestCase):
             self.assertEqual(get_model.call_args.args[0]["id"], "standard")
             self.assertGreater(get_zim.call_count, 0)
             self.assertTrue(all("minimal" in c.args[0]["profiles"] for c in get_zim.call_args_list))
-            self.assertIn("Kit preparer — Survival AI", output.getvalue())
+            self.assertIn("Kit preparer — Emergency AI", output.getvalue())
             self.assertIn("Kit ready!", output.getvalue())
 
     def test_preparer_none_skips_downloads(self):

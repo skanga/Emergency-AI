@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Survival AI — command-line entry point.
+"""Emergency AI — command-line entry point.
 
 Usage:
   python survival.py start              # start engines and web interface (default)
@@ -36,8 +36,8 @@ from app.config import LANGS, load_settings, platform_key  # noqa: E402
 
 BANNER = r"""
   +--------------------------------------------------------------+
-  |                       SURVIVAL AI                       |
-  |                    offline knowledge                        |
+  |                         EMERGENCY AI                         |
+  | Offline knowledge and assistance when services go down.       |
   +--------------------------------------------------------------+
 """
 
@@ -80,7 +80,7 @@ def cmd_start(args, settings):
     if port and port_in_use(int(port), browser_host):
         try:
             with open_url(url, timeout=2) as response:
-                ours = response.headers.get("Server", "").startswith("Survival-AI/")
+                ours = response.headers.get("Server", "").startswith(("Emergency-AI/", "Survival-AI/"))
         except Exception:
             ours = False
         if not ours:
@@ -215,7 +215,7 @@ def cmd_search(args, settings):
 def cmd_status(args, settings):
     from app.engine import Engine
     from app.launcher import find_kiwix_serve, find_llama_server, find_model, find_zims
-    print(f"Survival AI v{__version__} — {platform_key()}")
+    print(f"Emergency AI v{__version__} — {platform_key()}")
     from app.startup import inspect
     report = inspect(settings)
     print("  Setup state: " + report["state"].replace("_", " "))
@@ -251,7 +251,7 @@ def cmd_prepare(args, settings):
 
 def main():
     settings = load_settings()
-    p = argparse.ArgumentParser(description="Survival AI — offline survival assistant")
+    p = argparse.ArgumentParser(description="Emergency AI — offline knowledge and assistance when services go down")
     p.add_argument("--lang", choices=LANGS, default=settings.get("language", "en"))
     p.add_argument("--no-engines", action="store_true", help="do not start llama.cpp/kiwix-serve")
     sub = p.add_subparsers(dest="cmd")
