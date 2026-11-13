@@ -2,7 +2,7 @@
 
 **Un asistente de supervivencia que funciona 100 % sin internet** — en Windows, Linux y macOS.
 
-[🇧🇷 Português](README.pt.md) · [🇺🇸 English](README.en.md) · 🇪🇸 Español
+[🇧🇷 Português](README.pt.md) · [🇺🇸 English](README.md) · 🇪🇸 Español
 
 Si internet, la electricidad y los servicios se caen, este kit sigue funcionando en una laptop o un pendrive:
 
