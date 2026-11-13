@@ -68,7 +68,7 @@ The preparer asks for:
 Non-interactive:
 
 ```bash
-python survival.py prepare --model gemma4-e2b --zims recommended --os all --python
+python emergency.py prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
 ### 4. Use it (offline)
@@ -110,7 +110,7 @@ flowchart TD
 
 | Part | What it is | Where |
 |---|---|---|
-| `survival.py` + `app/` | Application and search logic (Python standard library only, no `pip install`) | repository |
+| `emergency.py` + `app/` | Application and search logic (Python standard library only, no `pip install`) | repository |
 | `knowledge/en/`, `knowledge/pt/`, `knowledge/es/` | Survival guides in Markdown | repository |
 | `knowledge/extra/` | **Your** `.md`/`.txt` documents (searched and cited by the AI) | repository |
 | `runtime/llama.cpp/` | Engine that runs the AI model | downloaded by the preparer |
@@ -138,7 +138,7 @@ These are **historical snapshots**, separate from the current catalog downloads.
 To add only the archived WikEM copy to an existing kit:
 
 ```bash
-python survival.py prepare --model none --zims none --archives wikem --os this --yes
+python emergency.py prepare --model none --zims none --archives wikem --os this --yes
 ```
 
 Use `--archives wikem,wikihow-en` for selected archives, or `--archives all` for all four (about **83.5 GiB**). Omit `--archives`, or use `--archives none`, to skip them. Skipping an archive does not remove a previously downloaded copy; move its `.zim` file out of `zim/` if you no longer want it searched. Extra archived editions do not replace other installed editions.
@@ -148,12 +148,12 @@ Archive downloads resume after interruptions. Before a file becomes available to
 ## Other ways to use it
 
 ```bash
-python survival.py chat                   # terminal chat
-python survival.py ask "how do I make oral rehydration solution?"
-python survival.py search burn
-python survival.py status
-python survival.py start --host 0.0.0.0             # share on the local network
-python survival.py prepare --search survival        # find more Kiwix libraries
+python emergency.py chat                   # terminal chat
+python emergency.py ask "how do I make oral rehydration solution?"
+python emergency.py search burn
+python emergency.py status
+python emergency.py start --host 0.0.0.0             # share on the local network
+python emergency.py prepare --search survival        # find more Kiwix libraries
 ```
 
 **Ollama:** if you use [Ollama](https://ollama.com), run `ollama pull qwen2.5:3b` — it is detected automatically. Any local OpenAI-compatible server (LM Studio, llamafile, KoboldCpp, Jan) also works: set `llm_url`.
@@ -246,7 +246,7 @@ If Python is missing, install Python 3.8+ from <https://www.python.org/downloads
 
 ## English entry points
 
-Use `.\run.bat`, `run.sh` or `run.command` for startup, setup and status. Append `prepare` to configure downloads, `prepare --resume` to reuse saved choices, or `status` to inspect the kit. The Python entry point is `survival.py`.
+Use `.\run.bat`, `run.sh` or `run.command` for startup, setup and status. Append `prepare` to configure downloads, `prepare --resume` to reuse saved choices, or `status` to inspect the kit. The Python entry point is `emergency.py`.
 
 Recommended model IDs are `lfm3-1.7b`, `gemma4-e2b` and `qwen35-9b`. Alternatives include `qwen35-2b`, `qwen3-4b` and `ministral3-8b`. Library profiles are `minimal`, `recommended` and `full`. Use `none` to skip a model or library download. Existing downloaded model and ZIM filenames stay unchanged.
 
@@ -298,5 +298,5 @@ This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-
 | **llama.cpp / Ollama** | Programs that run an AI model on your computer. The preparer installs llama.cpp; Ollama is an optional alternative if you already use it. |
 | **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
 | **Python / portable Python** | Python runs the Emergency AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
-| **Preparer / profile** | The preparer is the setup tool opened by `python survival.py prepare` or the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
+| **Preparer / profile** | The preparer is the setup tool opened by `python emergency.py prepare` or the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
 | **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes in this README are approximate; leave extra room for the model, software and future updates. |

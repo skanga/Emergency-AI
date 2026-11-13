@@ -2,12 +2,12 @@
 """Emergency AI — command-line entry point.
 
 Usage:
-  python survival.py start              # start engines and web interface (default)
-  python survival.py chat               # terminal chat
-  python survival.py ask "question"     # single question in the terminal
-  python survival.py search "terms"     # search the guides
-  python survival.py prepare            # download the model, engines and Kiwix libraries (requires internet)
-  python survival.py status             # show installed and running components
+  python emergency.py start              # start engines and web interface (default)
+  python emergency.py chat               # terminal chat
+  python emergency.py ask "question"     # single question in the terminal
+  python emergency.py search "terms"     # search the guides
+  python emergency.py prepare            # download the model, engines and Kiwix libraries (requires internet)
+  python emergency.py status             # show installed and running components
 
 Common options:
 --lang en|pt|es
@@ -225,7 +225,7 @@ def cmd_status(args, settings):
     for item in report["missing"]:
         print("  Missing: " + item)
     if report["state"] in ("first_run", "incomplete"):
-        print("  Included guides remain available. Use 'python survival.py prepare' to configure or '--resume' to repair.")
+        print("  Included guides remain available. Use 'python emergency.py prepare' to configure or '--resume' to repair.")
     binary, kind = find_llama_server()
     print(f"  AI engine ({kind or 'llama.cpp'}): {binary or '—'}")
     print(f"  Model: {find_model(settings) or '—'}")

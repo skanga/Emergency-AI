@@ -62,7 +62,7 @@ El preparador pregunta:
 Sin preguntas:
 
 ```bash
-python survival.py --lang es prepare --model gemma4-e2b --zims recommended --os all --python
+python emergency.py --lang es prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
 ### 3. Úsalo (sin internet)
@@ -84,12 +84,12 @@ Copia **toda la carpeta** a un pendrive o disco externo formateado en **exFAT** 
 ## Otras formas de uso
 
 ```bash
-python survival.py --lang es chat                    # chat en la terminal
-python survival.py --lang es ask "¿cómo preparo suero oral casero?"
-python survival.py --lang es search quemadura
-python survival.py status
-python survival.py start --host 0.0.0.0              # compartir en la red local
-python survival.py prepare --search survival         # buscar más bibliotecas Kiwix
+python emergency.py --lang es chat                    # chat en la terminal
+python emergency.py --lang es ask "¿cómo preparo suero oral casero?"
+python emergency.py --lang es search quemadura
+python emergency.py status
+python emergency.py start --host 0.0.0.0              # compartir en la red local
+python emergency.py prepare --search survival         # buscar más bibliotecas Kiwix
 ```
 
 **Ollama:** si usas [Ollama](https://ollama.com), ejecuta `ollama pull qwen2.5:3b` — se detecta automáticamente. También funciona cualquier servidor local compatible con la API de OpenAI (LM Studio, llamafile, KoboldCpp, Jan): ajusta `llm_url`.

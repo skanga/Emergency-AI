@@ -14,10 +14,10 @@ ROOT = Path(__file__).resolve().parents[1]
 class LauncherTests(unittest.TestCase):
     @unittest.skipUnless(os.name == "nt", "Windows architecture dispatch")
     def test_arm_windows_prefers_arm_portable_python_in_universal_kit(self):
-        with tempfile.TemporaryDirectory(prefix="Survival kit ") as folder:
+        with tempfile.TemporaryDirectory(prefix="Emergency kit ") as folder:
             root = Path(folder)
             shutil.copy2(ROOT / "run.bat", root / "run.bat")
-            (root / "survival.py").write_text("print('native interpreter selected')\n")
+            (root / "emergency.py").write_text("print('native interpreter selected')\n")
             arm = root / "runtime/python/windows-arm64/python"
             x64 = root / "runtime/python/windows-x86_64/python"
             arm.mkdir(parents=True)
@@ -33,10 +33,10 @@ class LauncherTests(unittest.TestCase):
             self.assertIn("native interpreter selected", result.stdout)
 
     def test_launcher_preserves_interpreter_path_arguments_and_exit_status(self):
-        with tempfile.TemporaryDirectory(prefix="Survival kit ") as folder:
+        with tempfile.TemporaryDirectory(prefix="Emergency kit ") as folder:
             root = Path(folder)
             probe = "import json,sys; print(json.dumps(sys.argv[1:])); sys.exit(7)\n"
-            (root / "survival.py").write_text(probe, encoding="utf-8")
+            (root / "emergency.py").write_text(probe, encoding="utf-8")
             if os.name == "nt":
                 portable = root / "runtime/python/windows-x86_64/python"
                 portable.mkdir(parents=True)
@@ -70,7 +70,7 @@ class LauncherTests(unittest.TestCase):
                     self.assertIn('"--lang", "en"', result.stdout)
 
     def test_prepare_cli_rejects_unknown_selection(self):
-        result = subprocess.run([sys.executable, "-B", str(ROOT / "survival.py"), "prepare", "--yes",
+        result = subprocess.run([sys.executable, "-B", str(ROOT / "emergency.py"), "prepare", "--yes",
                                  "--model", "typo", "--zims", "none", "--skip-tools"],
                                 capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 1)

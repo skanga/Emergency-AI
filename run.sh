@@ -28,4 +28,4 @@ if [ -z "$PY" ]; then
 fi
 
 # Python handles first use, recovery, subcommands and the default web interface.
-exec "$PY" survival.py "$@"
+exec "$PY" emergency.py "$@"

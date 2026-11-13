@@ -15,7 +15,7 @@ import unittest
 import urllib.request
 from unittest.mock import Mock, patch
 
-import survival
+import emergency
 
 
 class StartCommandTests(unittest.TestCase):
@@ -26,12 +26,12 @@ class StartCommandTests(unittest.TestCase):
             server.server_close()
 
     def test_fresh_offline_kit_serves_guides_and_second_start_reuses_it(self):
-        with tempfile.TemporaryDirectory(prefix="Survival fresh kit ") as folder:
+        with tempfile.TemporaryDirectory(prefix="Emergency fresh kit ") as folder:
             root = Path(folder)
-            source = Path(survival.__file__).parent
+            source = Path(emergency.__file__).parent
             for name in ("app", "config", "web", "knowledge"):
                 shutil.copytree(source / name, root / name, ignore=shutil.ignore_patterns("__pycache__", "settings.local.json"))
-            shutil.copy2(source / "survival.py", root / "survival.py")
+            shutil.copy2(source / "emergency.py", root / "emergency.py")
             settings = root / "config" / "settings.json"
             cfg = json.loads(settings.read_text(encoding="utf-8"))
             cfg.update(llm_backend="none", kiwix_enabled=False)
@@ -39,7 +39,7 @@ class StartCommandTests(unittest.TestCase):
             with socket.socket() as sock:
                 sock.bind(("127.0.0.1", 0))
                 port = sock.getsockname()[1]
-            command = [sys.executable, "-B", "-u", str(root / "survival.py"), "--no-browser", "--port", str(port)]
+            command = [sys.executable, "-B", "-u", str(root / "emergency.py"), "--no-browser", "--port", str(port)]
             proc = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             try:
                 opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
@@ -70,9 +70,9 @@ class StartCommandTests(unittest.TestCase):
         for argv, command in ((["--no-browser"], "cmd_start"),
                               (["prepare", "--resume"], "cmd_prepare"),
                               (["ask", "how", "to", "start"], "cmd_ask")):
-            with self.subTest(argv=argv), patch("sys.argv", ["survival.py"] + argv), \
-                    patch.object(survival, command, return_value=0) as handler:
-                self.assertEqual(survival.main(), 0)
+            with self.subTest(argv=argv), patch("sys.argv", ["emergency.py"] + argv), \
+                    patch.object(emergency, command, return_value=0) as handler:
+                self.assertEqual(emergency.main(), 0)
                 args = handler.call_args.args[0]
                 if command == "cmd_ask":
                     self.assertEqual(args.text, ["how", "to", "start"])
@@ -91,6 +91,6 @@ class StartCommandTests(unittest.TestCase):
                     patch("app.net.open_url", return_value=response), \
                     patch("app.server.serve", side_effect=OSError("occupied")), \
                     patch("app.startup.ensure_ready") as setup, patch("app.launcher.Launcher") as launcher:
-                self.assertEqual(survival.cmd_start(args, {}), expected)
+                self.assertEqual(emergency.cmd_start(args, {}), expected)
                 setup.assert_not_called()
                 launcher.assert_not_called()

@@ -26,7 +26,7 @@ Se a internet, a energia e os serviços pararem, este kit continua funcionando n
 
 | Peça | O que é | Onde fica |
 |---|---|---|
-| `survival.py` + `app/` | A IA (só biblioteca padrão do Python, sem `pip install`) | repositório |
+| `emergency.py` + `app/` | A IA (só biblioteca padrão do Python, sem `pip install`) | repositório |
 | `knowledge/pt|en|es/` | Guias de sobrevivência em Markdown | repositório |
 | `knowledge/extra/` | **Seus** documentos `.md`/`.txt` (entram na busca e na IA) | repositório |
 | `runtime/llama.cpp/` | Motor que roda o modelo de IA | baixado pelo preparador |
@@ -72,7 +72,7 @@ O preparador pergunta:
 Sem perguntas (ex.: para automatizar):
 
 ```bash
-python survival.py prepare --model gemma4-e2b --zims recommended --os all --python
+python emergency.py prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
 > Se faltar Python para rodar o preparador: instale em <https://www.python.org/downloads/> (no Windows marque *Add python.exe to PATH*). Depois o kit leva um Python portátil junto.
@@ -96,12 +96,12 @@ Copie **a pasta inteira** para um pendrive ou HD externo (formatado em **exFAT**
 ## Outras formas de usar
 
 ```bash
-python survival.py chat                       # conversa no terminal
-python survival.py ask "como fazer soro caseiro?"
-python survival.py search queimadura          # busca rápida nos guias
-python survival.py status                     # o que está instalado e ativo
-python survival.py start --host 0.0.0.0       # compartilhar na rede local (Wi-Fi)
-python survival.py prepare --search survival  # descobrir mais bases no catálogo Kiwix
+python emergency.py chat                       # conversa no terminal
+python emergency.py ask "como fazer soro caseiro?"
+python emergency.py search queimadura          # busca rápida nos guias
+python emergency.py status                     # o que está instalado e ativo
+python emergency.py start --host 0.0.0.0       # compartilhar na rede local (Wi-Fi)
+python emergency.py prepare --search survival  # descobrir mais bases no catálogo Kiwix
 ```
 
 **Compartilhar com a comunidade:** com `--host 0.0.0.0`, qualquer celular conectado ao mesmo roteador (mesmo sem internet) abre o endereço mostrado no terminal, ex.: `http://192.168.0.10:8090`.
@@ -164,7 +164,7 @@ python -m unittest discover -s tests
 ```
 Emergency-AI/
 ├── run.bat / run.sh / run.command          ← abrir o kit
-├── survival.py                                    ← ponto de entrada (CLI)
+├── emergency.py                                    ← ponto de entrada (CLI)
 ├── app/          knowledge.py (busca) · engine.py (RAG) · llm.py · kiwix.py · server.py · launcher.py · prepare.py
 ├── web/          interface (HTML/CSS/JS sem dependências)
 ├── knowledge/    pt/ en/ es/ (guias) · extra/ (seus documentos)

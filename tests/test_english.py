@@ -41,7 +41,7 @@ class EnglishDefaultsTests(unittest.TestCase):
                 self.assertTrue((ROOT / (stem + suffix)).is_file())
         for suffix in (".bat", ".sh", ".command"):
             self.assertFalse((ROOT / ("prepare-kit" + suffix)).exists())
-        result = subprocess.run([sys.executable, str(ROOT / "survival.py"), "prepare", "--help"],
+        result = subprocess.run([sys.executable, str(ROOT / "emergency.py"), "prepare", "--help"],
                                 capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("minimal | recommended | full | none", result.stdout)

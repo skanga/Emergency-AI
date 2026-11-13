@@ -559,7 +559,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     if resume:
         saved = load_selection(RUNTIME_DIR)
         if not saved:
-            raise ValueError("No saved setup choices. Run 'python survival.py prepare' first.")
+            raise ValueError("No saved setup choices. Run 'python emergency.py prepare' first.")
         model = model if model is not None else saved.get("model", "none")
         zims = zims if zims is not None else saved.get("zims", "none")
         archives = archives if archives is not None else saved.get("archives", "none")
