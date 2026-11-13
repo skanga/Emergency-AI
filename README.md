@@ -57,7 +57,7 @@ Your latest setup choices are saved in `runtime/setup.json` before downloads beg
 
 The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are absent from the current official catalog (checked November 12, 2026), but older copies are available as [optional archived libraries](#optional-archived-libraries). Archives are excluded from every profile, including `full`. Profile sizes below exclude the model and runtimes and change with upstream releases.
 
-The preparer asks for:
+The `prepare` command asks for:
 
 1. **AI model:** `lfm3-1.7b` (lightweight, ~1.1 GB download, 8 GB system RAM), `gemma4-e2b` (balanced/default, ~3.2 GB, 16 GB RAM), or `qwen35-9b` (larger, ~6.2 GB, 24 GB RAM). See [model choices](#model-choices) for licenses and alternatives.
 2. **Kiwix libraries:** `minimal` (~3 GiB), `recommended` (~8 GiB) or `full` (~77 GiB, Wikipedia without images).
@@ -115,12 +115,12 @@ flowchart TD
 | `emergency.py` + `app/` | Application and search logic (Python standard library only, no `pip install`) | repository |
 | `knowledge/en/`, `knowledge/pt/`, `knowledge/es/` | Survival guides in Markdown | repository |
 | `knowledge/extra/` | **Your** `.md`/`.txt` documents (searched and cited by the AI) | repository |
-| `runtime/llama.cpp/` | Engine that runs the AI model | downloaded by the preparer |
-| `models/*.gguf` | Language model (1–5 GB) | downloaded by the preparer |
-| `runtime/kiwix-tools/` + `zim/*.zim` | Kiwix server and libraries | downloaded by the preparer |
-| `runtime/python/` | Portable Python (for PCs without Python) | downloaded by the preparer |
+| `runtime/llama.cpp/` | Engine that runs the AI model | downloaded with `prepare` |
+| `models/*.gguf` | Language model (1–5 GB) | downloaded with `prepare` |
+| `runtime/kiwix-tools/` + `zim/*.zim` | Kiwix server and libraries | downloaded with `prepare` |
+| `runtime/python/` | Portable Python (for PCs without Python) | downloaded with `prepare` |
 
-Keep downloaded models, libraries and runtimes out of git: the repository stays small and everyone builds their own kit with the preparer.
+Keep downloaded models, libraries and runtimes out of git: the repository stays small and everyone builds their own kit with the `prepare` command.
 
 ---
 
@@ -145,7 +145,7 @@ python emergency.py prepare --model none --zims none --archives wikem --os this 
 
 Use `--archives wikem,wikihow-en` for selected archives, or `--archives all` for all four (about **83.5 GiB**). Omit `--archives`, or use `--archives none`, to skip them. Skipping an archive does not remove a previously downloaded copy; move its `.zim` file out of `zim/` if you no longer want it searched. Extra archived editions do not replace other installed editions.
 
-Archive downloads resume after interruptions. Before a file becomes available to Kiwix, the preparer checks its exact size, ZIM header and embedded MD5 checksum. These checks detect corruption; the embedded checksum does not authenticate the publisher. No published SHA-256 was found for these archived copies. Checking a large file can take several minutes. The direct URLs, byte counts, dates and source pages are recorded in [config/zims.json](config/zims.json).
+Archive downloads resume after interruptions. Before a file becomes available to Kiwix, the `prepare` command checks its exact size, ZIM header and embedded MD5 checksum. These checks detect corruption; the embedded checksum does not authenticate the publisher. No published SHA-256 was found for these archived copies. Checking a large file can take several minutes. The direct URLs, byte counts, dates and source pages are recorded in [config/zims.json](config/zims.json).
 
 ## Other ways to use it
 
@@ -245,7 +245,7 @@ The server limits request bodies to 64 KiB, accepts one answer stream at a time,
 
 Devices connected to the same router can open the LAN address or scan the QR code printed in the terminal, even without internet. The link uses the detected network address and actual server port, such as `http://192.168.0.10:8090`. No QR code is shown for localhost-only use or when no LAN address is found. Use `--local-only` to turn sharing off, or set `{ "web_host": "127.0.0.1" }` in `config/settings.local.json`. Multiple network adapters or VPNs can affect the detected address; `--host <LAN-IP>` selects a specific IPv4 interface. Allow the app on your local network if your firewall asks.
 
-If Python is missing, install Python 3.8+ from <https://www.python.org/downloads/>. On Windows, select **Add python.exe to PATH**. The preparer can then include portable Python in the kit.
+If Python is missing, install Python 3.8+ from <https://www.python.org/downloads/>. On Windows, select **Add python.exe to PATH**. The `prepare` command can then include portable Python in the kit.
 
 ## English entry points
 
@@ -276,7 +276,7 @@ Real-model checks run separately: see the [manual harness](tests/manual/README.m
 
 ## Licenses
 
-Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded by the preparer have their own licenses. The default Gemma 4 E2B and the Qwen/Ministral alternatives use Apache 2.0. LFM3 uses the [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM3-1.7B); review its terms for your use.
+Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded with `prepare` have their own licenses. The default Gemma 4 E2B and the Qwen/Ministral alternatives use Apache 2.0. LFM3 uses the [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM3-1.7B); review its terms for your use.
 
 ## Contributing
 
@@ -300,8 +300,8 @@ This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-
 | **wikiHow** | Illustrated guides to everyday tasks, repairs and other practical activities. The optional archived editions here are from 2023 or 2024. |
 | **iFixit, Appropedia, Energypedia** | Reference websites covering device repairs, practical sustainable technology, and energy respectively. Their offline copies are in the `recommended` profile. |
 | **AI model / language model** | A large file of learned patterns that lets the computer generate text. It can make mistakes; the source links let you check its answers. You can use guide search without it. |
-| **llama.cpp / Ollama** | Programs that run an AI model on your computer. The preparer installs llama.cpp; Ollama is an optional alternative if you already use it. |
+| **llama.cpp / Ollama** | Programs that run an AI model on your computer. The `prepare` command installs llama.cpp; Ollama is an optional alternative if you already use it. |
 | **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
 | **Python / portable Python** | Python runs the Emergency AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
-| **Preparer / profile** | The preparer is the setup tool opened by `python emergency.py prepare` or the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
+| **Setup / profile** | Run `.\run.bat prepare` on Windows, `./run.sh prepare` on Linux/macOS, or `python emergency.py prepare` to choose and download components. Setup is also offered in the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
 | **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes in this README are approximate; leave extra room for the model, software and future updates. |

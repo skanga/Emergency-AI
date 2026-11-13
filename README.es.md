@@ -24,7 +24,7 @@ Si internet, la electricidad y los servicios se caen, este kit sigue funcionando
                                                      └─► (¿sin modelo? muestra los fragmentos más relevantes)
 ```
 
-Los archivos grandes (modelos, bases ZIM, motores) **no van al git**: el repositorio queda liviano y cada persona arma su kit con el preparador.
+Los archivos grandes (modelos, bases ZIM, motores) **no van al git**: el repositorio queda liviano y cada persona arma su kit con el comando `prepare`.
 
 ---
 
@@ -49,7 +49,7 @@ En el primer uso, elige descargar los componentes opcionales (con internet) o ab
 
 Usa `.\run.bat prepare` en Windows o `./run.sh prepare` en Linux/macOS para elegir componentes. Añade `--resume` para reanudar las opciones guardadas en esta computadora; usa `status` para revisar el kit. Se necesita Python 3.8+ instalado o una copia portátil compatible dentro del kit.
 
-El preparador pregunta:
+El comando `prepare` pregunta:
 
 1. **Modelo de IA:** `lfm3-1.7b` (~1.1 GB, 8 GB RAM), `gemma4-e2b` (default, ~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licencias](README.md#model-choices).
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) o `full` (~77 GiB, Wikipedia sin imágenes).
@@ -114,4 +114,4 @@ python -m unittest discover -s tests
 
 ## Licencias
 
-Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados por el preparador tienen sus propias licencias.  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](README.md#model-choices).
+Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados con el comando `prepare` tienen sus propias licencias.  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](README.md#model-choices).

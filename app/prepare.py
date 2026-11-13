@@ -1,4 +1,4 @@
-"""Kit preparer (run online once): download the AI engine, model, Kiwix libraries and portable Python.
+"""Kit setup (run online once with python emergency.py prepare): download the AI engine, model, Kiwix libraries and portable Python.
 
 Everything goes inside the repository (models/, zim/, runtime/). Copy the whole folder
 to a USB drive or disk to use it offline on Windows, Linux and macOS.
@@ -56,7 +56,7 @@ KIWIX_ASSETS = {
 
 T = {
     "pt": {
-        "title": "Preparador do kit — Emergency AI",
+        "title": "Preparação do kit — Emergency AI",
         "need_net": "Este passo precisa de internet. Depois disso, tudo funciona offline.",
         "model_q": "Qual modelo de IA baixar?",
         "none": "Nenhum (só busca nos guias, sem IA generativa)",
@@ -68,8 +68,8 @@ T = {
         "total": "Download estimado: {gb:.1f} GiB. Espaço livre no disco: {free:.1f} GiB.",
         "confirm": "Continuar? [S/n] ",
         "choice": "Escolha [{d}]: ",
-        "partial": "Alguns itens falharam (veja acima). Verifique a internet e rode o preparador de novo: ele retoma de onde parou.",
-        "done": "Kit pronto! Rode 'start' para usar. Copie a pasta inteira para um pendrive/HD para levar.",
+        "partial": "Alguns itens falharam (veja acima). Verifique a internet e execute 'python emergency.py prepare --resume': ele retoma de onde parou.",
+        "done": "Kit pronto! Execute 'python emergency.py' para usar. Copie a pasta inteira para um pendrive/HD para levar.",
         "skip": "  ↷ já existe, pulando: {f}",
         "fail": "  ✗ falhou: {f} ({e})",
         "manual": "    Baixe manualmente em {u} e coloque em {d}",
@@ -78,7 +78,7 @@ T = {
         "yes": ("s", "sim", "y", "yes", ""),
     },
     "en": {
-        "title": "Kit preparer — Emergency AI",
+        "title": "Kit setup — Emergency AI",
         "need_net": "This step needs internet. After that, everything works offline.",
         "model_q": "Which AI model to download?",
         "none": "None (guide search only, no generative AI)",
@@ -90,8 +90,8 @@ T = {
         "total": "Estimated download: {gb:.1f} GiB. Free disk space: {free:.1f} GiB.",
         "confirm": "Continue? [Y/n] ",
         "choice": "Choose [{d}]: ",
-        "partial": "Some items failed (see above). Check your connection and run the preparer again: it resumes where it stopped.",
-        "done": "Kit ready! Run 'start' to use it. Copy the whole folder to a USB drive to carry it.",
+        "partial": "Some items failed (see above). Check your connection and run 'python emergency.py prepare --resume': it resumes where it stopped.",
+        "done": "Kit ready! Run 'python emergency.py' to use it. Copy the whole folder to a USB drive to carry it.",
         "skip": "  ↷ already present, skipping: {f}",
         "fail": "  ✗ failed: {f} ({e})",
         "manual": "    Download manually from {u} and put it in {d}",
@@ -100,7 +100,7 @@ T = {
         "yes": ("y", "yes", "s", "sim", ""),
     },
     "es": {
-        "title": "Preparador del kit — Emergency AI",
+        "title": "Preparación del kit — Emergency AI",
         "need_net": "Este paso necesita internet. Después, todo funciona sin conexión.",
         "model_q": "¿Qué modelo de IA descargar?",
         "none": "Ninguno (solo búsqueda en las guías, sin IA generativa)",
@@ -112,8 +112,8 @@ T = {
         "total": "Descarga estimada: {gb:.1f} GiB. Espacio libre en disco: {free:.1f} GiB.",
         "confirm": "¿Continuar? [S/n] ",
         "choice": "Elige [{d}]: ",
-        "partial": "Algunos elementos fallaron (ver arriba). Revisa la conexión y ejecuta el preparador de nuevo: continúa donde se detuvo.",
-        "done": "¡Kit listo! Ejecuta 'start' para usarlo. Copia toda la carpeta a un pendrive/disco para llevarlo.",
+        "partial": "Algunos elementos fallaron (ver arriba). Revisa la conexión y ejecuta 'python emergency.py prepare --resume': continúa donde se detuvo.",
+        "done": "¡Kit listo! Ejecuta 'python emergency.py' para usarlo. Copia toda la carpeta a un pendrive/disco para llevarlo.",
         "skip": "  ↷ ya existe, omitiendo: {f}",
         "fail": "  ✗ falló: {f} ({e})",
         "manual": "    Descárgalo manualmente desde {u} y ponlo en {d}",

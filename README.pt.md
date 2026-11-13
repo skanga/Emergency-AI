@@ -29,12 +29,12 @@ Se a internet, a energia e os serviços pararem, este kit continua funcionando n
 | `emergency.py` + `app/` | A IA (só biblioteca padrão do Python, sem `pip install`) | repositório |
 | `knowledge/pt|en|es/` | Guias de sobrevivência em Markdown | repositório |
 | `knowledge/extra/` | **Seus** documentos `.md`/`.txt` (entram na busca e na IA) | repositório |
-| `runtime/llama.cpp/` | Motor que roda o modelo de IA | baixado pelo preparador |
-| `models/*.gguf` | Modelo de linguagem (1–5 GB) | baixado pelo preparador |
-| `runtime/kiwix-tools/` + `zim/*.zim` | Servidor e bibliotecas do Kiwix | baixado pelo preparador |
-| `runtime/python/` | Python portátil (para PCs sem Python) | baixado pelo preparador |
+| `runtime/llama.cpp/` | Motor que roda o modelo de IA | baixado com o comando `prepare` |
+| `models/*.gguf` | Modelo de linguagem (1–5 GB) | baixado com o comando `prepare` |
+| `runtime/kiwix-tools/` + `zim/*.zim` | Servidor e bibliotecas do Kiwix | baixado com o comando `prepare` |
+| `runtime/python/` | Python portátil (para PCs sem Python) | baixado com o comando `prepare` |
 
-Os arquivos grandes **não vão para o git** (veja `.gitignore`): o repositório fica light, e cada pessoa monta o seu kit com o preparador.
+Os arquivos grandes **não vão para o git** (veja `.gitignore`): o repositório fica light, e cada pessoa monta o seu kit com o comando `prepare`.
 
 ---
 
@@ -59,7 +59,7 @@ No primeiro uso, escolha baixar os componentes opcionais (com internet) ou abrir
 
 Use `.\run.bat prepare` no Windows ou `./run.sh prepare` no Linux/macOS para escolher componentes. Acrescente `--resume` para retomar as escolhas salvas neste computador; use `status` para verificar o kit. É necessário Python 3.8+ instalado ou uma cópia portátil compatível no kit.
 
-O preparador pergunta:
+O comando `prepare` pergunta:
 
 1. **Modelo de IA:** `lfm3-1.7b` (~1.1 GB, 8 GB RAM), `gemma4-e2b` (default, ~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licenças](README.md#model-choices).
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) ou `full` (~77 GiB, Wikipedia sem imagens).
@@ -75,7 +75,7 @@ Sem perguntas (ex.: para automatizar):
 python emergency.py prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
-> Se faltar Python para rodar o preparador: instale em <https://www.python.org/downloads/> (no Windows marque *Add python.exe to PATH*). Depois o kit leva um Python portátil junto.
+> Se faltar Python para executar `python emergency.py prepare`: instale em <https://www.python.org/downloads/> (no Windows marque *Add python.exe to PATH*). Depois o kit leva um Python portátil junto.
 
 ### 3. Use (sem internet)
 
@@ -169,7 +169,7 @@ Emergency-AI/
 ├── web/          interface (HTML/CSS/JS sem dependências)
 ├── knowledge/    pt/ en/ es/ (guias) · extra/ (seus documentos)
 ├── config/       settings.json · models.json · zims.json
-├── models/  zim/  runtime/                             ← preenchidos pelo preparador (fora do git)
+├── models/  zim/  runtime/                             ← preenchidos pelo comando prepare (fora do git)
 └── tests/
 ```
 
@@ -177,7 +177,7 @@ Emergency-AI/
 
 - Código: [MIT](LICENSE).
 - Guias em `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md).
-- Modelos, Kiwix, llama.cpp e bases ZIM baixados pelo preparador têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto).  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](README.md#model-choices).
+- Modelos, Kiwix, llama.cpp e bases ZIM baixados com o comando `prepare` têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto).  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](README.md#model-choices).
 
 ## Contribua
 
