@@ -251,6 +251,8 @@ node --check web/app.js
 
 GitHub Actions runs the Python tests on Windows, Linux and macOS with Python 3.11 and 3.14. The tests use temporary artifacts and mock services; they do not download full models or ZIM libraries.
 
+Real-model checks run separately: see the [manual harness](tests/manual/README.md) and the [November 2026 CPU evaluation](docs/model-evaluation-2026-11-13.md).
+
 ## Licenses
 
 Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded by the preparer have their own licenses. The default model (Qwen2.5 3B) uses the *Qwen Research License*; for commercial use choose `light` or `strong` (Apache 2.0).

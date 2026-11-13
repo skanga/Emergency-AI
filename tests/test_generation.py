@@ -170,6 +170,8 @@ class GenerationTests(unittest.TestCase):
         self.assertNotIn('private', text)
         self.assertIn('Full passage.', text)
         self.assertIn('Incomplete answer', text)
+        self.assertNotIn('no language model running', text)
+        self.assertIn('instructions.\n\n**Source passages**', text)
         self.assertEqual(info['mode'], 'search')
 
     def test_launcher_uses_same_model_context_override(self):

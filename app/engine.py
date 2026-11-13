@@ -128,10 +128,11 @@ class Engine:
                 raise LLMError('The question exceeds the available input context budget')
             included[-1].update(context_omitted=True, text=i18n.READ_FULL_SOURCE[lang])
 
-    def extractive_answer(self, lang, sources):
+    def extractive_answer(self, lang, sources, model_unavailable=True):
         if not sources:
             return i18n.NO_RESULTS[lang]
-        parts = [i18n.NO_LLM_NOTE[lang], ""]
+        note = i18n.NO_LLM_NOTE if model_unavailable else i18n.SOURCE_FALLBACK_NOTE
+        parts = [note[lang], ""]
         for s in sources[:3]:
             text = s["text"]
             parts.append(f"### [{s['n']}] {s['doc_title']} › {s['section']}\n\n{text}\n")
@@ -143,6 +144,7 @@ class Engine:
         t0 = time.time()
         sources = self.retrieve(question, lang, history, use_kiwix)
         llm = self.llm() if use_llm and any(not s.get("context_omitted") for s in sources) else None
+        model_unavailable = llm is None
         mode = "llm" if llm else "search"
         generation = {}
         if llm:
@@ -166,16 +168,16 @@ class Engine:
                 generation.update(incomplete=True, finish_reason='error')
                 self._llm_checked = 0
                 yield "token", i18n.LLM_ERROR[lang].format(err=str(e)[:120])
-                yield "token", self.extractive_answer(lang, sources)
+                yield "token", self.extractive_answer(lang, sources, model_unavailable=False)
                 mode = "search"
             if generation.get('incomplete'):
                 key = 'limit' if generation.get('finish_reason') == 'length' else 'interrupted'
-                yield 'token', i18n.INCOMPLETE_ANSWER[lang][key]
+                yield 'token', i18n.INCOMPLETE_ANSWER[lang][key] + '\n\n'
             if not got and mode == "llm":
-                yield "token", self.extractive_answer(lang, sources)
+                yield "token", self.extractive_answer(lang, sources, model_unavailable=False)
                 mode = "search"
         else:
-            yield "token", self.extractive_answer(lang, sources)
+            yield "token", self.extractive_answer(lang, sources, model_unavailable=model_unavailable)
         if self.is_medical(question):
             yield "token", i18n.MEDICAL_FOOTER[lang]
         yield "done", {"mode": mode, "seconds": round(time.time() - t0, 1),

@@ -81,6 +81,12 @@ MEDICAL_WORDS = (
     "sangre", "herid", "quemad", "fiebre", "medicament", "mordedura", "serpiente", "alacran", "alergi",
     "atragant", "deshidrat", "hipoterm", "infecc", "dolor", "convulsi", "desmay",
 )
+SOURCE_FALLBACK_NOTE = {
+    "en": "**Source passages**: a complete AI answer is unavailable. Showing the relevant passages instead:",
+    "pt": "**Trechos das fontes**: uma resposta completa da IA não está disponível. Mostrando os trechos relevantes:",
+    "es": "**Fragmentos de las fuentes**: no hay una respuesta completa de la IA disponible. Se muestran los fragmentos relevantes:",
+}
+
 INCOMPLETE_ANSWER = {
     "en": {
         "limit": "\n\n> **Incomplete answer:** generation reached its token limit. Read the linked sources for complete instructions.",
