@@ -22,11 +22,20 @@ The kit combines **documents to read**, **software to search them**, and an opti
 
 See the [Glossary](#glossary) for explanations of the component names and file formats.
 
+```mermaid
+flowchart TD
+    Q["You ask a question"] --> S["Search the included guides<br/>and any installed Kiwix libraries"]
+    S --> R["Retrieve relevant passages<br/>and their source links"]
+    R --> M{"AI model available?"}
+    M -->|Yes| A["Generate an answer using those passages"]
+    M -->|No| P["Show the passages directly"]
+    A --> V["Read the response and open its sources"]
+    P --> V
 ```
- Question ──► search kit guides ─────────────┐
-          └─► search Kiwix (.zim files) ──────┼─► local language model ──► answer with [1] [2] sources
-                                              └─► (no model? shows the most relevant passages)
-```
+
+- **Works offline after setup:** guides, downloaded libraries, and the optional AI model stay on your computer.
+- **The AI is optional:** it turns retrieved material into a conversational answer. Guide search works without it.
+- **Sources remain visible:** readers can check the original material. If nothing relevant is found, the app says so.
 
 | Part | What it is | Where |
 |---|---|---|
