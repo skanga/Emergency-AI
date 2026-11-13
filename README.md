@@ -42,7 +42,7 @@ flowchart TD
 | Part | What it is | Where |
 |---|---|---|
 | `survival.py` + `app/` | Application and search logic (Python standard library only, no `pip install`) | repository |
-| `knowledge/pt|en|es/` | Survival guides in Markdown | repository |
+| `knowledge/en/`, `knowledge/pt/`, `knowledge/es/` | Survival guides in Markdown | repository |
 | `knowledge/extra/` | **Your** `.md`/`.txt` documents (searched and cited by the AI) | repository |
 | `runtime/llama.cpp/` | Engine that runs the AI model | downloaded by the preparer |
 | `models/*.gguf` | Language model (1–5 GB) | downloaded by the preparer |
