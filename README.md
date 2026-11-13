@@ -20,23 +20,7 @@ If the internet, power and services go down, this kit keeps working on a laptop 
 
 The kit combines **documents to read**, **software to search them**, and an optional **AI model to write answers**. You download the extra parts while you have internet, then use the saved copies offline. The included survival guides work without downloading a model or extra libraries.
 
-### What do these names mean?
-
-| Name | In plain English |
-|---|---|
-| **[Kiwix](https://get.kiwix.org/en/)** | Free software for reading saved copies of websites without internet. This kit uses its small local server, `kiwix-serve`, so your browser and the assistant can open and search those copies. |
-| **ZIM file (`.zim`)** | A compressed package of pages and their images, often an entire website or book collection. Put these files in `zim/`. They hold the reference material; the separate AI model writes answers from retrieved passages. |
-| **Library / snapshot** | A collection saved at a particular time. A date such as `2024-09` means the September 2024 edition. Its pages do not update while you are offline. |
-| **[WikEM](https://wikem.org/wiki/About_WikEM)** | An emergency medicine reference aimed at medical practitioners. The optional copy offered here is from **June 2020** and may contain outdated medical guidance. |
-| **Medical Wikipedia / WikiMed** | Wikipedia articles about medicine and health, collected for offline reading. This is a separate collection from WikEM. The English collection is included in the smallest download profile. |
-| **wikiHow** | Illustrated guides to everyday tasks, repairs and other practical activities. The optional archived editions here are from 2023 or 2024. |
-| **iFixit, Appropedia, Energypedia** | Reference websites covering device repairs, practical sustainable technology, and energy respectively. Their offline copies are in the `recommended` profile. |
-| **AI model / language model** | A large file of learned patterns that lets the computer generate text. It can make mistakes; the source links let you check its answers. You can use guide search without it. |
-| **llama.cpp / Ollama** | Programs that run an AI model on your computer. The preparer installs llama.cpp; Ollama is an optional alternative if you already use it. |
-| **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
-| **Python / portable Python** | Python runs the Survival AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
-| **Preparer / profile** | The preparer is the setup tool launched by `prepare-kit`. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
-| **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes below are approximate; leave extra room for the model, software and future updates. |
+See the [Glossary](#glossary) for explanations of the component names and file formats.
 
 ```
  Question ──► search kit guides ─────────────┐
@@ -220,3 +204,21 @@ Corrections with sources, new guides and translations are welcome. Keep a `> Sou
 ## Attribution
 
 This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-sobrevivencia) by Silviano Dalberto Pessi (Ideias Livres Desenvolvimentos) and contributors. This version makes English the default and translates entry points, help, documentation and developer comments. Original license and copyright notices are retained.
+
+## Glossary
+
+| Name | In plain English |
+|---|---|
+| **[Kiwix](https://get.kiwix.org/en/)** | Free software for reading saved copies of websites without internet. This kit uses its small local server, `kiwix-serve`, so your browser and the assistant can open and search those copies. |
+| **ZIM file (`.zim`)** | A compressed package of pages and their images, often an entire website or book collection. Put these files in `zim/`. They hold the reference material; the separate AI model writes answers from retrieved passages. |
+| **Library / snapshot** | A collection saved at a particular time. A date such as `2024-09` means the September 2024 edition. Its pages do not update while you are offline. |
+| **[WikEM](https://wikem.org/wiki/About_WikEM)** | An emergency medicine reference aimed at medical practitioners. The optional copy offered here is from **June 2020** and may contain outdated medical guidance. |
+| **Medical Wikipedia / WikiMed** | Wikipedia articles about medicine and health, collected for offline reading. This is a separate collection from WikEM. The English collection is included in the smallest download profile. |
+| **wikiHow** | Illustrated guides to everyday tasks, repairs and other practical activities. The optional archived editions here are from 2023 or 2024. |
+| **iFixit, Appropedia, Energypedia** | Reference websites covering device repairs, practical sustainable technology, and energy respectively. Their offline copies are in the `recommended` profile. |
+| **AI model / language model** | A large file of learned patterns that lets the computer generate text. It can make mistakes; the source links let you check its answers. You can use guide search without it. |
+| **llama.cpp / Ollama** | Programs that run an AI model on your computer. The preparer installs llama.cpp; Ollama is an optional alternative if you already use it. |
+| **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
+| **Python / portable Python** | Python runs the Survival AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
+| **Preparer / profile** | The preparer is the setup tool launched by `prepare-kit`. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
+| **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes in this README are approximate; leave extra room for the model, software and future updates. |
