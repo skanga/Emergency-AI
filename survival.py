@@ -216,7 +216,7 @@ def cmd_prepare(args, settings):
     from app import prepare
     try:
         return prepare.run(lang=args.lang, model=args.model, zims=args.zims, oses=args.os, python=args.python,
-                           yes=args.yes, search=args.search, skip_tools=args.skip_tools)
+                           yes=args.yes, search=args.search, skip_tools=args.skip_tools, archives=args.archives)
     except (ValueError, OSError) as e:
         print(f"Preparation failed: {e}", file=sys.stderr)
         return 1
@@ -245,6 +245,8 @@ def main():
     pr = sub.add_parser("prepare", help="download model, engines and libraries (requires internet)")
     pr.add_argument("--model", help="model ID in config/models.json or 'none'")
     pr.add_argument("--zims", help="minimal | recommended | full | none")
+    pr.add_argument("--archives", help="optional OLD snapshots: none (default) | all | comma-separated IDs: "
+                    "wikem, wikihow-en, wikihow-es, wikihow-pt; see README for dates and sizes")
     pr.add_argument("--os", help="this | all | comma-separated list (e.g. windows-x86_64,macos-arm64)")
     pr.add_argument("--python", action="store_true", default=None, help="include portable Python")
     pr.add_argument("--yes", action="store_true", help="skip prompts (use defaults)")

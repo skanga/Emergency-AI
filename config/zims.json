@@ -23,10 +23,39 @@
     {"name": "wikipedia_en_all", "lang": "en", "profiles": ["full"], "size_gb": 49.07, "desc": "Full Wikipedia in English (without images)", "variant": "nopic"},
     {"name": "wikivoyage_en_all", "lang": "en", "profiles": ["full"], "size_gb": 1.0, "desc": "Wikivoyage: travel guides", "variant": "maxi"}
   ],
-  "unavailable": [
-    {"name": "wikem_en_all", "lang": "en", "size_gb": 0.05, "desc": "WikEM: emergency medicine", "variant": "maxi", "reason": "Not listed in the official catalog as of 2026-11-12; excluded from automatic profiles."},
-    {"name": "wikihow_en", "lang": "en", "size_gb": 12.0, "desc": "wikiHow: how to do anything (English)", "variant": "maxi", "reason": "Not listed in the official catalog as of 2026-11-12; excluded from automatic profiles."},
-    {"name": "wikihow_es", "lang": "es", "size_gb": 5.0, "desc": "wikiHow in Spanish", "variant": "maxi", "reason": "Not listed in the official catalog as of 2026-11-12; excluded from automatic profiles."},
-    {"name": "wikihow_pt", "lang": "pt", "size_gb": 3.0, "desc": "wikiHow in Portuguese", "variant": "maxi", "reason": "Not listed in the official catalog as of 2026-11-12; excluded from automatic profiles."}
+  "_archives_comment": "Historical snapshots, explicitly selected with --archives; never included in profiles or automatically refreshed. Verified by exact size and embedded ZIM checksum. URLs and headers checked 2026-11-12; full files were not downloaded during that check.",
+  "archives": [
+    {
+      "id": "wikem", "name": "wikem_en_all", "lang": "en",
+      "desc": "WikEM: emergency medicine for clinicians (English)",
+      "snapshot": "2020-06", "size_bytes": 62896704, "size_gb": 0.059,
+      "url": "https://archive.org/download/wikem_en_all_maxi_2020-06.zim/wikem_en_all_maxi_2020-06.zim",
+      "source": "https://archive.org/details/wikem_en_all_maxi_2020-06.zim",
+      "note": "Historical medical reference; may be outdated. Not current clinical guidance."
+    },
+    {
+      "id": "wikihow-en", "name": "wikihow_en", "lang": "en",
+      "desc": "wikiHow: illustrated how-to guides (English)",
+      "snapshot": "2023-03", "size_bytes": 51256446526, "size_gb": 47.736,
+      "url": "https://archive.download.kiwix.org/zim/wikihow/wikihow_en_maxi_2023-03.zim",
+      "source": "https://archive.download.kiwix.org/zim/wikihow/",
+      "note": "Historical snapshot; instructions may be outdated."
+    },
+    {
+      "id": "wikihow-es", "name": "wikihow_es", "lang": "es",
+      "desc": "wikiHow: illustrated how-to guides (Spanish)",
+      "snapshot": "2024-09", "size_bytes": 27175590002, "size_gb": 25.309,
+      "url": "https://archive.download.kiwix.org/zim/wikihow/wikihow_es_maxi_2024-09.zim",
+      "source": "https://archive.download.kiwix.org/zim/wikihow/",
+      "note": "Historical snapshot; instructions may be outdated."
+    },
+    {
+      "id": "wikihow-pt", "name": "wikihow_pt", "lang": "pt",
+      "desc": "wikiHow: illustrated how-to guides (Portuguese)",
+      "snapshot": "2024-10", "size_bytes": 11146589337, "size_gb": 10.381,
+      "url": "https://archive.download.kiwix.org/zim/wikihow/wikihow_pt_maxi_2024-10.zim",
+      "source": "https://archive.download.kiwix.org/zim/wikihow/",
+      "note": "Historical snapshot; instructions may be outdated."
+    }
   ]
 }

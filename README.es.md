@@ -48,9 +48,12 @@ cd Survival-AI
 El preparador pregunta:
 
 1. **Modelo de IA:** `light` (1 GB, 4 GB de RAM), `standard` (2 GB, 8 GB de RAM — recomendado), `strong` (4,7 GB, 16 GB de RAM).
-2. **Bibliotecas Kiwix:** `minimal` (~3–5 GB), `recommended` (~25–40 GB) o `full` (~77 GiB, Wikipedia sin im?genes).
-3. **Sistemas:** solo esta computadora, o **Windows + Linux + macOS** (kit universal para pendrive).
-4. **Python portátil:** para que el kit abra en computadoras sin Python.
+2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) o `full` (~77 GiB, Wikipedia sin imágenes).
+3. **Bibliotecas archivadas opcionales:** copias antiguas de WikEM y wikiHow, con fecha y tamaño. Ninguna se selecciona de forma predeterminada, tampoco en `full`.
+4. **Sistemas:** solo esta computadora, o **Windows + Linux + macOS** (kit universal para pendrive).
+5. **Python portátil:** para que el kit abra en computadoras sin Python.
+
+**Kiwix** permite leer sitios guardados sin internet; un archivo **ZIM** contiene esas páginas. **WikEM** es una referencia de medicina de urgencias para profesionales; la copia opcional es de **junio de 2020** y puede estar desactualizada. **WikiMed** reúne artículos médicos de Wikipedia y es una colección distinta. **wikiHow** contiene guías ilustradas para tareas prácticas. Las copias archivadas son opcionales mediante `--archives`; consulta [fechas, tamaños y comandos](README.md#optional-archived-libraries).
 
 Sin preguntas:
 

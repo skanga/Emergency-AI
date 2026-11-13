@@ -5,11 +5,13 @@ and download article content as context for the AI.
 """
 
 import html
+import os
 import re
 import urllib.parse
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 
+from .config import CONFIG_DIR, load_json
 from .net import get_text, is_up
 
 LANG3 = {"pt": "por", "en": "eng", "es": "spa"}
@@ -85,12 +87,21 @@ class KiwixClient:
             xml = get_text(self.base_url + "/catalog/v2/entries?count=-1", timeout=5)
             root = ET.fromstring(xml)
             ns = {"a": "http://www.w3.org/2005/Atom"}
+            archives = load_json(os.path.join(CONFIG_DIR, "zims.json"), {}).get("archives", [])
             for entry in root.findall("a:entry", ns):
                 name = (entry.findtext("a:name", default="", namespaces=ns) or "").strip()
                 title = (entry.findtext("a:title", default="", namespaces=ns) or "").strip()
                 lang = (entry.findtext("a:language", default="", namespaces=ns) or "").strip()
                 if name:
-                    books.append({"name": name, "title": title or name, "lang": lang})
+                    title = title or name
+                    if any(name == a["name"] or name.startswith(a["name"] + "_") for a in archives):
+                        date = re.search(r"_(\d{4}-\d{2})(?:\.zim)?$", name)
+                        if not date:
+                            issued = entry.findtext("{http://purl.org/dc/terms/}issued", default="").strip()
+                            date = re.match(r"(\d{4}-(?:0[1-9]|1[0-2]))(?:-\d{2})?(?:T.*)?$", issued)
+                        label = "ARCHIVED " + date[1] if date else "ARCHIVED; snapshot date unknown"
+                        title += f" [{label}; may be outdated]"
+                    books.append({"name": name, "title": title, "lang": lang})
         except Exception:
             pass
         self._books = books

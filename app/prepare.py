@@ -65,7 +65,7 @@ T = {
         "os_this": "Só este computador ({p})",
         "os_all": "Windows + Linux + macOS (kit universal para pendrive)",
         "py_q": "Incluir Python portátil (para computadores sem Python instalado)? [S/n] ",
-        "total": "Download estimado: {gb:.1f} GB. Espaço livre no disco: {free:.1f} GB.",
+        "total": "Download estimado: {gb:.1f} GiB. Espaço livre no disco: {free:.1f} GiB.",
         "confirm": "Continuar? [S/n] ",
         "choice": "Escolha [{d}]: ",
         "partial": "Alguns itens falharam (veja acima). Verifique a internet e rode o preparador de novo: ele retoma de onde parou.",
@@ -87,7 +87,7 @@ T = {
         "os_this": "Only this computer ({p})",
         "os_all": "Windows + Linux + macOS (universal USB kit)",
         "py_q": "Include portable Python (for computers without Python)? [Y/n] ",
-        "total": "Estimated download: {gb:.1f} GB. Free disk space: {free:.1f} GB.",
+        "total": "Estimated download: {gb:.1f} GiB. Free disk space: {free:.1f} GiB.",
         "confirm": "Continue? [Y/n] ",
         "choice": "Choose [{d}]: ",
         "partial": "Some items failed (see above). Check your connection and run the preparer again: it resumes where it stopped.",
@@ -109,7 +109,7 @@ T = {
         "os_this": "Solo esta computadora ({p})",
         "os_all": "Windows + Linux + macOS (kit universal para pendrive)",
         "py_q": "¿Incluir Python portátil (para computadoras sin Python)? [S/n] ",
-        "total": "Descarga estimada: {gb:.1f} GB. Espacio libre en disco: {free:.1f} GB.",
+        "total": "Descarga estimada: {gb:.1f} GiB. Espacio libre en disco: {free:.1f} GiB.",
         "confirm": "¿Continuar? [S/n] ",
         "choice": "Elige [{d}]: ",
         "partial": "Algunos elementos fallaron (ver arriba). Revisa la conexión y ejecuta el preparador de nuevo: continúa donde se detuvo.",
@@ -148,9 +148,33 @@ def _file_valid(path, expected_size=None, sha256=None):
     return True
 
 
-def download(url, dest, expected_size=None, sha256=None, retries=5):
+def _zim_checksum_valid(path):
+    """Check the ZIM header and embedded MD5 for accidental corruption, not authenticity."""
+    with open(path, "rb") as f:
+        header = f.read(80)
+        if (len(header) != 80 or header[:4] != b"ZIM\x04"
+                or int.from_bytes(header[4:6], "little") not in (5, 6)
+                or int.from_bytes(header[56:64], "little") != 80):
+            return False
+        remaining = int.from_bytes(header[72:80], "little")
+        if remaining < 80 or remaining + 16 != os.path.getsize(path):
+            return False
+        print("  Checking ZIM integrity (reads the whole file; large archives may take several minutes)...")
+        digest = hashlib.md5()
+        f.seek(0)
+        while remaining:
+            block = f.read(min(1 << 20, remaining))
+            if not block:
+                return False
+            digest.update(block)
+            remaining -= len(block)
+        return digest.digest() == f.read(16)
+
+
+def download(url, dest, expected_size=None, sha256=None, retries=5, verify_zim=False):
     """Download with resume support (.part). Prefer curl when available; otherwise use urllib."""
-    if (expected_size is not None or sha256) and _file_valid(dest, expected_size, sha256):
+    if ((expected_size is not None or sha256 or verify_zim) and _file_valid(dest, expected_size, sha256)
+            and (not verify_zim or _zim_checksum_valid(dest))):
         return dest
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     part = dest + ".part"
@@ -181,6 +205,9 @@ def download(url, dest, expected_size=None, sha256=None, retries=5):
     if sha256 and not _file_valid(part, expected_size, sha256):
         os.remove(part)
         raise RuntimeError("sha256 mismatch")
+    if verify_zim and not _zim_checksum_valid(part):
+        os.remove(part)
+        raise RuntimeError("ZIM header or embedded checksum mismatch")
     os.replace(part, dest)
     return dest
 
@@ -485,6 +512,21 @@ def get_zim(entry, catalog_url, tr):
         return False
 
 
+def get_archive(entry, tr):
+    """Install a fixed historical edition without removing other editions."""
+    filename = os.path.basename(urllib.parse.urlsplit(entry["url"]).path)
+    print(f"  [ARCHIVED {entry['snapshot']}] {entry['desc']}")
+    print("  " + entry["note"])
+    try:
+        dest = os.path.join(ZIM_DIR, filename)
+        download(entry["url"], dest, expected_size=entry["size_bytes"], verify_zim=True)
+        print(f"  Ready: {filename}")
+        return True
+    except Exception as e:
+        print(tr["fail"].format(f=filename, e=e))
+        return False
+
+
 # ---------------------------------------------------------------- interface
 def _ask(prompt, options, default, tr):
     print("\n" + prompt)
@@ -511,7 +553,8 @@ def _yes(prompt, tr):
         return True
 
 
-def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, search=None, skip_tools=False):
+def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, search=None, skip_tools=False,
+        archives=None):
     tr = T.get(lang, T["en"])
     models_cfg = load_json(os.path.join(CONFIG_DIR, "models.json"), {})
     zims_cfg = load_json(os.path.join(CONFIG_DIR, "zims.json"), {})
@@ -531,7 +574,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     print("=" * 64)
     print(tr["need_net"])
 
-    interactive = model is None and zims is None and oses is None and not yes
+    interactive = model is None and zims is None and oses is None and archives is None and not yes
 
     # Model
     if model is None:
@@ -559,6 +602,24 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     if zims != "none" and (zims not in zims_cfg["profiles"] or not chosen_zims):
         raise ValueError("Unknown or empty ZIM profile: " + str(zims))
 
+    # Archived snapshots are always opt-in, including with --yes and --zims full.
+    archive_entries = zims_cfg.get("archives", [])
+    if archives is None:
+        if interactive and archive_entries:
+            opts = [("none", "None (recommended)")]
+            opts += [(a["id"], f"[ARCHIVED {a['snapshot']}] {a['desc']} ({a['size_gb']:.1f} GiB)")
+                     for a in archive_entries]
+            opts.append(("all", f"All archived snapshots ({sum(a['size_gb'] for a in archive_entries):.1f} GiB)"))
+            archives = _ask("Optional archived libraries (may be outdated; WikEM is not current clinical guidance):",
+                            opts, 1, tr)
+        else:
+            archives = "none"
+    archive_ids = [] if archives == "none" else ([a["id"] for a in archive_entries] if archives == "all"
+                                               else [a.strip() for a in archives.split(",")])
+    if any(a not in {entry["id"] for entry in archive_entries} for a in archive_ids):
+        raise ValueError("Unknown archive selection: " + str(archives))
+    chosen_archives = [a for a in archive_entries if a["id"] in archive_ids]
+
     # Systems
     if oses is None:
         if interactive:
@@ -575,6 +636,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         python = _yes(tr["py_q"], tr) if interactive else (oses == "all")
 
     est = (chosen_model["size_gb"] if chosen_model else 0) + sum(z.get("size_gb", 0) for z in chosen_zims)
+    est += sum(a["size_bytes"] for a in chosen_archives) / 1024 ** 3
     est += 0.06 * len(platforms) * (2 if python else 1) + 0.02 * len(platforms)
     free = shutil.disk_usage(os.path.dirname(MODELS_DIR)).free / 1024 ** 3
     print("\n" + tr["total"].format(gb=est, free=free))
@@ -592,7 +654,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
             print(f"\n[{plat}]")
             if chosen_model:
                 record("llama.cpp/" + plat, get_llama, plat, tr)
-            if chosen_zims:
+            if chosen_zims or chosen_archives:
                 record("kiwix-tools/" + plat, get_kiwix_tools, plat, tr)
             if python:
                 record("python/" + plat, get_python, plat, tr)
@@ -604,6 +666,11 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         os.makedirs(ZIM_DIR, exist_ok=True)
         for z in chosen_zims:
             record("zim/" + z["name"], get_zim, z, catalog, tr)
+    if chosen_archives:
+        print("\n[Archived Kiwix ZIM snapshots - may be outdated]")
+        os.makedirs(ZIM_DIR, exist_ok=True)
+        for entry in chosen_archives:
+            record(f"archive/{entry['id']}/{entry['snapshot']}", get_archive, entry, tr)
 
     print("\n" + "=" * 64)
     ok = sum(1 for r in results if r["ok"])
@@ -617,6 +684,8 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     with open(manifest + ".tmp", "w", encoding="utf-8") as f:
         json.dump({"prepared": time.strftime("%Y-%m-%d %H:%M"), "platforms": platforms,
                    "model": chosen_model["file"] if chosen_model else None,
-                    "zim_profile": zims, "ready": ok == len(results), "components": results}, f, indent=2)
+                   "zim_profile": zims,
+                   "archives": [{"id": a["id"], "snapshot": a["snapshot"], "url": a["url"]} for a in chosen_archives],
+                   "ready": ok == len(results), "components": results}, f, indent=2)
     os.replace(manifest + ".tmp", manifest)
     return 0 if ok == len(results) else 1

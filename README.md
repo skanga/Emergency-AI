@@ -18,15 +18,35 @@ If the internet, power and services go down, this kit keeps working on a laptop 
 
 ## How it works
 
+The kit combines **documents to read**, **software to search them**, and an optional **AI model to write answers**. You download the extra parts while you have internet, then use the saved copies offline. The included survival guides work without downloading a model or extra libraries.
+
+### What do these names mean?
+
+| Name | In plain English |
+|---|---|
+| **[Kiwix](https://get.kiwix.org/en/)** | Free software for reading saved copies of websites without internet. This kit uses its small local server, `kiwix-serve`, so your browser and the assistant can open and search those copies. |
+| **ZIM file (`.zim`)** | A compressed package of pages and their images, often an entire website or book collection. Put these files in `zim/`. They hold the reference material; the separate AI model writes answers from retrieved passages. |
+| **Library / snapshot** | A collection saved at a particular time. A date such as `2024-09` means the September 2024 edition. Its pages do not update while you are offline. |
+| **[WikEM](https://wikem.org/wiki/About_WikEM)** | An emergency medicine reference aimed at medical practitioners. The optional copy offered here is from **June 2020** and may contain outdated medical guidance. |
+| **Medical Wikipedia / WikiMed** | Wikipedia articles about medicine and health, collected for offline reading. This is a separate collection from WikEM. The English collection is included in the smallest download profile. |
+| **wikiHow** | Illustrated guides to everyday tasks, repairs and other practical activities. The optional archived editions here are from 2023 or 2024. |
+| **iFixit, Appropedia, Energypedia** | Reference websites covering device repairs, practical sustainable technology, and energy respectively. Their offline copies are in the `recommended` profile. |
+| **AI model / language model** | A large file of learned patterns that lets the computer generate text. It can make mistakes; the source links let you check its answers. You can use guide search without it. |
+| **llama.cpp / Ollama** | Programs that run an AI model on your computer. The preparer installs llama.cpp; Ollama is an optional alternative if you already use it. |
+| **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
+| **Python / portable Python** | Python runs the Survival AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
+| **Preparer / profile** | The preparer is the setup tool launched by `prepare-kit`. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
+| **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes below are approximate; leave extra room for the model, software and future updates. |
+
 ```
- Question ──► search kit guides (BM25) ──────┐
+ Question ──► search kit guides ─────────────┐
           └─► search Kiwix (.zim files) ──────┼─► local language model ──► answer with [1] [2] sources
                                               └─► (no model? shows the most relevant passages)
 ```
 
 | Part | What it is | Where |
 |---|---|---|
-| `survival.py` + `app/` | The AI (Python standard library only, no `pip install`) | repository |
+| `survival.py` + `app/` | Application and search logic (Python standard library only, no `pip install`) | repository |
 | `knowledge/pt|en|es/` | Survival guides in Markdown | repository |
 | `knowledge/extra/` | **Your** `.md`/`.txt` documents (searched and cited by the AI) | repository |
 | `runtime/llama.cpp/` | Engine that runs the AI model | downloaded by the preparer |
@@ -59,14 +79,15 @@ Each preparation run checks for the newest available llama.cpp build for the sel
 
 Preparation verifies model checksums and Kiwix metalink sizes/checksums. A failed ZIM update keeps the previous library, and interrupted downloads remain available for retry. Invalid selections and failed preparation return a nonzero exit code; `runtime/kit-info.json` records the result of each requested component.
 
-The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are currently unavailable in the official catalog and are excluded from automatic downloads; their previous entries are recorded in `config/zims.json`. Profile sizes below exclude the model and runtimes and change with upstream releases.
+The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are absent from the current official catalog (checked November 12, 2026), but older copies are available as [optional archived libraries](#optional-archived-libraries). Archives are excluded from every profile, including `full`. Profile sizes below exclude the model and runtimes and change with upstream releases.
 
 The preparer asks for:
 
 1. **AI model:** `light` (light, 1 GB, 4 GB RAM), `standard` (default, 2 GB, 8 GB RAM — recommended), `strong` (strong, 4.7 GB, 16 GB RAM).
-2. **Kiwix libraries:** `minimal` (~3–5 GB), `recommended` (~25–40 GB) or `full` (~77 GiB, Wikipedia without images).
-3. **Systems:** this computer only, or **Windows + Linux + macOS** (universal USB kit).
-4. **Portable Python:** so the kit opens on computers without Python.
+2. **Kiwix libraries:** `minimal` (~3 GiB), `recommended` (~8 GiB) or `full` (~77 GiB, Wikipedia without images).
+3. **Optional archived libraries:** older WikEM/wikiHow snapshots; **None** is the default. Each option shows its date and size.
+4. **Systems:** this computer only, or **Windows + Linux + macOS** (universal USB kit).
+5. **Portable Python:** so the kit opens on computers without Python.
 
 Non-interactive:
 
@@ -89,6 +110,29 @@ Your browser opens <http://127.0.0.1:8090>. Switch language anytime with the PT/
 Copy **the whole folder** to a USB drive or external disk formatted as **exFAT** (works on all three systems and supports files over 4 GB).
 
 ---
+
+## Optional archived libraries
+
+These are **historical snapshots**, separate from the current catalog downloads. They are never selected by `--yes` or any `--zims` profile. Setup, the saved kit manifest, and the assistant's source citations identify archived libraries and their dates. If a library has no date in its name or publication metadata, citations say that its snapshot date is unknown.
+
+| Selection ID | Library | Archived edition | Download size | Hosted by |
+|---|---|---|---|---|
+| `wikem` | WikEM, English | **June 2020** | 60 MiB | [Internet Archive](https://archive.org/details/wikem_en_all_maxi_2020-06.zim) |
+| `wikihow-en` | wikiHow, English | **March 2023** | 47.7 GiB | [Kiwix archive](https://archive.download.kiwix.org/zim/wikihow/) |
+| `wikihow-es` | wikiHow, Spanish | **September 2024** | 25.3 GiB | [Kiwix archive](https://archive.download.kiwix.org/zim/wikihow/) |
+| `wikihow-pt` | wikiHow, Portuguese | **October 2024** | 10.4 GiB | [Kiwix archive](https://archive.download.kiwix.org/zim/wikihow/) |
+
+**WikEM is an old medical reference for clinicians, not current clinical guidance.** All four collections may contain outdated instructions. The dates describe the saved editions, not when you download them. Selecting them again keeps those fixed editions; it does not refresh their content.
+
+To add only the archived WikEM copy to an existing kit:
+
+```bash
+python survival.py prepare --model none --zims none --archives wikem --os this --yes
+```
+
+Use `--archives wikem,wikihow-en` for selected archives, or `--archives all` for all four (about **83.5 GiB**). Omit `--archives`, or use `--archives none`, to skip them. Skipping an archive does not remove a previously downloaded copy; move its `.zim` file out of `zim/` if you no longer want it searched. Extra archived editions do not replace other installed editions.
+
+Archive downloads resume after interruptions. Before a file becomes available to Kiwix, the preparer checks its exact size, ZIM header and embedded MD5 checksum. These checks detect corruption; the embedded checksum does not authenticate the publisher. No published SHA-256 was found for these archived copies. Checking a large file can take several minutes. The direct URLs, byte counts, dates and source pages are recorded in [config/zims.json](config/zims.json).
 
 ## Other ways to use it
 
