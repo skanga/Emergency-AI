@@ -87,8 +87,10 @@ class Ollama:
             names = [m.get("name", "") for m in data.get("models", [])]
             if not names:
                 return False
-            if self.model not in names and not any(n.split(":")[0] == self.model.split(":")[0] for n in names):
-                self.model = names[0]
+            requested = self.model if ":" in self.model.rsplit("/", 1)[-1] else self.model + ":latest"
+            if requested not in names:
+                return False
+            self.model = requested
             return True
         except Exception:
             return False

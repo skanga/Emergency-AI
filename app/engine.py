@@ -5,7 +5,7 @@ import time
 
 from . import i18n
 from .kiwix import KiwixClient
-from .knowledge import KnowledgeBase, best_passages, strip_accents, tokenize
+from .knowledge import KnowledgeBase, strip_accents, tokenize
 from .llm import LLMError, detect_llm
 
 
@@ -64,24 +64,23 @@ class Engine:
             try:
                 for r in self.kiwix.search(question, lang, limit=int(self.settings.get("kiwix_results", 3))):
                     text = self.kiwix.article_text(r["link"])
-                    passage = best_passages(text, query, max_chars=1500) if text else r["snippet"]
                     sources.append({
                         "kind": "kiwix", "doc_title": r["book"], "section": r["title"],
-                        "link": r["link"], "text": passage, "book_name": r["book_name"],
+                        "link": r["link"], "text": text, "book_name": r["book_name"],
                     })
             except Exception:
                 pass
-        # Number and trim sources to fit the model context.
+        # Keep complete sections. Never present a prefix of an instruction as an answer.
         budget = int(self.settings.get("context_chars", 7000))
         out = []
         for s in sources:
             text = s["text"]
-            if budget <= 300:
-                break
-            if len(text) > budget:
-                text = text[:budget].rsplit(" ", 1)[0] + " …"
-            budget -= len(text)
-            s = dict(s, text=text, n=len(out) + 1)
+            omitted = not text or len(text) > budget
+            if omitted:
+                text = i18n.READ_FULL_SOURCE[lang]
+            else:
+                budget -= len(text)
+            s = dict(s, text=text, n=len(out) + 1, context_omitted=omitted)
             out.append(s)
         return out
 
@@ -94,6 +93,8 @@ class Engine:
     def build_messages(self, question, lang, sources, history=None):
         lines = []
         for s in sources:
+            if s.get("context_omitted"):
+                continue
             label = i18n.KIT_LABEL[lang] if s["kind"] == "kit" else i18n.KIWIX_LABEL[lang]
             lines.append(f"[{s['n']}] {label}: {s['doc_title']} — {s['section']}\n{s['text']}")
         ctx = "\n\n".join(lines) if lines else "(—)"
@@ -111,8 +112,6 @@ class Engine:
         parts = [i18n.NO_LLM_NOTE[lang], ""]
         for s in sources[:3]:
             text = s["text"]
-            if len(text) > 1600:
-                text = text[:1600].rsplit(" ", 1)[0] + " …"
             parts.append(f"### [{s['n']}] {s['doc_title']} › {s['section']}\n\n{text}\n")
         return "\n".join(parts)
 
@@ -122,7 +121,7 @@ class Engine:
         t0 = time.time()
         sources = self.retrieve(question, lang, history, use_kiwix)
         yield "sources", sources
-        llm = self.llm() if use_llm else None
+        llm = self.llm() if use_llm and any(not s.get("context_omitted") for s in sources) else None
         mode = "llm" if llm else "search"
         if llm:
             messages = self.build_messages(question, lang, sources, history)

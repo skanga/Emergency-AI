@@ -14,7 +14,9 @@
         "pt": "Leve: roda em PCs fracos e com 4 GB de RAM. Respostas mais simples.",
         "en": "Light: runs on weak PCs with 4 GB RAM. Simpler answers.",
         "es": "Ligero: funciona en PCs débiles con 4 GB de RAM. Respuestas más simples."
-      }
+      },
+      "size_bytes": 986048768,
+      "sha256": "1adf0b11065d8ad2e8123ea110d1ec956dab4ab038eab665614adba04b6c3370"
     },
     {
       "id": "standard",
@@ -28,7 +30,9 @@
         "pt": "Padrão: bom equilíbrio para notebooks com 8 GB de RAM. Fala bem português, inglês e espanhol.",
         "en": "Default: good balance for laptops with 8 GB RAM. Good in Portuguese, English and Spanish.",
         "es": "Estándar: buen equilibrio para portátiles con 8 GB de RAM. Habla bien portugués, inglés y español."
-      }
+      },
+      "size_bytes": 1929903264,
+      "sha256": "9c9f56a391a3abbd5b89d0245bf6106081bcc3173119d4229235dd9d23253f94"
     },
     {
       "id": "strong",
@@ -42,7 +46,9 @@
         "pt": "Forte: respostas melhores, precisa de 16 GB de RAM e é mais lento sem placa de vídeo.",
         "en": "Strong: better answers, needs 16 GB RAM and is slower without a GPU.",
         "es": "Fuerte: mejores respuestas, necesita 16 GB de RAM y es más lento sin tarjeta gráfica."
-      }
+      },
+      "size_bytes": 4683074240,
+      "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423"
     },
     {
       "id": "llama3b",
@@ -56,7 +62,9 @@
         "pt": "Alternativa ao padrão (Meta Llama 3.2).",
         "en": "Alternative to the default (Meta Llama 3.2).",
         "es": "Alternativa al estándar (Meta Llama 3.2)."
-      }
+      },
+      "size_bytes": 2019377696,
+      "sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff"
     }
   ]
 }

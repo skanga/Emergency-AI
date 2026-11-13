@@ -8,7 +8,7 @@ If the internet, power and services go down, this kit keeps working on a laptop 
 
 - 📚 **Practical guides with cited sources** (EN, PT, ES): water, fire, shelter, food, gardening and livestock, foraging/fishing/hunting, **first aid and medicine**, hygiene and homemade soap, **alcohol** (fermentation, distillation, antiseptic and fuel), solar power, radio and navigation, tools and knots, mental health and community, and checklists for 72 hours and **1 year**.
 - 🤖 **Local AI** that answers any question in natural language, **citing its sources** — it runs on your own computer (llama.cpp or Ollama); nothing goes to the internet.
-- 🌐 **Kiwix offline libraries**: medical Wikipedia, post-disaster manuals, *Where There Is No Doctor*, wikiHow, iFixit and more — the AI searches them too.
+- 🌐 **Kiwix offline libraries**: medical Wikipedia, post-disaster manuals, *Where There Is No Doctor*, iFixit, Appropedia and more — the AI searches them too.
 - 📱 **Web interface** in your browser, shareable over the local network (other phones connect via Wi-Fi, even with no internet).
 - 🔍 **No-AI mode**: even without a model, guide search works on any PC with Python.
 
@@ -57,10 +57,14 @@ cd Survival-AI
 
 Each preparation run checks for the newest available llama.cpp build for the selected platforms, upgrades older installations, and skips re-downloading the current build. Normal offline startup never checks for updates.
 
+Preparation verifies model checksums and Kiwix metalink sizes/checksums. A failed ZIM update keeps the previous library, and interrupted downloads remain available for retry. Invalid selections and failed preparation return a nonzero exit code; `runtime/kit-info.json` records the result of each requested component.
+
+The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are currently unavailable in the official catalog and are excluded from automatic downloads; their previous entries are recorded in `config/zims.json`. Profile sizes below exclude the model and runtimes and change with upstream releases.
+
 The preparer asks for:
 
 1. **AI model:** `light` (light, 1 GB, 4 GB RAM), `standard` (default, 2 GB, 8 GB RAM — recommended), `strong` (strong, 4.7 GB, 16 GB RAM).
-2. **Kiwix libraries:** `minimal` (~3–5 GB), `recommended` (~25–40 GB) or `full` (100+ GB, full Wikipedia).
+2. **Kiwix libraries:** `minimal` (~3–5 GB), `recommended` (~25–40 GB) or `full` (~77 GiB, Wikipedia without images).
 3. **Systems:** this computer only, or **Windows + Linux + macOS** (universal USB kit).
 4. **Portable Python:** so the kit opens on computers without Python.
 
@@ -122,11 +126,15 @@ To translate or expand the bundled guides, edit `knowledge/<language>/` and keep
 | `kiwix_url` | `http://127.0.0.1:8092` | Kiwix server address |
 | `search_results` | `5` | Guide passages sent to the AI |
 
+Ollama must have the exact configured model tag installed. An untagged name resolves to `:latest`; an absent model falls back to guide search.
+
 For example, to select a different Ollama model:
 
 ```json
 { "ollama_model": "llama3.2:3b" }
 ```
+
+The server limits request bodies to 64 KiB, accepts one answer stream at a time, and returns HTTP 503 while another answer is running. Share only with trusted devices: LAN clients can read all indexed documents, including `knowledge/extra/`.
 
 With `--host 0.0.0.0`, devices connected to the same router can open the address printed in the terminal, such as `http://192.168.0.10:8090`, even without internet.
 
@@ -144,11 +152,18 @@ Model IDs are `light`, `standard`, `strong` and `llama3b`. Library profiles are 
 - **With AI:** 4 GB RAM (light model), 8 GB recommended; x86-64 CPU with AVX2 or Apple Silicon/ARM64. No GPU needed.
 - **Disk:** 3 GB (minimal kit) to 100+ GB (full kit).
 
+## Retrieval behavior
+
+Search answers preserve complete guide sections. A section or Kiwix article that cannot fit the context budget is linked for reading in full instead of displaying a cut-off procedure. Search previews remain short; open the source for the complete instructions.
+
 ## Tests
 
 ```bash
-python -m unittest discover -s tests
+python -B -m unittest discover -s tests
+node --check web/app.js
 ```
+
+GitHub Actions runs the Python tests on Windows, Linux and macOS with Python 3.11 and 3.14. The tests use temporary artifacts and mock services; they do not download full models or ZIM libraries.
 
 ## Licenses
 

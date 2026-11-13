@@ -126,8 +126,8 @@ def slugify(text):
     return text or "section"
 
 
-def split_markdown(md_text, max_chars=2600):
-    """Split a guide into (doc_title, [(section, anchor, text)])."""
+def split_markdown(md_text):
+    """Keep each level-two section intact, including its warnings and references."""
     lines = md_text.splitlines()
     title = ""
     sections = []
@@ -156,26 +156,7 @@ def split_markdown(md_text, max_chars=2600):
         if not body:
             continue
         anchor = slugify(sec_title)
-        if len(body) <= max_chars:
-            result.append((sec_title, anchor, body))
-            continue
-        # Split large sections at ### headings or paragraphs.
-        parts = re.split(r"\n(?=### )", body)
-        acc = ""
-        for part in parts:
-            if acc and len(acc) + len(part) > max_chars:
-                result.append((sec_title, anchor, acc.strip()))
-                acc = ""
-            if len(part) > max_chars:
-                for para in part.split("\n\n"):
-                    if acc and len(acc) + len(para) > max_chars:
-                        result.append((sec_title, anchor, acc.strip()))
-                        acc = ""
-                    acc += para + "\n\n"
-            else:
-                acc += part + "\n"
-        if acc.strip():
-            result.append((sec_title, anchor, acc.strip()))
+        result.append((sec_title, anchor, body))
     return title, result
 
 

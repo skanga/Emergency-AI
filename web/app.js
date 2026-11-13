@@ -216,8 +216,8 @@
     guides.forEach((g, idx) => {
       const d = document.createElement("details");
       const num = g.extra ? "+" : String(idx).padStart(2, "0");
-      d.innerHTML = `<summary data-guide="${g.id}"><span class="n">${num}</span><span>${esc(g.title)}</span></summary>` +
-        g.sections.map((s) => `<a href="#" data-guide="${g.id}" data-anchor="${s.anchor}">${esc(s.title)}</a>`).join("");
+      d.innerHTML = `<summary data-guide="${esc(g.id)}"><span class="n">${num}</span><span>${esc(g.title)}</span></summary>` +
+        g.sections.map((s) => `<a href="#" data-guide="${esc(g.id)}" data-anchor="${esc(s.anchor)}">${esc(s.title)}</a>`).join("");
       toc.appendChild(d);
     });
   }
@@ -231,7 +231,7 @@
     $("#chatView").classList.add("hidden");
     $("#guideView").classList.remove("hidden");
     closeSide();
-    window.history.replaceState(null, "", `?lang=${lang}#${id}${anchor ? "/" + anchor : ""}`);
+    window.history.replaceState(null, "", `?lang=${lang}#${encodeURIComponent(id)}${anchor ? "/" + encodeURIComponent(anchor) : ""}`);
     requestAnimationFrame(() => {
       const el = anchor && document.getElementById(anchor);
       if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("flash"); }
@@ -265,7 +265,7 @@
       if (s.kind === "kiwix") {
         return `<a class="src" id="src-${s.n}" href="/kiwix${esc(s.link)}" target="_blank" rel="noopener"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kiwix")}</span></a>`;
       }
-      return `<a class="src" id="src-${s.n}" href="#" data-guide="${s.doc_id}" data-anchor="${s.anchor}"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kit")}</span></a>`;
+      return `<a class="src" id="src-${s.n}" href="#" data-guide="${esc(s.doc_id)}" data-anchor="${esc(s.anchor)}"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kit")}</span></a>`;
     }).join("");
     container.appendChild(box);
   }
@@ -338,7 +338,7 @@
     if (!q.trim()) { box.innerHTML = ""; return; }
     const res = await api(`/api/search?lang=${lang}&k=8&q=${encodeURIComponent(q)}`);
     box.innerHTML = res.length
-      ? res.map((r) => `<a href="#" data-guide="${r.doc_id}" data-anchor="${r.anchor}">${esc(r.section)}<small>${esc(r.doc_title)}</small></a>`).join("")
+      ? res.map((r) => `<a href="#" data-guide="${esc(r.doc_id)}" data-anchor="${esc(r.anchor)}">${esc(r.section)}<small>${esc(r.doc_title)}</small></a>`).join("")
       : `<small style="color:var(--muted);padding:8px;display:block">${t("noResults")}</small>`;
   }
 
@@ -407,8 +407,12 @@
   // ---------------- initialization ----------------
   applyLang();
   loadGuides().then(() => {
-    const h = location.hash.slice(1);
-    if (h) { const [id, anchor] = h.split("/"); openGuide(id, anchor); }
+    let h;
+    try { h = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+    // Match the longest document ID, including legacy unescaped nested bookmarks.
+    const guide = guides.filter((g) => h === g.id || h.startsWith(g.id + "/"))
+      .sort((a, b) => b.id.length - a.id.length)[0];
+    if (guide) openGuide(guide.id, h.slice(guide.id.length + 1));
   });
   loadStatus();
   setInterval(loadStatus, 20000);

@@ -81,3 +81,8 @@ MEDICAL_WORDS = (
     "sangre", "herid", "quemad", "fiebre", "medicament", "mordedura", "serpiente", "alacran", "alergi",
     "atragant", "deshidrat", "hipoterm", "infecc", "dolor", "convulsi", "desmay",
 )
+READ_FULL_SOURCE = {
+    "en": "Open the full source below. This section is unavailable or too long to include safely as a complete passage.",
+    "pt": "Abra a fonte completa abaixo. Esta seção está indisponível ou é longa demais para ser incluída na íntegra.",
+    "es": "Abra la fuente completa abajo. Esta sección no está disponible o es demasiado larga para incluirla completa.",
+}

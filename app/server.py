@@ -3,7 +3,7 @@
 import json
 import mimetypes
 import os
-import posixpath
+import threading
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -15,10 +15,46 @@ mimetypes.add_type("application/javascript", ".js")
 mimetypes.add_type("text/css", ".css")
 mimetypes.add_type("image/svg+xml", ".svg")
 
+MAX_BODY = 64 * 1024
+
+
+class BoundedHTTPServer(ThreadingHTTPServer):
+    """Bound open request threads as well as the more expensive answer stream."""
+    daemon_threads = True
+
+    def __init__(self, *args, **kwargs):
+        self.slots = threading.BoundedSemaphore(16)
+        super().__init__(*args, **kwargs)
+
+    def process_request(self, request, client_address):
+        if not self.slots.acquire(blocking=False):
+            try:
+                request.settimeout(1)
+                request.sendall(b"HTTP/1.0 503 Service Unavailable\r\nContent-Length: 0\r\nRetry-After: 2\r\n\r\n")
+            except OSError:
+                pass
+            finally:
+                self.shutdown_request(request)
+            return
+        try:
+            super().process_request(request, client_address)
+        except Exception:
+            self.slots.release()
+            raise
+
+    def process_request_thread(self, request, client_address):
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self.slots.release()
+
 
 def make_handler(engine, settings):
+    answer_slot = threading.BoundedSemaphore(1)
+
     class Handler(BaseHTTPRequestHandler):
-        server_version = "IA-da-Sobrevivencia/" + __version__
+        server_version = "Survival-AI/" + __version__
+        timeout = 15
 
         def log_message(self, fmt, *args):  # quiet
             pass
@@ -63,11 +99,20 @@ def make_handler(engine, settings):
                     return self._send(200, {"id": q.get("id"), "markdown": md})
                 if path == "/api/search":
                     lang = self._lang(q)
+                    try:
+                        limit = int(q.get("k", 10))
+                    except ValueError:
+                        return self._send(400, {"error": "invalid search limit"})
+                    if not 1 <= limit <= 50 or len(q.get("q", "")) > 2000:
+                        return self._send(400, {"error": "invalid search parameters"})
                     res = [ch.to_dict(score=s, max_chars=400)
-                           for s, ch in engine.kb.search(q.get("q", ""), lang, k=int(q.get("k", 10)))]
+                           for s, ch in engine.kb.search(q.get("q", ""), lang, k=limit)]
                     return self._send(200, res)
                 if path.startswith("/kiwix/"):
                     return self._proxy_kiwix(path[len("/kiwix"):], urllib.parse.urlparse(self.path).query)
+                # Kiwix HTML uses root-relative links for articles, scripts and styles.
+                if path.split("/", 2)[1] in ("content", "skin", "raw", "viewer", "search", "suggest", "catalog", "catch", "random"):
+                    return self._proxy_kiwix(path, urllib.parse.urlparse(self.path).query)
                 return self._static(path)
             except BrokenPipeError:
                 pass
@@ -80,9 +125,12 @@ def make_handler(engine, settings):
         def _static(self, path):
             if path in ("", "/"):
                 path = "/index.html"
-            rel = posixpath.normpath(urllib.parse.unquote(path)).lstrip("/")
-            full = os.path.realpath(os.path.join(WEB_DIR, rel))
-            if not full.startswith(os.path.realpath(WEB_DIR)) or not os.path.isfile(full):
+            rel = urllib.parse.unquote(path).lstrip("/")
+            if "\\" in rel or ":" in rel or "\0" in rel:
+                return self._send(404, {"error": "not found"})
+            root = os.path.realpath(WEB_DIR)
+            full = os.path.realpath(os.path.join(root, rel))
+            if os.path.commonpath([root, full]) != root or not os.path.isfile(full):
                 return self._send(404, {"error": "not found"})
             ctype = mimetypes.guess_type(full)[0] or "application/octet-stream"
             if ctype.startswith("text/") or ctype in ("application/javascript", "image/svg+xml"):
@@ -104,14 +152,43 @@ def make_handler(engine, settings):
         # ---------- POST ----------
         def do_POST(self):
             path, q = self._query()
-            length = int(self.headers.get("Content-Length") or 0)
+            if path != "/api/ask":
+                return self._send(404, {"error": "not found"})
+            origin = self.headers.get("Origin")
+            if origin and origin != "http://" + self.headers.get("Host", ""):
+                return self._send(403, {"error": "foreign origin"})
+            if self.headers.get_content_type() != "application/json":
+                return self._send(415, {"error": "expected application/json"})
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+            except ValueError:
+                return self._send(400, {"error": "invalid Content-Length"})
+            if length < 0 or self.headers.get("Transfer-Encoding"):
+                return self._send(400, {"error": "invalid request framing"})
+            if length > MAX_BODY:
+                return self._send(413, {"error": "request body too large"})
             try:
                 body = json.loads(self.rfile.read(length) or b"{}")
             except ValueError:
                 return self._send(400, {"error": "invalid json"})
-            if path == "/api/ask":
+            except TimeoutError:
+                return self._send(408, {"error": "request timed out"})
+            if not isinstance(body, dict) or not isinstance(body.get("q"), str):
+                return self._send(400, {"error": "q must be a string"})
+            history = body.get("history", [])
+            if (len(body["q"]) > 2000 or not isinstance(history, list) or len(history) > 8
+                    or any(not isinstance(h, dict) or h.get("role") not in ("user", "assistant")
+                           or not isinstance(h.get("content"), str) or len(h["content"]) > 16000
+                           for h in history)
+                    or any(k in body and not isinstance(body[k], bool) for k in ("use_llm", "use_kiwix"))
+                    or ("lang" in body and body["lang"] not in LANGS)):
+                return self._send(400, {"error": "invalid question, history or options"})
+            if not answer_slot.acquire(blocking=False):
+                return self._send(503, {"error": "another answer is in progress"}, extra={"Retry-After": "2"})
+            try:
                 return self._ask_stream(body)
-            return self._send(404, {"error": "not found"})
+            finally:
+                answer_slot.release()
 
         def _ask_stream(self, body):
             question = (body.get("q") or "").strip()[:2000]
@@ -150,7 +227,7 @@ def make_handler(engine, settings):
 
 def serve(engine, settings, host=None, port=None):
     host = host or settings.get("web_host", "127.0.0.1")
-    port = int(port or settings.get("web_port", 8090))
-    httpd = ThreadingHTTPServer((host, port), make_handler(engine, settings))
+    port = int(settings.get("web_port", 8090) if port is None else port)
+    httpd = BoundedHTTPServer((host, port), make_handler(engine, settings))
     httpd.daemon_threads = True
     return httpd

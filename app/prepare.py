@@ -133,9 +133,24 @@ def _human(n):
     return f"{n:.1f} PB"
 
 
+def _file_valid(path, expected_size=None, sha256=None):
+    if not os.path.isfile(path) or os.path.getsize(path) == 0:
+        return False
+    if expected_size is not None and os.path.getsize(path) != expected_size:
+        return False
+    if sha256:
+        h = hashlib.sha256()
+        with open(path, "rb") as f:
+            for block in iter(lambda: f.read(1 << 20), b""):
+                h.update(block)
+        if h.hexdigest().lower() != sha256.lower():
+            return False
+    return True
+
+
 def download(url, dest, expected_size=None, sha256=None, retries=5):
     """Download with resume support (.part). Prefer curl when available; otherwise use urllib."""
-    if os.path.exists(dest) and (not expected_size or os.path.getsize(dest) == expected_size):
+    if (expected_size is not None or sha256) and _file_valid(dest, expected_size, sha256):
         return dest
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     part = dest + ".part"
@@ -161,15 +176,11 @@ def download(url, dest, expected_size=None, sha256=None, retries=5):
         ok = _download_urllib(url, part, retries)
     if not ok:
         raise RuntimeError("download failed")
-    if sha256:
-        print("    verifying sha256…")
-        h = hashlib.sha256()
-        with open(part, "rb") as f:
-            for block in iter(lambda: f.read(1 << 20), b""):
-                h.update(block)
-        if h.hexdigest().lower() != sha256.lower():
-            os.remove(part)
-            raise RuntimeError("sha256 mismatch")
+    if not _file_valid(part, expected_size):
+        raise RuntimeError("download size mismatch (partial file retained for retry)")
+    if sha256 and not _file_valid(part, expected_size, sha256):
+        os.remove(part)
+        raise RuntimeError("sha256 mismatch")
     os.replace(part, dest)
     return dest
 
@@ -185,8 +196,16 @@ def _download_urllib(url, part, retries):
             with urllib.request.urlopen(req, timeout=60) as r:
                 if have and r.status != 206:
                     have = 0
-                total = r.headers.get("Content-Length")
-                total = int(total) + have if total else None
+                length = r.headers.get("Content-Length")
+                total = int(length) + have if length else None
+                if r.status == 206:
+                    match = re.fullmatch(r"bytes (\d+)-(\d+)/(\d+)", r.headers.get("Content-Range", ""))
+                    if not match:
+                        raise RuntimeError("invalid Content-Range")
+                    start, end, complete = map(int, match.groups())
+                    if start != have or end < start or end + 1 != complete or (length and int(length) != end - start + 1):
+                        raise RuntimeError("unexpected Content-Range")
+                    total = complete
                 mode = "ab" if have else "wb"
                 done = have
                 last = 0
@@ -203,6 +222,8 @@ def _download_urllib(url, part, retries):
                             sys.stdout.flush()
                             last = time.time()
                 sys.stdout.write("\n")
+                if total is not None and done != total:
+                    raise RuntimeError("incomplete response")
             return True
         except Exception as e:
             print(f"    attempt {attempt + 1}/{retries} failed: {e}")
@@ -371,11 +392,8 @@ def get_kiwix_tools(plat, tr):
 
 def get_model(model, tr):
     dest = os.path.join(MODELS_DIR, model["file"])
-    if os.path.exists(dest):
-        print(tr["skip"].format(f=model["file"]))
-        return True
     try:
-        download(model["url"], dest)
+        download(model["url"], dest, expected_size=model.get("size_bytes"), sha256=model.get("sha256"))
         print(f"  ✓ {model['name']}")
         return True
     except Exception as e:
@@ -419,39 +437,47 @@ def catalog_lookup(catalog_url, name=None, query=None, lang=None, count=1):
     return out
 
 
-def _meta4_sha256(meta4_url):
-    try:
-        xml = get_text(meta4_url, timeout=30)
-        m = re.search(r'<hash type="sha-256">([0-9a-fA-F]{64})</hash>', xml)
-        return m.group(1) if m else None
-    except Exception:
-        return None
+def _meta4_integrity(meta4_url):
+    root = ET.fromstring(get_text(meta4_url, timeout=30))
+    ns = {"m": "urn:ietf:params:xml:ns:metalink"}
+    file = root.find("m:file", ns)
+    size = int(file.findtext("m:size", "0", ns)) if file is not None else 0
+    digest = file.findtext("m:hash[@type='sha-256']", "", ns) if file is not None else ""
+    if size <= 0 or not re.fullmatch(r"[0-9a-fA-F]{64}", digest):
+        raise RuntimeError("missing size or SHA-256 in metalink")
+    return size, digest
+
+
+def resolve_zim(entry, catalog_url):
+    found = catalog_lookup(catalog_url, name=entry["name"], count=100)
+    prefix = entry["name"] + ("_" + entry["variant"] if entry.get("variant") else "") + "_"
+    candidates = [item for item in found if item.get("url") and
+                  os.path.basename(urllib.parse.urlparse(item["url"]).path).startswith(prefix)]
+    # ISO release dates in the filenames sort chronologically within a variant.
+    return max(candidates, key=lambda item: item["url"], default=None)
 
 
 def get_zim(entry, catalog_url, tr):
     try:
-        found = catalog_lookup(catalog_url, name=entry["name"])
+        item = resolve_zim(entry, catalog_url)
     except Exception as e:
         print(tr["fail"].format(f=entry["name"], e=e))
         return False
-    if not found or not found[0].get("url"):
+    if not item:
         print(tr["notfound"].format(n=entry["name"]))
         return False
-    item = found[0]
     fname = os.path.basename(urllib.parse.urlparse(item["url"]).path)
     dest = os.path.join(ZIM_DIR, fname)
-    # Remove older versions of the same library.
-    prefix = entry["name"] + "_"
-    for old in os.listdir(ZIM_DIR) if os.path.isdir(ZIM_DIR) else []:
-        if old.startswith(prefix) and old.endswith(".zim") and old != fname:
-            print(f"  ↻ new version available, replacing {old}")
-            os.remove(os.path.join(ZIM_DIR, old))
-    if os.path.exists(dest):
-        print(tr["skip"].format(f=fname))
-        return True
     try:
-        sha = _meta4_sha256(item["meta4"]) if item.get("meta4") else None
-        download(item["url"], dest, sha256=sha)
+        # OPDS lengths are rounded; metalink supplies the exact byte count.
+        size, sha = _meta4_integrity(item["meta4"]) if item.get("meta4") else (item.get("size"), None)
+        download(item["url"], dest, expected_size=size, sha256=sha)
+        # The downloader verifies and atomically activates the new file first.
+        prefix = entry["name"] + ("_" + entry["variant"] if entry.get("variant") else "") + "_"
+        for old in os.listdir(ZIM_DIR):
+            if old.startswith(prefix) and old.endswith(".zim") and old != fname:
+                print(f"  ↻ replacing {old}")
+                os.remove(os.path.join(ZIM_DIR, old))
         print(f"  ✓ {item['title']} ({_human(os.path.getsize(dest))})")
         return True
     except Exception as e:
@@ -498,7 +524,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
             size = _human(r["size"]) if r["size"] else "?"
             print(f"- {r['name']:45s} {r['lang']:8s} {size:>10s}  {r['title']}")
         print("\nAdd the desired 'name' to config/zims.json to download it.")
-        return
+        return 0
 
     print("=" * 64)
     print(tr["title"])
@@ -518,6 +544,8 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         else:
             model = models_cfg.get("default")
     chosen_model = next((m for m in models_cfg["models"] if m["id"] == model), None)
+    if model != "none" and chosen_model is None:
+        raise ValueError("Unknown model: " + str(model))
 
     # ZIMs
     if zims is None:
@@ -528,6 +556,8 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         else:
             zims = "minimal"
     chosen_zims = [z for z in zims_cfg["zims"] if zims in z.get("profiles", [])] if zims != "none" else []
+    if zims != "none" and (zims not in zims_cfg["profiles"] or not chosen_zims):
+        raise ValueError("Unknown or empty ZIM profile: " + str(zims))
 
     # Systems
     if oses is None:
@@ -536,6 +566,9 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         else:
             oses = "this"
     platforms = list(ALL_PLATFORMS) if oses == "all" else [here] if oses == "this" else oses.split(",")
+    if any(plat not in ALL_PLATFORMS for plat in platforms):
+        raise ValueError("Unsupported platform selection: " + str(oses))
+    platforms = list(dict.fromkeys(platforms))
 
     # Portable Python
     if python is None:
@@ -547,36 +580,43 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     print("\n" + tr["total"].format(gb=est, free=free))
     if interactive and not _yes(tr["confirm"], tr):
         print(tr["cancel"])
-        return
+        return 1
 
     results = []
+
+    def record(name, operation, *args):
+        results.append({"name": name, "ok": bool(operation(*args))})
+
     if not skip_tools:
         for plat in platforms:
             print(f"\n[{plat}]")
             if chosen_model:
-                results.append(get_llama(plat, tr))
+                record("llama.cpp/" + plat, get_llama, plat, tr)
             if chosen_zims:
-                results.append(get_kiwix_tools(plat, tr))
+                record("kiwix-tools/" + plat, get_kiwix_tools, plat, tr)
             if python:
-                results.append(get_python(plat, tr))
+                record("python/" + plat, get_python, plat, tr)
     if chosen_model:
         print("\n[model]")
-        results.append(get_model(chosen_model, tr))
+        record("model/" + chosen_model["file"], get_model, chosen_model, tr)
     if chosen_zims:
         print("\n[Kiwix ZIM]")
         os.makedirs(ZIM_DIR, exist_ok=True)
         for z in chosen_zims:
-            results.append(get_zim(z, catalog, tr))
-    shutil.rmtree(os.path.join(RUNTIME_DIR, "_downloads"), ignore_errors=True)
+            record("zim/" + z["name"], get_zim, z, catalog, tr)
 
     print("\n" + "=" * 64)
-    ok = sum(1 for r in results if r)
+    ok = sum(1 for r in results if r["ok"])
     print(f"{ok}/{len(results)} ✓")
     if ok < len(results):
         print(tr["partial"])
     else:
         print(tr["done"])
-    with open(os.path.join(RUNTIME_DIR, "kit-info.json"), "w", encoding="utf-8") as f:
+    os.makedirs(RUNTIME_DIR, exist_ok=True)
+    manifest = os.path.join(RUNTIME_DIR, "kit-info.json")
+    with open(manifest + ".tmp", "w", encoding="utf-8") as f:
         json.dump({"prepared": time.strftime("%Y-%m-%d %H:%M"), "platforms": platforms,
                    "model": chosen_model["file"] if chosen_model else None,
-                   "zim_profile": zims}, f, indent=2)
+                    "zim_profile": zims, "ready": ok == len(results), "components": results}, f, indent=2)
+    os.replace(manifest + ".tmp", manifest)
+    return 0 if ok == len(results) else 1

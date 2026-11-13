@@ -214,8 +214,12 @@ def cmd_status(args, settings):
 
 def cmd_prepare(args, settings):
     from app import prepare
-    prepare.run(lang=args.lang, model=args.model, zims=args.zims, oses=args.os, python=args.python,
-                yes=args.yes, search=args.search, skip_tools=args.skip_tools)
+    try:
+        return prepare.run(lang=args.lang, model=args.model, zims=args.zims, oses=args.os, python=args.python,
+                           yes=args.yes, search=args.search, skip_tools=args.skip_tools)
+    except (ValueError, OSError) as e:
+        print(f"Preparation failed: {e}", file=sys.stderr)
+        return 1
 
 
 def main():
@@ -272,9 +276,9 @@ def main():
     cmd = args.cmd or "start"
     if cmd == "start" and not hasattr(args, "host"):
         args.host, args.port, args.no_browser = None, None, False
-    {"start": cmd_start, "chat": cmd_chat, "ask": cmd_ask, "search": cmd_search,
+    return {"start": cmd_start, "chat": cmd_chat, "ask": cmd_ask, "search": cmd_search,
      "status": cmd_status, "prepare": cmd_prepare}[cmd](args, settings)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

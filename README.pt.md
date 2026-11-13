@@ -8,7 +8,7 @@ Se a internet, a energia e os serviços pararem, este kit continua funcionando n
 
 - 📚 **Guias práticos com fontes citadas** (PT, EN e ES): água, fogo, abrigo, comida, horta e criação, coleta/pesca/caça, **primeiros socorros e medicina**, higiene e sabão caseiro, **álcool** (fermentação, destilação, antisséptico e combustível), energia solar, rádio e navegação, ferramentas e nós, saúde mental e comunidade, e checklists para 72 horas e **1 ano**.
 - 🤖 **IA local** que responde qualquer pergunta em linguagem natural, **citando as fontes** — roda no próprio computador (llama.cpp ou Ollama), nada vai para a internet.
-- 🌐 **Bibliotecas offline do Kiwix**: Wikipedia de medicina, manuais pós-desastre, *Where There Is No Doctor*, wikiHow, iFixit e outras — a IA busca nelas também.
+- 🌐 **Bibliotecas offline do Kiwix**: Wikipedia de medicina, manuais pós-desastre, *Where There Is No Doctor*, iFixit, Appropedia e outras — a IA busca nelas também.
 - 📱 **Interface web** que abre no navegador e pode ser compartilhada na rede local (outros celulares acessam pelo Wi-Fi, mesmo sem internet).
 - 🔍 **Modo sem IA**: mesmo sem modelo baixado, a busca nos guias funciona em qualquer PC com Python.
 
@@ -58,7 +58,7 @@ cd Survival-AI
 O preparador pergunta:
 
 1. **Modelo de IA:** `light` (1 GB, PCs com 4 GB de RAM), `standard` (2 GB, 8 GB de RAM — recomendado), `strong` (4,7 GB, 16 GB de RAM).
-2. **Bibliotecas Kiwix:** `minimal` (~3–5 GB), `recommended` (~25–40 GB) ou `full` (100+ GB, inclui a Wikipedia inteira).
+2. **Bibliotecas Kiwix:** `minimal` (~3–5 GB), `recommended` (~25–40 GB) ou `full` (~77 GiB, Wikipedia sem imagens).
 3. **Sistemas:** só este computador, ou **Windows + Linux + macOS** (kit universal para pendrive).
 4. **Python portátil:** para o kit abrir em computadores sem Python.
 

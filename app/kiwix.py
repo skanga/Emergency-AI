@@ -16,7 +16,7 @@ LANG3 = {"pt": "por", "en": "eng", "es": "spa"}
 
 
 class _TextExtractor(HTMLParser):
-    SKIP = {"script", "style", "noscript", "nav", "footer", "header", "sup", "table"}
+    SKIP = {"script", "style", "noscript", "nav", "footer", "header", "sup"}
     BLOCK = {"p", "div", "li", "h1", "h2", "h3", "h4", "h5", "br", "tr", "section", "dd", "dt", "pre"}
 
     def __init__(self):
@@ -29,6 +29,8 @@ class _TextExtractor(HTMLParser):
             self.skip += 1
         elif tag in self.BLOCK:
             self.parts.append("\n")
+        elif tag in ("td", "th"):
+            self.parts.append(" | ")
 
     def handle_endtag(self, tag):
         if tag in self.SKIP and self.skip:
@@ -63,6 +65,14 @@ class KiwixClient:
 
     def available(self):
         return is_up(self.base_url + "/catalog/v2/entries?count=1", timeout=1.5)
+
+    def local_link(self, link):
+        """Normalize same-service links; never fetch arbitrary search-result URLs."""
+        base = urllib.parse.urlsplit(self.base_url)
+        url = urllib.parse.urlsplit(urllib.parse.urljoin(self.base_url + "/", link))
+        if (url.scheme, url.netloc) != (base.scheme, base.netloc):
+            return None
+        return urllib.parse.urlunsplit(("", "", url.path, url.query, url.fragment))
 
     def books(self):
         """List served books (ZIMs): [{name, title, lang}]."""
@@ -106,7 +116,7 @@ class KiwixClient:
                 continue
             for item in root.iter("item"):
                 title = (item.findtext("title") or "").strip()
-                link = (item.findtext("link") or "").strip()
+                link = self.local_link((item.findtext("link") or "").strip())
                 desc = html_to_text(html.unescape(item.findtext("description") or ""))
                 if title and link:
                     results.append({"title": title, "link": link, "snippet": desc,
@@ -114,9 +124,13 @@ class KiwixClient:
         return results[:limit]
 
     def article_text(self, link, max_chars=20000):
-        url = link if link.startswith("http") else self.base_url + (link if link.startswith("/") else "/" + link)
+        link = self.local_link(link)
+        if not link:
+            return ""
+        url = urllib.parse.urljoin(self.base_url + "/", link)
         try:
             raw = get_text(url, timeout=8)
         except Exception:
             return ""
-        return html_to_text(raw)[:max_chars]
+        text = html_to_text(raw)
+        return text if len(text) <= max_chars else ""

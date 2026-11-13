@@ -1,12 +1,14 @@
 @echo off
+setlocal
 REM Survival AI - start on Windows (double-click)
 chcp 65001 >nul
 cd /d "%~dp0"
 set "PY="
+set "PY_ARGS="
 if exist "%~dp0runtime\python\windows-x86_64\python\python.exe" set "PY=%~dp0runtime\python\windows-x86_64\python\python.exe"
 if not defined PY if exist "%~dp0runtime\python\windows-arm64\python\python.exe" set "PY=%~dp0runtime\python\windows-arm64\python\python.exe"
 if not defined PY (
-  where py >nul 2>nul && set "PY=py -3"
+  where py >nul 2>nul && (set "PY=py" & set "PY_ARGS=-3")
 )
 if not defined PY (
   where python >nul 2>nul && set "PY=python"
@@ -19,5 +21,7 @@ if not defined PY (
   pause
   exit /b 1
 )
-%PY% "%~dp0survival.py" %* start
-if errorlevel 1 pause
+"%PY%" %PY_ARGS% "%~dp0survival.py" %* start
+set "RESULT=%ERRORLEVEL%"
+if not "%RESULT%"=="0" pause
+exit /b %RESULT%

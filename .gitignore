@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+logs/
+output/
+.playwright-cli/
+config/settings.local.json
+models/*
+!models/README*
+zim/*
+!zim/README*
+runtime/*
+!runtime/README*
+knowledge/extra/*
+!knowledge/extra/README*
+.DS_Store
+Thumbs.db

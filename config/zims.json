@@ -1,32 +1,32 @@
 {
-  "_comment": "Kiwix offline libraries (.zim files). The preparer looks up each 'name' in the official catalog (library.kiwix.org) and downloads the latest version. Sizes are approximate and vary by release. Find other libraries: python survival.py prepare --search <word>",
+  "_comment": "Kiwix offline libraries. 'name' is the catalog ID; optional 'variant' selects maxi, nopic or mini. The preparer selects the newest matching filename and verifies exact size and SHA-256 from its metalink. Sizes below are estimates in GiB.",
   "catalog_url": "https://library.kiwix.org/catalog/v2/entries",
   "profiles": {
-    "minimal": "Essentials: medicine, post-disaster survival, water and food (~3–5 GB)",
-    "recommended": "Minimal + medical Wikipedia in PT/ES, wikiHow, iFixit and appropriate technology (~25–40 GB)",
-    "full": "Recommended + full Wikipedia without images in PT/EN/ES and Wikivoyage (~100+ GB)"
+    "minimal": "Essentials: medical encyclopedia, post-disaster survival, water, food and knots (~3 GiB)",
+    "recommended": "Minimal + medical Wikipedia in PT/ES, iFixit, Appropedia and Energypedia (~8 GiB)",
+    "full": "Recommended + Wikipedia without images in PT/EN/ES and English Wikivoyage (~77 GiB)"
   },
   "zims": [
-    {"name": "wikipedia_en_medicine_maxi", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 2.0, "desc": "Wikipedia: medicine (English, with images)"},
-    {"name": "wikem_en_all_maxi", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.05, "desc": "WikEM: emergency medicine"},
+    {"name": "wikipedia_en_medicine", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 1.74, "desc": "Wikipedia: medicine (English, with images)", "variant": "maxi"},
     {"name": "zimgit-post-disaster_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.6, "desc": "Post-disaster library (survival, health and construction manuals)"},
-    {"name": "zimgit-medicine_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.7, "desc": "Field medical manuals (Where There Is No Doctor, etc.)"},
-    {"name": "zimgit-water_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.2, "desc": "Water and sanitation manuals"},
-    {"name": "zimgit-food-preparation_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.1, "desc": "Food preparation and preservation"},
-    {"name": "zimgit-knots_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.05, "desc": "Knots and lashings"},
-
-    {"name": "wikipedia_pt_medicine_maxi", "lang": "pt", "profiles": ["recommended", "full"], "size_gb": 0.8, "desc": "Wikipedia: medicine (Portuguese)"},
-    {"name": "wikipedia_es_medicine_maxi", "lang": "es", "profiles": ["recommended", "full"], "size_gb": 0.8, "desc": "Wikipedia: medicine (Spanish)"},
-    {"name": "wikihow_en_maxi", "lang": "en", "profiles": ["recommended", "full"], "size_gb": 12.0, "desc": "wikiHow: how to do anything (English)"},
-    {"name": "wikihow_es_maxi", "lang": "es", "profiles": ["recommended", "full"], "size_gb": 5.0, "desc": "wikiHow in Spanish"},
-    {"name": "wikihow_pt_maxi", "lang": "pt", "profiles": ["recommended", "full"], "size_gb": 3.0, "desc": "wikiHow in Portuguese"},
-    {"name": "ifixit_en_all", "lang": "en", "profiles": ["recommended", "full"], "size_gb": 3.5, "desc": "iFixit: device repairs"},
-    {"name": "appropedia_en_all_maxi", "lang": "en", "profiles": ["recommended", "full"], "size_gb": 0.6, "desc": "Appropedia: appropriate and sustainable technology"},
-    {"name": "energypedia_en_all_maxi", "lang": "en", "profiles": ["recommended", "full"], "size_gb": 0.8, "desc": "Energypedia: renewable and off-grid energy"},
-
-    {"name": "wikipedia_pt_all_nopic", "lang": "pt", "profiles": ["full"], "size_gb": 6.0, "desc": "Full Wikipedia in Portuguese (without images)"},
-    {"name": "wikipedia_es_all_nopic", "lang": "es", "profiles": ["full"], "size_gb": 12.0, "desc": "Full Wikipedia in Spanish (without images)"},
-    {"name": "wikipedia_en_all_nopic", "lang": "en", "profiles": ["full"], "size_gb": 55.0, "desc": "Full Wikipedia in English (without images)"},
-    {"name": "wikivoyage_en_all_maxi", "lang": "en", "profiles": ["full"], "size_gb": 1.0, "desc": "Wikivoyage: travel guides"}
+    {"name": "zimgit-medicine_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.07, "desc": "Field medical manuals (Where There Is No Doctor, etc.)"},
+    {"name": "zimgit-water_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.02, "desc": "Water and sanitation manuals"},
+    {"name": "zimgit-food-preparation_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.09, "desc": "Food preparation and preservation"},
+    {"name": "zimgit-knots_en", "lang": "en", "profiles": ["minimal", "recommended", "full"], "size_gb": 0.03, "desc": "Knots and lashings"},
+    {"name": "wikipedia_pt_medicine", "lang": "pt", "profiles": ["recommended", "full"], "size_gb": 0.27, "desc": "Wikipedia: medicine (Portuguese)", "variant": "maxi"},
+    {"name": "wikipedia_es_medicine", "lang": "es", "profiles": ["recommended", "full"], "size_gb": 0.44, "desc": "Wikipedia: medicine (Spanish)", "variant": "maxi"},
+    {"name": "ifixit_en_all", "lang": "en", "profiles": ["recommended", "full"], "size_gb": 3.33, "desc": "iFixit: device repairs"},
+    {"name": "appropedia_en_all", "lang": "en", "profiles": ["recommended", "full"], "size_gb": 0.54, "desc": "Appropedia: appropriate and sustainable technology", "variant": "maxi"},
+    {"name": "energypedia_en_all", "lang": "en", "profiles": ["recommended", "full"], "size_gb": 0.74, "desc": "Energypedia: renewable and off-grid energy", "variant": "maxi"},
+    {"name": "wikipedia_pt_all", "lang": "pt", "profiles": ["full"], "size_gb": 6.59, "desc": "Full Wikipedia in Portuguese (without images)", "variant": "nopic"},
+    {"name": "wikipedia_es_all", "lang": "es", "profiles": ["full"], "size_gb": 12.38, "desc": "Full Wikipedia in Spanish (without images)", "variant": "nopic"},
+    {"name": "wikipedia_en_all", "lang": "en", "profiles": ["full"], "size_gb": 49.07, "desc": "Full Wikipedia in English (without images)", "variant": "nopic"},
+    {"name": "wikivoyage_en_all", "lang": "en", "profiles": ["full"], "size_gb": 1.0, "desc": "Wikivoyage: travel guides", "variant": "maxi"}
+  ],
+  "unavailable": [
+    {"name": "wikem_en_all", "lang": "en", "size_gb": 0.05, "desc": "WikEM: emergency medicine", "variant": "maxi", "reason": "Not listed in the official catalog as of 2026-11-12; excluded from automatic profiles."},
+    {"name": "wikihow_en", "lang": "en", "size_gb": 12.0, "desc": "wikiHow: how to do anything (English)", "variant": "maxi", "reason": "Not listed in the official catalog as of 2026-11-12; excluded from automatic profiles."},
+    {"name": "wikihow_es", "lang": "es", "size_gb": 5.0, "desc": "wikiHow in Spanish", "variant": "maxi", "reason": "Not listed in the official catalog as of 2026-11-12; excluded from automatic profiles."},
+    {"name": "wikihow_pt", "lang": "pt", "size_gb": 3.0, "desc": "wikiHow in Portuguese", "variant": "maxi", "reason": "Not listed in the official catalog as of 2026-11-12; excluded from automatic profiles."}
   ]
 }

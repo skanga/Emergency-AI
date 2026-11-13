@@ -70,6 +70,8 @@ class EngineTests(unittest.TestCase):
     def tearDownClass(cls):
         cls.llm.shutdown()
         cls.kiwix.shutdown()
+        cls.llm.server_close()
+        cls.kiwix.server_close()
 
     def settings(self, **kw):
         s = {"llm_backend": "openai", "llm_url": f"http://127.0.0.1:{LLM_PORT}/v1",
@@ -117,6 +119,7 @@ class ServerTests(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.httpd.shutdown()
+        cls.httpd.server_close()
 
     def get(self, path):
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
@@ -139,8 +142,10 @@ class ServerTests(unittest.TestCase):
             self.assertIn("Water", next(g["title"] for g in guides if g["id"] == "01-water"))
 
     def test_path_traversal_blocked(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(urllib.error.HTTPError) as error:
             self.get("/../config/settings.json")
+        self.assertEqual(error.exception.code, 404)
+        error.exception.close()
 
     def test_ask_stream(self):
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
