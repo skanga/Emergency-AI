@@ -41,13 +41,13 @@ cd Emergency-AI
 
 | Sistema | Cómo ejecutar |
 |---|---|
-| **Windows** | doble clic en `start.bat` |
-| **macOS** | doble clic en `start.command` (la 1.ª vez: clic derecho › Abrir) |
-| **Linux** | `./start.sh --lang es` |
+| **Windows** | doble clic en `.\run.bat` |
+| **macOS** | doble clic en `run.command` (la 1.ª vez: clic derecho › Abrir) |
+| **Linux** | `./run.sh --lang es` |
 
 En el primer uso, elige descargar los componentes opcionales (con internet) o abrir las guías incluidas. Se recuerda la elección de usar solo las guías. Si falta algún componente seleccionado, puedes reanudar la preparación o continuar con lo disponible. Sin una terminal interactiva, la aplicación inicia sin preguntas ni descargas.
 
-Usa `start.bat prepare` en Windows o `./start.sh prepare` en Linux/macOS para elegir componentes. Añade `--resume` para reanudar las opciones guardadas en esta computadora; usa `status` para revisar el kit. Los scripts `prepare-kit` siguen como accesos de compatibilidad. Se necesita Python 3.8+ instalado o una copia portátil compatible dentro del kit.
+Usa `.\run.bat prepare` en Windows o `./run.sh prepare` en Linux/macOS para elegir componentes. Añade `--resume` para reanudar las opciones guardadas en esta computadora; usa `status` para revisar el kit. Los scripts `prepare-kit` siguen como accesos de compatibilidad. Se necesita Python 3.8+ instalado o una copia portátil compatible dentro del kit.
 
 El preparador pregunta:
 
@@ -69,9 +69,9 @@ python survival.py --lang es prepare --model standard --zims recommended --os al
 
 | Sistema | Cómo abrir |
 |---|---|
-| **Windows** | `start.bat --lang es` (o doble clic en `start.bat` y botón **ES**) |
-| **macOS** | `start.command` |
-| **Linux** | `./start.sh --lang es` |
+| **Windows** | `.\run.bat --lang es` (o doble clic en `.\run.bat` y botón **ES**) |
+| **macOS** | `run.command` |
+| **Linux** | `./run.sh --lang es` |
 
 El navegador abre <http://127.0.0.1:8090>. Para dejar el español como predeterminado, crea `config/settings.local.json` con `{ "language": "es" }`.
 

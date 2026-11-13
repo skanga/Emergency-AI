@@ -20,7 +20,7 @@ if not defined PY (
   echo.
   echo  Python not found.
   echo  Install Python 3.8+ from https://www.python.org/downloads/ and enable "Add python.exe to PATH".
-  echo  Or copy a kit containing portable Python for this computer. Then run start.bat again.
+  echo  Or copy a kit containing portable Python for this computer. Then run run.bat again.
   echo.
   pause
   exit /b 1

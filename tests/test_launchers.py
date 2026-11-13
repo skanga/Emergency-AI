@@ -16,7 +16,7 @@ class LauncherTests(unittest.TestCase):
     def test_arm_windows_prefers_arm_portable_python_in_universal_kit(self):
         with tempfile.TemporaryDirectory(prefix="Survival kit ") as folder:
             root = Path(folder)
-            shutil.copy2(ROOT / "start.bat", root / "start.bat")
+            shutil.copy2(ROOT / "run.bat", root / "run.bat")
             (root / "survival.py").write_text("print('native interpreter selected')\n")
             arm = root / "runtime/python/windows-arm64/python"
             x64 = root / "runtime/python/windows-x86_64/python"
@@ -27,7 +27,7 @@ class LauncherTests(unittest.TestCase):
             (x64 / "python.exe").write_bytes(b"wrong interpreter")
             env = dict(os.environ, PYTHONHOME=sys.base_prefix, PROCESSOR_ARCHITECTURE="AMD64",
                        PROCESSOR_ARCHITEW6432="ARM64")
-            result = subprocess.run(["cmd", "/c", "start.bat"], cwd=root, env=env, input="\n",
+            result = subprocess.run(["cmd", "/c", "run.bat"], cwd=root, env=env, input="\n",
                                     text=True, capture_output=True, timeout=15)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertIn("native interpreter selected", result.stdout)
@@ -52,10 +52,10 @@ class LauncherTests(unittest.TestCase):
                 (other / "python.exe").write_bytes(b"not an x64 executable")
                 env["PROCESSOR_ARCHITECTURE"] = "AMD64"
                 env.pop("PROCESSOR_ARCHITEW6432", None)
-                scripts = ("start.bat", "prepare-kit.bat")
+                scripts = ("run.bat", "prepare-kit.bat")
             else:
                 env = os.environ.copy()
-                scripts = ("start.sh", "prepare-kit.sh")
+                scripts = ("run.sh", "prepare-kit.sh")
             for name in scripts:
                 shutil.copy2(ROOT / name, root / name)
             for name in scripts:

@@ -51,13 +51,13 @@ cd Emergency-AI
 
 | Sistema | Como rodar |
 |---|---|
-| **Windows** | clique duas vezes em `start.bat` |
-| **macOS** | clique duas vezes em `start.command` (1ª vez: botão direito › Abrir) |
-| **Linux** | `./start.sh` |
+| **Windows** | clique duas vezes em `.\run.bat` |
+| **macOS** | clique duas vezes em `run.command` (1ª vez: botão direito › Abrir) |
+| **Linux** | `./run.sh` |
 
 No primeiro uso, escolha baixar os componentes opcionais (com internet) ou abrir os guias incluídos. A escolha de usar apenas os guias é lembrada. Se faltar algum componente selecionado, você pode retomar a preparação ou continuar com o que está disponível. Sem terminal interativo, o aplicativo inicia sem perguntas nem downloads.
 
-Use `start.bat prepare` no Windows ou `./start.sh prepare` no Linux/macOS para escolher componentes. Acrescente `--resume` para retomar as escolhas salvas neste computador; use `status` para verificar o kit. Os scripts `prepare-kit` continuam como atalhos de compatibilidade. É necessário Python 3.8+ instalado ou uma cópia portátil compatível no kit.
+Use `.\run.bat prepare` no Windows ou `./run.sh prepare` no Linux/macOS para escolher componentes. Acrescente `--resume` para retomar as escolhas salvas neste computador; use `status` para verificar o kit. Os scripts `prepare-kit` continuam como atalhos de compatibilidade. É necessário Python 3.8+ instalado ou uma cópia portátil compatível no kit.
 
 O preparador pergunta:
 
@@ -81,15 +81,15 @@ python survival.py prepare --model standard --zims recommended --os all --python
 
 | Sistema | Como abrir |
 |---|---|
-| **Windows** | `start.bat` |
-| **macOS** | `start.command` |
-| **Linux** | `./start.sh` |
+| **Windows** | `.\run.bat` |
+| **macOS** | `run.command` |
+| **Linux** | `./run.sh` |
 
-O navegador abre em <http://127.0.0.1:8090>. Para inglês ou espanhol: `start.bat --lang en` / `./start.sh --lang es` (ou use os botões PT/EN/ES na interface).
+O navegador abre em <http://127.0.0.1:8090>. Para inglês ou espanhol: `.\run.bat --lang en` / `./run.sh --lang es` (ou use os botões PT/EN/ES na interface).
 
 ### 4. Leve no pendrive
 
-Copie **a pasta inteira** para um pendrive ou HD externo (formatado em **exFAT**, que funciona nos três sistemas e aceita arquivos com mais de 4 GB). Pronto: é só abrir o `start` correspondente em qualquer computador.
+Copie **a pasta inteira** para um pendrive ou HD externo (formatado em **exFAT**, que funciona nos três sistemas e aceita arquivos com mais de 4 GB). Pronto: é só abrir o `run` correspondente em qualquer computador.
 
 ---
 
@@ -163,7 +163,7 @@ python -m unittest discover -s tests
 
 ```
 Emergency-AI/
-├── start.bat / start.sh / start.command          ← abrir o kit
+├── run.bat / run.sh / run.command          ← abrir o kit
 ├── prepare-kit.bat / prepare-kit.sh / .command       ← baixar modelo e bases (com internet)
 ├── survival.py                                    ← ponto de entrada (CLI)
 ├── app/          knowledge.py (busca) · engine.py (RAG) · llm.py · kiwix.py · server.py · launcher.py · prepare.py

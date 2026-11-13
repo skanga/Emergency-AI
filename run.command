@@ -4,4 +4,4 @@
 cd "$(dirname "$0")" || exit 1
 # Remove macOS quarantine from kit binaries copied from a USB drive or downloaded ZIP.
 xattr -dr com.apple.quarantine runtime 2>/dev/null
-exec sh ./start.sh "$@"
+exec sh ./run.sh "$@"

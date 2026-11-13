@@ -66,9 +66,9 @@ cd Emergency-AI
 
 | System | How to run |
 |---|---|
-| **Windows** | double-click `start.bat` |
-| **macOS** | double-click `start.command` (first time: right-click › Open) |
-| **Linux** | `./start.sh` |
+| **Windows** | double-click `run.bat` or enter `.\run.bat` |
+| **macOS** | double-click `run.command` (first time: right-click › Open) |
+| **Linux** | `./run.sh` |
 
 Use the same launcher for first use and every later visit. On first use, choose to download optional components or open the included guides immediately. The guide-only choice is remembered. If selected components are missing or setup was interrupted, the launcher offers to resume for the current computer or continue with what is available. Without an interactive terminal, it starts available components without prompting or downloading.
 
@@ -78,11 +78,11 @@ Python 3.8+ must already be installed, or the kit must contain portable Python f
 
 | Action | Windows | Linux / macOS terminal |
 |---|---|---|
-| Choose components | `start.bat prepare` | `./start.sh prepare` |
-| Resume saved choices | `start.bat prepare --resume` | `./start.sh prepare --resume` |
-| Inspect the kit | `start.bat status` | `./start.sh status` |
+| Choose components | `.\run.bat prepare` | `./run.sh prepare` |
+| Resume saved choices | `.\run.bat prepare --resume` | `./run.sh prepare --resume` |
+| Inspect the kit | `.\run.bat status` | `./run.sh status` |
 
-The old `prepare-kit` launchers remain compatibility shortcuts. New instructions use `start` for both setup and everyday use.
+The old `prepare-kit` launchers remain compatibility shortcuts. Use `.\run.bat` in Windows Command Prompt or PowerShell, and `./run.sh` in Linux/macOS terminals. The explicit path avoids shell aliases and PATH conflicts. The Python `start` subcommand is unchanged.
 
 Each preparation run checks for the newest available llama.cpp build for the selected platforms, upgrades older installations, and skips re-downloading the current build. Normal offline startup never checks for updates.
 
@@ -110,9 +110,9 @@ python survival.py prepare --model standard --zims recommended --os all --python
 
 | System | How to open |
 |---|---|
-| **Windows** | `start.bat` (or double-click it) |
-| **macOS** | `start.command` |
-| **Linux** | `./start.sh` |
+| **Windows** | `.\run.bat` (or double-click it) |
+| **macOS** | `run.command` |
+| **Linux** | `./run.sh` |
 
 Your browser opens <http://127.0.0.1:8090>. Switch language anytime with the PT/EN/ES buttons. English is the default. Select Portuguese or Spanish with `--lang pt` or `--lang es`, or use the language buttons.
 
@@ -197,7 +197,7 @@ If Python is missing, install Python 3.8+ from <https://www.python.org/downloads
 
 ## English entry points
 
-Use `start.bat`, `start.sh` or `start.command` for startup, setup and status. Append `prepare` to configure downloads, `prepare --resume` to reuse saved choices, or `status` to inspect the kit. The Python entry point is `survival.py`; the older `prepare-kit` scripts remain compatibility shortcuts.
+Use `.\run.bat`, `run.sh` or `run.command` for startup, setup and status. Append `prepare` to configure downloads, `prepare --resume` to reuse saved choices, or `status` to inspect the kit. The Python entry point is `survival.py`; the older `prepare-kit` scripts remain compatibility shortcuts.
 
 Model IDs are `light`, `standard`, `strong` and `llama3b`. Library profiles are `minimal`, `recommended` and `full`. Use `none` to skip a model or library download. Existing downloaded model and ZIM filenames stay unchanged.
 
@@ -247,5 +247,5 @@ This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-
 | **llama.cpp / Ollama** | Programs that run an AI model on your computer. The preparer installs llama.cpp; Ollama is an optional alternative if you already use it. |
 | **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
 | **Python / portable Python** | Python runs the Emergency AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
-| **Preparer / profile** | The preparer is the setup tool opened by `start prepare` or the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
+| **Preparer / profile** | The preparer is the setup tool opened by `python survival.py prepare` or the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
 | **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes in this README are approximate; leave extra room for the model, software and future updates. |

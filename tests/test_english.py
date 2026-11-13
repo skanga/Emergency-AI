@@ -36,7 +36,7 @@ class EnglishDefaultsTests(unittest.TestCase):
         self.assertTrue(all(chunk.lang == "en" for _, chunk in results))
 
     def test_english_entry_points_and_help(self):
-        for stem in ("start", "prepare-kit"):
+        for stem in ("run", "prepare-kit"):
             for suffix in (".bat", ".sh", ".command"):
                 self.assertTrue((ROOT / (stem + suffix)).is_file())
         result = subprocess.run([sys.executable, str(ROOT / "survival.py"), "prepare", "--help"],

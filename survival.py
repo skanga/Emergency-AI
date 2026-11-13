@@ -222,7 +222,7 @@ def cmd_status(args, settings):
     for item in report["missing"]:
         print("  Missing: " + item)
     if report["state"] in ("first_run", "incomplete"):
-        print("  Included guides remain available. Use 'start prepare' to configure or '--resume' to repair.")
+        print("  Included guides remain available. Use 'python survival.py prepare' to configure or '--resume' to repair.")
     binary, kind = find_llama_server()
     print(f"  AI engine ({kind or 'llama.cpp'}): {binary or '—'}")
     print(f"  Model: {find_model(settings) or '—'}")

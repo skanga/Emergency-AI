@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-# Emergency AI — start on Linux/macOS:  ./start.sh   (options: --lang pt | --lang es)
-# Subcommands: ./start.sh chat | ask "question" | status | prepare
+# Emergency AI — start on Linux/macOS:  ./run.sh   (options: --lang pt | --lang es)
+# Subcommands: ./run.sh chat | ask "question" | status | prepare
 cd "$(dirname "$0")" || exit 1
 
 case "$(uname -s)" in
@@ -23,7 +23,7 @@ elif command -v python >/dev/null 2>&1; then
 fi
 if [ -z "$PY" ]; then
   echo "Python 3.8+ not found. Install Python 3 from https://www.python.org/downloads/ or your system package manager."
-  echo "Alternatively, copy a kit containing portable Python for $OS-$ARCH. Then run ./start.sh again."
+  echo "Alternatively, copy a kit containing portable Python for $OS-$ARCH. Then run ./run.sh again."
   exit 1
 fi
 

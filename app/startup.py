@@ -27,7 +27,7 @@ def load_selection(runtime_dir=None):
     if saved is not None:
         if not isinstance(saved, dict) or any(not isinstance(saved.get(k), str)
                                                for k in ("model", "zims", "archives")):
-            raise ValueError("Invalid saved setup choices; run 'start prepare' to choose again.")
+            raise ValueError("Invalid saved setup choices; run 'python survival.py prepare' to choose again.")
         return saved
     # Preserve choices from kits prepared before unified startup was introduced.
     manifest = load_json(os.path.join(directory, "kit-info.json"), {}) or {}
@@ -133,7 +133,7 @@ def ensure_ready(settings, lang="en", interactive=None):
             print("  - " + item)
         print("  1) Resume setup for this computer (internet required)")
         print("  2) Continue with available components [default]")
-    print("You can add or repair components later with 'start prepare' or 'start prepare --resume'.")
+    print("You can add or repair components later with 'python survival.py prepare' or 'python survival.py prepare --resume'.")
     if interactive is None:
         # Windows NUL can report isatty(); require a visible terminal too.
         interactive = sys.stdin.isatty() and sys.stdout.isatty()
@@ -157,7 +157,7 @@ def ensure_ready(settings, lang="en", interactive=None):
             prepare.run(lang=lang, resume=True, oses="this", yes=True)
     except (OSError, ValueError, KeyboardInterrupt) as e:
         print(f"Setup did not finish: {e}")
-    print("Starting with available components. Use 'start status' for details.")
+    print("Starting with available components. Use 'python survival.py status' for details.")
     report = inspect(settings)
     _select_model(settings, report["selection"])
     return report
