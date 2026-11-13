@@ -13,6 +13,44 @@ def sse(*chunks):
 
 
 class GenerationTests(unittest.TestCase):
+    def test_model_sampler_controls_reach_backend(self):
+        settings = {'llm_model_settings': {'llamacpp': {'local': {
+            'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'min_p': 0.0, 'presence_penalty': 1.5}}}}
+        client = OpenAICompatible('http://localhost/v1', backend='llamacpp', settings=settings)
+        with patch.object(client, 'count_prompt', return_value=10), patch('app.llm.open_url',
+                return_value=sse({'choices': [{'finish_reason': 'stop'}]})) as request:
+            list(client.stream_chat([]))
+        payload = request.call_args.kwargs['data']
+        self.assertEqual(payload['top_k'], 20)
+        self.assertEqual(payload['presence_penalty'], 1.5)
+
+    def test_catalogue_sampler_defaults_allow_explicit_overrides(self):
+        from app.generation import generation_options
+        catalogue = {'models': [{'file': 'test.gguf', 'generation': {'temperature': 0.7, 'top_k': 20}}]}
+        with patch('app.generation.load_json', return_value=catalogue):
+            defaults = generation_options({}, 'llamacpp', 'test.gguf')
+            explicit = generation_options({'llm_model_settings': {'llamacpp': {
+                'test.gguf': {'temperature': 0.1}}}}, 'llamacpp', 'test.gguf')
+        self.assertEqual(defaults['top_k'], 20)
+        self.assertEqual(explicit['temperature'], 0.1)
+
+    def test_catalogue_cannot_override_thinking_or_context_policy(self):
+        from app.generation import generation_options
+        for key in ('thinking', 'context', 'max_tokens'):
+            with self.subTest(key=key), patch('app.generation.load_json', return_value={
+                    'models': [{'file': 'test.gguf', 'generation': {key: 1}}]}), self.assertRaises(ValueError):
+                generation_options({}, 'llamacpp', 'test.gguf')
+
+    def test_ollama_sampler_values_and_invalid_values(self):
+        client = Ollama('http://localhost', 'test', settings={'llm_top_p': 0.8, 'llm_repeat_penalty': 1.05})
+        with patch('app.llm.open_url', return_value=io.BytesIO(b'{"done":true,"done_reason":"stop"}\n')) as request:
+            list(client.stream_chat([]))
+        self.assertEqual(request.call_args.kwargs['data']['options']['repeat_penalty'], 1.05)
+        from app.generation import generation_options
+        for key, value in [('top_p', 2), ('top_k', True), ('min_p', -1), ('presence_penalty', float('nan'))]:
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                generation_options({'llm_' + key: value}, 'ollama', 'test')
+
     def test_llama_controls_and_reasoning_are_separate(self):
         client = OpenAICompatible('http://localhost/v1', backend='llamacpp',
                                   settings={'llm_thinking': True, 'llm_max_tokens': 4096})

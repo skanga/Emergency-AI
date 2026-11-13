@@ -35,3 +35,17 @@ The thirteen common cases cover fictional inventory arithmetic, missing informat
 Results, full supplied source passages, answers, timing, generation metadata, and server logs are written to `output/model-tests/` (ignored by Git). Running again overwrites those model result files. The script deliberately reports outcomes instead of treating plausible prose as an automatic factual pass. Compare results only with the runtime version and hardware recorded alongside them; model versions, prompt caching, thermal state, and CPU scheduling affect latency.
 
 For a comparison after retrieval or prompt changes, preserve prior outputs and omit the slow thinking case with `python -B tests/manual/real_models.py --skip-thinking-case --output-prefix retrieval-update-`. Review the supplied passages and each claim alongside citation coverage.
+
+## Tier and quantization comparison
+
+The pinned public artifacts in `tier_manifest.json`, `tier_extra_manifest.json`, and `unsloth_manifest.json` record the additional CPU comparison. Install the runtime and download artifacts with the same integrity-checked procedure above, substituting the manifest path. Model weights are ignored by Git and must never be committed.
+
+For each manifest, run the eight source-following cases with:
+
+```text
+python -B tests/manual/real_models.py --manifest tests/manual/tier_manifest.json --skip-thinking-case --output-prefix tiers- --max-tokens 512 --cases grounded_arithmetic,missing_information,source_instruction,link_not_evidence,unsupported_power,controlled_kit_en,controlled_kit_pt,controlled_kit_es
+```
+
+Substitute `tier_extra_manifest.json` for LFM3 and `unsloth_manifest.json` for the paired quantizations and official Qwen3.8. Each manifest's `generation` object supplies the tested per-model sampler controls. The catalogue can also provide sampler defaults by exact filename. Explicit backend/model overrides win over catalogue defaults. The output cap is 512 for this concise-answer comparison; it does not change the application's 2,048-token default.
+
+For a user-provided model, create an untracked manifest containing `id`, `file`, `path` (the existing absolute file path), `size_bytes`, `sha256`, and optionally `generation`. The harness reads and hashes that file in place; it does not copy, move, or modify it. Keep local paths out of published manifests. Decision models are outside this chat-generation comparison.

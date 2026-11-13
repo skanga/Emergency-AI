@@ -61,7 +61,7 @@ Use `.\run.bat prepare` no Windows ou `./run.sh prepare` no Linux/macOS para esc
 
 O preparador pergunta:
 
-1. **Modelo de IA:** `light` (1 GB, PCs com 4 GB de RAM), `standard` (2 GB, 8 GB de RAM — recomendado), `strong` (4,7 GB, 16 GB de RAM).
+1. **Modelo de IA:** `lfm3-1.7b` (~1.1 GB, 8 GB RAM), `gemma4-e2b` (default, ~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licenças](README.md#model-choices).
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) ou `full` (~77 GiB, Wikipedia sem imagens).
 3. **Bibliotecas arquivadas opcionais:** cópias antigas do WikEM e wikiHow, com data e tamanho. Nenhuma é selecionada por padrão, nem no perfil `full`.
 4. **Sistemas:** só este computador, ou **Windows + Linux + macOS** (kit universal para pendrive).
@@ -72,7 +72,7 @@ O preparador pergunta:
 Sem perguntas (ex.: para automatizar):
 
 ```bash
-python survival.py prepare --model standard --zims recommended --os all --python
+python survival.py prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
 > Se faltar Python para rodar o preparador: instale em <https://www.python.org/downloads/> (no Windows marque *Add python.exe to PATH*). Depois o kit leva um Python portátil junto.
@@ -178,7 +178,7 @@ Emergency-AI/
 
 - Código: [MIT](LICENSE).
 - Guias em `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md).
-- Modelos, Kiwix, llama.cpp e bases ZIM baixados pelo preparador têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto). O modelo `standard` (Qwen2.5 3B) usa a *Qwen Research License*; para uso comercial prefira `light` ou `strong` (Apache 2.0).
+- Modelos, Kiwix, llama.cpp e bases ZIM baixados pelo preparador têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto).  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. Legacy `standard`: Qwen Research License. [Details](README.md#model-choices).
 
 ## Contribua
 

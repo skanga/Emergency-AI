@@ -103,7 +103,7 @@ The preparer asks for:
 Non-interactive:
 
 ```bash
-python survival.py prepare --model standard --zims recommended --os all --python
+python survival.py prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
 ### 4. Use it (offline)
@@ -166,6 +166,24 @@ Drop `.md` or `.txt` files in `knowledge/extra/` (family recipes, local maps, co
 
 To translate or expand the bundled guides, edit `knowledge/<language>/` and keep the same filenames across all three languages.
 
+## Model choices
+
+These are the recommended starting points from our CPU source-following tests, not a claim of universal best accuracy. All choices run text-only with thinking off by default. Downloads are optional and model weights never go into Git.
+
+| Use | Model ID | GGUF download | Recommended system RAM | License |
+|---|---|---:|---:|---|
+| Lightweight / smaller kit | `lfm3-1.7b` | ~1.1 GB | 8 GB | LFM Open License v1.0 |
+| Balanced / default | `gemma4-e2b` (Unsloth UD-Q4_K_XL) | ~3.2 GB | 16 GB | Apache 2.0 |
+| Larger CPU model | `qwen35-9b` | ~6.2 GB | 24 GB | Apache 2.0 |
+
+RAM figures include estimated operating-system headroom and are recommendations, not validated minimums. Tests ran on a 64 GB Windows computer. Gemma's E2B name refers to effective computation; its total weights are larger. The app does not automatically choose a model based on your RAM.
+
+For a lightweight Apache-licensed alternative, choose `qwen35-2b`. `qwen3-4b` offers a smaller balanced download and a non-thinking model; `ministral3-8b` is another larger option. `qwen38-27b` offers official Qwen3.8 27B in Unsloth UD-Q4_K_XL (~17.7 GB download, 32 GB RAM recommended); it is much slower on CPU and is an advanced option, not the default. The preparation menu includes these alternatives and labels older choices as legacy. Saved selections and existing files for legacy IDs retain their meaning; resuming `standard` does not download the new default. New setup selects `gemma4-e2b` by default. To change an existing kit explicitly, run `.\run.bat prepare --model gemma4-e2b` on Windows or `./run.sh prepare --model gemma4-e2b` on Linux/macOS.
+
+Sampler presets accompany the verified filenames, so model-specific sampling is used during normal llama.cpp inference. Explicit backend/model settings take priority. Weights are pinned to artifact revisions and hashes; the separate llama.cpp runtime is still refreshed to the latest compatible release on preparation.
+
+See the [tier comparison](docs/model-tier-evaluation-2026-11-13.md) for the tested candidates, quantizations, local-model observations, and remaining source-fidelity errors. A larger model or a different quantizer does not guarantee a better answer. The bundled source content still needs the review recorded in TODO.md.
+
 ## Configuration
 
 `config/settings.json` contains the defaults. Put overrides in `config/settings.local.json` to keep machine-specific choices separate from the shared settings. Keep that local file out of version control.
@@ -194,7 +212,7 @@ For example, to select a different Ollama model:
 
 ### Generation and thinking
 
-Generation settings can be overridden per backend and per exact model. Precedence is global `llm_*` settings, then `llm_backend_settings`, then `llm_model_settings`. For example:
+Generation settings can be overridden per backend and per exact model. Precedence is global `llm_*` defaults, catalogue sampler presets for a recognized llama.cpp filename, then `llm_backend_settings`, then `llm_model_settings`. Catalogue sampler presets do not override your thinking request. For example:
 
 ```json
 {
@@ -210,7 +228,7 @@ Generation settings can be overridden per backend and per exact model. Precedenc
 }
 ```
 
-This example configures an already-installed model; it does not download one or change the catalogue. Override keys are `max_tokens`, `context`, `temperature`, `thinking` and `context_margin`. Model keys are the GGUF filename for the managed llama.cpp launcher, the exact server-reported model identifier for generic servers, or the full Ollama tag including `:latest` when applicable. A llama.cpp server using an alias needs that alias as its client-side model key. Restart the kit after editing settings; a larger context can require more memory.
+This example configures an already-installed model; it does not download one or change the catalogue. Override keys are `max_tokens`, `context`, `temperature`, `thinking`, `context_margin`, `top_p`, `top_k`, `min_p`, `presence_penalty` and `repeat_penalty`. Generic compatible servers accept the standard `top_p` and `presence_penalty` fields; the other sampler extensions require llama.cpp or Ollama. For a catalogue model, use a backend or exact-model override to replace its sampler preset. Model keys are the GGUF filename for the managed llama.cpp launcher, the exact server-reported model identifier for generic servers, or the full Ollama tag including `:latest` when applicable. A llama.cpp server using an alias needs that alias as its client-side model key. Restart the kit after editing settings; a larger context can require more memory.
 
 For llama.cpp and Ollama, `thinking` accepts `true`, `false`, `null` (server/model default), or a supported effort name. Generic `openai` servers accept `null` or an effort name supported by that server; llama.cpp-specific fields are not sent to them. `auto` identifies llama.cpp through its server properties, otherwise treats the endpoint as generic. Use `llm_backend: "llamacpp"` if a proxy hides those properties. Thinking controls depend on the model/template; a model that always reasons may not honor an off request. See the [llama.cpp server documentation](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md) and [Ollama thinking documentation](https://docs.ollama.com/capabilities/thinking).
 
@@ -230,12 +248,12 @@ If Python is missing, install Python 3.8+ from <https://www.python.org/downloads
 
 Use `.\run.bat`, `run.sh` or `run.command` for startup, setup and status. Append `prepare` to configure downloads, `prepare --resume` to reuse saved choices, or `status` to inspect the kit. The Python entry point is `survival.py`; the older `prepare-kit` scripts remain compatibility shortcuts.
 
-Model IDs are `light`, `standard`, `strong` and `llama3b`. Library profiles are `minimal`, `recommended` and `full`. Use `none` to skip a model or library download. Existing downloaded model and ZIM filenames stay unchanged.
+Recommended model IDs are `lfm3-1.7b`, `gemma4-e2b` and `qwen35-9b`. Alternatives include `qwen35-2b`, `qwen3-4b` and `ministral3-8b`. Legacy IDs `light`, `standard`, `strong` and `llama3b` retain their original model files. Library profiles are `minimal`, `recommended` and `full`. Use `none` to skip a model or library download. Existing downloaded model and ZIM filenames stay unchanged.
 
 ## Requirements
 
 - **Minimum (search only):** any PC with Python 3.8+.
-- **With AI:** 4 GB RAM (light model), 8 GB recommended; x86-64 CPU with AVX2 or Apple Silicon/ARM64. No GPU needed.
+- **With AI:** 8 GB total system RAM for the lightweight recommendation, 16 GB for the default, 24 GB for the larger tier; x86-64 CPU with AVX2 or Apple Silicon/ARM64. No GPU needed.
 - **Disk:** 3 GB (minimal kit) to 100+ GB (full kit).
 
 ## Retrieval behavior
@@ -251,11 +269,11 @@ node --check web/app.js
 
 GitHub Actions runs the Python tests on Windows, Linux and macOS with Python 3.11 and 3.14. The tests use temporary artifacts and mock services; they do not download full models or ZIM libraries.
 
-Real-model checks run separately: see the [manual harness](tests/manual/README.md) the [November 2026 CPU evaluation](docs/model-evaluation-2026-11-13.md), and the [retrieval follow-up](docs/retrieval-evaluation-2026-11-13.md).
+Real-model checks run separately: see the [manual harness](tests/manual/README.md), the [November 2026 CPU evaluation](docs/model-evaluation-2026-11-13.md), the [retrieval follow-up](docs/retrieval-evaluation-2026-11-13.md), and the [tier comparison](docs/model-tier-evaluation-2026-11-13.md).
 
 ## Licenses
 
-Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded by the preparer have their own licenses. The default model (Qwen2.5 3B) uses the *Qwen Research License*; for commercial use choose `light` or `strong` (Apache 2.0).
+Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded by the preparer have their own licenses. The default Gemma 4 E2B and the Qwen/Ministral alternatives use Apache 2.0. LFM3 uses the [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM3-1.7B); review its terms for your use. The legacy `standard` model retains its Qwen Research License.
 
 ## Contributing
 

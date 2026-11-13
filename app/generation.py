@@ -1,12 +1,24 @@
 """Generation policy shared by the launcher and local API clients."""
 import math
+import os
+from .config import CONFIG_DIR, load_json
+
+SAMPLING_KEYS = ('top_p', 'top_k', 'min_p', 'presence_penalty', 'repeat_penalty')
 
 
 def generation_options(settings, backend, model):
-    """Global defaults < backend overrides < exact backend/model overrides."""
+    """Global defaults < catalogue sampler defaults < backend < exact model overrides."""
     options = {key: settings.get('llm_' + key, default) for key, default in (
         ('max_tokens', 2048), ('context', 8192), ('temperature', 0.2),
         ('thinking', None if backend == 'openai' else False), ('context_margin', 256))}
+    options.update({key: settings.get('llm_' + key) for key in SAMPLING_KEYS})
+    if backend == 'llamacpp':
+        catalogue = load_json(os.path.join(CONFIG_DIR, 'models.json'), {}) or {}
+        entry = next((m for m in catalogue.get('models', []) if m.get('file') == model), {})
+        profile = entry.get('generation', {})
+        if not isinstance(profile, dict) or set(profile) - (set(SAMPLING_KEYS) | {'temperature'}):
+            raise ValueError('Invalid catalogue generation profile')
+        options.update(profile)
     for field in ('llm_backend_settings', 'llm_model_settings'):
         mapping = settings.get(field, {})
         if not isinstance(mapping, dict):
@@ -33,6 +45,19 @@ def generation_options(settings, backend, model):
         raise ValueError('thinking must be true, false, null, or a supported effort name')
     if backend == 'openai' and type(thinking) is bool:
         raise ValueError('Generic OpenAI-compatible servers need a supported thinking effort name or null')
+    for key in SAMPLING_KEYS:
+        value = options[key]
+        if value is None:
+            continue
+        if key == 'top_k':
+            valid = type(value) is int and value >= 0
+        else:
+            limits = (-2, 2) if key == 'presence_penalty' else (0, 2) if key == 'repeat_penalty' else (0, 1)
+            valid = type(value) in (int, float) and math.isfinite(value) and limits[0] <= value <= limits[1]
+        if not valid:
+            raise ValueError('Invalid sampler value: ' + key)
+        if backend == 'openai' and key in ('top_k', 'min_p', 'repeat_penalty'):
+            raise ValueError(key + ' requires llama.cpp or Ollama')
     return options
 
 

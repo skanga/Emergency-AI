@@ -51,7 +51,7 @@ Usa `.\run.bat prepare` en Windows o `./run.sh prepare` en Linux/macOS para eleg
 
 El preparador pregunta:
 
-1. **Modelo de IA:** `light` (1 GB, 4 GB de RAM), `standard` (2 GB, 8 GB de RAM — recomendado), `strong` (4,7 GB, 16 GB de RAM).
+1. **Modelo de IA:** `lfm3-1.7b` (~1.1 GB, 8 GB RAM), `gemma4-e2b` (default, ~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licencias](README.md#model-choices).
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) o `full` (~77 GiB, Wikipedia sin imágenes).
 3. **Bibliotecas archivadas opcionales:** copias antiguas de WikEM y wikiHow, con fecha y tamaño. Ninguna se selecciona de forma predeterminada, tampoco en `full`.
 4. **Sistemas:** solo esta computadora, o **Windows + Linux + macOS** (kit universal para pendrive).
@@ -62,7 +62,7 @@ El preparador pregunta:
 Sin preguntas:
 
 ```bash
-python survival.py --lang es prepare --model standard --zims recommended --os all --python
+python survival.py --lang es prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
 ### 3. Úsalo (sin internet)
@@ -114,4 +114,4 @@ python -m unittest discover -s tests
 
 ## Licencias
 
-Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados por el preparador tienen sus propias licencias. El modelo predeterminado (Qwen2.5 3B) usa la *Qwen Research License*; para uso comercial elige `light` o `strong` (Apache 2.0).
+Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados por el preparador tienen sus propias licencias.  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. Legacy `standard`: Qwen Research License. [Details](README.md#model-choices).

@@ -11,7 +11,7 @@ import json
 from http.client import HTTPException
 
 from .net import get_json, open_url
-from .generation import AnswerFilter, generation_options
+from .generation import AnswerFilter, generation_options, SAMPLING_KEYS
 
 
 class LLMError(Exception):
@@ -131,6 +131,7 @@ class OpenAICompatible(GenerationClient):
             "max_tokens": options['max_tokens'], "temperature": options['temperature'],
             **self.thinking_params(),
         }
+        payload.update({key: options[key] for key in SAMPLING_KEYS if options[key] is not None})
         answer = AnswerFilter()
         try:
             with open_url(self.base_url + "/chat/completions", data=payload, timeout=600) as response:
@@ -205,6 +206,7 @@ class Ollama(GenerationClient):
         }
         if options['thinking'] is not None:
             payload['think'] = options['thinking']
+        payload['options'].update({key: options[key] for key in SAMPLING_KEYS if options[key] is not None})
         answer = AnswerFilter()
         try:
             with open_url(self.base_url + '/api/chat', data=payload, timeout=600) as response:

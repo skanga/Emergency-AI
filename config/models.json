@@ -1,67 +1,228 @@
 {
-  "_comment": "GGUF models for llama.cpp. Replace or add models here. 'default' is used when no model is selected.",
-  "default": "standard",
+  "_comment": "Verified GGUF artifacts. Model IDs are permanent: do not remap a previously published ID to a different file. RAM values are recommended total system RAM, not guaranteed minimums. Recommendations are starting points from the recorded CPU smoke tests.",
+  "default": "gemma4-e2b",
+  "recommendations": {
+    "lightweight": "lfm3-1.7b",
+    "balanced": "gemma4-e2b",
+    "larger": "qwen35-9b"
+  },
   "models": [
     {
+      "id": "lfm3-1.7b",
+      "file": "LFM3-1.7B-Q4_K_M.gguf",
+      "url": "https://huggingface.co/LiquidAI/LFM3-1.7B-GGUF/resolve/cd0c74c575b5c416f3011b5b4c298077f26ca8c2/LFM3-1.7B-Q4_K_M.gguf",
+      "size_bytes": 1099627808,
+      "sha256": "3793e1e6e2266919d6e015287221b41100175a98eddaba92e111aed3b05c93c4",
+      "revision": "cd0c74c575b5c416f3011b5b4c298077f26ca8c2",
+      "generation": {
+        "temperature": 0.1,
+        "top_k": 50,
+        "repeat_penalty": 1.1
+      },
+      "name": "LFM3 1.7B Instruct (Q4_K_M)",
+      "size_gb": 1.1,
+      "ram_gb": 8,
+      "license": "LFM Open License v1.0",
+      "desc": {
+        "en": "Recommended lightweight model. Custom LFM license; review its terms.",
+        "pt": "Recomendado. 8 GB de RAM recomendados. LFM Open License v1.0",
+        "es": "Recomendado. 8 GB de RAM recomendados. LFM Open License v1.0"
+      }
+    },
+    {
+      "id": "gemma4-e2b",
+      "file": "gemma-4-E2B-it-UD-Q4_K_XL.gguf",
+      "url": "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/0314792d7f1f7e229411f620751375812bb9faf2/gemma-4-E2B-it-UD-Q4_K_XL.gguf",
+      "size_bytes": 3184496736,
+      "sha256": "b52f438017efaec5debf1c0d8be690571e212a07c312f1102bbce927258cfc32",
+      "revision": "0314792d7f1f7e229411f620751375812bb9faf2",
+      "generation": {
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "top_k": 64
+      },
+      "name": "Gemma 4 E2B Instruct (Unsloth UD-Q4_K_XL)",
+      "size_gb": 3.18,
+      "ram_gb": 16,
+      "license": "Apache-2.0",
+      "desc": {
+        "en": "Recommended balanced model and default. Text only; 16 GB system RAM recommended.",
+        "pt": "Recomendado. 16 GB de RAM recomendados. Apache-2.0",
+        "es": "Recomendado. 16 GB de RAM recomendados. Apache-2.0"
+      }
+    },
+    {
+      "id": "qwen35-9b",
+      "file": "Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen_Qwen3.5-9B-GGUF/resolve/182be2fd6c7bc44887d88a91cb03ff009cc9f549/Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+      "size_bytes": 6169341984,
+      "sha256": "d784ce9eda1a5a7b51e8f705a9e6310844bf4f173654d115823c775fdea56d43",
+      "revision": "182be2fd6c7bc44887d88a91cb03ff009cc9f549",
+      "generation": {
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0
+      },
+      "name": "Qwen3.5 9B (Q4_K_M)",
+      "size_gb": 6.17,
+      "ram_gb": 24,
+      "license": "Apache-2.0",
+      "desc": {
+        "en": "Recommended larger model. 24 GB system RAM recommended; slower on CPU.",
+        "pt": "Recomendado. 24 GB de RAM recomendados. Apache-2.0",
+        "es": "Recomendado. 24 GB de RAM recomendados. Apache-2.0"
+      }
+    },
+    {
+      "id": "qwen35-2b",
+      "file": "Qwen_Qwen3.5-2B-Q4_K_M.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen_Qwen3.5-2B-GGUF/resolve/7d26695454df6de5fbcce2e58681e62dae06ce43/Qwen_Qwen3.5-2B-Q4_K_M.gguf",
+      "size_bytes": 1396198496,
+      "sha256": "57a1085840f497d764a7fc5d346922dbde961efb54cc792ea81d694fd846a1d8",
+      "revision": "7d26695454df6de5fbcce2e58681e62dae06ce43",
+      "generation": {
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0
+      },
+      "name": "Qwen3.5 2B (Q4_K_M)",
+      "size_gb": 1.4,
+      "ram_gb": 8,
+      "license": "Apache-2.0",
+      "desc": {
+        "en": "Apache-licensed lightweight alternative. More source errors in our smoke tests.",
+        "pt": "Alternativa. 8 GB de RAM recomendados. Apache-2.0",
+        "es": "Alternativa. 8 GB de RAM recomendados. Apache-2.0"
+      }
+    },
+    {
+      "id": "qwen3-4b",
+      "file": "Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/ae44f08e1392f39c0e474af10c3ff8355c8b6688/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+      "size_bytes": 2497280736,
+      "sha256": "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e",
+      "revision": "ae44f08e1392f39c0e474af10c3ff8355c8b6688",
+      "name": "Qwen3 4B Instruct 2507 (Q4_K_M)",
+      "size_gb": 2.5,
+      "ram_gb": 16,
+      "license": "Apache-2.0",
+      "desc": {
+        "en": "Non-thinking balanced alternative. Smaller download; 16 GB system RAM recommended.",
+        "pt": "Alternativa. 16 GB de RAM recomendados. Apache-2.0",
+        "es": "Alternativa. 16 GB de RAM recomendados. Apache-2.0"
+      }
+    },
+    {
+      "id": "ministral3-8b",
+      "file": "mistralai_Ministral-3-8B-Instruct-2512-Q4_K_M.gguf",
+      "url": "https://huggingface.co/bartowski/mistralai_Ministral-3-8B-Instruct-2512-GGUF/resolve/ad82bf81321f4b22de70014ecd5135730115f6a8/mistralai_Ministral-3-8B-Instruct-2512-Q4_K_M.gguf",
+      "size_bytes": 5198387456,
+      "sha256": "7deb50ecb3afca928f0aa6dccdb87ed4ce4ab3991797e5fc0e0dedb92754802a",
+      "revision": "ad82bf81321f4b22de70014ecd5135730115f6a8",
+      "generation": {
+        "temperature": 0.05
+      },
+      "name": "Ministral 3 8B Instruct 2512 (Q4_K_M)",
+      "size_gb": 5.2,
+      "ram_gb": 24,
+      "license": "Apache-2.0",
+      "desc": {
+        "en": "Alternative larger model. 24 GB system RAM recommended.",
+        "pt": "Alternativa. 24 GB de RAM recomendados. Apache-2.0",
+        "es": "Alternativa. 24 GB de RAM recomendados. Apache-2.0"
+      }
+    },
+    {
+      "id": "qwen38-27b",
+      "file": "Qwen3.8-27B-UD-Q4_K_XL.gguf",
+      "url": "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/4af51b3542f775b0a8e4b310bfb3f17e01c306c9/Qwen3.8-27B-UD-Q4_K_XL.gguf",
+      "size_bytes": 17659407264,
+      "sha256": "2a5f3565f39cf885103da591182c1266da64745737b42b452fd3e675369f1211",
+      "revision": "4af51b3542f775b0a8e4b310bfb3f17e01c306c9",
+      "generation": {
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0
+      },
+      "name": "Qwen3.8 27B (Unsloth UD-Q4_K_XL)",
+      "size_gb": 17.66,
+      "ram_gb": 32,
+      "license": "Apache-2.0",
+      "desc": {
+        "en": "Advanced high-memory option; 32 GB system RAM recommended. Slow on CPU; not a portable-tier default.",
+        "pt": "Modelo avancado; 32 GB de RAM recomendados. Mais lento em CPU.",
+        "es": "Modelo avanzado; 32 GB de RAM recomendados. Mas lento en CPU."
+      }
+    },
+    {
       "id": "light",
-      "name": "Qwen2.5 1.5B Instruct (Q4_K_M)",
+      "name": "Qwen2.5 1.5B Instruct (Q4_K_M) [legacy]",
       "file": "Qwen2.5-1.5B-Instruct-Q4_K_M.gguf",
       "url": "https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf",
       "size_gb": 1.0,
       "ram_gb": 3,
       "license": "Apache-2.0",
       "desc": {
-        "pt": "Leve: roda em PCs fracos e com 4 GB de RAM. Respostas mais simples.",
-        "en": "Light: runs on weak PCs with 4 GB RAM. Simpler answers.",
-        "es": "Ligero: funciona en PCs débiles con 4 GB de RAM. Respuestas más simples."
+        "en": "Legacy compatibility model, retained for existing kits; not a current recommendation. Apache-2.0",
+        "pt": "Modelo antigo mantido para kits existentes; veja os modelos recomendados. Apache-2.0",
+        "es": "Modelo anterior para kits existentes; consulte los modelos recomendados. Apache-2.0"
       },
       "size_bytes": 986048768,
       "sha256": "1adf0b11065d8ad2e8123ea110d1ec956dab4ab038eab665614adba04b6c3370"
     },
     {
       "id": "standard",
-      "name": "Qwen2.5 3B Instruct (Q4_K_M)",
+      "name": "Qwen2.5 3B Instruct (Q4_K_M) [legacy]",
       "file": "Qwen2.5-3B-Instruct-Q4_K_M.gguf",
       "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q4_K_M.gguf",
       "size_gb": 1.9,
       "ram_gb": 6,
       "license": "Qwen Research License (personal/research use)",
       "desc": {
-        "pt": "Padrão: bom equilíbrio para notebooks com 8 GB de RAM. Fala bem português, inglês e espanhol.",
-        "en": "Default: good balance for laptops with 8 GB RAM. Good in Portuguese, English and Spanish.",
-        "es": "Estándar: buen equilibrio para portátiles con 8 GB de RAM. Habla bien portugués, inglés y español."
+        "en": "Legacy compatibility model, retained for existing kits; not a current recommendation. Qwen Research License (personal/research use)",
+        "pt": "Modelo antigo mantido para kits existentes; veja os modelos recomendados. Qwen Research License (personal/research use)",
+        "es": "Modelo anterior para kits existentes; consulte los modelos recomendados. Qwen Research License (personal/research use)"
       },
       "size_bytes": 1929903264,
       "sha256": "9c9f56a391a3abbd5b89d0245bf6106081bcc3173119d4229235dd9d23253f94"
     },
     {
       "id": "strong",
-      "name": "Qwen2.5 7B Instruct (Q4_K_M)",
+      "name": "Qwen2.5 7B Instruct (Q4_K_M) [legacy]",
       "file": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
       "url": "https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf",
       "size_gb": 4.7,
       "ram_gb": 10,
       "license": "Apache-2.0",
       "desc": {
-        "pt": "Forte: respostas melhores, precisa de 16 GB de RAM e é mais lento sem placa de vídeo.",
-        "en": "Strong: better answers, needs 16 GB RAM and is slower without a GPU.",
-        "es": "Fuerte: mejores respuestas, necesita 16 GB de RAM y es más lento sin tarjeta gráfica."
+        "en": "Legacy compatibility model, retained for existing kits; not a current recommendation. Apache-2.0",
+        "pt": "Modelo antigo mantido para kits existentes; veja os modelos recomendados. Apache-2.0",
+        "es": "Modelo anterior para kits existentes; consulte los modelos recomendados. Apache-2.0"
       },
       "size_bytes": 4683074240,
       "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423"
     },
     {
       "id": "llama3b",
-      "name": "Llama 3.2 3B Instruct (Q4_K_M)",
+      "name": "Llama 3.2 3B Instruct (Q4_K_M) [legacy]",
       "file": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
       "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
       "size_gb": 2.0,
       "ram_gb": 6,
       "license": "Llama 3.2 Community License",
       "desc": {
-        "pt": "Alternativa ao padrão (Meta Llama 3.2).",
-        "en": "Alternative to the default (Meta Llama 3.2).",
-        "es": "Alternativa al estándar (Meta Llama 3.2)."
+        "en": "Legacy compatibility model, retained for existing kits; not a current recommendation. Llama 3.2 Community License",
+        "pt": "Modelo antigo mantido para kits existentes; veja os modelos recomendados. Llama 3.2 Community License",
+        "es": "Modelo anterior para kits existentes; consulte los modelos recomendados. Llama 3.2 Community License"
       },
       "size_bytes": 2019377696,
       "sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff"

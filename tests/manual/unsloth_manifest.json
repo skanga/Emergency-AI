@@ -1,0 +1,53 @@
+[
+  {
+    "id": "unsloth-gemma-4-e2b-it",
+    "file": "gemma-4-E2B-it-UD-Q4_K_XL.gguf",
+    "url": "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/0314792d7f1f7e229411f620751375812bb9faf2/gemma-4-E2B-it-UD-Q4_K_XL.gguf",
+    "size_bytes": 3184496736,
+    "sha256": "b52f438017efaec5debf1c0d8be690571e212a07c312f1102bbce927258cfc32",
+    "revision": "0314792d7f1f7e229411f620751375812bb9faf2",
+    "repo": "unsloth/gemma-4-E2B-it-GGUF",
+    "generation": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "thinking": false
+    }
+  },
+  {
+    "id": "unsloth-qwen35-2b",
+    "file": "Qwen3.5-2B-UD-Q4_K_XL.gguf",
+    "url": "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/resolve/f6d5376be1edb4d416d56da11e5397a961aca8ae/Qwen3.5-2B-UD-Q4_K_XL.gguf",
+    "size_bytes": 1339752704,
+    "sha256": "0af96165ea615bea39a04118d63f0b6d35908aea850ee4a51aa6151d851b8b35",
+    "revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae",
+    "repo": "unsloth/Qwen3.5-2B-GGUF",
+    "generation": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repeat_penalty": 1.0,
+      "thinking": false
+    }
+  },
+  {
+    "id": "unsloth-qwen38-27b",
+    "file": "Qwen3.8-27B-UD-Q4_K_XL.gguf",
+    "url": "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/4af51b3542f775b0a8e4b310bfb3f17e01c306c9/Qwen3.8-27B-UD-Q4_K_XL.gguf",
+    "size_bytes": 17659407264,
+    "sha256": "2a5f3565f39cf885103da591182c1266da64745737b42b452fd3e675369f1211",
+    "revision": "4af51b3542f775b0a8e4b310bfb3f17e01c306c9",
+    "repo": "unsloth/Qwen3.8-27B-GGUF",
+    "generation": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repeat_penalty": 1.0,
+      "thinking": false
+    }
+  }
+]

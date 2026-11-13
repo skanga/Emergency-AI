@@ -46,7 +46,7 @@ class EnglishDefaultsTests(unittest.TestCase):
 
     def test_english_download_profiles(self):
         models = json.loads((ROOT / "config/models.json").read_text(encoding="utf-8"))
-        self.assertEqual(models["default"], "standard")
+        self.assertIn(models["default"], {m["id"] for m in models["models"]})
         self.assertTrue({"light", "standard", "strong"} <= {m["id"] for m in models["models"]})
         zims = json.loads((ROOT / "config/zims.json").read_text(encoding="utf-8"))
         self.assertEqual(set(zims["profiles"]), {"minimal", "recommended", "full"})

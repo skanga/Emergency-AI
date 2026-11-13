@@ -1,0 +1,141 @@
+[
+  {
+    "id": "light",
+    "name": "Qwen2.5 1.5B Instruct (Q4_K_M)",
+    "file": "Qwen2.5-1.5B-Instruct-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf",
+    "size_gb": 1.0,
+    "ram_gb": 3,
+    "license": "Apache-2.0",
+    "desc": {
+      "pt": "Leve: roda em PCs fracos e com 4 GB de RAM. Respostas mais simples.",
+      "en": "Light: runs on weak PCs with 4 GB RAM. Simpler answers.",
+      "es": "Ligero: funciona en PCs d\u00e9biles con 4 GB de RAM. Respuestas m\u00e1s simples."
+    },
+    "size_bytes": 986048768,
+    "sha256": "1adf0b11065d8ad2e8123ea110d1ec956dab4ab038eab665614adba04b6c3370"
+  },
+  {
+    "id": "standard",
+    "name": "Qwen2.5 3B Instruct (Q4_K_M)",
+    "file": "Qwen2.5-3B-Instruct-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q4_K_M.gguf",
+    "size_gb": 1.9,
+    "ram_gb": 6,
+    "license": "Qwen Research License (personal/research use)",
+    "desc": {
+      "pt": "Padr\u00e3o: bom equil\u00edbrio para notebooks com 8 GB de RAM. Fala bem portugu\u00eas, ingl\u00eas e espanhol.",
+      "en": "Default: good balance for laptops with 8 GB RAM. Good in Portuguese, English and Spanish.",
+      "es": "Est\u00e1ndar: buen equilibrio para port\u00e1tiles con 8 GB de RAM. Habla bien portugu\u00e9s, ingl\u00e9s y espa\u00f1ol."
+    },
+    "size_bytes": 1929903264,
+    "sha256": "9c9f56a391a3abbd5b89d0245bf6106081bcc3173119d4229235dd9d23253f94"
+  },
+  {
+    "id": "strong",
+    "name": "Qwen2.5 7B Instruct (Q4_K_M)",
+    "file": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+    "size_gb": 4.7,
+    "ram_gb": 10,
+    "license": "Apache-2.0",
+    "desc": {
+      "pt": "Forte: respostas melhores, precisa de 16 GB de RAM e \u00e9 mais lento sem placa de v\u00eddeo.",
+      "en": "Strong: better answers, needs 16 GB RAM and is slower without a GPU.",
+      "es": "Fuerte: mejores respuestas, necesita 16 GB de RAM y es m\u00e1s lento sin tarjeta gr\u00e1fica."
+    },
+    "size_bytes": 4683074240,
+    "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423"
+  },
+  {
+    "id": "qwen35-2b",
+    "file": "Qwen_Qwen3.5-2B-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/Qwen_Qwen3.5-2B-GGUF/resolve/7d26695454df6de5fbcce2e58681e62dae06ce43/Qwen_Qwen3.5-2B-Q4_K_M.gguf",
+    "size_bytes": 1396198496,
+    "sha256": "57a1085840f497d764a7fc5d346922dbde961efb54cc792ea81d694fd846a1d8",
+    "revision": "7d26695454df6de5fbcce2e58681e62dae06ce43",
+    "repo": "bartowski/Qwen_Qwen3.5-2B-GGUF",
+    "generation": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repeat_penalty": 1.0,
+      "thinking": false
+    }
+  },
+  {
+    "id": "qwen3-4b",
+    "file": "Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/ae44f08e1392f39c0e474af10c3ff8355c8b6688/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+    "size_bytes": 2497280736,
+    "sha256": "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e",
+    "revision": "ae44f08e1392f39c0e474af10c3ff8355c8b6688",
+    "repo": "bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF"
+  },
+  {
+    "id": "qwen35-4b",
+    "file": "Qwen_Qwen3.5-4B-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/Qwen_Qwen3.5-4B-GGUF/resolve/4168f45a16a1290d65a4ec0fa312ae917a4c15d6/Qwen_Qwen3.5-4B-Q4_K_M.gguf",
+    "size_bytes": 3013027808,
+    "sha256": "13c16f426047e2de38cd075bdade4a7bcbc8c774384876f677740cda65f8a983",
+    "revision": "4168f45a16a1290d65a4ec0fa312ae917a4c15d6",
+    "repo": "bartowski/Qwen_Qwen3.5-4B-GGUF",
+    "generation": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repeat_penalty": 1.0,
+      "thinking": false
+    }
+  },
+  {
+    "id": "gemma4-e2b",
+    "file": "google_gemma-4-E2B-it-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/google_gemma-4-E2B-it-GGUF/resolve/81012ba3538e061d5ee003f11f25335b17f82e2d/google_gemma-4-E2B-it-Q4_K_M.gguf",
+    "size_bytes": 3462680032,
+    "sha256": "923c4c86177d2ee173a7f5b4fa3d0ac65f5962ab15e6d6a5bc250aec4fd7bf7e",
+    "revision": "81012ba3538e061d5ee003f11f25335b17f82e2d",
+    "repo": "bartowski/google_gemma-4-E2B-it-GGUF",
+    "generation": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "thinking": false
+    }
+  },
+  {
+    "id": "ministral3-8b",
+    "file": "mistralai_Ministral-3-8B-Instruct-2512-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/mistralai_Ministral-3-8B-Instruct-2512-GGUF/resolve/ad82bf81321f4b22de70014ecd5135730115f6a8/mistralai_Ministral-3-8B-Instruct-2512-Q4_K_M.gguf",
+    "size_bytes": 5198387456,
+    "sha256": "7deb50ecb3afca928f0aa6dccdb87ed4ce4ab3991797e5fc0e0dedb92754802a",
+    "revision": "ad82bf81321f4b22de70014ecd5135730115f6a8",
+    "repo": "bartowski/mistralai_Ministral-3-8B-Instruct-2512-GGUF",
+    "generation": {
+      "temperature": 0.05,
+      "thinking": false
+    }
+  },
+  {
+    "id": "qwen35-9b",
+    "file": "Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+    "url": "https://huggingface.co/bartowski/Qwen_Qwen3.5-9B-GGUF/resolve/182be2fd6c7bc44887d88a91cb03ff009cc9f549/Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+    "size_bytes": 6169341984,
+    "sha256": "d784ce9eda1a5a7b51e8f705a9e6310844bf4f173654d115823c775fdea56d43",
+    "revision": "182be2fd6c7bc44887d88a91cb03ff009cc9f549",
+    "repo": "bartowski/Qwen_Qwen3.5-9B-GGUF",
+    "generation": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repeat_penalty": 1.0,
+      "thinking": false
+    }
+  }
+]

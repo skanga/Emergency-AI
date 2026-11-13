@@ -1,0 +1,17 @@
+[
+  {
+    "id": "lfm3-1.7b",
+    "file": "LFM3-1.7B-Q4_K_M.gguf",
+    "url": "https://huggingface.co/LiquidAI/LFM3-1.7B-GGUF/resolve/cd0c74c575b5c416f3011b5b4c298077f26ca8c2/LFM3-1.7B-Q4_K_M.gguf",
+    "size_bytes": 1099627808,
+    "sha256": "3793e1e6e2266919d6e015287221b41100175a98eddaba92e111aed3b05c93c4",
+    "revision": "cd0c74c575b5c416f3011b5b4c298077f26ca8c2",
+    "repo": "LiquidAI/LFM3-1.7B-GGUF",
+    "generation": {
+      "temperature": 0.1,
+      "top_k": 50,
+      "repeat_penalty": 1.1,
+      "thinking": false
+    }
+  }
+]

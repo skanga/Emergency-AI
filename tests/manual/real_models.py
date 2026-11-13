@@ -77,7 +77,7 @@ def run(model, include_thinking=True, output_prefix=""):
         raise RuntimeError('Benchmark port is already in use: '+str(PORT))
     binary,_=find_llama_server()
     assert binary, 'Missing runtime'
-    modelpath=ROOT/'models'/model['file']
+    modelpath=Path(model['path']) if model.get('path') else ROOT/'models'/model['file']
     assert modelpath.is_file(), str(modelpath)
     digest = hashlib.sha256()
     with modelpath.open('rb') as stream:
@@ -111,6 +111,8 @@ def run(model, include_thinking=True, output_prefix=""):
                 settings={'llm_backend':'llamacpp','llm_url':'http://127.0.0.1:'+str(PORT)+'/v1',
                           'llm_context':8192,'llm_max_tokens':case.get('max_tokens',2048),'llm_temperature':case.get('temperature',0.2),
                           'llm_thinking':case.get('thinking',False),'kiwix_enabled':False}
+                if model.get('generation'):
+                    settings['llm_model_settings'] = {'llamacpp': {model['file']: model['generation']}}
                 engine=Engine(settings)
                 if 'sources' in case:
                     engine.retrieve=lambda *args, **kwargs:case['sources']
@@ -136,14 +138,27 @@ def run(model, include_thinking=True, output_prefix=""):
 if __name__=='__main__':
     sys.stdout.reconfigure(encoding='utf-8')
     OUT.mkdir(parents=True, exist_ok=True)
-    models=json.loads(Path(__file__).with_name('model_manifest.json').read_text(encoding='utf-8'))
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('models', nargs='*', help='Optional manifest model IDs')
     parser.add_argument('--thinking-temperature', type=float, help='Run only the Qwen3.5 arithmetic thinking follow-up')
     parser.add_argument('--thinking-max-tokens', type=int, default=2048, help='Output limit for the isolated thinking follow-up')
     parser.add_argument('--skip-thinking-case', action='store_true', help='Compare the common cases only')
     parser.add_argument('--output-prefix', default='', help='Result filename prefix for a separate comparison')
+    parser.add_argument('--manifest', type=Path, default=Path(__file__).with_name('model_manifest.json'), help='Model artifact manifest')
+    parser.add_argument('--cases', help='Comma-separated case IDs')
+    parser.add_argument('--max-tokens', type=int, help='Override output budget for the selected cases')
     args = parser.parse_args()
+    if args.max_tokens is not None:
+        if not 1 <= args.max_tokens < 7936:
+            parser.error('max-tokens must be between 1 and 7935')
+        CASES = [dict(c, max_tokens=args.max_tokens) for c in CASES]
+    models = json.loads(args.manifest.read_text(encoding='utf-8'))
+    if args.cases:
+        selected = set(args.cases.split(','))
+        unknown_cases = selected - {c['id'] for c in CASES}
+        if unknown_cases:
+            parser.error('Unknown case IDs: '+', '.join(sorted(unknown_cases)))
+        CASES = [c for c in CASES if c['id'] in selected]
     if any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-' for c in args.output_prefix):
         parser.error('Output prefix must contain only letters, digits, underscore or hyphen')
     if args.thinking_temperature is not None:
