@@ -6,6 +6,7 @@ import os
 import threading
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from socketserver import TCPServer
 
 from . import __version__
 from .config import LANGS, WEB_DIR
@@ -25,6 +26,12 @@ class BoundedHTTPServer(ThreadingHTTPServer):
     def __init__(self, *args, **kwargs):
         self.slots = threading.BoundedSemaphore(16)
         super().__init__(*args, **kwargs)
+
+    def server_bind(self):
+        # HTTPServer's default reverse-DNS lookup can stall offline startup.
+        # This app only needs the bound address, not a resolved server name.
+        TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[:2]
 
     def process_request(self, request, client_address):
         if not self.slots.acquire(blocking=False):

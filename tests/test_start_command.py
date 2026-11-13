@@ -19,6 +19,12 @@ import survival
 
 
 class StartCommandTests(unittest.TestCase):
+    def test_offline_web_server_does_not_require_reverse_dns(self):
+        from app.server import serve
+        with patch("socket.getfqdn", side_effect=OSError("DNS unavailable")):
+            server = serve(Mock(), {}, port=0)
+            server.server_close()
+
     def test_fresh_offline_kit_serves_guides_and_second_start_reuses_it(self):
         with tempfile.TemporaryDirectory(prefix="Survival fresh kit ") as folder:
             root = Path(folder)
