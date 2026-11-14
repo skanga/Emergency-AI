@@ -9,7 +9,12 @@
       emergTxt: "Se houver telefone: SAMU 192 · Bombeiros 193 · Europa 112 · EUA 911",
       hello: "Como posso ajudar?",
       modelLabel: "Modelo de IA", modelProgress: "Carregando modelo", modelLoadingShort: "Carregando…", modelQueuedShort: "Troca na fila…",
-      modelNote: "Vale para todos que usam este kit. Apenas um modelo fica carregado por vez.",
+      modelNote: "Aplica-se a todos os navegadores conectados a este servidor. Apenas um modelo fica carregado por vez.",
+      libraryLabel: "Bibliotecas Kiwix", libraryAll: "Todas as bibliotecas", librariesAll: "Bibliotecas: todas",
+      librariesSelected: "Bibliotecas: {n} selecionadas", libraryEmpty: "Nenhuma biblioteca disponível. Inicie o Kiwix com as bibliotecas instaladas.",
+      libraryNone: "Nenhuma biblioteca selecionada. A busca usa apenas os guias incluídos.",
+      libraryDisabled: "Ative a opção de usar Kiwix abaixo da pergunta para pesquisar nestas bibliotecas.",
+      libraryNote: "Filtra as fontes das bibliotecas apenas neste navegador. Os guias incluídos são sempre pesquisados.",
       modelChoose: "Escolha um modelo instalado", modelEmpty: "Nenhum modelo GGUF instalado. Execute 'python emergency.py prepare' para adicionar um.",
       modelDisabled: "Troca indisponível para IA externa ou desativada.", modelEngine: "Execute 'python emergency.py prepare' para instalar o llama.cpp e trocar modelos aqui.",
       modelQueued: "Aguardando a resposta atual terminar…", modelStopping: "Descarregando o modelo atual…",
@@ -38,7 +43,12 @@
       emergTxt: "If phones work: US/Canada 911 · Europe 112 · UK 999 · Brazil 192/193",
       hello: "How can I help?",
       modelLabel: "AI model", modelProgress: "Loading model", modelLoadingShort: "Loading…", modelQueuedShort: "Switch queued…",
-      modelNote: "Applies to everyone using this kit. One model stays loaded at a time.",
+      modelNote: "Applies to all browsers connected to this server. One model stays loaded at a time.",
+      libraryLabel: "Kiwix libraries", libraryAll: "All libraries", librariesAll: "Libraries: All",
+      librariesSelected: "Libraries: {n} selected", libraryEmpty: "No libraries available. Start Kiwix with your installed libraries.",
+      libraryNone: "No libraries selected. Searches use only the included guides.",
+      libraryDisabled: "Enable the Kiwix option below your question to search these libraries.",
+      libraryNote: "Filters library sources for this browser only. Included guides are always searched.",
       modelChoose: "Choose an installed model", modelEmpty: "No GGUF models installed. Run 'python emergency.py prepare' to add one.",
       modelDisabled: "Switching is unavailable for externally managed or disabled AI engines.", modelEngine: "Run 'python emergency.py prepare' to install llama.cpp and switch models here.",
       modelQueued: "Waiting for the current answer to finish…", modelStopping: "Unloading the current model…",
@@ -67,7 +77,12 @@
       emergTxt: "Si hay teléfono: 112 Europa · 911 gran parte de América · Brasil 192/193",
       hello: "¿Cómo puedo ayudar?",
       modelLabel: "Modelo de IA", modelProgress: "Cargando modelo", modelLoadingShort: "Cargando…", modelQueuedShort: "Cambio en espera…",
-      modelNote: "Se aplica a todos los que usan este kit. Solo se carga un modelo a la vez.",
+      modelNote: "Se aplica a todos los navegadores conectados a este servidor. Solo se carga un modelo a la vez.",
+      libraryLabel: "Bibliotecas Kiwix", libraryAll: "Todas las bibliotecas", librariesAll: "Bibliotecas: todas",
+      librariesSelected: "Bibliotecas: {n} seleccionadas", libraryEmpty: "No hay bibliotecas disponibles. Inicia Kiwix con las bibliotecas instaladas.",
+      libraryNone: "Ninguna biblioteca seleccionada. La búsqueda usa solo las guías incluidas.",
+      libraryDisabled: "Activa la opción de usar Kiwix debajo de la pregunta para buscar en estas bibliotecas.",
+      libraryNote: "Filtra las fuentes de las bibliotecas solo en este navegador. Las guías incluidas siempre se consultan.",
       modelChoose: "Elige un modelo instalado", modelEmpty: "No hay modelos GGUF instalados. Ejecuta 'python emergency.py prepare' para añadir uno.",
       modelDisabled: "El cambio no está disponible para motores de IA externos o desactivados.", modelEngine: "Ejecuta 'python emergency.py prepare' para instalar llama.cpp y cambiar modelos aquí.",
       modelQueued: "Esperando a que termine la respuesta actual…", modelStopping: "Descargando el modelo actual de la memoria…",
@@ -106,6 +121,61 @@
   let modelActionError = null;
   let modelMenuSignature = "";
   let modelUnavailable = false;
+  let librarySelection = readLibrarySelection(); // null = all, [] = none
+  let libraryMenuSignature = "";
+
+  function readLibrarySelection() {
+    try {
+      const saved = JSON.parse(store("libraries"));
+      return Array.isArray(saved) && saved.every((name) => typeof name === "string") ? saved : null;
+    } catch (e) { return null; }
+  }
+
+  function libraryBooks() { return status && status.kiwix ? status.kiwix.books || [] : []; }
+
+  function renderLibraries() {
+    const books = libraryBooks();
+    const selected = new Set(librarySelection === null ? books.map((b) => b.name) : librarySelection);
+    const count = books.filter((b) => selected.has(b.name)).length;
+    const enabled = $("#useKiwix").checked;
+    const chip = $("#chipKiwix");
+    chip.className = "chip" + (enabled && count ? " on" : "");
+    chip.querySelector("span").textContent = !books.length || !enabled ? t("kiwixOff") :
+      librarySelection === null ? t("librariesAll") : t("librariesSelected").replace("{n}", count);
+    const signature = JSON.stringify([lang, books]);
+    if (signature !== libraryMenuSignature) {
+      libraryMenuSignature = signature;
+      const options = $("#libraryOptions");
+      options.replaceChildren();
+      for (const book of books) {
+        const label = document.createElement("label");
+        label.className = "model-option library-option";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.dataset.library = book.name;
+        const name = document.createElement("span");
+        name.className = "library-name";
+        name.textContent = book.title;
+        const detail = document.createElement("small");
+        detail.textContent = [book.lang, book.name].filter(Boolean).join(" · ");
+        name.append(detail);
+        label.append(checkbox, name);
+        options.append(label);
+      }
+    }
+    $("#libraryOptions").querySelectorAll("input").forEach((box) => { box.checked = selected.has(box.dataset.library); });
+    const all = $("#libraryAll");
+    all.disabled = !books.length;
+    all.checked = !!books.length && count === books.length;
+    all.indeterminate = count > 0 && count < books.length;
+    $("#libraryState").textContent = !books.length ? t("libraryEmpty") : !enabled ? t("libraryDisabled") : !count ? t("libraryNone") : "";
+  }
+
+  function saveLibraries(selection) {
+    librarySelection = selection;
+    store("libraries", JSON.stringify(selection));
+    renderLibraries();
+  }
 
   function store(k, v) {
     try {
@@ -359,11 +429,7 @@
       status = await api("/api/status");
     } catch (e) { status = null; }
     renderModelChip();
-    const ck = $("#chipKiwix");
-    if (status && status.kiwix && status.kiwix.books.length) {
-      ck.className = "chip on"; ck.querySelector("span").textContent = t("kiwixOn").replace("{n}", status.kiwix.books.length);
-      ck.title = status.kiwix.books.map((b) => b.title).join("\n");
-    } else { ck.className = "chip"; ck.querySelector("span").textContent = t("kiwixOff"); ck.title = ""; }
+    renderLibraries();
   }
 
   async function loadGuides() {
@@ -442,7 +508,8 @@
       const resp = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ q: question, lang, history: chatHistory, use_kiwix: $("#useKiwix").checked }),
+        body: JSON.stringify({ q: question, lang, history: chatHistory, use_kiwix: $("#useKiwix").checked,
+          kiwix_books: librarySelection }),
       });
       if (!resp.ok || !resp.body) throw new Error("HTTP " + resp.status);
       const reader = resp.body.getReader();
@@ -510,6 +577,7 @@
     const quick = $("#quick");
     if (quick) quick.innerHTML = t("quick").map(([k, q]) => `<button data-q="${esc(q)}"><b>${esc(k)}</b>${esc(q)}</button>`).join("");
     renderModels();
+    renderLibraries();
   }
   async function setLang(l) {
     lang = l; store("lang", l);
@@ -526,7 +594,8 @@
   // ---------------- events ----------------
   document.addEventListener("click", (e) => {
     if (!e.target.closest("#modelMenu")) $("#modelMenu").open = false;
-    if (e.target.closest("#chipLlm")) closeSide();
+    if (!e.target.closest("#libraryMenu")) $("#libraryMenu").open = false;
+    if (e.target.closest("#chipLlm, #chipKiwix")) closeSide();
     const model = e.target.closest("[data-model-file]");
     if (model) {
       if (!model.disabled) switchModel(model.dataset.modelFile);
@@ -569,8 +638,26 @@
   $("#menuBtn").addEventListener("click", openSide);
   $("#scrim").addEventListener("click", closeSide);
   $("#useKiwix").checked = store("kiwix") !== "0";
-  $("#useKiwix").addEventListener("change", (e) => store("kiwix", e.target.checked ? "1" : "0"));
+  $("#useKiwix").addEventListener("change", (e) => {
+    store("kiwix", e.target.checked ? "1" : "0");
+    renderLibraries();
+  });
+  $("#libraryAll").addEventListener("change", (e) => saveLibraries(e.target.checked ? null : []));
+  $("#libraryOptions").addEventListener("change", () => {
+    const selected = Array.from($("#libraryOptions").querySelectorAll("input:checked"), (box) => box.dataset.library);
+    saveLibraries(selected.length === libraryBooks().length ? null : selected);
+  });
+  window.addEventListener("storage", (e) => {
+    if (e.key === "ias:libraries" || e.key === null) {
+      librarySelection = readLibrarySelection();
+      renderLibraries();
+    }
+  });
   document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && $("#libraryMenu").open) {
+      $("#libraryMenu").open = false;
+      $("#chipKiwix").focus();
+    }
     if (e.key === "Escape" && $("#modelMenu").open) {
       $("#modelMenu").open = false;
       $("#chipLlm").focus();

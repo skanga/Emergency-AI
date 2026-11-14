@@ -198,6 +198,10 @@ def make_handler(engine, settings, models=None):
             if not isinstance(body, dict) or not isinstance(body.get("q"), str):
                 return self._send(400, {"error": "q must be a string"})
             history = body.get("history", [])
+            libraries = body.get("kiwix_books")
+            if libraries is not None and (not isinstance(libraries, list) or len(libraries) > 256
+                    or any(not isinstance(name, str) or not name or len(name) > 512 for name in libraries)):
+                return self._send(400, {"error": "kiwix_books must be null or a list of library names"})
             if (len(body["q"]) > 2000 or not isinstance(history, list) or len(history) > 8
                     or any(not isinstance(h, dict) or h.get("role") not in ("user", "assistant")
                            or not isinstance(h.get("content"), str) or len(h["content"]) > 16000
@@ -238,6 +242,7 @@ def make_handler(engine, settings, models=None):
                     history=body.get("history") or [],
                     use_kiwix=body.get("use_kiwix", True),
                     use_llm=body.get("use_llm", True),
+                    kiwix_books=body.get("kiwix_books"),
                 ):
                     emit(kind, data)
             except (BrokenPipeError, ConnectionResetError):

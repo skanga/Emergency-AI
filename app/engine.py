@@ -54,7 +54,7 @@ class Engine:
         }
 
     # ---------- retrieval ----------
-    def retrieve(self, question, lang, history=None, use_kiwix=True):
+    def retrieve(self, question, lang, history=None, use_kiwix=True, kiwix_books=None):
         query = question
         if history and len(tokenize(question)) < 4:
             prev = [h.get("content", "") for h in history if h.get("role") == "user"]
@@ -65,9 +65,10 @@ class Engine:
         for score, ch in self.kb.search(query, lang, k=k):
             d = ch.to_dict(score=score)
             sources.append(d)
-        if use_kiwix and self.kiwix_ok():
+        if use_kiwix and kiwix_books != [] and self.kiwix_ok():
             try:
-                for r in self.kiwix.search(question, lang, limit=int(self.settings.get("kiwix_results", 3))):
+                for r in self.kiwix.search(question, lang, limit=int(self.settings.get("kiwix_results", 3)),
+                                           book_names=kiwix_books):
                     text = self.kiwix.article_text(r["link"])
                     sources.append({
                         "kind": "kiwix", "doc_title": r["book"], "section": r["title"],
@@ -143,11 +144,11 @@ class Engine:
             parts.append(f"### [{s['n']}] {s['doc_title']} › {s['section']}\n\n{text}\n")
         return "\n".join(parts)
 
-    def answer(self, question, lang="en", history=None, use_kiwix=True, use_llm=True):
+    def answer(self, question, lang="en", history=None, use_kiwix=True, use_llm=True, kiwix_books=None):
         """Event generator: ('sources', [...]), ('token', str), ('done', {...})."""
         lang = lang if lang in i18n.SYSTEM_PROMPT else "en"
         t0 = time.time()
-        sources = self.retrieve(question, lang, history, use_kiwix)
+        sources = self.retrieve(question, lang, history, use_kiwix, kiwix_books)
         llm = self.llm() if use_llm and any(not s.get("context_omitted") for s in sources) else None
         model_unavailable = llm is None
         mode = "llm" if llm else "search"

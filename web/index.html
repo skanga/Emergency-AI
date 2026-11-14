@@ -25,10 +25,20 @@
         <div id="modelOptions" role="group" aria-label="AI model" data-i18n-aria="modelLabel"></div>
         <progress id="modelProgress" class="hidden" aria-label="Loading model" data-i18n-aria="modelProgress"></progress>
         <p id="modelState" role="status" aria-live="polite"></p>
-        <small id="modelNote" data-i18n="modelNote">Applies to everyone using this kit. One model stays loaded at a time.</small>
+        <small id="modelNote" data-i18n="modelNote">Applies to all browsers connected to this server. One model stays loaded at a time.</small>
       </div>
     </details>
-    <span class="chip" id="chipKiwix"><i></i><span>…</span></span>
+    <details class="model-menu" id="libraryMenu">
+      <summary class="chip" id="chipKiwix" aria-label="Kiwix libraries" data-i18n-aria="libraryLabel">
+        <i></i><span aria-live="polite">…</span><svg class="model-chevron" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M0 0h10L5 6z" fill="currentColor"/></svg>
+      </summary>
+      <div class="model-popup library-popup">
+        <label class="model-option library-option"><input type="checkbox" id="libraryAll"><span data-i18n="libraryAll">All libraries</span></label>
+        <div id="libraryOptions" role="group" aria-label="Kiwix libraries" data-i18n-aria="libraryLabel"></div>
+        <p id="libraryState" role="status" aria-live="polite"></p>
+        <small data-i18n="libraryNote">Filters library sources for this browser only. Included guides are always searched.</small>
+      </div>
+    </details>
   </div>
   <div class="langs" role="group" aria-label="Language">
     <button data-lang="en">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button>

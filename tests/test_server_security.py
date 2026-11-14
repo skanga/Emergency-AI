@@ -50,6 +50,16 @@ class HTTPBoundaryTests(unittest.TestCase):
         self.assertEqual(code, 200)
         self.assertIn(b"event: done", body)
 
+    def test_library_selection_is_request_scoped(self):
+        for selection in (['medicine'], [], None):
+            self.engine.answer.return_value = iter([('done', {})])
+            self.assertEqual(self.request(body=json.dumps({'q': 'hello', 'kiwix_books': selection}).encode())[0], 200)
+            self.assertEqual(self.engine.answer.call_args.kwargs['kiwix_books'], selection)
+
+    def test_invalid_library_selection_is_rejected(self):
+        for selection in ('medicine', [1], ['x' * 513], ['x'] * 257):
+            self.assertEqual(self.request(body=json.dumps({'q': 'hello', 'kiwix_books': selection}).encode())[0], 400)
+
     def test_invalid_json_shapes_are_client_errors(self):
         for value in ([], None, {"q": 123}, {"q": "x", "history": "bad"},
                       {"q": "x", "history": [1]}, {"q": "x", "history": [{"role": "user", "content": []}]},

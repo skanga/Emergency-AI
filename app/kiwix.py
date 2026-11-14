@@ -107,9 +107,12 @@ class KiwixClient:
         self._books = books
         return books
 
-    def search(self, query, lang="en", limit=3):
-        """Search all ZIMs. Prefer the requested language, then English."""
+    def search(self, query, lang="en", limit=3, book_names=None):
+        """Search the selected served ZIMs (None = all, [] = none)."""
         books = self.books()
+        if book_names is not None:
+            selected = set(book_names)
+            books = [book for book in books if book["name"] in selected]
         if not books:
             return []
         want = LANG3.get(lang, lang)
