@@ -394,7 +394,27 @@ def _has_llama_server(folder, plat):
     return any(name in files for _, _, files in os.walk(folder))
 
 
-def get_llama(plat, tr):
+def _cuda_pick(plat, assets):
+    """Require the engine and companion libraries from the same release/version."""
+    targets = {"windows-x86_64": "win", "windows-arm64": "win",
+               "linux-x86_64": "ubuntu", "linux-arm64": "ubuntu"}
+    if plat not in targets:
+        return None
+    arch = "arm64" if plat.endswith("arm64") else "x64"
+    pattern = re.compile(rf"^llama-.*-bin-({targets[plat]}-cuda-(\d+)\.(\d+)-{arch}\.(?:zip|tar\.gz))$")
+    pairs = []
+    for engine in assets:
+        match = pattern.match(engine[0])
+        if not match:
+            continue
+        runtime = next((a for a in assets if a[0].startswith("cudart-llama-")
+                        and a[0].endswith("-bin-" + match[1])), None)
+        if runtime:
+            pairs.append(((int(match[2]), int(match[3])), engine, runtime))
+    return max(pairs, key=lambda p: p[0])[1:] if pairs else None
+
+
+def get_llama(plat, tr, cuda=False):
     try:
         # Always check online, even when an older or unversioned engine is installed.
         releases = get_json(f"https://api.github.com/repos/{LLAMA_REPO}/releases?per_page=10", timeout=30)
@@ -414,27 +434,47 @@ def get_llama(plat, tr):
     if plat in LLAMA_VULKAN_ASSETS:
         accelerated = _llama_pick(plat, assets, "vulkan")
         if accelerated:
-            return _install_llama(plat, tr, tag, accelerated, "vulkan")
-        print(f"  Vulkan package unavailable for {plat} in {tag}; CPU remains available.")
+            if not _install_llama(plat, tr, tag, accelerated, "vulkan"):
+                return False
+        else:
+            print(f"  Vulkan package unavailable for {plat} in {tag}; CPU remains available.")
+        if cuda:
+            pair = _cuda_pick(plat, assets)
+            if not pair:
+                print(tr["fail"].format(f=f"CUDA ({plat})", e="matching engine/runtime pair unavailable"))
+                return False
+            return _install_llama(plat, tr, tag, pair[0], "cuda", pair[1])
     return True
 
 
-def _install_llama(plat, tr, tag, asset, backend="cpu"):
+def _install_llama(plat, tr, tag, asset, backend="cpu", companion=None):
     # Sibling folders keep GPU libraries out of the CPU loader's search path.
-    folder = plat + ("-vulkan" if backend == "vulkan" else "")
+    folder = plat + ("-" + backend if backend != "cpu" else "")
     dest = os.path.join(RUNTIME_DIR, "llama.cpp", folder)
     label = f"llama.cpp {tag} ({folder})"
     try:
         name, url, size = asset
         release = {"tag": tag, "asset": name}
+        if companion:
+            release["runtime_asset"] = companion[0]
         installed = load_json(os.path.join(dest, "release.json"), {})
-        if installed == release and _has_llama_server(dest, plat):
+        runtime_files = installed.get("runtime_files", {})
+        runtime_ok = not companion or (bool(runtime_files) and all(
+            os.path.isfile(os.path.join(dest, path)) and os.path.getsize(os.path.join(dest, path)) == size
+            for path, size in runtime_files.items()))
+        if {k: v for k, v in installed.items() if k != "runtime_files"} == release and runtime_ok and _has_llama_server(dest, plat):
             print(tr["skip"].format(f=label))
             return True
         archive = os.path.join(RUNTIME_DIR, "_downloads", name)
         download(url, archive, expected_size=size)
         if size is not None and os.path.getsize(archive) != size:
             raise RuntimeError("download size mismatch for " + name)
+        runtime_archive = None
+        if companion:
+            runtime_archive = os.path.join(RUNTIME_DIR, "_downloads", companion[0])
+            download(companion[1], runtime_archive, expected_size=companion[2])
+            if companion[2] is not None and os.path.getsize(runtime_archive) != companion[2]:
+                raise RuntimeError("download size mismatch for " + companion[0])
         parent = os.path.dirname(dest)
         os.makedirs(parent, exist_ok=True)
         # Extract separately so interrupted updates cannot corrupt the working kit.
@@ -445,6 +485,25 @@ def _install_llama(plat, tr, tag, asset, backend="cpu"):
             extract(archive, fresh)
             if not _has_llama_server(fresh, plat):
                 raise RuntimeError("archive does not contain llama-server for " + plat)
+            if runtime_archive:
+                libraries = os.path.join(staging, "libraries")
+                extract(runtime_archive, libraries)
+                server = "llama-server.exe" if plat.startswith("windows-") else "llama-server"
+                bindir = next(d for d, _, files in os.walk(fresh) if server in files)
+                runtime_files = {}
+                for directory, _, files in os.walk(libraries):
+                    for filename in files:
+                        # Flatten runtime libraries beside the executable; retain bundled licenses.
+                        source = os.path.join(directory, filename)
+                        target = os.path.join(bindir, filename)
+                        if os.path.exists(target):
+                            raise RuntimeError("CUDA companion file collides with engine: " + filename)
+                        _check_space(target, os.path.getsize(source))
+                        shutil.copy2(source, target)
+                        runtime_files[os.path.relpath(target, fresh)] = os.path.getsize(target)
+                if not any("cudart" in path.lower() for path in runtime_files):
+                    raise RuntimeError("CUDA companion archive lacks runtime libraries")
+                release["runtime_files"] = runtime_files
             with open(os.path.join(fresh, "release.json"), "w", encoding="utf-8") as f:
                 json.dump(release, f, indent=2)
             had_previous = os.path.exists(dest)
@@ -463,6 +522,8 @@ def _install_llama(plat, tr, tag, asset, backend="cpu"):
             if not os.path.exists(previous):
                 shutil.rmtree(staging, ignore_errors=True)
         os.remove(archive)
+        if runtime_archive:
+            os.remove(runtime_archive)
         print(f"  ✓ {label}")
         return True
     except Exception as e:
@@ -796,8 +857,33 @@ def _yes(prompt, tr):
         raise ValueError("Setup cancelled: input closed. Use --yes for unattended setup.")
 
 
+def nvidia_available():
+    """Only controls the download offer; the CUDA engine verifies compatibility at launch."""
+    binary = shutil.which("nvidia-smi")
+    if not binary:
+        return False
+    try:
+        result = subprocess.run([binary, "--query-gpu=name", "--format=csv,noheader"],
+                                capture_output=True, text=True, timeout=5,
+                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0)
+        return result.returncode == 0 and bool(result.stdout.strip())
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+
+
+def choose_cuda(lang):
+    if not nvidia_available():
+        return False
+    prompts = {
+        "en": "NVIDIA GPU detected. Include optional CUDA acceleration (roughly 0.6–0.8 GB download; compatible driver required)? [Y/n] ",
+        "pt": "GPU NVIDIA detectada. Incluir aceleração CUDA opcional (download de cerca de 0,6–0,8 GB; requer driver compatível)? [S/n] ",
+        "es": "GPU NVIDIA detectada. ¿Incluir aceleración CUDA opcional (descarga de unos 0,6–0,8 GB; requiere controlador compatible)? [S/n] ",
+    }
+    return _yes(prompts.get(lang, prompts["en"]), T.get(lang, T["en"]))
+
+
 def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, search=None, skip_tools=False,
-        archives=None, resume=False):
+        archives=None, resume=False, cuda=None):
     from .startup import load_selection, save_selection
     if resume:
         saved = load_selection(RUNTIME_DIR)
@@ -807,6 +893,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         zims = zims if zims is not None else saved.get("zims", "none")
         archives = archives if archives is not None else saved.get("archives", "none")
         python = python if python is not None else saved.get("python", False)
+        cuda = cuda if cuda is not None else saved.get("cuda", False)
         oses = oses or ",".join(saved.get("platforms", [platform_key()]))
     tr = dict(T.get(lang, T["en"]))
     launcher = r".\run.bat" if os.name == "nt" else "./run.sh"
@@ -899,6 +986,9 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     # Portable Python
     if python is None:
         python = choose_portable_python(platforms, lang) if interactive else (oses == "all")
+    if cuda is None:
+        cuda = (choose_cuda(lang) if interactive and chosen_model and not skip_tools
+                and any(p in LLAMA_VULKAN_ASSETS for p in platforms) else False)
 
     est = ((chosen_model.get("size_bytes", chosen_model["size_gb"] * 10**9) / 1024**3)
            if chosen_model else 0) + sum(z.get("size_gb", 0) for z in chosen_zims)
@@ -912,7 +1002,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     results = []
 
     # Save intent before any network operation so interrupted setup is resumable.
-    save_selection({"model": model, "zims": zims, "python": bool(python),
+    save_selection({"model": model, "zims": zims, "python": bool(python), "cuda": bool(cuda),
                     "archives": ",".join(a["id"] for a in chosen_archives) or "none", "platforms": platforms}, RUNTIME_DIR)
 
     def record(name, operation, *args):
@@ -922,7 +1012,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         for plat in platforms:
             print(f"\n[{plat}]")
             if chosen_model:
-                record("llama.cpp/" + plat, get_llama, plat, tr)
+                record("llama.cpp/" + plat, get_llama, plat, tr, bool(cuda))
             if chosen_zims or chosen_archives:
                 record("kiwix-tools/" + plat, get_kiwix_tools, plat, tr)
             if python:

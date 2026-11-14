@@ -290,7 +290,7 @@ def cmd_prepare(args, settings):
     try:
         return prepare.run(lang=args.lang, model=args.model, zims=args.zims, oses=args.os, python=args.python,
                            yes=args.yes, search=args.search, skip_tools=args.skip_tools, archives=args.archives,
-                           resume=args.resume)
+                           resume=args.resume, cuda=args.cuda)
     except (ValueError, OSError) as e:
         print(f"Preparation failed: {e}", file=sys.stderr)
         return 1
@@ -326,6 +326,11 @@ def main():
                     "wikem, wikihow-en, wikihow-es, wikihow-pt; see README for dates and sizes")
     pr.add_argument("--os", help="this | all | comma-separated list (e.g. windows-x86_64,macos-arm64)")
     pr.add_argument("--python", action="store_true", default=None, help="include portable Python")
+    cuda = pr.add_mutually_exclusive_group()
+    cuda.add_argument("--cuda", action="store_true", default=None,
+                      help="include optional NVIDIA CUDA engine and runtime libraries for Windows/Linux")
+    cuda.add_argument("--no-cuda", dest="cuda", action="store_false",
+                      help="skip CUDA downloads (does not remove an installed CUDA engine)")
     pr.add_argument("--yes", action="store_true", help="skip prompts (use defaults)")
     pr.add_argument("--search", help="search the Kiwix library catalog")
     pr.add_argument("--skip-tools", action="store_true", help="download only the model and ZIMs")

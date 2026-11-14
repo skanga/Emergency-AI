@@ -18,7 +18,9 @@ Si internet, la electricidad y los servicios se caen, este kit sigue funcionando
 
 ## Cómo funciona
 
-La preparación incluye motores CPU y Vulkan separados en Windows/Linux y usa Metal en macOS. En cada inicio, el kit detecta las GPU disponibles e intenta usar la CPU si falla el inicio con GPU. Los controladores deben estar instalados. Para un kit con opciones guardadas, ejecuta `.\run.bat prepare --resume --yes` (Windows) o `./run.sh prepare --resume --yes` (Linux/macOS) para añadir el nuevo motor. La opción `llm_acceleration` en `config/settings.local.json` acepta `auto` (predeterminado), `cpu`, `vulkan` o `metal`. Consulta los [detalles de configuración](README.md#configuration).
+CUDA es opcional: la configuración ofrece la descarga al detectar una GPU NVIDIA. Para añadirlo a un kit con opciones guardadas, usa `.\run.bat prepare --resume --cuda --yes` o `./run.sh prepare --resume --cuda --yes`. La descarga incluye las bibliotecas necesarias, sin exigir el toolkit de desarrollo CUDA. En Windows/Linux, el modo `auto` intenta CUDA, Vulkan y CPU, en ese orden. `--no-cuda` evita nuevas descargas, pero no elimina el motor instalado. [Compatibilidad y detalles](README.md#quick-start).
+
+La preparación incluye motores CPU y Vulkan separados en Windows/Linux y usa Metal en macOS. En cada inicio, el kit detecta las GPU disponibles e intenta usar la CPU si falla el inicio con GPU. Los controladores deben estar instalados. Para un kit con opciones guardadas, ejecuta `.\run.bat prepare --resume --yes` (Windows) o `./run.sh prepare --resume --yes` (Linux/macOS) para añadir el nuevo motor. La opción `llm_acceleration` en `config/settings.local.json` acepta `auto` (predeterminado), `cpu`, `cuda`, `vulkan` o `metal`. Consulta los [detalles de configuración](README.md#configuration).
 
 ```
  Pregunta ──► búsqueda en las guías del kit (BM25) ─┐

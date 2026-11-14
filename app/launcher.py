@@ -31,8 +31,8 @@ def _find_in(base, names):
 
 def find_llama_server(backend=None):
     plat = platform_key()
-    if backend == "vulkan":
-        found = _find_in(os.path.join(RUNTIME_DIR, "llama.cpp", plat + "-vulkan"), [exe("llama-server")])
+    if backend in ("vulkan", "cuda"):
+        found = _find_in(os.path.join(RUNTIME_DIR, "llama.cpp", plat + "-" + backend), [exe("llama-server")])
         return (found, "llama.cpp") if found else (None, None)
     names = [exe("llama-server")]
     found = _find_in(os.path.join(RUNTIME_DIR, "llama.cpp", plat), names)
@@ -120,8 +120,8 @@ def gpu_devices(binary, backend):
                                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if is_windows() else 0)
         if result.returncode:
             return []
-        pattern = (r"^\s*(Vulkan\d+):\s*(.+)$" if backend == "vulkan"
-                   else r"^\s*(MTL\d+|Metal\d*):\s*(.+)$")
+        prefix = {"vulkan": r"Vulkan\d+", "cuda": r"CUDA\d+", "metal": r"MTL\d+|Metal\d*"}[backend]
+        pattern = rf"^\s*({prefix}):\s*(.+)$"
         return re.findall(pattern, result.stdout + "\n" + result.stderr, re.MULTILINE)
     except (OSError, subprocess.TimeoutExpired):
         return []
@@ -156,8 +156,8 @@ class Launcher:
             return True
         binary, kind = find_llama_server()
         acceleration = self.settings.get("llm_acceleration", "auto")
-        if acceleration not in ("auto", "cpu", "vulkan", "metal"):
-            self.say("  Invalid llm_acceleration: use auto, cpu, vulkan, or metal.")
+        if acceleration not in ("auto", "cpu", "cuda", "vulkan", "metal"):
+            self.say("  Invalid llm_acceleration: use auto, cpu, cuda, vulkan, or metal.")
             return False
         model = os.path.join(MODELS_DIR, model_file) if model_file else find_model(self.settings)
         if model_file and not os.path.isfile(model):
@@ -188,12 +188,13 @@ class Launcher:
             cmd += ["-t", str(threads)]
         # Probe at every launch: a portable kit may now be on a different machine.
         if kind != "llamafile":
-            backend = "metal" if platform_key().startswith("macos-") else "vulkan"
-            if acceleration != "cpu":
-                backend = backend if acceleration == "auto" else acceleration
+            backends = (["metal"] if platform_key().startswith("macos-") else ["cuda", "vulkan"])
+            if acceleration != "auto":
+                backends = [] if acceleration == "cpu" else ["cuda", "vulkan"] if acceleration == "cuda" else [acceleration]
+            for backend in backends:
                 gpu = binary if backend == "metal" and platform_key().startswith("macos-") else None
-                if backend == "vulkan":
-                    gpu, _ = find_llama_server("vulkan")
+                if backend in ("vulkan", "cuda"):
+                    gpu, _ = find_llama_server(backend)
                 devices = gpu_devices(gpu, backend) if gpu else []
                 if devices:
                     gpu_cmd = [gpu] + cmd[1:] + ["--device", ",".join(d[0] for d in devices),
@@ -223,11 +224,11 @@ class Launcher:
                         try:
                             self.stop_llm()
                         except (OSError, subprocess.TimeoutExpired) as e:
-                            self.say(f"  Could not stop GPU engine; CPU retry cancelled: {e}")
+                            self.say(f"  Could not stop GPU engine; fallback cancelled: {e}")
                             return False
-                    self.say("  GPU failed to load the model; retrying on CPU. See logs/llm.log.")
+                    self.say(f"  {backend} failed to load the model; trying the next backend. See logs/llm.log.")
                 else:
-                    self.say(f"  No usable {backend} device/build; using CPU.")
+                    self.say(f"  No usable {backend} device/build; trying the next backend.")
             cmd += ["--device", "none", "--n-gpu-layers", "0"]
         elif acceleration == "cpu":
             cmd += ["-ngl", "0"]

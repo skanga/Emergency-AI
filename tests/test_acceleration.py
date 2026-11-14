@@ -56,7 +56,8 @@ class AccelerationTests(unittest.TestCase):
             self.stack.enter_context(patch.object(launcher, target, return_value=value))
         self.stack.enter_context(patch.object(launcher, '_ensure_exec'))
         self.find = self.stack.enter_context(patch.object(launcher, 'find_llama_server',
-            side_effect=lambda backend=None: ('gpu' if backend == 'vulkan' else 'cpu', 'llama.cpp')))
+            side_effect=lambda backend=None: (None, None) if backend == 'cuda' else
+            ('gpu' if backend == 'vulkan' else 'cpu', 'llama.cpp')))
         self.spawn = self.stack.enter_context(patch.object(launcher, '_spawn'))
         self.spawn.return_value.poll.return_value = None
 
