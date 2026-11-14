@@ -140,10 +140,10 @@ echo "Installed in: $destination"
 echo "Open run.command on macOS, or run ./run.sh inside that folder."
 echo "The launcher lets you download optional AI components or open the included guides."
 if [ -t 0 ]; then
-    printf 'Run first-time setup now (run.sh prepare)? [y/N] '
-    IFS= read -r answer || answer=""
+    printf 'Run first-time setup now (run.sh prepare)? [Y/n] '
+    IFS= read -r answer || answer=n
     case "$answer" in
-        y|Y|yes|YES|Yes)
+        ''|y|Y|yes|YES|Yes)
             "$destination/run.sh" prepare
             printf 'Open Emergency AI now? [y/N] '
             IFS= read -r answer || answer=""

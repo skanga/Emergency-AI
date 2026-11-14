@@ -146,8 +146,8 @@ try {
     }
 }
 if (-not [Console]::IsInputRedirected) {
-    $answer = Read-Host 'Run first-time setup now (run.bat prepare)? [y/N]'
-    if ($answer -match '^(?i:y|yes)$') {
+    $answer = Read-Host 'Run first-time setup now (run.bat prepare)? [Y/n]'
+    if ([string]::IsNullOrEmpty($answer) -or $answer -match '^(?i:y|yes)$') {
         & (Join-Path $target 'run.bat') prepare
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         $open = Read-Host 'Open Emergency AI now? [y/N]'

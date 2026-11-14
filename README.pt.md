@@ -59,7 +59,7 @@ curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -
 
 Precisa de internet, sem administrador. Aceita pastas novas ou vazias, exceto pelos instaladores; não atualiza um kit instalado. O Python tem versão fixa e SHA-256 verificado. Modelos e bibliotecas são opcionais no primeiro uso. Veja [requisitos e detalhes](README.md#1-download-the-kit-no-git-or-python-required). O script é salvo antes da execução para permitir revisão. No Windows, tudo está em um único arquivo `.bat`, com código PowerShell embutido.
 
-Ao terminar, o instalador oferece executar `run.bat prepare` ou `run.sh prepare` para configurar os componentes opcionais. Responda `y` para começar ou pressione Enter para deixar para depois. Sem terminal interativo, essa pergunta é omitida. O Python deste computador é reutilizado; outros sistemas selecionados recebem seus próprios runtimes quando necessário.
+Ao terminar, o instalador oferece executar `run.bat prepare` ou `run.sh prepare` para configurar os componentes opcionais. Pressione Enter ou responda `y` para começar; responda `n` para deixar para depois. Sem terminal interativo, essa pergunta é omitida. O Python deste computador é reutilizado; outros sistemas selecionados recebem seus próprios runtimes quando necessário.
 
 Alternativa para quem já usa Git e Python:
 
@@ -82,7 +82,7 @@ Use `.\run.bat prepare` no Windows ou `./run.sh prepare` no Linux/macOS para esc
 
 O comando `prepare` pergunta:
 
-1. **Modelo de IA:** `lfm3-1.7b` (~1.1 GB, 8 GB RAM), `gemma4-e2b` (default, ~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licenças](README.md#model-choices).
+1. **Modelo de IA:** `lfm3-1.7b` (default, ~1.1 GB, 8 GB RAM), `gemma4-e2b` (~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licenças](README.md#model-choices).
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) ou `full` (~77 GiB, Wikipedia sem imagens).
 3. **Bibliotecas arquivadas opcionais:** cópias antigas do WikEM e wikiHow, com data e tamanho. Nenhuma é selecionada por padrão, nem no perfil `full`.
 4. **Sistemas:** só este computador, ou **Windows + Linux + macOS** (kit universal para pendrive).

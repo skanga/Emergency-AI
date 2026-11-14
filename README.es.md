@@ -49,7 +49,7 @@ curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -
 
 Necesita internet, sin permisos de administrador. Acepta carpetas nuevas o vacías, salvo por los instaladores; no actualiza un kit instalado. Python tiene una versión fija y SHA-256 verificado. Los modelos y las bibliotecas son opcionales al abrir el kit. Consulta [requisitos y detalles](README.md#1-download-the-kit-no-git-or-python-required). El script se guarda antes de ejecutarlo para permitir su revisión. En Windows, todo está en un único archivo `.bat`, con código PowerShell integrado.
 
-Al terminar, el instalador ofrece ejecutar `run.bat prepare` o `run.sh prepare` para configurar los componentes opcionales. Responde `y` para empezar o pulsa Enter para dejarlo para después. Sin terminal interactiva, se omite esta pregunta. Se reutiliza Python de esta computadora; los otros sistemas seleccionados reciben sus propios runtimes cuando sea necesario.
+Al terminar, el instalador ofrece ejecutar `run.bat prepare` o `run.sh prepare` para configurar los componentes opcionales. Pulsa Enter o responde `y` para empezar; responde `n` para dejarlo para después. Sin terminal interactiva, se omite esta pregunta. Se reutiliza Python de esta computadora; los otros sistemas seleccionados reciben sus propios runtimes cuando sea necesario.
 
 Alternativa para quienes ya usan Git y Python:
 
@@ -72,7 +72,7 @@ Usa `.\run.bat prepare` en Windows o `./run.sh prepare` en Linux/macOS para eleg
 
 El comando `prepare` pregunta:
 
-1. **Modelo de IA:** `lfm3-1.7b` (~1.1 GB, 8 GB RAM), `gemma4-e2b` (default, ~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licencias](README.md#model-choices).
+1. **Modelo de IA:** `lfm3-1.7b` (default, ~1.1 GB, 8 GB RAM), `gemma4-e2b` (~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licencias](README.md#model-choices).
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) o `full` (~77 GiB, Wikipedia sin imágenes).
 3. **Bibliotecas archivadas opcionales:** copias antiguas de WikEM y wikiHow, con fecha y tamaño. Ninguna se selecciona de forma predeterminada, tampoco en `full`.
 4. **Sistemas:** solo esta computadora, o **Windows + Linux + macOS** (kit universal para pendrive).

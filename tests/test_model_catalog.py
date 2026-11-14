@@ -18,7 +18,7 @@ class ModelCatalogTests(unittest.TestCase):
                 patch.object(prepare, 'get_model', return_value=True) as download, \
                 contextlib.redirect_stdout(io.StringIO()):
             prepare.run(zims='none', oses='this', python=False, yes=True, skip_tools=True)
-        self.assertEqual(download.call_args.args[0]['id'], cfg['recommendations']['balanced'])
+        self.assertEqual(download.call_args.args[0]['id'], cfg['recommendations']['lightweight'])
 
     def test_obsolete_choices_are_not_in_catalogue(self):
         cfg = json.loads((ROOT / 'config/models.json').read_text(encoding='utf-8'))
@@ -28,7 +28,9 @@ class ModelCatalogTests(unittest.TestCase):
         cfg = json.loads((ROOT / 'config/models.json').read_text(encoding='utf-8'))
         models = {m['id']: m for m in cfg['models']}
         self.assertEqual(set(cfg['recommendations']), {'lightweight', 'balanced', 'larger'})
-        self.assertEqual(cfg['default'], cfg['recommendations']['balanced'])
+        self.assertEqual(cfg['default'], cfg['recommendations']['lightweight'])
+        self.assertEqual(cfg['models'][0]['id'], cfg['default'])
+        self.assertEqual(min(cfg['models'], key=lambda m: m['size_bytes'])['id'], cfg['default'])
         for mid in cfg['recommendations'].values():
             model = models[mid]
             self.assertRegex(model['sha256'], r'^[0-9a-f]{64}$')

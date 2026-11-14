@@ -688,6 +688,64 @@ def get_archive(entry, tr):
 
 
 # ---------------------------------------------------------------- interface
+def system_ram_bytes():
+    """Total physical memory visible to this OS; None if detection fails."""
+    try:
+        if sys.platform == "win32":
+            import ctypes
+
+            class MemoryStatus(ctypes.Structure):
+                _fields_ = [("length", ctypes.c_uint32), ("load", ctypes.c_uint32)] + [
+                    (name, ctypes.c_uint64) for name in (
+                        "total_physical", "available_physical", "total_page_file",
+                        "available_page_file", "total_virtual", "available_virtual", "extended")]
+
+            status = MemoryStatus()
+            status.length = ctypes.sizeof(status)
+            if not ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)):
+                return None
+            total = status.total_physical
+        elif sys.platform == "darwin":
+            total = int(subprocess.check_output(
+                ["sysctl", "-n", "hw.memsize"], text=True, timeout=5,
+                stderr=subprocess.DEVNULL).strip())
+        elif sys.platform.startswith("linux"):
+            with open("/proc/meminfo", encoding="ascii") as stream:
+                total = next(int(line.split()[1]) * 1024 for line in stream
+                             if line.startswith("MemTotal:"))
+        else:
+            return None
+        return total if total > 0 else None
+    except (OSError, ValueError, IndexError, StopIteration, AttributeError, subprocess.SubprocessError):
+        return None
+
+
+def _model_options(models, lang):
+    labels = {
+        "en": ("System RAM: {ram:.1f} GiB", "System RAM: could not detect",
+               "{ram} GB RAM recommended", "meets RAM recommendation", "below RAM recommendation",
+               "Estimates for this computer, not a guarantee: context size and other apps also use RAM. You can still select any model."),
+        "pt": ("RAM do sistema: {ram:.1f} GiB", "RAM do sistema: não foi possível detectar",
+               "{ram} GB de RAM recomendados", "atende à recomendação de RAM", "abaixo da recomendação de RAM",
+               "Estimativas para este computador, sem garantia: o contexto e outros aplicativos também usam RAM. Você pode escolher qualquer modelo."),
+        "es": ("RAM del sistema: {ram:.1f} GiB", "RAM del sistema: no se pudo detectar",
+               "{ram} GB de RAM recomendados", "cumple la recomendación de RAM", "por debajo de la recomendación de RAM",
+               "Estimaciones para esta computadora, sin garantía: el contexto y otras aplicaciones también usan RAM. Puedes elegir cualquier modelo."),
+    }
+    detected, unknown, recommendation, meets, below, note = labels.get(lang, labels["en"])
+    ram = system_ram_bytes()
+    print("\n" + (detected.format(ram=ram / 1024**3) if ram else unknown))
+    print(note)
+    options = []
+    for model in models:
+        memory = recommendation.format(ram=model["ram_gb"])
+        if ram:
+            memory += " — " + (meets if ram >= model["ram_gb"] * 1024**3 else below)
+        options.append((model["id"], f"{model['name']} — {model['size_gb']} GB — {memory} — "
+                        + model["desc"].get(lang, model["desc"]["en"])))
+    return options
+
+
 def _ask(prompt, options, default, tr):
     print("\n" + prompt)
     for i, (key, label) in enumerate(options, 1):
@@ -761,9 +819,8 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     # Model
     if model is None:
         if interactive:
-            opts = [(m["id"], f"{m['name']} — {m['size_gb']} GB — {m['desc'].get(lang, m['desc']['en'])}")
-                    for m in models_cfg["models"]
-                    if advanced or m["id"] in models_cfg.get("recommendations", {}).values()]
+            opts = _model_options([m for m in models_cfg["models"]
+                    if advanced or m["id"] in models_cfg.get("recommendations", {}).values()], lang)
             opts.append(("none", tr["none"]))
             default = 1 + [o[0] for o in opts].index(models_cfg.get("default", opts[0][0]))
             model = _ask(tr["model_q"], opts, default, tr)

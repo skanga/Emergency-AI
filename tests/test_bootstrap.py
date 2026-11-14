@@ -228,6 +228,11 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertFalse((self.root / "installed kit/setup-args.txt").exists())
 
+    def test_enter_accepts_first_time_setup(self):
+        result = self.run_installer(reply="")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual((self.root / "installed kit/setup-args.txt").read_text().strip(), "prepare")
+
     def test_noninteractive_install_does_not_start_setup(self):
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

@@ -66,7 +66,7 @@ Use the same launcher for first use and every later visit. On first use, choose 
 
 The installer includes portable Python for this computer. If you downloaded the source ZIP or cloned with Git instead, Python 3.8+ must already be installed, or the kit must contain portable Python for this platform. The launcher explains how to obtain it if missing.
 
-After a successful installation in an interactive terminal, the installer offers to run `run.bat prepare` (Windows) or `run.sh prepare` (Linux/macOS) for first-time setup. Enter `y` to choose optional components now, or press Enter to finish and set them up later. Non-interactive installs skip this offer. Setup reuses the portable Python already installed for this computer; selecting other platforms downloads their separate Python runtimes only if missing.
+After a successful installation in an interactive terminal, the installer offers to run `run.bat prepare` (Windows) or `run.sh prepare` (Linux/macOS) for first-time setup. Press Enter or enter `y` to choose optional components now; enter `n` to set them up later. Non-interactive installs skip this offer. Setup reuses the portable Python already installed for this computer; selecting other platforms downloads their separate Python runtimes only if missing.
 
 ### 3. Add or repair components (when online)
 
@@ -90,7 +90,7 @@ The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are abse
 
 The `prepare` command starts with **Recommended choices** (default) or **Advanced models and archived libraries**. Recommended shows the three starting models and guide-only mode; archived libraries and alternative models appear only in Advanced. Explicit command-line model/archive selections remain available. The remaining choices are:
 
-1. **AI model:** `lfm3-1.7b` (lightweight, ~1.1 GB download, 8 GB system RAM), `gemma4-e2b` (balanced/default, ~3.2 GB, 16 GB RAM), or `qwen35-9b` (larger, ~6.2 GB, 24 GB RAM). See [model choices](#model-choices) for licenses and alternatives.
+1. **AI model:** `lfm3-1.7b` (lightweight/default, ~1.1 GB download, 8 GB system RAM), `gemma4-e2b` (balanced, ~3.2 GB, 16 GB RAM), or `qwen35-9b` (larger, ~6.2 GB, 24 GB RAM). See [model choices](#model-choices) for licenses and alternatives.
 2. **Kiwix libraries:** `minimal` (~3 GiB), `recommended` (~8 GiB) or `full` (~77 GiB, Wikipedia without images).
 3. **Optional archived libraries:** older WikEM/wikiHow snapshots; **None** is the default. Each option shows its date and size.
 4. **Systems:** this computer only, or **Windows + Linux + macOS** (universal USB kit).
@@ -234,13 +234,13 @@ These are the recommended starting points from our CPU source-following tests, n
 
 | Use | Model ID | GGUF download | Recommended system RAM | License |
 |---|---|---:|---:|---|
-| Lightweight / smaller kit | `lfm3-1.7b` | ~1.1 GB | 8 GB | LFM Open License v1.0 |
-| Balanced / default | `gemma4-e2b` (Unsloth UD-Q4_K_XL) | ~3.2 GB | 16 GB | Apache 2.0 |
+| Lightweight / default | `lfm3-1.7b` | ~1.1 GB | 8 GB | LFM Open License v1.0 |
+| Balanced | `gemma4-e2b` (Unsloth UD-Q4_K_XL) | ~3.2 GB | 16 GB | Apache 2.0 |
 | Larger CPU model | `qwen35-9b` | ~6.2 GB | 24 GB | Apache 2.0 |
 
 RAM figures include estimated operating-system headroom and are recommendations, not validated minimums. Tests ran on a 64 GB Windows computer. Gemma's E2B name refers to effective computation; its total weights are larger. The app does not automatically choose a model based on your RAM.
 
-For a lightweight Apache-licensed alternative, choose `qwen35-2b`. `qwen3-4b` offers a smaller balanced download and a non-thinking model; `ministral3-8b` is another larger option. `qwen38-27b` offers official Qwen3.8 27B in Unsloth UD-Q4_K_XL (~17.7 GB download, 32 GB RAM recommended); it is much slower on CPU and is an advanced option, not the default. The preparation menu lists only the current models. Old model IDs have been removed; choose a current model with `.\run.bat prepare` (Windows) or `./run.sh prepare` (Linux/macOS) if an existing setup refers to a removed ID. New setup selects `gemma4-e2b` by default. To change an existing kit explicitly, run `.\run.bat prepare --model gemma4-e2b` on Windows or `./run.sh prepare --model gemma4-e2b` on Linux/macOS.
+For a lightweight Apache-licensed alternative, choose `qwen35-2b`. `qwen3-4b` offers a smaller balanced download and a non-thinking model; `ministral3-8b` is another larger option. `qwen38-27b` offers official Qwen3.8 27B in Unsloth UD-Q4_K_XL (~17.7 GB download, 32 GB RAM recommended); it is much slower on CPU and is an advanced option, not the default. The preparation menu lists only the current models. Old model IDs have been removed; choose a current model with `.\run.bat prepare` (Windows) or `./run.sh prepare` (Linux/macOS) if an existing setup refers to a removed ID. New setup selects `lfm3-1.7b` (option 1, the smallest download) by default, including unattended setup. The interactive menu detects total system RAM on Windows, Linux, and macOS and compares it with each model's RAM recommendation. If detection fails, recommendations still appear. These estimates describe the current computer and do not guarantee fit: context size and other applications also use memory. Larger models remain selectable, including when preparing a kit for another computer. To change an existing kit explicitly, run `.\run.bat prepare --model gemma4-e2b` on Windows or `./run.sh prepare --model gemma4-e2b` on Linux/macOS.
 
 Sampler presets accompany the verified filenames, so model-specific sampling is used during normal llama.cpp inference. Explicit backend/model settings take priority. Weights are pinned to artifact revisions and hashes; the separate llama.cpp runtime is still refreshed to the latest compatible release on preparation.
 
@@ -316,7 +316,7 @@ Recommended model IDs are `lfm3-1.7b`, `gemma4-e2b` and `qwen35-9b`. Alternative
 ## Requirements
 
 - **Minimum (search only):** any PC with Python 3.8+.
-- **With AI:** 8 GB total system RAM for the lightweight recommendation, 16 GB for the default, 24 GB for the larger tier; x86-64 CPU with AVX2 or Apple Silicon/ARM64. No GPU needed.
+- **With AI:** 8 GB total system RAM for the lightweight default, 16 GB for the balanced tier, 24 GB for the larger tier; x86-64 CPU with AVX2 or Apple Silicon/ARM64. No GPU needed.
 - **Disk:** 3 GB (minimal kit) to 100+ GB (full kit).
 
 ## Retrieval behavior
@@ -336,7 +336,7 @@ Real-model checks run separately: see the [manual harness](tests/manual/README.m
 
 ## Licenses
 
-Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded with `prepare` have their own licenses. The default Gemma 4 E2B and the Qwen/Ministral alternatives use Apache 2.0. LFM3 uses the [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM3-1.7B); review its terms for your use.
+Code: [MIT](LICENSE). Guides in `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Models, Kiwix, llama.cpp and ZIM files downloaded with `prepare` have their own licenses. Gemma 4 E2B and the Qwen/Ministral alternatives use Apache 2.0. The default LFM3 uses the [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM3-1.7B); review its terms for your use.
 
 ## Contributing
 

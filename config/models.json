@@ -1,6 +1,6 @@
 {
   "_comment": "Verified GGUF artifacts and sampler presets. RAM values are recommended total system RAM, not guaranteed minimums. Recommendations are starting points from recorded CPU smoke tests.",
-  "default": "gemma4-e2b",
+  "default": "lfm3-1.7b",
   "recommendations": {
     "lightweight": "lfm3-1.7b",
     "balanced": "gemma4-e2b",
@@ -24,7 +24,7 @@
       "ram_gb": 8,
       "license": "LFM Open License v1.0",
       "desc": {
-        "en": "Recommended lightweight model. Custom LFM license; review its terms.",
+        "en": "Default lightweight model. Custom LFM license; review its terms.",
         "pt": "Recomendado. 8 GB de RAM recomendados. LFM Open License v1.0",
         "es": "Recomendado. 8 GB de RAM recomendados. LFM Open License v1.0"
       }
@@ -46,7 +46,7 @@
       "ram_gb": 16,
       "license": "Apache-2.0",
       "desc": {
-        "en": "Recommended balanced model and default. Text only; 16 GB system RAM recommended.",
+        "en": "Recommended balanced model. Text only; 16 GB system RAM recommended.",
         "pt": "Recomendado. 16 GB de RAM recomendados. Apache-2.0",
         "es": "Recomendado. 16 GB de RAM recomendados. Apache-2.0"
       }
