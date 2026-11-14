@@ -38,10 +38,10 @@ from app import __version__  # noqa: E402
 from app.config import launcher_command, LANGS, load_settings, platform_key  # noqa: E402
 
 BANNER = r"""
-  +--------------------------------------------------------------------------+
-  |                              EMERGENCY AI                                |
-  | Offline knowledge and assistance when services (power/internet) go down. |
-  +--------------------------------------------------------------------------+
+  +-------------------------------------------------------------+
+  |                         EMERGENCY AI                        |
+  | Offline knowledge and assistance when the internet is down. |
+  +-------------------------------------------------------------+
 """
 
 MSG = {
