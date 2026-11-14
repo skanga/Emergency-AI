@@ -18,6 +18,7 @@ $stage = $null
 $moved = @()
 $activated = $false
 $log = $null
+$cache = $null
 function Fetch-Archive($Uri, $OutFile, [bool]$Resume = $false) {
     for ($attempt = 1; $attempt -le 3; $attempt++) {
         $message = "Downloading $(Split-Path -Leaf $OutFile), attempt $attempt/3"
@@ -49,6 +50,7 @@ function Assert-InstallDestination($Path) {
         throw "Destination must be a regular folder: $Path"
     }
     foreach ($child in Get-ChildItem -LiteralPath $Path -Force) {
+        if ($child.FullName -eq $stage -or $child.FullName -eq $cache) { continue }
         if ($child.PSIsContainer -or ($child.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
             $child.Name -notin @('install.bat', 'install.sh', '.DS_Store', 'Thumbs.db')) {
             throw "Destination contains existing files: $Path. Choose an empty folder."
@@ -57,15 +59,22 @@ function Assert-InstallDestination($Path) {
 }
 try {
     if (-not $Destination) {
-        $Destination = if ((Split-Path -Leaf (Get-Location).Path) -eq 'Emergency-AI') { '.' } else { 'Emergency-AI' }
+        $current = (Get-Location).Path
+        $empty = $true
+        try { Assert-InstallDestination $current } catch { $empty = $false }
+        $Destination = if ($empty -or (Split-Path -Leaf $current) -eq 'Emergency-AI' -or
+            $current -eq [IO.Path]::GetPathRoot($current)) { '.' } else { 'Emergency-AI' }
     }
     $target = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Destination)
-    Assert-InstallDestination $target
     $parent = Split-Path -Parent $target
+    if (-not $parent) { $parent = $target }
     if (-not (Test-Path -LiteralPath $parent -PathType Container)) { throw 'Parent folder must exist.' }
     if (-not (Get-Command tar.exe -ErrorAction SilentlyContinue)) { throw 'tar.exe is required (included in current Windows 10/11).' }
     if (-not (Get-Command curl.exe -ErrorAction SilentlyContinue)) { throw 'curl.exe is required (included in current Windows 10/11).' }
-    $cache = Join-Path $parent ('.' + (Split-Path -Leaf $target) + '-downloads')
+    $cacheName = Split-Path -Leaf $target
+    if (-not $cacheName) { $cacheName = 'Emergency-AI' }
+    $cache = Join-Path $parent ('.' + $cacheName + '-downloads')
+    Assert-InstallDestination $target
     if ((Test-Path -LiteralPath $cache) -and ((Get-Item -LiteralPath $cache -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'Download cache must not be a link.' }
     New-Item -ItemType Directory -Path $cache -Force | Out-Null
     $log = Join-Path $cache 'install.log'

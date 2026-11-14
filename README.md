@@ -20,9 +20,18 @@ Prepare the kit while you have internet, then use it when connectivity or servic
 
 ## Quick start
 
+Create a new, empty folder where you want to keep Emergency AI, then download the installer for your computer into that folder (right-click the link and choose **Save link as**):
+
+- **Windows:** [Download install.bat](https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.bat). Double-click it to install.
+- **Linux / macOS:** [Download install.sh](https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh). Open a terminal in the new folder and run `sh install.sh`.
+
+Follow the prompts to finish setup and open Emergency AI. You need internet during installation; Git and Python do not need to be installed first.
+
+## Install from a terminal
+
 ### 1. Download the kit (no Git or Python required)
 
-Open a terminal in the folder where you want to keep the kit. The installer creates an `Emergency-AI` subfolder, or uses the current folder if it is already named `Emergency-AI`. That folder must be empty apart from the downloaded `install.bat` / `install.sh` files. It downloads the application and launchers and adds a checksum-verified portable Python for this computer. It needs internet and no administrator rights.
+Open a terminal in the folder where you want to keep the kit. The installer uses the current folder if it is empty (apart from installer files and folder metadata), already named `Emergency-AI`, or a drive/mounted-volume root, such as a USB drive. Otherwise it creates an `Emergency-AI` subfolder. The destination must still be empty apart from the downloaded `install.bat` / `install.sh` files and folder metadata. It downloads the application and launchers and adds a checksum-verified portable Python for this computer. It needs internet and no administrator rights.
 
 **Windows (PowerShell):**
 
@@ -41,7 +50,7 @@ These commands save the installer before running it. You can download and inspec
 
 To choose another folder, run `.\install.bat "My kit"` or `sh install.sh "My kit"`. Its parent folder must already exist. The destination can be new or empty apart from `install.bat` / `install.sh` and folder metadata (`.DS_Store`, `Thumbs.db`). Folders containing any other files, including an existing kit, are refused. Downloaded installer files are preserved.
 
-Downloads show their stage, attempt number, and completed byte count. Each download gets up to three attempts, with connection and stalled-transfer timeouts. For a destination named `Emergency-AI`, the sibling folder `.Emergency-AI-downloads` contains `install.log` and the portable Python download. Rerunning the installer resumes an interrupted Python transfer or reuses a complete copy after checking its SHA-256. Servers without resume support cause a clean restart. A checksum mismatch removes the invalid file. Application source is refreshed on each run because `main` can change. After installation, the cache folder may be deleted to reclaim space; it is separate from the kit.
+Downloads show their stage, attempt number, and completed byte count. Each download gets up to three attempts, with connection and stalled-transfer timeouts. For a destination named `Emergency-AI`, the sibling folder `.Emergency-AI-downloads` contains `install.log` and the portable Python download. When installing at a drive or mounted-volume root, the cache and temporary staging folder stay inside that root. Rerunning the installer resumes an interrupted Python transfer or reuses a complete copy after checking its SHA-256. Servers without resume support cause a clean restart. A checksum mismatch removes the invalid file. Application source is refreshed on each run because `main` can change. After installation, the cache folder may be deleted to reclaim space.
 
 Supported: Windows 10/11 with PowerShell, `curl.exe` and `tar.exe`; Linux with glibc, `curl`, `tar` and `sha256sum`; macOS with `curl`, `tar` and `shasum`. All support x86-64 and ARM64. Python is pinned to 3.12.16 from the [official standalone Python release](https://github.com/astral-sh/python-build-standalone/releases/tag/20261110); its SHA-256 is checked before extraction. Application code comes from the current `main` branch over HTTPS. The installer downloads neither models nor Kiwix libraries; choose those when opening the kit below.
 

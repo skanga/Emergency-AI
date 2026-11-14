@@ -9,23 +9,43 @@ die() {
 }
 [ "$#" -le 1 ] || die "Usage: sh install.sh [new-folder]"
 destination=${1:-Emergency-AI}
-if [ "$#" -eq 0 ] && [ "$(basename "$PWD")" = Emergency-AI ]; then
-    destination=$PWD
-fi
+is_volume_root() (
+    cd "$1" || exit 1
+    [ "$PWD" != / ] || exit 0
+    # Device changes identify mounted USB roots on Linux and macOS.
+    current_device=$(stat -c %d . 2>/dev/null || stat -f %d . 2>/dev/null || true)
+    parent_device=$(stat -c %d .. 2>/dev/null || stat -f %d .. 2>/dev/null || true)
+    [ -n "$current_device" ] && [ "$current_device" != "$parent_device" ]
+)
 check_destination() {
     [ -e "$destination" ] || [ -L "$destination" ] || return 0
     [ -d "$destination" ] && [ ! -L "$destination" ] || die "Destination must be a regular folder: $destination"
-    for entry in "$destination/"* "$destination/".[!.]* "$destination/"..?*; do
+    for entry in "${destination%/}/"* "${destination%/}/".[!.]* "${destination%/}/"..?*; do
         [ -e "$entry" ] || [ -L "$entry" ] || continue
+        [ "$entry" != "${stage:-}" ] && [ "$entry" != "${cache:-}" ] || continue
         case "${entry##*/}" in
             install.bat|install.sh|.DS_Store|Thumbs.db) [ -f "$entry" ] && [ ! -L "$entry" ] && continue ;;
         esac
         die "Destination contains existing files: $destination. Choose an empty folder."
     done
 }
+if [ "$#" -eq 0 ]; then
+    destination=$PWD
+    if [ "$(basename "$PWD")" != Emergency-AI ] && ! is_volume_root "$PWD" &&
+        ! (check_destination) >/dev/null 2>&1; then
+        destination=Emergency-AI
+    fi
+fi
+if [ -d "$destination" ] && is_volume_root "$destination"; then
+    cache_name=$(basename "$destination")
+    if [ "$cache_name" = / ]; then cache_name=Emergency-AI; fi
+    cache="${destination%/}/.$cache_name-downloads"
+fi
 check_destination
 parent=$(cd "$(dirname "$destination")" && pwd) || die "Parent folder must exist."
 destination="$parent/$(basename "$destination")"
+if [ "$destination" = // ]; then destination=/; fi
+if [ -d "$destination" ] && is_volume_root "$destination"; then parent=$destination; fi
 for tool in curl tar mktemp; do
     command -v "$tool" >/dev/null 2>&1 || die "Required tool missing: $tool"
 done
@@ -57,8 +77,10 @@ case "$(uname -s)-$arch" in
         expected=e956e60bc9465d577ef8062059aa05cd3a2665b4b8678a2ed24e432368330b8f ;;
     *) die "Supported systems: Linux (glibc) and macOS." ;;
 esac
-stage=$(mktemp -d "$parent/.emergency-install-XXXXXXXX")
-cache="$parent/.$(basename "$destination")-downloads"
+stage=$(mktemp -d "${parent%/}/.emergency-install-XXXXXXXX")
+cache_name=$(basename "$destination")
+if [ "$cache_name" = / ]; then cache_name=Emergency-AI; fi
+cache="${parent%/}/.$cache_name-downloads"
 [ ! -L "$cache" ] || die "Download cache must not be a link."
 mkdir -p "$cache"
 log="$cache/install.log"
