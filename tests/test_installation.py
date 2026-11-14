@@ -30,9 +30,9 @@ class InstallationTests(unittest.TestCase):
     def test_no_free_space_prevents_downloads(self):
         from types import SimpleNamespace
         with patch.object(prepare.shutil, 'disk_usage', return_value=SimpleNamespace(free=0)), \
-                patch.object(prepare, 'get_model') as fetch:
-            with self.assertRaisesRegex(ValueError, 'Insufficient disk space'):
-                prepare.run(model='gemma4-e2b', zims='none', oses='this', yes=True)
+                patch.object(prepare.urllib.request, 'urlopen') as fetch:
+            self.assertEqual(prepare.run(model='gemma4-e2b', zims='none', oses='this',
+                                         yes=True, skip_tools=True), 1)
             fetch.assert_not_called()
 
     def setUp(self):

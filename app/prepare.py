@@ -172,21 +172,57 @@ def _zim_checksum_valid(path):
         return digest.digest() == f.read(16)
 
 
+class InsufficientSpaceError(OSError):
+    pass
+
+
+def _check_space(destination, additional_bytes, files=1):
+    """Check incremental writes on the actual volume, including staging.
+
+    Existing files already reduce the filesystem's free-space count. Do not
+    subtract their size again or assume a replacement can delete them early.
+    Allow 64 KiB per entry for allocation rounding and directory metadata.
+    """
+    if additional_bytes <= 0:
+        return
+    directory = os.path.abspath(destination)
+    while not os.path.isdir(directory):
+        directory = os.path.dirname(directory)
+    required = additional_bytes + (files + 1) * 65536
+    free = shutil.disk_usage(directory).free
+    if free < required:
+        raise InsufficientSpaceError(f"Insufficient disk space in {directory}: need {_human(required)} additional, "
+                      f"{_human(free)} free. Existing downloads and installations are retained.")
+
+
+def _remaining_download(dest, expected_size):
+    if expected_size is None:
+        return None
+    part = dest + '.part'
+    have = os.path.getsize(part) if os.path.isfile(part) else 0
+    return max(0, expected_size - have)
+
+
 def download(url, dest, expected_size=None, sha256=None, retries=5, verify_zim=False):
     """Download with resume support (.part). Prefer curl when available; otherwise use urllib."""
     if ((expected_size is not None or sha256 or verify_zim) and _file_valid(dest, expected_size, sha256)
             and (not verify_zim or _zim_checksum_valid(dest))):
         return dest
     os.makedirs(os.path.dirname(dest), exist_ok=True)
+    remaining = _remaining_download(dest, expected_size)
+    if remaining is not None:
+        _check_space(dest, remaining)
+        print(f"  Remaining download: {_human(remaining)}")
     part = dest + ".part"
     name = os.path.basename(dest)
     print(f"  ↓ {name}")
     curl = shutil.which("curl")
     ok = False
-    if curl:
+    if curl and expected_size is not None:
         cmd = [curl, "-L", "--fail", "--retry", str(retries), "--retry-delay", "3",
                "-C", "-", "-A", USER_AGENT, "-o", part, url]
         for attempt in range(retries):
+            _check_space(dest, _remaining_download(dest, expected_size))
             rc = subprocess.call(cmd)
             if rc == 0:
                 ok = True
@@ -222,6 +258,7 @@ def _download_urllib(url, part, retries):
                 headers["Range"] = f"bytes={have}-"
             req = urllib.request.Request(url, headers=headers)
             with urllib.request.urlopen(req, timeout=60) as r:
+                previous_size = have
                 if have and r.status != 206:
                     have = 0
                 length = r.headers.get("Content-Length")
@@ -235,6 +272,9 @@ def _download_urllib(url, part, retries):
                         raise RuntimeError("unexpected Content-Range")
                     total = complete
                 mode = "ab" if have else "wb"
+                if total is not None:
+                    # A 200 response restarts/truncates the existing partial.
+                    _check_space(part, max(0, total - previous_size))
                 done = have
                 last = 0
                 with open(part, mode) as f:
@@ -242,6 +282,8 @@ def _download_urllib(url, part, retries):
                         block = r.read(1 << 20)
                         if not block:
                             break
+                        if total is None:
+                            _check_space(part, len(block))
                         f.write(block)
                         done += len(block)
                         if time.time() - last > 1:
@@ -253,6 +295,8 @@ def _download_urllib(url, part, retries):
                 if total is not None and done != total:
                     raise RuntimeError("incomplete response")
             return True
+        except InsufficientSpaceError:
+            raise
         except Exception as e:
             print(f"    attempt {attempt + 1}/{retries} failed: {e}")
             time.sleep(3)
@@ -263,6 +307,7 @@ def extract(archive, dest):
     os.makedirs(dest, exist_ok=True)
     if archive.endswith(".zip"):
         with zipfile.ZipFile(archive) as z:
+            _check_space(dest, sum(m.file_size for m in z.infolist()), len(z.infolist()))
             z.extractall(dest)
     else:
         with tarfile.open(archive) as t:
@@ -272,6 +317,11 @@ def extract(archive, dest):
             # instead, also avoiding the need for Windows symlink privileges.
             links = [m for m in members if m.issym() or m.islnk()] if os.name == "nt" else []
             ordinary = [m for m in members if not (m.issym() or m.islnk())] if links else members
+            sizes = {os.path.normcase(os.path.normpath(m.name)): m.size for m in members if m.isfile()}
+            for member in links:
+                target = _tar_link_target(t, member)
+                sizes[os.path.normcase(os.path.normpath(member.name))] = target.size
+            _check_space(dest, sum(sizes.values()), len(members))
             try:
                 t.extractall(dest, members=ordinary, filter="data")
             except TypeError:
@@ -286,16 +336,7 @@ def extract(archive, dest):
                 # Resolve using case-sensitive archive names. All ordinary files
                 # are already extracted, so copying avoids repeatedly seeking
                 # backwards through a large gzip archive for each alias.
-                target = member
-                seen = set()
-                while target.issym() or target.islnk():
-                    if target.name in seen:
-                        raise ValueError("Cyclic archive link: " + member.name)
-                    seen.add(target.name)
-                    name = target.linkname
-                    if target.issym():
-                        name = posixpath.join(posixpath.dirname(target.name), name)
-                    target = t.getmember(posixpath.normpath(name))
+                target = _tar_link_target(t, member)
                 source = os.path.realpath(os.path.join(dest, target.name))
                 if os.path.commonpath([base, source]) != base:
                     raise ValueError("Archive link target escapes destination: " + member.name)
@@ -311,6 +352,19 @@ def extract(archive, dest):
                     os.chmod(p, os.stat(p).st_mode | 0o755)
                 except OSError:
                     pass
+
+
+def _tar_link_target(archive, member):
+    seen = set()
+    while member.issym() or member.islnk():
+        if member.name in seen:
+            raise ValueError("Cyclic archive link: " + member.name)
+        seen.add(member.name)
+        name = member.linkname
+        if member.issym():
+            name = posixpath.join(posixpath.dirname(member.name), name)
+        member = archive.getmember(posixpath.normpath(name))
+    return member
 
 
 def github_latest_assets(repo):
@@ -392,11 +446,39 @@ def get_llama(plat, tr):
         return False
 
 
+def _python_installed(plat):
+    dest = os.path.join(RUNTIME_DIR, "python", plat)
+    executable = os.path.join(dest, "python", "python.exe" if plat.startswith("windows-") else "bin/python3")
+    return bool(load_json(os.path.join(dest, "installation.json"), {}).get("complete") and os.path.isfile(executable))
+
+
+def choose_portable_python(platforms, lang):
+    messages = {
+        "en": ("Reusing installed portable Python: {platforms}. No download for these platforms.",
+               "No Python download is needed for the selected platforms.",
+               "Download or repair portable Python for {platforms}? [Y/n] "),
+        "pt": ("Reutilizando o Python portátil instalado: {platforms}. Sem download para esses sistemas.",
+               "Não é necessário baixar Python para os sistemas selecionados.",
+               "Baixar ou reparar Python portátil para {platforms}? [S/n] "),
+        "es": ("Reutilizando Python portátil instalado: {platforms}. Sin descarga para estos sistemas.",
+               "No es necesario descargar Python para los sistemas seleccionados.",
+               "¿Descargar o reparar Python portátil para {platforms}? [S/n] "),
+    }
+    reuse, complete, question = messages.get(lang, messages["en"])
+    installed = [plat for plat in platforms if _python_installed(plat)]
+    missing = [plat for plat in platforms if plat not in installed]
+    if installed:
+        print(reuse.format(platforms=", ".join(installed)))
+    if not missing:
+        print(complete)
+        return True
+    return _yes(question.format(platforms=", ".join(missing)), T.get(lang, T["en"]))
+
+
 def get_python(plat, tr):
     dest = os.path.join(RUNTIME_DIR, "python", plat)
     executable = os.path.join(dest, "python", "python.exe" if plat.startswith("windows-") else "bin/python3")
-    installed = load_json(os.path.join(dest, "installation.json"), {})
-    if installed.get("complete") and os.path.isfile(executable):
+    if _python_installed(plat):
         print(tr["skip"].format(f=f"Python ({plat})"))
         return True
     triple = PYTHON_TRIPLES[plat]
@@ -734,15 +816,13 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
 
     # Portable Python
     if python is None:
-        python = _yes(tr["py_q"], tr) if interactive else (oses == "all")
+        python = choose_portable_python(platforms, lang) if interactive else (oses == "all")
 
-    est = (chosen_model["size_gb"] if chosen_model else 0) + sum(z.get("size_gb", 0) for z in chosen_zims)
+    est = ((chosen_model.get("size_bytes", chosen_model["size_gb"] * 10**9) / 1024**3)
+           if chosen_model else 0) + sum(z.get("size_gb", 0) for z in chosen_zims)
     est += sum(a["size_bytes"] for a in chosen_archives) / 1024 ** 3
-    est += 0.06 * len(platforms) * (2 if python else 1) + 0.02 * len(platforms)
-    free = shutil.disk_usage(os.path.dirname(MODELS_DIR)).free / 1024 ** 3
-    print("\n" + tr["total"].format(gb=est, free=free))
-    if free < est + 1:
-        raise ValueError("Insufficient disk space. Choose a smaller model/library profile or another drive; allow at least 1 GiB extra for extraction.")
+    print(f"\nSelected model/library data: approximately {est:.1f} GiB before reusing existing files.")
+    print("Remaining download bytes and extraction space are checked on each component's destination drive.")
     if interactive and not _yes(tr["confirm"], tr):
         print(tr["cancel"])
         return 1

@@ -82,6 +82,8 @@ Each preparation run checks for the newest available llama.cpp build for the sel
 
 Preparation verifies model checksums and Kiwix metalink sizes/checksums. A failed ZIM update keeps the previous library, and interrupted downloads remain available for retry. Invalid selections and failed preparation return a nonzero exit code; `runtime/kit-info.json` records the result of each requested component.
 
+The initial model/library size is an estimate before reusing existing files. Space checks happen on each component's destination drive: verified completed downloads need no additional download space, and partial downloads count only the remaining bytes. ZIP/tar extraction uses the archive's uncompressed sizes, including file copies made from links on Windows, plus a conservative 64 KiB allowance per entry and one directory allowance for filesystem overhead. Existing runtimes and libraries remain in place during replacement; free space is checked while both the old files and downloaded archive are still present. Downloads with unknown sizes use response headers when available, or check space as data arrives. Insufficient space stops that component without deleting its previous installation or partial download. There is no blanket 1 GiB requirement on a completed kit.
+
 Your latest setup choices are saved in `runtime/setup.json` before downloads begin. `--resume` reuses the saved choices and platforms. Use `--os this` to repair only this computer. Startup checks installed files and configured services instead of trusting a previous successful setup on another machine. These are quick presence and size checks; full download integrity checks happen during preparation. An available configured Ollama/OpenAI-compatible service can provide the AI without a bundled model. Restart the app after adding libraries; an independently managed Kiwix server must also load the new files.
 
 The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are absent from the current official catalog (checked November 12, 2026), but older copies are available as [optional archived libraries](#optional-archived-libraries). Archives are excluded from every profile, including `full`. Profile sizes below exclude the model and runtimes and change with upstream releases.
@@ -92,12 +94,20 @@ The `prepare` command starts with **Recommended choices** (default) or **Advance
 2. **Kiwix libraries:** `minimal` (~3 GiB), `recommended` (~8 GiB) or `full` (~77 GiB, Wikipedia without images).
 3. **Optional archived libraries:** older WikEM/wikiHow snapshots; **None** is the default. Each option shows its date and size.
 4. **Systems:** this computer only, or **Windows + Linux + macOS** (universal USB kit).
-5. **Portable Python:** so the kit opens on computers without Python.
+5. **Portable Python:** setup lists completed runtimes it will reuse. If every selected platform already has Python, it skips the question. Otherwise it asks only about downloading or repairing the missing platforms; declining keeps the existing runtimes.
 
 Non-interactive:
 
-```bash
-python emergency.py prepare --model gemma4-e2b --zims recommended --os all --python
+**Windows (PowerShell):**
+
+```powershell
+.\run.bat prepare --model gemma4-e2b --zims recommended --os all --python
+```
+
+**Linux / macOS:**
+
+```sh
+./run.sh prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
 ### 4. Use it (offline)
@@ -168,8 +178,16 @@ These are **historical snapshots**, separate from the current catalog downloads.
 
 To add only the archived WikEM copy to an existing kit:
 
-```bash
-python emergency.py prepare --model none --zims none --archives wikem --os this --yes
+**Windows (PowerShell):**
+
+```powershell
+.\run.bat prepare --model none --zims none --archives wikem --os this --yes
+```
+
+**Linux / macOS:**
+
+```sh
+./run.sh prepare --model none --zims none --archives wikem --os this --yes
 ```
 
 Use `--archives wikem,wikihow-en` for selected archives, or `--archives all` for all four (about **83.5 GiB**). Omit `--archives`, or use `--archives none`, to skip them. Skipping an archive does not remove a previously downloaded copy; move its `.zim` file out of `zim/` if you no longer want it searched. Extra archived editions do not replace other installed editions.
@@ -178,13 +196,26 @@ Archive downloads resume after interruptions. Before a file becomes available to
 
 ## Other ways to use it
 
-```bash
-python emergency.py chat                   # terminal chat
-python emergency.py ask "how do I make oral rehydration solution?"
-python emergency.py search burn
-python emergency.py status
-python emergency.py start --local-only               # turn off local-network sharing
-python emergency.py prepare --search survival        # find more Kiwix libraries
+**Windows (PowerShell):**
+
+```powershell
+.\run.bat chat                   # terminal chat
+.\run.bat ask "how do I make oral rehydration solution?"
+.\run.bat search burn
+.\run.bat status
+.\run.bat start --local-only               # turn off local-network sharing
+.\run.bat prepare --search survival        # find more Kiwix libraries
+```
+
+**Linux / macOS:**
+
+```sh
+./run.sh chat                   # terminal chat
+./run.sh ask "how do I make oral rehydration solution?"
+./run.sh search burn
+./run.sh status
+./run.sh start --local-only               # turn off local-network sharing
+./run.sh prepare --search survival        # find more Kiwix libraries
 ```
 
 **Ollama:** if you use [Ollama](https://ollama.com), run `ollama pull qwen2.5:3b` — it is detected automatically. Any local OpenAI-compatible server (LM Studio, llamafile, KoboldCpp, Jan) also works: set `llm_url`.
@@ -274,7 +305,7 @@ The server limits request bodies to 64 KiB, accepts one answer stream at a time,
 
 Devices connected to the same router can open the LAN address or scan the QR code printed in the terminal, even without internet. The link uses the detected network address and actual server port, such as `http://192.168.0.10:8090`. No QR code is shown for localhost-only use or when no LAN address is found. Use `--local-only` to turn sharing off, or set `{ "web_host": "127.0.0.1" }` in `config/settings.local.json`. Multiple network adapters or VPNs can affect the detected address; `--host <LAN-IP>` selects a specific IPv4 interface. Allow the app on your local network if your firewall asks.
 
-If Python is missing, install Python 3.8+ from <https://www.python.org/downloads/>. On Windows, select **Add python.exe to PATH**. The `prepare` command can then include portable Python in the kit.
+The bootstrap installer includes Python; the launchers find that copy automatically without PATH changes. If you obtained the source through Git or a ZIP instead, install Python 3.8+ from <https://www.python.org/downloads/> or use a kit containing portable Python for this computer.
 
 ## English entry points
 
@@ -332,5 +363,5 @@ This fork is based on [IA da Sobrevivência](https://github.com/sdalberto/ia-da-
 | **llama.cpp / Ollama** | Programs that run an AI model on your computer. The `prepare` command installs llama.cpp; Ollama is an optional alternative if you already use it. |
 | **GGUF (`.gguf`)** | The file format used for the models downloaded by this kit. Model files go in `models/`; library files go in `zim/`. |
 | **Python / portable Python** | Python runs the Emergency AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
-| **Setup / profile** | Run `.\run.bat prepare` on Windows, `./run.sh prepare` on Linux/macOS, or `python emergency.py prepare` to choose and download components. Setup is also offered in the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
+| **Setup / profile** | Run `.\run.bat prepare` on Windows, `./run.sh prepare` on Linux/macOS to choose and download components. Setup is also offered in the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
 | **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes in this README are approximate; leave extra room for the model, software and future updates. |

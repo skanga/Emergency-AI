@@ -86,17 +86,25 @@ O comando `prepare` pergunta:
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) ou `full` (~77 GiB, Wikipedia sem imagens).
 3. **Bibliotecas arquivadas opcionais:** cópias antigas do WikEM e wikiHow, com data e tamanho. Nenhuma é selecionada por padrão, nem no perfil `full`.
 4. **Sistemas:** só este computador, ou **Windows + Linux + macOS** (kit universal para pendrive).
-5. **Python portátil:** para o kit abrir em computadores sem Python.
+5. **Python portátil:** a preparação informa quais runtimes instalados serão reutilizados. Se todos os sistemas selecionados já tiverem Python, não faz essa pergunta. Caso contrário, pergunta apenas sobre baixar ou reparar os sistemas restantes; recusar mantém as cópias existentes.
 
 **Kiwix** permite ler sites salvos sem internet; um arquivo **ZIM** contém essas páginas. **WikEM** é uma referência de medicina de emergência para profissionais; a cópia opcional é de **junho de 2020** e pode estar desatualizada. **WikiMed** reúne artigos médicos da Wikipédia e é uma coleção diferente. **wikiHow** contém guias ilustrados para tarefas práticas. As cópias arquivadas são opcionais via `--archives`; consulte [datas, tamanhos e comandos](README.md#optional-archived-libraries).
 
 Sem perguntas (ex.: para automatizar):
 
-```bash
-python emergency.py prepare --model gemma4-e2b --zims recommended --os all --python
+**Windows (PowerShell):**
+
+```powershell
+.\run.bat prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
-> Se faltar Python para executar `python emergency.py prepare`: instale em <https://www.python.org/downloads/> (no Windows marque *Add python.exe to PATH*). Depois o kit leva um Python portátil junto.
+**Linux / macOS:**
+
+```sh
+./run.sh prepare --model gemma4-e2b --zims recommended --os all --python
+```
+
+> O instalador inclui Python portátil; os inicializadores o encontram sem alterar o PATH. Se você obteve o código por Git ou ZIP, precisa de Python 3.8+ instalado ou de um kit com Python portátil para este computador.
 
 ### 3. Use (sem internet)
 
@@ -116,13 +124,26 @@ Copie **a pasta inteira** para um pendrive ou HD externo (formatado em **exFAT**
 
 ## Outras formas de usar
 
-```bash
-python emergency.py chat                       # conversa no terminal
-python emergency.py ask "como fazer soro caseiro?"
-python emergency.py search queimadura          # busca rápida nos guias
-python emergency.py status                     # o que está instalado e ativo
-python emergency.py start --local-only         # desativar o compartilhamento na rede local
-python emergency.py prepare --search survival  # descobrir mais bases no catálogo Kiwix
+**Windows (PowerShell):**
+
+```powershell
+.\run.bat chat                       # conversa no terminal
+.\run.bat ask "como fazer soro caseiro?"
+.\run.bat search queimadura          # busca rápida nos guias
+.\run.bat status                     # o que está instalado e ativo
+.\run.bat start --local-only         # desativar o compartilhamento na rede local
+.\run.bat prepare --search survival  # descobrir mais bases no catálogo Kiwix
+```
+
+**Linux / macOS:**
+
+```sh
+./run.sh chat                       # conversa no terminal
+./run.sh ask "como fazer soro caseiro?"
+./run.sh search queimadura          # busca rápida nos guias
+./run.sh status                     # o que está instalado e ativo
+./run.sh start --local-only         # desativar o compartilhamento na rede local
+./run.sh prepare --search survival  # descobrir mais bases no catálogo Kiwix
 ```
 
 **Compartilhar com a comunidade:** o compartilhamento na rede local fica ativado por padrão. Qualquer celular conectado ao mesmo roteador (mesmo sem internet) abre o endereço mostrado no terminal, ex.: `http://192.168.0.10:8090`, ou lê o código QR mostrado no console. Use `--local-only` para permitir acesso apenas neste computador.

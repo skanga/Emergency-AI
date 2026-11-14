@@ -76,14 +76,22 @@ El comando `prepare` pregunta:
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) o `full` (~77 GiB, Wikipedia sin imágenes).
 3. **Bibliotecas archivadas opcionales:** copias antiguas de WikEM y wikiHow, con fecha y tamaño. Ninguna se selecciona de forma predeterminada, tampoco en `full`.
 4. **Sistemas:** solo esta computadora, o **Windows + Linux + macOS** (kit universal para pendrive).
-5. **Python portátil:** para que el kit abra en computadoras sin Python.
+5. **Python portátil:** la preparación indica qué runtimes instalados se reutilizarán. Si todos los sistemas seleccionados ya tienen Python, omite esta pregunta. De lo contrario, pregunta solo por descargar o reparar los sistemas restantes; rechazar conserva las copias existentes.
 
 **Kiwix** permite leer sitios guardados sin internet; un archivo **ZIM** contiene esas páginas. **WikEM** es una referencia de medicina de urgencias para profesionales; la copia opcional es de **junio de 2020** y puede estar desactualizada. **WikiMed** reúne artículos médicos de Wikipedia y es una colección distinta. **wikiHow** contiene guías ilustradas para tareas prácticas. Las copias archivadas son opcionales mediante `--archives`; consulta [fechas, tamaños y comandos](README.md#optional-archived-libraries).
 
 Sin preguntas:
 
-```bash
-python emergency.py --lang es prepare --model gemma4-e2b --zims recommended --os all --python
+**Windows (PowerShell):**
+
+```powershell
+.\run.bat --lang es prepare --model gemma4-e2b --zims recommended --os all --python
+```
+
+**Linux / macOS:**
+
+```sh
+./run.sh --lang es prepare --model gemma4-e2b --zims recommended --os all --python
 ```
 
 ### 3. Úsalo (sin internet)
@@ -104,13 +112,26 @@ Copia **toda la carpeta** a un pendrive o disco externo formateado en **exFAT** 
 
 ## Otras formas de uso
 
-```bash
-python emergency.py --lang es chat                    # chat en la terminal
-python emergency.py --lang es ask "¿cómo preparo suero oral casero?"
-python emergency.py --lang es search quemadura
-python emergency.py status
-python emergency.py start --local-only                # desactivar el acceso desde la red local
-python emergency.py prepare --search survival         # buscar más bibliotecas Kiwix
+**Windows (PowerShell):**
+
+```powershell
+.\run.bat --lang es chat                    # chat en la terminal
+.\run.bat --lang es ask "¿cómo preparo suero oral casero?"
+.\run.bat --lang es search quemadura
+.\run.bat status
+.\run.bat start --local-only                # desactivar el acceso desde la red local
+.\run.bat prepare --search survival         # buscar más bibliotecas Kiwix
+```
+
+**Linux / macOS:**
+
+```sh
+./run.sh --lang es chat                    # chat en la terminal
+./run.sh --lang es ask "¿cómo preparo suero oral casero?"
+./run.sh --lang es search quemadura
+./run.sh status
+./run.sh start --local-only                # desactivar el acceso desde la red local
+./run.sh prepare --search survival         # buscar más bibliotecas Kiwix
 ```
 
 **Ollama:** si usas [Ollama](https://ollama.com), ejecuta `ollama pull qwen2.5:3b` — se detecta automáticamente. También funciona cualquier servidor local compatible con la API de OpenAI (LM Studio, llamafile, KoboldCpp, Jan): ajusta `llm_url`.
