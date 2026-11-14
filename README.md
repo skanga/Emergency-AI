@@ -16,6 +16,8 @@ Set up the kit while you have internet, then use it offline. You'll still need a
 
 > ⚠️ **Disclaimer:** educational content. It does not replace doctors, firefighters or emergency services. Health guidance follows public guidelines (WHO, Red Cross/IFRC, AHA, CDC, Hesperian…) cited in each section.
 
+![Emergency AI home screen with guide navigation, suggested questions, and local AI model and library selectors](docs/images/emergency-ai.png)
+
 ---
 
 ## Quick start
