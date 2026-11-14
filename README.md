@@ -20,10 +20,10 @@ Prepare the kit while you have internet, then use it when connectivity or servic
 
 ## Quick start
 
-Create a new, empty folder where you want to keep Emergency AI, then download the installer for your computer into that folder (right-click the link and choose **Save link as**):
+Create a new, empty folder on your computer or a USB drive where you want to keep Emergency AI. You can also use the top level of an empty USB drive. Download the installer for your computer into that location (right-click the link and choose **Save link as**):
 
 - **Windows:** [Download install.bat](https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.bat). Double-click it to install.
-- **Linux / macOS:** [Download install.sh](https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh). Open a terminal in the new folder and run `sh install.sh`.
+- **Linux / macOS:** [Download install.sh](https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh). Open a terminal in that location and run `sh install.sh`.
 
 Follow the prompts to finish setup and open Emergency AI. You need internet during installation; Git and Python do not need to be installed first.
 
