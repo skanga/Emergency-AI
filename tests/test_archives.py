@@ -84,7 +84,7 @@ class ArchiveTests(unittest.TestCase):
             fetch.assert_not_called()
 
     def test_wizard_defaults_to_no_archives_and_shows_dates_and_sizes(self):
-        with patch("builtins.input", side_effect=["none", "none", "", "this", "n", "y"]), \
+        with patch("builtins.input", side_effect=["advanced", "none", "none", "", "this", "n", "y"]), \
                 patch.object(prepare, "download") as fetch:
             self.assertEqual(prepare.run(), 0)
         self.assertEqual(self.manifest()["archives"], [])

@@ -42,7 +42,7 @@ Os arquivos grandes **não vão para o git** (veja `.gitignore`): o repositório
 
 ### 1. Baixe o repositório
 
-**Sem Git nem Python instalado:** abra um terminal na pasta onde deseja guardar o kit. O instalador cria uma nova subpasta `Emergency-AI`, com o código, os inicializadores e Python portátil para este computador.
+**Sem Git nem Python instalado:** abra um terminal na pasta onde deseja guardar o kit. O instalador cria uma subpasta `Emergency-AI`, ou usa a pasta atual se ela já tiver esse nome e estiver vazia, exceto por `install.bat` / `install.sh`. O kit inclui o código, os inicializadores e Python portátil para este computador.
 
 Windows (PowerShell):
 
@@ -57,7 +57,9 @@ Linux / macOS:
 curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -o install.sh && sh install.sh
 ```
 
-Precisa de internet, sem administrador. Recusa pastas existentes; não atualiza um kit instalado. O Python tem versão fixa e SHA-256 verificado. Modelos e bibliotecas são opcionais no primeiro uso. Veja [requisitos e detalhes](README.md#1-download-the-kit-no-git-or-python-required). O script é salvo antes da execução para permitir revisão. No Windows, tudo está em um único arquivo `.bat`, com código PowerShell embutido.
+Precisa de internet, sem administrador. Aceita pastas novas ou vazias, exceto pelos instaladores; não atualiza um kit instalado. O Python tem versão fixa e SHA-256 verificado. Modelos e bibliotecas são opcionais no primeiro uso. Veja [requisitos e detalhes](README.md#1-download-the-kit-no-git-or-python-required). O script é salvo antes da execução para permitir revisão. No Windows, tudo está em um único arquivo `.bat`, com código PowerShell embutido.
+
+Ao terminar, o instalador oferece executar `run.bat prepare` ou `run.sh prepare` para configurar os componentes opcionais. Responda `y` para começar ou pressione Enter para deixar para depois. Sem terminal interativo, essa pergunta é omitida. O Python deste computador é reutilizado; outros sistemas selecionados recebem seus próprios runtimes quando necessário.
 
 Alternativa para quem já usa Git e Python:
 

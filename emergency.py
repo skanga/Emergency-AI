@@ -35,7 +35,7 @@ for stream in (sys.stdout, sys.stderr):
         pass
 
 from app import __version__  # noqa: E402
-from app.config import LANGS, load_settings, platform_key  # noqa: E402
+from app.config import launcher_command, LANGS, load_settings, platform_key  # noqa: E402
 
 BANNER = r"""
   +--------------------------------------------------------------------------+
@@ -269,7 +269,7 @@ def cmd_status(args, settings):
     for item in report["missing"]:
         print("  Missing: " + item)
     if report["state"] in ("first_run", "incomplete"):
-        print("  Included guides remain available. Use 'python emergency.py prepare' to configure or '--resume' to repair.")
+        print(f"  Included guides remain available. Use '{launcher_command()} prepare' to configure or '--resume' to repair.")
     binary, kind = find_llama_server()
     print(f"  AI engine ({kind or 'llama.cpp'}): {binary or '—'}")
     print(f"  Model: {find_model(settings) or '—'}")

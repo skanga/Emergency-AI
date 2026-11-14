@@ -6,7 +6,7 @@ import os
 import sys
 import urllib.parse
 
-from .config import CONFIG_DIR, MODELS_DIR, RUNTIME_DIR, ZIM_DIR, load_json, platform_key
+from .config import launcher_command, CONFIG_DIR, MODELS_DIR, RUNTIME_DIR, ZIM_DIR, load_json, platform_key
 from .kiwix import KiwixClient
 from .launcher import find_kiwix_serve, find_llama_server, find_model
 from .llm import detect_llm
@@ -27,7 +27,7 @@ def load_selection(runtime_dir=None):
     if saved is not None:
         if not isinstance(saved, dict) or any(not isinstance(saved.get(k), str)
                                                for k in ("model", "zims", "archives")):
-            raise ValueError("Invalid saved setup choices; run 'python emergency.py prepare' to choose again.")
+            raise ValueError(f"Invalid saved setup choices; run '{launcher_command()} prepare' to choose again.")
         return saved
     return None
 
@@ -129,7 +129,7 @@ def ensure_ready(settings, lang="en", interactive=None):
             print("  - " + item)
         print("  1) Resume setup for this computer (internet required)")
         print("  2) Continue with available components [default]")
-    print("You can add or repair components later with 'python emergency.py prepare' or 'python emergency.py prepare --resume'.")
+    print(f"You can add or repair components later with '{launcher_command()} prepare' or '{launcher_command()} prepare --resume'.")
     if interactive is None:
         # Windows NUL can report isatty(); require a visible terminal too.
         interactive = sys.stdin.isatty() and sys.stdout.isatty()
@@ -153,7 +153,7 @@ def ensure_ready(settings, lang="en", interactive=None):
             prepare.run(lang=lang, resume=True, oses="this", yes=True)
     except (OSError, ValueError, KeyboardInterrupt) as e:
         print(f"Setup did not finish: {e}")
-    print("Starting with available components. Use 'python emergency.py status' for details.")
+    print(f"Starting with available components. Use '{launcher_command()} status' for details.")
     report = inspect(settings)
     _select_model(settings, report["selection"])
     return report

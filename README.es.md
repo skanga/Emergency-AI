@@ -32,7 +32,7 @@ Los archivos grandes (modelos, bases ZIM, motores) **no van al git**: el reposit
 
 ### 1. Descarga el repositorio
 
-**Sin Git ni Python instalado:** abre una terminal en la carpeta donde quieras guardar el kit. El instalador crea una nueva subcarpeta `Emergency-AI`, con el código, los lanzadores y Python portátil para esta computadora.
+**Sin Git ni Python instalado:** abre una terminal en la carpeta donde quieras guardar el kit. El instalador crea una subcarpeta `Emergency-AI`, o usa la carpeta actual si ya tiene ese nombre y está vacía, salvo por `install.bat` / `install.sh`. El kit incluye el código, los lanzadores y Python portátil para esta computadora.
 
 Windows (PowerShell):
 
@@ -47,7 +47,9 @@ Linux / macOS:
 curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -o install.sh && sh install.sh
 ```
 
-Necesita internet, sin permisos de administrador. Rechaza carpetas existentes; no actualiza un kit instalado. Python tiene una versión fija y SHA-256 verificado. Los modelos y las bibliotecas son opcionales al abrir el kit. Consulta [requisitos y detalles](README.md#1-download-the-kit-no-git-or-python-required). El script se guarda antes de ejecutarlo para permitir su revisión. En Windows, todo está en un único archivo `.bat`, con código PowerShell integrado.
+Necesita internet, sin permisos de administrador. Acepta carpetas nuevas o vacías, salvo por los instaladores; no actualiza un kit instalado. Python tiene una versión fija y SHA-256 verificado. Los modelos y las bibliotecas son opcionales al abrir el kit. Consulta [requisitos y detalles](README.md#1-download-the-kit-no-git-or-python-required). El script se guarda antes de ejecutarlo para permitir su revisión. En Windows, todo está en un único archivo `.bat`, con código PowerShell integrado.
+
+Al terminar, el instalador ofrece ejecutar `run.bat prepare` o `run.sh prepare` para configurar los componentes opcionales. Responde `y` para empezar o pulsa Enter para dejarlo para después. Sin terminal interactiva, se omite esta pregunta. Se reutiliza Python de esta computadora; los otros sistemas seleccionados reciben sus propios runtimes cuando sea necesario.
 
 Alternativa para quienes ya usan Git y Python:
 

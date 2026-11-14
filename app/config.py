@@ -17,6 +17,10 @@ LOG_DIR = os.path.join(ROOT, "logs")
 
 LANGS = ("en", "pt", "es")
 
+
+def launcher_command():
+    return r".\run.bat" if os.name == "nt" else "./run.sh"
+
 SETTINGS_FILE = os.path.join(CONFIG_DIR, "settings.json")
 LOCAL_SETTINGS_FILE = os.path.join(CONFIG_DIR, "settings.local.json")
 

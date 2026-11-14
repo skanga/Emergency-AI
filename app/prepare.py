@@ -20,7 +20,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
 
-from .config import ALL_PLATFORMS, CONFIG_DIR, MODELS_DIR, RUNTIME_DIR, ZIM_DIR, load_json, platform_key
+from .config import launcher_command, ALL_PLATFORMS, CONFIG_DIR, MODELS_DIR, RUNTIME_DIR, ZIM_DIR, load_json, platform_key
 from .net import USER_AGENT, get_json, get_text
 
 LLAMA_REPO = "ggml-org/llama.cpp"
@@ -449,7 +449,7 @@ def get_python(plat, tr):
 
 def get_kiwix_tools(plat, tr):
     dest = os.path.join(RUNTIME_DIR, "kiwix-tools", plat)
-    if os.path.isdir(dest) and any(f.startswith("kiwix-serve") for _, _, fs in os.walk(dest) for f in fs):
+    if load_json(os.path.join(dest, "installation.json"), {}).get("complete") and any(f in ("kiwix-serve", "kiwix-serve.exe") for _, _, fs in os.walk(dest) for f in fs):
         print(tr["skip"].format(f=f"kiwix-tools ({plat})"))
         return True
     try:
@@ -466,7 +466,25 @@ def get_kiwix_tools(plat, tr):
                 fname = sorted(versions)[-1][1]
                 archive = os.path.join(RUNTIME_DIR, "_downloads", fname)
                 download(KIWIX_TOOLS_DIR + fname, archive)
-                extract(archive, dest)
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                with tempfile.TemporaryDirectory(prefix=".kiwix-install-", dir=os.path.dirname(dest)) as staging:
+                    fresh = os.path.join(staging, "new")
+                    previous = os.path.join(staging, "previous")
+                    extract(archive, fresh)
+                    binary = "kiwix-serve.exe" if plat.startswith("windows-") else "kiwix-serve"
+                    if not any(binary in files for _, _, files in os.walk(fresh)):
+                        raise RuntimeError("archive does not contain " + binary)
+                    with open(os.path.join(fresh, "installation.json"), "w") as marker:
+                        json.dump({"complete": True}, marker)
+                    had_previous = os.path.exists(dest)
+                    if had_previous:
+                        os.replace(dest, previous)
+                    try:
+                        os.replace(fresh, dest)
+                    except OSError:
+                        if had_previous:
+                            os.replace(previous, dest)
+                        raise
                 os.remove(archive)
                 print(f"  ✓ kiwix-tools ({plat}): {fname}")
                 return True
@@ -596,7 +614,7 @@ def _ask(prompt, options, default, tr):
         try:
             raw = input(tr["choice"].format(d=default)).strip()
         except EOFError:
-            raw = ""
+            raise ValueError("Setup cancelled: input closed. Use --yes for unattended setup.")
         if not raw:
             raw = str(default)
         if raw.isdigit() and 1 <= int(raw) <= len(options):
@@ -610,7 +628,7 @@ def _yes(prompt, tr):
     try:
         return input(prompt).strip().lower() in tr["yes"]
     except EOFError:
-        return True
+        raise ValueError("Setup cancelled: input closed. Use --yes for unattended setup.")
 
 
 def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, search=None, skip_tools=False,
@@ -619,13 +637,16 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     if resume:
         saved = load_selection(RUNTIME_DIR)
         if not saved:
-            raise ValueError("No saved setup choices. Run 'python emergency.py prepare' first.")
+            raise ValueError(f"No saved setup choices. Run '{launcher_command()} prepare' first.")
         model = model if model is not None else saved.get("model", "none")
         zims = zims if zims is not None else saved.get("zims", "none")
         archives = archives if archives is not None else saved.get("archives", "none")
         python = python if python is not None else saved.get("python", False)
-        oses = oses or "this"
-    tr = T.get(lang, T["en"])
+        oses = oses or ",".join(saved.get("platforms", [platform_key()]))
+    tr = dict(T.get(lang, T["en"]))
+    launcher = r".\run.bat" if os.name == "nt" else "./run.sh"
+    for key in ("done", "partial"):
+        tr[key] = tr[key].replace("python emergency.py", launcher)
     models_cfg = load_json(os.path.join(CONFIG_DIR, "models.json"), {})
     zims_cfg = load_json(os.path.join(CONFIG_DIR, "zims.json"), {})
     catalog = zims_cfg.get("catalog_url", "https://library.kiwix.org/catalog/v2/entries")
@@ -645,12 +666,22 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     print(tr["need_net"])
 
     interactive = model is None and zims is None and oses is None and archives is None and not yes
+    advanced = False
+    if interactive:
+        labels = {
+            "en": ("Setup options", "Recommended choices", "Advanced models and archived libraries"),
+            "pt": ("Opções de configuração", "Opções recomendadas", "Modelos avançados e bibliotecas arquivadas"),
+            "es": ("Opciones de configuración", "Opciones recomendadas", "Modelos avanzados y bibliotecas archivadas"),
+        }
+        title, basic, extra = labels.get(lang, labels["en"])
+        advanced = _ask(title, [("recommended", basic), ("advanced", extra)], 1, tr) == "advanced"
 
     # Model
     if model is None:
         if interactive:
             opts = [(m["id"], f"{m['name']} — {m['size_gb']} GB — {m['desc'].get(lang, m['desc']['en'])}")
-                    for m in models_cfg["models"]]
+                    for m in models_cfg["models"]
+                    if advanced or m["id"] in models_cfg.get("recommendations", {}).values()]
             opts.append(("none", tr["none"]))
             default = 1 + [o[0] for o in opts].index(models_cfg.get("default", opts[0][0]))
             model = _ask(tr["model_q"], opts, default, tr)
@@ -675,7 +706,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     # Archived snapshots are always opt-in, including with --yes and --zims full.
     archive_entries = zims_cfg.get("archives", [])
     if archives is None:
-        if interactive and archive_entries:
+        if interactive and advanced and archive_entries:
             opts = [("none", "None (recommended)")]
             opts += [(a["id"], f"[ARCHIVED {a['snapshot']}] {a['desc']} ({a['size_gb']:.1f} GiB)")
                      for a in archive_entries]
@@ -693,7 +724,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     # Systems
     if oses is None:
         if interactive:
-            oses = _ask(tr["os_q"], [("this", tr["os_this"].format(p=here)), ("all", tr["os_all"])], 2, tr)
+            oses = _ask(tr["os_q"], [("this", tr["os_this"].format(p=here)), ("all", tr["os_all"])], 1, tr)
         else:
             oses = "this"
     platforms = list(ALL_PLATFORMS) if oses == "all" else [here] if oses == "this" else oses.split(",")
@@ -710,6 +741,8 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     est += 0.06 * len(platforms) * (2 if python else 1) + 0.02 * len(platforms)
     free = shutil.disk_usage(os.path.dirname(MODELS_DIR)).free / 1024 ** 3
     print("\n" + tr["total"].format(gb=est, free=free))
+    if free < est + 1:
+        raise ValueError("Insufficient disk space. Choose a smaller model/library profile or another drive; allow at least 1 GiB extra for extraction.")
     if interactive and not _yes(tr["confirm"], tr):
         print(tr["cancel"])
         return 1
@@ -718,7 +751,7 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
 
     # Save intent before any network operation so interrupted setup is resumable.
     save_selection({"model": model, "zims": zims, "python": bool(python),
-                    "archives": ",".join(a["id"] for a in chosen_archives) or "none"}, RUNTIME_DIR)
+                    "archives": ",".join(a["id"] for a in chosen_archives) or "none", "platforms": platforms}, RUNTIME_DIR)
 
     def record(name, operation, *args):
         results.append({"name": name, "ok": bool(operation(*args))})

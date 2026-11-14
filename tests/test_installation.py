@@ -13,6 +13,28 @@ from app import prepare
 
 
 class InstallationTests(unittest.TestCase):
+    def test_recommended_wizard_hides_advanced_models_and_archives(self):
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output), \
+                patch('builtins.input', side_effect=['', 'none', 'none', 'this', 'n', 'y']):
+            self.assertEqual(prepare.run(), 0)
+        self.assertNotIn('27B', output.getvalue())
+        self.assertNotIn('[ARCHIVED', output.getvalue())
+        self.assertNotIn('python emergency.py', output.getvalue())
+
+    def test_closed_input_cancels_setup(self):
+        with patch('builtins.input', side_effect=EOFError):
+            with self.assertRaisesRegex(ValueError, 'input closed'):
+                prepare.run()
+
+    def test_no_free_space_prevents_downloads(self):
+        from types import SimpleNamespace
+        with patch.object(prepare.shutil, 'disk_usage', return_value=SimpleNamespace(free=0)), \
+                patch.object(prepare, 'get_model') as fetch:
+            with self.assertRaisesRegex(ValueError, 'Insufficient disk space'):
+                prepare.run(model='gemma4-e2b', zims='none', oses='this', yes=True)
+            fetch.assert_not_called()
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)

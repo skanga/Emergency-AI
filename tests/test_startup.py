@@ -53,6 +53,7 @@ class StartupTests(unittest.TestCase):
         ask.assert_not_called()
         download.assert_not_called()
         self.assertFalse((self.root / "runtime" / "setup.json").exists())
+        self.assertNotIn('python emergency.py', self.output.getvalue())
 
     def test_running_external_model_does_not_trigger_first_run(self):
         self.external.return_value = object()

@@ -22,7 +22,7 @@ Prepare the kit while you have internet, then use it when connectivity or servic
 
 ### 1. Download the kit (no Git or Python required)
 
-Open a terminal in the folder where you want to keep the kit. The installer creates a new `Emergency-AI` subfolder, downloads the application and launchers, and adds a checksum-verified portable Python for this computer. It needs internet and no administrator rights.
+Open a terminal in the folder where you want to keep the kit. The installer creates an `Emergency-AI` subfolder, or uses the current folder if it is already named `Emergency-AI`. That folder must be empty apart from the downloaded `install.bat` / `install.sh` files. It downloads the application and launchers and adds a checksum-verified portable Python for this computer. It needs internet and no administrator rights.
 
 **Windows (PowerShell):**
 
@@ -39,7 +39,9 @@ curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -
 
 These commands save the installer before running it. You can download and inspect it first. The Windows installer is a single batch file with embedded PowerShell code. Only run installers from a source you trust.
 
-To choose another new folder, run `.\install.bat "My kit"` or `sh install.sh "My kit"`. Its parent folder must already exist. Existing destinations are refused, including empty folders: this installs a new kit and does not update or overwrite one. Failed installations clean up temporary files; rerun to retry downloads.
+To choose another folder, run `.\install.bat "My kit"` or `sh install.sh "My kit"`. Its parent folder must already exist. The destination can be new or empty apart from `install.bat` / `install.sh` and folder metadata (`.DS_Store`, `Thumbs.db`). Folders containing any other files, including an existing kit, are refused. Downloaded installer files are preserved.
+
+Downloads show their stage, attempt number, and completed byte count. Each download gets up to three attempts, with connection and stalled-transfer timeouts. For a destination named `Emergency-AI`, the sibling folder `.Emergency-AI-downloads` contains `install.log` and the portable Python download. Rerunning the installer resumes an interrupted Python transfer or reuses a complete copy after checking its SHA-256. Servers without resume support cause a clean restart. A checksum mismatch removes the invalid file. Application source is refreshed on each run because `main` can change. After installation, the cache folder may be deleted to reclaim space; it is separate from the kit.
 
 Supported: Windows 10/11 with PowerShell, `curl.exe` and `tar.exe`; Linux with glibc, `curl`, `tar` and `sha256sum`; macOS with `curl`, `tar` and `shasum`. All support x86-64 and ARM64. Python is pinned to 3.12.16 from the [official standalone Python release](https://github.com/astral-sh/python-build-standalone/releases/tag/20261110); its SHA-256 is checked before extraction. Application code comes from the current `main` branch over HTTPS. The installer downloads neither models nor Kiwix libraries; choose those when opening the kit below.
 
@@ -52,6 +54,8 @@ cd Emergency-AI
 
 ### 2. Open the kit
 
+If the installer created a subfolder, enter it first with `cd Emergency-AI`. After successful preparation, the installer offers to open the application.
+
 | System | How to run |
 |---|---|
 | **Windows** | double-click `run.bat` or enter `.\run.bat` |
@@ -61,6 +65,8 @@ cd Emergency-AI
 Use the same launcher for first use and every later visit. On first use, choose to download optional components or open the included guides immediately. The guide-only choice is remembered. If selected components are missing or setup was interrupted, the launcher offers to resume for the current computer or continue with what is available. Without an interactive terminal, it starts available components without prompting or downloading.
 
 The installer includes portable Python for this computer. If you downloaded the source ZIP or cloned with Git instead, Python 3.8+ must already be installed, or the kit must contain portable Python for this platform. The launcher explains how to obtain it if missing.
+
+After a successful installation in an interactive terminal, the installer offers to run `run.bat prepare` (Windows) or `run.sh prepare` (Linux/macOS) for first-time setup. Enter `y` to choose optional components now, or press Enter to finish and set them up later. Non-interactive installs skip this offer. Setup reuses the portable Python already installed for this computer; selecting other platforms downloads their separate Python runtimes only if missing.
 
 ### 3. Add or repair components (when online)
 
@@ -76,11 +82,11 @@ Each preparation run checks for the newest available llama.cpp build for the sel
 
 Preparation verifies model checksums and Kiwix metalink sizes/checksums. A failed ZIM update keeps the previous library, and interrupted downloads remain available for retry. Invalid selections and failed preparation return a nonzero exit code; `runtime/kit-info.json` records the result of each requested component.
 
-Your latest setup choices are saved in `runtime/setup.json` before downloads begin. `--resume` reuses them and targets this computer unless you specify `--os`. Startup checks installed files and configured services instead of trusting a previous successful setup on another machine. These are quick presence and size checks; full download integrity checks happen during preparation. An available configured Ollama/OpenAI-compatible service can provide the AI without a bundled model. Restart the app after adding libraries; an independently managed Kiwix server must also load the new files.
+Your latest setup choices are saved in `runtime/setup.json` before downloads begin. `--resume` reuses the saved choices and platforms. Use `--os this` to repair only this computer. Startup checks installed files and configured services instead of trusting a previous successful setup on another machine. These are quick presence and size checks; full download integrity checks happen during preparation. An available configured Ollama/OpenAI-compatible service can provide the AI without a bundled model. Restart the app after adding libraries; an independently managed Kiwix server must also load the new files.
 
 The active Kiwix profiles contain 15 catalog entries. WikEM and wikiHow are absent from the current official catalog (checked November 12, 2026), but older copies are available as [optional archived libraries](#optional-archived-libraries). Archives are excluded from every profile, including `full`. Profile sizes below exclude the model and runtimes and change with upstream releases.
 
-The `prepare` command asks for:
+The `prepare` command starts with **Recommended choices** (default) or **Advanced models and archived libraries**. Recommended shows the three starting models and guide-only mode; archived libraries and alternative models appear only in Advanced. Explicit command-line model/archive selections remain available. The remaining choices are:
 
 1. **AI model:** `lfm3-1.7b` (lightweight, ~1.1 GB download, 8 GB system RAM), `gemma4-e2b` (balanced/default, ~3.2 GB, 16 GB RAM), or `qwen35-9b` (larger, ~6.2 GB, 24 GB RAM). See [model choices](#model-choices) for licenses and alternatives.
 2. **Kiwix libraries:** `minimal` (~3 GiB), `recommended` (~8 GiB) or `full` (~77 GiB, Wikipedia without images).
