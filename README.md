@@ -6,7 +6,7 @@ For Windows, Linux and macOS.
 
 🇺🇸 English · [🇧🇷 Português](README.pt.md) · [🇪🇸 Español](README.es.md)
 
-Prepare the kit while you have internet, then use it when connectivity or services are unavailable. It runs on a powered computer, including a battery-powered laptop during an outage; a USB drive can store the kit for use on another computer:
+Set up the kit while you have internet, then use it offline. You'll still need a powered computer, such as a laptop running on battery during an outage. You can keep the kit on a USB drive to use on another computer.
 
 - 📚 **Practical guides with cited sources** (EN, PT, ES): water, fire, shelter, food, gardening and livestock, foraging/fishing/hunting, **first aid and medicine**, hygiene and homemade soap, **alcohol** (fermentation, distillation, antiseptic and fuel), solar power, radio and navigation, tools and knots, mental health and community, and checklists for 72 hours and **1 year**.
 - 🤖 **Local AI** that answers any question in natural language, **citing its sources** — it runs on your own computer (llama.cpp or Ollama); nothing goes to the internet.
@@ -27,11 +27,15 @@ Create a new, empty folder on your computer or a USB drive where you want to kee
 
 Follow the prompts to finish setup and open Emergency AI. You need internet during installation; Git and Python do not need to be installed first.
 
+**Installation and setup can take a long time**, especially when downloading AI models or offline libraries. The time depends on your connection and what you choose to download. Keep the installer window open until it finishes.
+
 ## Install from a terminal
 
 ### 1. Download the kit (no Git or Python required)
 
-Open a terminal in the folder where you want to keep the kit. The installer uses the current folder if it is empty (apart from installer files and folder metadata), already named `Emergency-AI`, or a drive/mounted-volume root, such as a USB drive. Otherwise it creates an `Emergency-AI` subfolder. The destination must still be empty apart from the downloaded `install.bat` / `install.sh` files and folder metadata. It downloads the application and launchers and adds a checksum-verified portable Python for this computer. It needs internet and no administrator rights.
+Open a terminal where you want to keep the kit. The installer uses the current folder if it is empty, named `Emergency-AI`, or at the top level of a drive or mounted volume. Otherwise it creates an `Emergency-AI` subfolder.
+
+The destination must be empty apart from installer files and folder metadata (`.DS_Store`, `Thumbs.db`). The installer downloads the application, launchers and a checksum-verified portable Python for this computer. You need internet, but no administrator rights.
 
 **Windows (PowerShell):**
 
@@ -46,13 +50,21 @@ if ($LASTEXITCODE -eq 0) { .\install.bat }
 curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -o install.sh && sh install.sh
 ```
 
-These commands save the installer before running it. You can download and inspect it first. The Windows installer is a single batch file with embedded PowerShell code. Only run installers from a source you trust.
+These commands save the installer before running it. To inspect it first, run only the download command. The Windows batch file includes its PowerShell code. Only run installers from a source you trust.
 
-To choose another folder, run `.\install.bat "My kit"` or `sh install.sh "My kit"`. Its parent folder must already exist. The destination can be new or empty apart from `install.bat` / `install.sh` and folder metadata (`.DS_Store`, `Thumbs.db`). Folders containing any other files, including an existing kit, are refused. Downloaded installer files are preserved.
+To choose another folder, run `.\install.bat "My kit"` or `sh install.sh "My kit"`. Its parent folder must already exist. The same empty-folder rule applies: the installer preserves downloaded installer files and refuses to overwrite an existing kit.
 
-Downloads show their stage, attempt number, and completed byte count. Each download gets up to three attempts, with connection and stalled-transfer timeouts. For a destination named `Emergency-AI`, the sibling folder `.Emergency-AI-downloads` contains `install.log` and the portable Python download. When installing at a drive or mounted-volume root, the cache and temporary staging folder stay inside that root. Rerunning the installer resumes an interrupted Python transfer or reuses a complete copy after checking its SHA-256. Servers without resume support cause a clean restart. A checksum mismatch removes the invalid file. Application source is refreshed on each run because `main` can change. After installation, the cache folder may be deleted to reclaim space.
+Downloads show progress and retry up to three times if a connection fails or stalls. Rerun the installer after an interruption to resume the Python download. If the server cannot resume, the download starts over. Completed Python downloads are checked against their SHA-256 before reuse; invalid files are removed. Application source is downloaded again on each run because `main` can change.
 
-Supported: Windows 10/11 with PowerShell, `curl.exe` and `tar.exe`; Linux with glibc, `curl`, `tar` and `sha256sum`; macOS with `curl`, `tar` and `shasum`. All support x86-64 and ARM64. Python is pinned to 3.12.16 from the [official standalone Python release](https://github.com/astral-sh/python-build-standalone/releases/tag/20261110); its SHA-256 is checked before extraction. Application code comes from the current `main` branch over HTTPS. The installer downloads neither models nor Kiwix libraries; choose those when opening the kit below.
+For a destination named `Emergency-AI`, look in the sibling folder `.Emergency-AI-downloads` for `install.log` and the cached Python download. At a drive or mounted-volume root, the cache and temporary staging folder stay inside that root. You can delete the cache after installation to reclaim space.
+
+Supported systems (x86-64 and ARM64):
+
+- Windows 10/11 with PowerShell, `curl.exe` and `tar.exe`.
+- Linux with glibc, `curl`, `tar` and `sha256sum`.
+- macOS with `curl`, `tar` and `shasum`.
+
+The installer uses Python 3.12.16 from the [official standalone Python release](https://github.com/astral-sh/python-build-standalone/releases/tag/20261110) and checks its SHA-256 before extraction. Application code comes from the current `main` branch over HTTPS. Choose optional models and Kiwix libraries during first-time setup below.
 
 **Alternative for developers:** clone with Git (requires Python 3.8+ already installed or a compatible portable Python in the kit):
 
@@ -71,11 +83,15 @@ If the installer created a subfolder, enter it first with `cd Emergency-AI`. Aft
 | **macOS** | double-click `run.command` (first time: right-click › Open) |
 | **Linux** | `./run.sh` |
 
-Use the same launcher for first use and every later visit. On first use, choose to download optional components or open the included guides immediately. The guide-only choice is remembered. If selected components are missing or setup was interrupted, the launcher offers to resume for the current computer or continue with what is available. Without an interactive terminal, it starts available components without prompting or downloading.
+Use the same launcher each time. On first use, you can download optional components or open the included guides immediately. The app remembers a guide-only choice.
+
+If components are missing or setup was interrupted, the launcher offers to resume setup for this computer or continue with what's available. Without an interactive terminal, it starts available components without prompting or downloading.
 
 The installer includes portable Python for this computer. If you downloaded the source ZIP or cloned with Git instead, Python 3.8+ must already be installed, or the kit must contain portable Python for this platform. The launcher explains how to obtain it if missing.
 
-After a successful installation in an interactive terminal, the installer offers to run `run.bat prepare` (Windows) or `run.sh prepare` (Linux/macOS) for first-time setup. Press Enter or enter `y` to choose optional components now; enter `n` to set them up later. Non-interactive installs skip this offer. Setup reuses the portable Python already installed for this computer; selecting other platforms downloads their separate Python runtimes only if missing.
+The installer offers first-time setup through `run.bat prepare` (Windows) or `run.sh prepare` (Linux/macOS). Press Enter or type `y` to choose optional components now, or `n` to do it later. Non-interactive installs skip this prompt.
+
+Setup reuses this computer's portable Python. If you select other platforms, it downloads their Python runtimes only if they're missing.
 
 ### 3. Add or repair components (when online)
 
@@ -135,7 +151,9 @@ Non-interactive:
 | **macOS** | `run.command` |
 | **Linux** | `./run.sh` |
 
-Your browser opens <http://127.0.0.1:8090>. Local-network sharing is enabled by default: the console also shows a LAN address and an offline-generated QR code for phones on the same network. To use only this computer, run `.\run.bat --local-only` (Windows) or `./run.sh --local-only` (Linux/macOS). Switch language anytime with the PT/EN/ES buttons. English is the default. Select Portuguese or Spanish with `--lang pt` or `--lang es`, or use the language buttons.
+Your browser opens <http://127.0.0.1:8090>. Local-network sharing is enabled by default: the console shows a LAN address and an offline-generated QR code for phones on the same network. To use only this computer, run `.\run.bat --local-only` (Windows) or `./run.sh --local-only` (Linux/macOS).
+
+English is the default. Switch languages with the PT/EN/ES buttons, or start in Portuguese or Spanish with `--lang pt` or `--lang es`.
 
 To change AI models, click the current model indicator in the top bar and choose an installed GGUF from its menu. The same control is available on phones. A switch waits for any current answer to finish, unloads the previous model, then shows loading progress and elapsed time. Guide browsing and search remain available. The choice applies to all browsers connected to this server and is saved in `config/settings.local.json` after the new model loads successfully. Only one app-managed model stays loaded at a time. Switching controls are disabled for externally managed AI servers (such as Ollama or LM Studio) and when using `--no-engines`.
 
