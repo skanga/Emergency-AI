@@ -27,7 +27,7 @@ LLAMA_REPO = "ggml-org/llama.cpp"
 PYTHON_REPO = "astral-sh/python-build-standalone"
 KIWIX_TOOLS_DIR = "https://download.kiwix.org/release/kiwix-tools/"
 
-# Filename patterns for prebuilt llama.cpp binaries (CPU-only builds).
+# Base builds: CPU on Windows/Linux, Metal-capable on macOS.
 LLAMA_ASSETS = {
     "windows-x86_64": ["win-cpu-x64", "win-avx2-x64", "win-x64"],
     "windows-arm64": ["win-cpu-arm64", "win-arm64"],
@@ -35,6 +35,12 @@ LLAMA_ASSETS = {
     "linux-arm64": ["ubuntu-arm64", "ubuntu-cpu-arm64", "linux-arm64"],
     "macos-arm64": ["macos-arm64"],
     "macos-x86_64": ["macos-x64"],
+}
+LLAMA_VULKAN_ASSETS = {
+    "windows-x86_64": ["win-vulkan-x64"],
+    "windows-arm64": ["win-vulkan-arm64"],
+    "linux-x86_64": ["ubuntu-vulkan-x64"],
+    "linux-arm64": ["ubuntu-vulkan-arm64"],
 }
 # Portable Python (python-build-standalone, "install_only").
 PYTHON_TRIPLES = {
@@ -373,8 +379,9 @@ def github_latest_assets(repo):
 
 
 # ---------------------------------------------------------------- components
-def _llama_pick(plat, assets):
-    for key in LLAMA_ASSETS[plat]:
+def _llama_pick(plat, assets, backend="cpu"):
+    patterns = LLAMA_VULKAN_ASSETS if backend == "vulkan" else LLAMA_ASSETS
+    for key in patterns.get(plat, []):
         rx = re.compile(rf"^llama-.*-bin-{re.escape(key)}\.(zip|tar\.gz)$")
         match = [a for a in assets if rx.match(a[0])]
         if match:
@@ -388,7 +395,6 @@ def _has_llama_server(folder, plat):
 
 
 def get_llama(plat, tr):
-    dest = os.path.join(RUNTIME_DIR, "llama.cpp", plat)
     try:
         # Always check online, even when an older or unversioned engine is installed.
         releases = get_json(f"https://api.github.com/repos/{LLAMA_REPO}/releases?per_page=10", timeout=30)
@@ -400,11 +406,30 @@ def get_llama(plat, tr):
                 break
         else:
             raise RuntimeError("asset not found for " + plat)
-        name, url, size = found
+    except Exception as e:
+        print(tr["fail"].format(f=f"llama.cpp ({plat})", e=e))
+        return False
+    if not _install_llama(plat, tr, tag, found):
+        return False
+    if plat in LLAMA_VULKAN_ASSETS:
+        accelerated = _llama_pick(plat, assets, "vulkan")
+        if accelerated:
+            return _install_llama(plat, tr, tag, accelerated, "vulkan")
+        print(f"  Vulkan package unavailable for {plat} in {tag}; CPU remains available.")
+    return True
+
+
+def _install_llama(plat, tr, tag, asset, backend="cpu"):
+    # Sibling folders keep GPU libraries out of the CPU loader's search path.
+    folder = plat + ("-vulkan" if backend == "vulkan" else "")
+    dest = os.path.join(RUNTIME_DIR, "llama.cpp", folder)
+    label = f"llama.cpp {tag} ({folder})"
+    try:
+        name, url, size = asset
         release = {"tag": tag, "asset": name}
         installed = load_json(os.path.join(dest, "release.json"), {})
         if installed == release and _has_llama_server(dest, plat):
-            print(tr["skip"].format(f=f"llama.cpp {tag} ({plat})"))
+            print(tr["skip"].format(f=label))
             return True
         archive = os.path.join(RUNTIME_DIR, "_downloads", name)
         download(url, archive, expected_size=size)
@@ -438,10 +463,10 @@ def get_llama(plat, tr):
             if not os.path.exists(previous):
                 shutil.rmtree(staging, ignore_errors=True)
         os.remove(archive)
-        print(f"  ✓ llama.cpp {tag} ({plat})")
+        print(f"  ✓ {label}")
         return True
     except Exception as e:
-        print(tr["fail"].format(f=f"llama.cpp ({plat})", e=e))
+        print(tr["fail"].format(f=label, e=e))
         print(tr["manual"].format(u=f"https://github.com/{LLAMA_REPO}/releases", d=dest))
         return False
 

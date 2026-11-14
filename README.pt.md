@@ -18,6 +18,8 @@ Se a internet, a energia e os serviços pararem, este kit continua funcionando n
 
 ## Como funciona
 
+A preparação inclui motores CPU e Vulkan separados no Windows/Linux e usa Metal no macOS. A cada inicialização, o kit detecta as GPUs disponíveis e tenta usar a CPU se a inicialização com GPU falhar. Os drivers precisam estar instalados. Para um kit com escolhas salvas, execute `.\run.bat prepare --resume --yes` (Windows) ou `./run.sh prepare --resume --yes` (Linux/macOS) para adicionar o novo motor. A opção `llm_acceleration` em `config/settings.local.json` aceita `auto` (padrão), `cpu`, `vulkan` ou `metal`. Veja os [detalhes de configuração](README.md#configuration).
+
 ```
  Pergunta ──► busca nos guias do kit (BM25) ─┐
           └─► busca no Kiwix (arquivos .zim) ─┼─► modelo de linguagem local ──► resposta com [1] [2] fontes

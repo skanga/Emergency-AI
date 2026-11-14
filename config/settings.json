@@ -5,6 +5,7 @@
   "open_browser": true,
 
   "llm_backend": "auto",
+  "llm_acceleration": "auto",
   "llm_url": "http://127.0.0.1:8091/v1",
   "ollama_url": "http://127.0.0.1:11434",
   "ollama_model": "qwen2.5:3b",

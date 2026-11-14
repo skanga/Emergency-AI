@@ -2,12 +2,15 @@
 
 import glob
 import os
+import re
 import shutil
 import socket
 import subprocess
 import sys
+import time
 
 from .config import LOG_DIR, MODELS_DIR, RUNTIME_DIR, ZIM_DIR, exe, is_windows, load_json, platform_key, CONFIG_DIR
+from .net import get_json
 
 
 def port_in_use(port, host="127.0.0.1"):
@@ -26,8 +29,11 @@ def _find_in(base, names):
     return None
 
 
-def find_llama_server():
+def find_llama_server(backend=None):
     plat = platform_key()
+    if backend == "vulkan":
+        found = _find_in(os.path.join(RUNTIME_DIR, "llama.cpp", plat + "-vulkan"), [exe("llama-server")])
+        return (found, "llama.cpp") if found else (None, None)
     names = [exe("llama-server")]
     found = _find_in(os.path.join(RUNTIME_DIR, "llama.cpp", plat), names)
     if found:
@@ -104,6 +110,23 @@ def _spawn(cmd, logname):
         return subprocess.Popen(cmd, **kwargs)
 
 
+def gpu_devices(binary, backend):
+    """Probe the engine on this machine, including its driver dependencies."""
+    _ensure_exec(binary)
+    try:
+        result = subprocess.run([binary, "--list-devices"], capture_output=True,
+                                text=True, encoding="utf-8", errors="replace", timeout=15,
+                                env=_env_for(binary), stdin=subprocess.DEVNULL,
+                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if is_windows() else 0)
+        if result.returncode:
+            return []
+        pattern = (r"^\s*(Vulkan\d+):\s*(.+)$" if backend == "vulkan"
+                   else r"^\s*(MTL\d+|Metal\d*):\s*(.+)$")
+        return re.findall(pattern, result.stdout + "\n" + result.stderr, re.MULTILINE)
+    except (OSError, subprocess.TimeoutExpired):
+        return []
+
+
 class Launcher:
     def __init__(self, settings, say=print):
         self.settings = settings
@@ -111,6 +134,20 @@ class Launcher:
         self.procs = []
         self.llm_process = None
         self.llm_model = None
+        self.llm_acceleration = None
+
+    def _gpu_ready(self, process, port):
+        deadline = time.monotonic() + 300
+        while time.monotonic() < deadline:
+            if self.llm_process is not process or process.poll() is not None:
+                return False
+            try:
+                if get_json(f"http://127.0.0.1:{port}/health", timeout=2).get("status") == "ok":
+                    return True
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.5)
+        return False
 
     def start_llm(self, model_file=None):
         port = int(self.settings.get("llm_port", 8091))
@@ -118,6 +155,10 @@ class Launcher:
             self.say(f"  • AI engine is already running on port {port}.")
             return True
         binary, kind = find_llama_server()
+        acceleration = self.settings.get("llm_acceleration", "auto")
+        if acceleration not in ("auto", "cpu", "vulkan", "metal"):
+            self.say("  Invalid llm_acceleration: use auto, cpu, vulkan, or metal.")
+            return False
         model = os.path.join(MODELS_DIR, model_file) if model_file else find_model(self.settings)
         if model_file and not os.path.isfile(model):
             model = None
@@ -145,11 +186,57 @@ class Launcher:
         threads = int(self.settings.get("llm_threads", 0) or 0)
         if threads > 0:
             cmd += ["-t", str(threads)]
+        # Probe at every launch: a portable kit may now be on a different machine.
+        if kind != "llamafile":
+            backend = "metal" if platform_key().startswith("macos-") else "vulkan"
+            if acceleration != "cpu":
+                backend = backend if acceleration == "auto" else acceleration
+                gpu = binary if backend == "metal" and platform_key().startswith("macos-") else None
+                if backend == "vulkan":
+                    gpu, _ = find_llama_server("vulkan")
+                devices = gpu_devices(gpu, backend) if gpu else []
+                if devices:
+                    gpu_cmd = [gpu] + cmd[1:] + ["--device", ",".join(d[0] for d in devices),
+                                               "--n-gpu-layers", "auto", "--fit", "on"]
+                    self.say(f"  Starting AI with {backend}: " + "; ".join(d[1] for d in devices))
+                    try:
+                        process = _spawn(gpu_cmd, "llm.log")
+                    except OSError as e:
+                        self.say(f"  GPU startup failed: {e}")
+                    else:
+                        self.llm_process = process
+                        self.llm_model = os.path.basename(model)
+                        self.llm_acceleration = backend
+                        self.procs.append(process)
+                        try:
+                            ready = self._gpu_ready(process, port)
+                        except BaseException:
+                            # Startup precedes the web server's normal cleanup block.
+                            self.stop_llm()
+                            raise
+                        if ready:
+                            self.say(f"  AI ready using {backend}.")
+                            return True
+                        # A concurrent stop cancels loading and must not restart it.
+                        if self.llm_process is not process:
+                            return False
+                        try:
+                            self.stop_llm()
+                        except (OSError, subprocess.TimeoutExpired) as e:
+                            self.say(f"  Could not stop GPU engine; CPU retry cancelled: {e}")
+                            return False
+                    self.say("  GPU failed to load the model; retrying on CPU. See logs/llm.log.")
+                else:
+                    self.say(f"  No usable {backend} device/build; using CPU.")
+            cmd += ["--device", "none", "--n-gpu-layers", "0"]
+        elif acceleration == "cpu":
+            cmd += ["-ngl", "0"]
         try:
             self.llm_process = _spawn(cmd, "llm.log")
             self.llm_model = os.path.basename(model)
+            self.llm_acceleration = "cpu" if kind != "llamafile" or acceleration == "cpu" else "llamafile"
             self.procs.append(self.llm_process)
-            self.say(f"  • Starting AI engine: {os.path.basename(model)} (loading may take up to 1 minute)")
+            self.say(f"  • Starting AI engine ({self.llm_acceleration}): {os.path.basename(model)} (loading may take up to 1 minute)")
             return True
         except OSError as e:
             self.say(f"  • Failed to start AI engine: {e} (see logs/llm.log)")
@@ -195,12 +282,14 @@ class Launcher:
     def stop_llm(self):
         if self.llm_process is not None:
             process = self.llm_process
+            self.llm_process = None  # Cancel an in-progress GPU readiness wait.
             self._stop_process(process)
             self.procs.remove(process)
-            self.llm_process = None
         self.llm_model = None
+        self.llm_acceleration = None
 
     def stop(self):
+        self.llm_process = None
         for process in list(self.procs):
             try:
                 self._stop_process(process)
@@ -209,3 +298,4 @@ class Launcher:
         self.procs = []
         self.llm_process = None
         self.llm_model = None
+        self.llm_acceleration = None

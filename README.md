@@ -80,6 +80,10 @@ Use `.\run.bat` in Windows Command Prompt or PowerShell, and `./run.sh` in Linux
 
 Each preparation run checks for the newest available llama.cpp build for the selected platforms, upgrades older installations, and skips re-downloading the current build. Normal offline startup never checks for updates.
 
+Preparation includes separate CPU and Vulkan engines for Windows/Linux (x86-64 and ARM64) when the release provides them. macOS uses the Metal-capable engine, which also supports CPU execution. On every launch, the app probes the current computer for usable GPU devices, enables automatic GPU-layer placement and memory fitting, and reports the selected backend and devices in the console. Missing drivers, failed GPU startup, or a five-minute GPU loading timeout cause a CPU retry. Drivers must already be installed; startup does not download anything. CUDA and NPU packages are not included in this initial implementation.
+
+For an existing kit, rerun preparation to add the accelerated engine. If setup choices were previously saved, use `.\run.bat prepare --resume --yes` on Windows or `./run.sh prepare --resume --yes` on Linux/macOS to keep those choices. CPU and Vulkan libraries stay in separate folders (`runtime/llama.cpp/<platform>/` and `<platform>-vulkan/`) so the kit can move between machines with different graphics hardware.
+
 Preparation verifies model checksums and Kiwix metalink sizes/checksums. A failed ZIM update keeps the previous library, and interrupted downloads remain available for retry. Invalid selections and failed preparation return a nonzero exit code; `runtime/kit-info.json` records the result of each requested component.
 
 The initial model/library size is an estimate before reusing existing files. Space checks happen on each component's destination drive: verified completed downloads need no additional download space, and partial downloads count only the remaining bytes. ZIP/tar extraction uses the archive's uncompressed sizes, including file copies made from links on Windows, plus a conservative 64 KiB allowance per entry and one directory allowance for filesystem overhead. Existing runtimes and libraries remain in place during replacement; free space is checked while both the old files and downloaded archive are still present. Downloads with unknown sizes use response headers when available, or check space as data arrives. Insufficient space stops that component without deleting its previous installation or partial download. There is no blanket 1 GiB requirement on a completed kit.
@@ -256,6 +260,7 @@ See the [tier comparison](docs/model-tier-evaluation-2026-11-13.md) for the test
 | `web_host` | `0.0.0.0` | Share on the local network; use `127.0.0.1` for this computer only |
 | `web_port` | `8090` | Web interface port |
 | `llm_backend` | `auto` | `auto`, `llamacpp`, `openai` (generic compatible server), `ollama` or `none` |
+| `llm_acceleration` | `auto` | Bundled llama.cpp: `auto` chooses Vulkan on Windows/Linux or Metal on macOS; `cpu` disables GPU use; `vulkan` / `metal` request that backend, with CPU fallback if unavailable or startup fails. External servers manage their own acceleration. |
 | `model_file` | unset | Select a `.gguf` filename when several are installed |
 | `llm_context` | `8192` | Model context size |
 | `llm_max_tokens` | `2048` | Total generation allowance, including thinking where the backend counts it |
