@@ -27,7 +27,7 @@ class BootstrapTests(unittest.TestCase):
         self.root = Path(self.tmp.name)
         self.env = dict(os.environ, PYTHONHOME=sys.base_prefix)
         files = {"emergency.py": b"# fixture\n",
-                 "run.bat": b'@echo off\r\necho %* > "%~dp0setup-args.txt"\r\nexit /b 0\r\n',
+                 "run.bat": b'@echo off\r\necho %* > "%~dp0setup-args.txt"\r\nif "%~1"=="" type nul > "%~dp0setup-args.txt"\r\nexit /b 0\r\n',
                  "run.sh": b'#!/bin/sh\nprintf "%s\\n" "$@" > "$(dirname "$0")/setup-args.txt"\n',
                  "run.command": b"#!/bin/sh\n",
                  "install.bat": b"rem source archive installer\r\n",
@@ -52,7 +52,7 @@ class BootstrapTests(unittest.TestCase):
                 archive.addfile(info, io.BytesIO(data))
         self.env["BOOTSTRAP_FIXTURES"] = str(self.root)
 
-    def run_installer(self, *, corrupt=False, fail=False, cwd=None, destination="installed kit", reply=None):
+    def run_installer(self, *, corrupt=False, fail=False, cwd=None, destination="installed kit", reply=None, open_reply="n"):
         cwd = cwd or self.root
         digest = hashlib.sha256(self.runtime.read_bytes()).hexdigest()
         # Substitute only the pinned digest; production download hosts stay fixed.
@@ -85,7 +85,7 @@ function curl.exe {
             script = script.replace(parameter, parameter + "\n" + mock_download)
             if reply is not None:
                 script = script.replace('[Console]::IsInputRedirected', '$false')
-                script = script.replace(parameter, parameter + "\nfunction Read-Host { if ($args[0] -like 'Open Emergency*') { return 'n' }; return $env:BOOTSTRAP_REPLY }\n")
+                script = script.replace(parameter, parameter + "\nfunction Read-Host { if ($args[0] -like 'Open Emergency*') { return $env:BOOTSTRAP_OPEN_REPLY }; return $env:BOOTSTRAP_REPLY }\n")
             command = ["cmd", "/d", "/c", name]
         else:
             if reply is not None:
@@ -118,8 +118,9 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         (cwd / name).write_text(script, encoding="utf-8")
         self.env["BOOTSTRAP_FAIL"] = "1" if fail else "0"
         self.env["BOOTSTRAP_REPLY"] = reply or ""
+        self.env["BOOTSTRAP_OPEN_REPLY"] = open_reply
         return subprocess.run(command, env=self.env, cwd=cwd, text=True,
-                              input=(reply + "\n") if reply is not None else "",
+                              input=(reply + "\n" + open_reply + "\n") if reply is not None else "",
                               capture_output=True, timeout=30)
 
     def test_download_extract_and_place_portable_runtime(self):
@@ -232,6 +233,11 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         result = self.run_installer(reply="")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual((self.root / "installed kit/setup-args.txt").read_text().strip(), "prepare")
+
+    def test_enter_opens_app_after_setup(self):
+        result = self.run_installer(reply="y", open_reply="")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual((self.root / "installed kit/setup-args.txt").read_text().strip(), "")
 
     def test_noninteractive_install_does_not_start_setup(self):
         result = self.run_installer()

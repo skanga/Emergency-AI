@@ -145,9 +145,9 @@ if [ -t 0 ]; then
     case "$answer" in
         ''|y|Y|yes|YES|Yes)
             "$destination/run.sh" prepare
-            printf 'Open Emergency AI now? [y/N] '
-            IFS= read -r answer || answer=""
-            case "$answer" in y|Y|yes|YES|Yes) "$destination/run.sh" ;; esac
+            printf 'Open Emergency AI now? [Y/n] '
+            IFS= read -r answer || answer=n
+            case "$answer" in ''|y|Y|yes|YES|Yes) "$destination/run.sh" ;; esac
             ;;
     esac
 fi

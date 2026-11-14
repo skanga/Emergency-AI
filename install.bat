@@ -150,8 +150,8 @@ if (-not [Console]::IsInputRedirected) {
     if ([string]::IsNullOrEmpty($answer) -or $answer -match '^(?i:y|yes)$') {
         & (Join-Path $target 'run.bat') prepare
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        $open = Read-Host 'Open Emergency AI now? [y/N]'
-        if ($open -match '^(?i:y|yes)$') {
+        $open = Read-Host 'Open Emergency AI now? [Y/n]'
+        if ([string]::IsNullOrEmpty($open) -or $open -match '^(?i:y|yes)$') {
             & (Join-Path $target 'run.bat')
             exit $LASTEXITCODE
         }
