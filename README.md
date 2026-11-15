@@ -2,7 +2,11 @@
 
 **Offline knowledge and assistance when services go down.**
 
-For Windows, Linux and macOS.
+Watch the video:
+
+https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
+
+Works on Windows, Linux and macOS.
 
 🇺🇸 English · [🇧🇷 Português](README.pt.md) · [🇪🇸 Español](README.es.md)
 
@@ -17,10 +21,6 @@ Set up the kit while you have internet, then use it offline. You'll still need a
 > ⚠️ **Disclaimer:** educational content. It does not replace doctors, firefighters or emergency services. Health guidance follows public guidelines (WHO, Red Cross/IFRC, AHA, CDC, Hesperian…) cited in each section.
 
 ![Emergency AI home screen with guide navigation, suggested questions, and local AI model and library selectors](docs/images/emergency-ai.png)
-
-Watch the Emergency AI video:
-
-https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 
 ---
 
