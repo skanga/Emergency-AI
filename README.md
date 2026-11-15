@@ -1,7 +1,6 @@
-# Emergency AI
+# Emergency-AI
 
-**Offline knowledge and assistance when services go down.**
-
+**Offline knowledge and AI based assistance for use when the Internet goes down.**
 Watch the video:
 
 https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
@@ -10,7 +9,7 @@ Works on Windows, Linux and macOS.
 
 🇺🇸 English · [🇧🇷 Português](README.pt.md) · [🇪🇸 Español](README.es.md)
 
-Set up the kit while you have internet, then use it offline. You'll still need a powered computer, such as a laptop running on battery during an outage. You can keep the kit on a USB drive to use on another computer.
+Set up the kit when you have internet connectivity, then use it offline. You'll still need a powered computer, such as a laptop running on battery during an outage. You can keep the kit on a USB drive to use on another computer.
 
 - 📚 **Practical guides with cited sources** (EN, PT, ES): water, fire, shelter, food, gardening and livestock, foraging/fishing/hunting, **first aid and medicine**, hygiene and homemade soap, **alcohol** (fermentation, distillation, antiseptic and fuel), solar power, radio and navigation, tools and knots, mental health and community, and checklists for 72 hours and **1 year**.
 - 🤖 **Local AI** that answers any question in natural language, **citing its sources** — it runs on your own computer (llama.cpp or Ollama); nothing goes to the internet.
