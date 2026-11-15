@@ -62,6 +62,9 @@ class BootstrapTests(unittest.TestCase):
         if os.name == "nt":
             self.assertIn("\n# POWERSHELL\n", script, "Windows installer must contain its own implementation")
             mock_download = '''
+if ($env:BOOTSTRAP_NO_FILEHASH -eq '1') {
+    function Get-FileHash { throw 'Get-FileHash is unavailable' }
+}
 function curl.exe {
     $Uri = $args[-1]
     $OutFile = $args[[Array]::IndexOf($args, '-o') + 1]
@@ -142,6 +145,26 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(marker.read_text(), "keep me")
         self.assertEqual(list(target.iterdir()), [marker])
+
+    @unittest.skipUnless(os.name == "nt", "Windows installer hashing")
+    def test_install_and_cache_reuse_without_get_filehash(self):
+        self.env['BOOTSTRAP_NO_FILEHASH'] = '1'
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        shutil.rmtree(self.root / 'installed kit')
+        self.env['BOOTSTRAP_NO_PYTHON'] = '1'
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('Reusing verified', result.stdout)
+
+    @unittest.skipUnless(os.name == "nt", "Windows installer hashing")
+    def test_bad_checksum_rejected_without_get_filehash(self):
+        self.env['BOOTSTRAP_NO_FILEHASH'] = '1'
+        result = self.run_installer(corrupt=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('checksum mismatch', (result.stdout + result.stderr).lower())
+        self.assertFalse((self.root / 'installed kit').exists())
+        self.assertFalse(list(self.root.glob('.*-downloads/cpython*.part')))
 
     def test_bad_checksum_does_not_publish_installation(self):
         result = self.run_installer(corrupt=True)

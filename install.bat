@@ -19,6 +19,18 @@ $moved = @()
 $activated = $false
 $log = $null
 $cache = $null
+function Get-ArchiveSha256($Path) {
+    # Avoid module discovery failures when launched through PowerShell 7.
+    $hasher = [Security.Cryptography.SHA256]::Create()
+    $stream = $null
+    try {
+        $stream = [IO.File]::OpenRead($Path)
+        return [BitConverter]::ToString($hasher.ComputeHash($stream)).Replace('-', '').ToLowerInvariant()
+    } finally {
+        if ($null -ne $stream) { $stream.Dispose() }
+        $hasher.Dispose()
+    }
+}
 function Fetch-Archive($Uri, $OutFile, [bool]$Resume = $false) {
     for ($attempt = 1; $attempt -le 3; $attempt++) {
         $message = "Downloading $(Split-Path -Leaf $OutFile), attempt $attempt/3"
@@ -106,12 +118,12 @@ try {
     Write-Host "Downloading portable Python for $platform..."
     $asset = "cpython-3.12.16+20261110-$triple-install_only.tar.gz"
     $archive = Join-Path $cache "$asset.part"
-    if ((Test-Path -LiteralPath $archive) -and (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant() -eq $expected) {
+    if ((Test-Path -LiteralPath $archive) -and (Get-ArchiveSha256 $archive) -eq $expected) {
         Write-Host 'Reusing verified portable Python download.'
     } else {
         Fetch-Archive "https://github.com/astral-sh/python-build-standalone/releases/download/20261110/$asset" $archive $true
     }
-    if ((Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected) {
+    if ((Get-ArchiveSha256 $archive) -ne $expected) {
         Remove-Item -LiteralPath $archive -Force
         throw 'Python checksum mismatch. Invalid download removed; rerun the installer.'
     }

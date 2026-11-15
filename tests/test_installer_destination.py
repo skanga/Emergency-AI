@@ -38,12 +38,13 @@ class InstallerDestinationTests(unittest.TestCase):
             selected = subprocess.check_output(
                 [shutil.which("sh"), "-c", 'cygpath -w "$1"', "sh", selected], text=True
             ).strip()
-        return Path(os.path.abspath(os.path.join(cwd, selected)))
+        return Path(os.path.join(cwd, selected)).resolve()
 
     def test_default_and_explicit_destinations(self):
         for platform in ("windows", "posix"):
             with tempfile.TemporaryDirectory() as tmp:
-                current = Path(tmp)
+                # Resolve macOS /var aliases and Windows short directory names.
+                current = Path(tmp).resolve()
                 with self.subTest(platform=platform, case="empty"):
                     self.assertEqual(self.select(platform, tmp), current)
                 (current / "install.sh").touch()
