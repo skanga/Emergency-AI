@@ -26,7 +26,9 @@ Set up the kit while you have internet, then use it offline. You'll still need a
 
 ## Quick start
 
-**[Watch the Windows installation walkthrough (2:19)](https://raw.githubusercontent.com/skanga/Emergency-AI/main/docs/video/windows-install.mp4)** — download the installer from this page, install with Command Prompt, choose LFM and minimal Kiwix libraries, then search a guide and ask the local AI a question. Narrated, with long download waits trimmed. Ctrl+click or middle-click the video link to open it in a new tab.
+**Watch the Windows installation walkthrough (2:19)** — download the installer from this page, install with Command Prompt, choose LFM and minimal Kiwix libraries, then search a guide and ask the local AI a question. Narrated, with long download waits trimmed.
+
+https://github.com/user-attachments/assets/3c3d246f-f09e-45c0-a4ba-8772f8008c8d
 
 Create a new, empty folder on your computer or a USB drive where you want to keep Emergency AI. You can also use the top level of an empty USB drive. Download the installer for your computer into that location (right-click the link and choose **Save link as**):
 
