@@ -18,7 +18,7 @@ Set up the kit while you have internet, then use it offline. You'll still need a
 
 ![Emergency AI home screen with guide navigation, suggested questions, and local AI model and library selectors](docs/images/emergency-ai.png)
 
-[Watch the Emergency AI video](docs/video/emergency-ai.mp4)
+[Download the Emergency AI video (MP4)](https://github.com/skanga/Emergency-AI/raw/refs/heads/main/docs/video/emergency-ai.mp4) and open it in your video player.
 
 ---
 
