@@ -18,6 +18,8 @@ Set up the kit while you have internet, then use it offline. You'll still need a
 
 ![Emergency AI home screen with guide navigation, suggested questions, and local AI model and library selectors](docs/images/emergency-ai.png)
 
+[Watch the Emergency AI video](docs/video/emergency-ai.mp4)
+
 ---
 
 ## Quick start
