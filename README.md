@@ -18,7 +18,7 @@ Set up the kit while you have internet, then use it offline. You'll still need a
 - 📱 **Web interface** in your browser, shareable over the local network (other phones connect via Wi-Fi, even with no internet).
 - 🔍 **No-AI mode**: even without a model, guide search works on any PC with Python.
 
-> ⚠️ **Disclaimer:** educational content. It does not replace doctors, firefighters or emergency services. Health guidance follows public guidelines (WHO, Red Cross/IFRC, AHA, CDC, Hesperian…) cited in each section.
+> ⚠️ **Disclaimer:** This is educational content. It should not be used to replace doctors, firefighters or emergency services. Health guidance follows public guidelines (WHO, Red Cross/IFRC, AHA, CDC, Hesperian…) cited in each section.
 
 ![Emergency AI home screen with guide navigation, suggested questions, and local AI model and library selectors](docs/images/emergency-ai.png)
 
