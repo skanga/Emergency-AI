@@ -26,7 +26,7 @@ https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 
 ## Quick start
 
-**[Watch the Windows installation walkthrough (2:19)](docs/video/windows-install.mp4)** — download the installer from this page, install with Command Prompt, choose LFM and minimal Kiwix libraries, then search a guide and ask the local AI a question. Narrated, with long download waits trimmed.
+**[Watch the Windows installation walkthrough (2:19)](https://raw.githubusercontent.com/skanga/Emergency-AI/main/docs/video/windows-install.mp4)** — download the installer from this page, install with Command Prompt, choose LFM and minimal Kiwix libraries, then search a guide and ask the local AI a question. Narrated, with long download waits trimmed. Ctrl+click or middle-click the video link to open it in a new tab.
 
 Create a new, empty folder on your computer or a USB drive where you want to keep Emergency AI. You can also use the top level of an empty USB drive. Download the installer for your computer into that location (right-click the link and choose **Save link as**):
 
