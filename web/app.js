@@ -516,6 +516,7 @@
       const dec = new TextDecoder();
       let buf = "";
       let info = {};
+      let completed = false;
       for (;;) {
         const { value, done } = await reader.read();
         if (done) break;
@@ -533,16 +534,25 @@
             text += data;
             out.innerHTML = md(text, { cites: true });
             w.scrollIntoView({ block: "end" });
-          } else if (ev === "done") info = data;
+          } else if (ev === "done") { info = data; completed = true; }
           else if (ev === "error") throw new Error(data.error);
         }
+      }
+      if (!completed) {
+        const notice = {
+          en: "Interrupted response: the answer may be incomplete.",
+          pt: "Resposta interrompida: a resposta pode estar incompleta.",
+          es: "Respuesta interrumpida: la respuesta puede estar incompleta.",
+        }[lang];
+        text += "\n\n**" + notice + "**";
+        out.innerHTML = md(text, { cites: true });
       }
       out.classList.remove("typing");
       renderSources(body, sources);
       const meta = document.createElement("div");
       meta.className = "meta";
       const secs = info.seconds ?? ((Date.now() - t0) / 1000).toFixed(1);
-      meta.textContent = (info.mode === "llm" ? t("modeLlm") : t("modeSearch")) + " · " + secs + "s";
+      meta.textContent = (completed ? (info.mode === "llm" ? t("modeLlm") : t("modeSearch")) + " · " : "") + secs + "s";
       body.appendChild(meta);
       chatHistory.push({ role: "user", content: question }, { role: "assistant", content: text });
       chatHistory = chatHistory.slice(-8);

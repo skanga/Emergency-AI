@@ -5,6 +5,7 @@ and download article content as context for the AI.
 """
 
 import html
+from concurrent.futures import ThreadPoolExecutor
 import os
 import re
 import urllib.parse
@@ -13,6 +14,7 @@ from html.parser import HTMLParser
 
 from .config import CONFIG_DIR, load_json
 from .net import get_text, is_up
+from .knowledge import tokenize
 
 LANG3 = {"pt": "por", "en": "eng", "es": "spa"}
 
@@ -117,11 +119,8 @@ class KiwixClient:
             return []
         want = LANG3.get(lang, lang)
         ordered = [b for b in books if want in b["lang"]] + [b for b in books if want not in b["lang"]]
-        results = []
-        # Query each book (up to 6) to avoid relying on global relevance ordering.
-        for book in ordered[:6]:
-            if len(results) >= limit * 2:
-                break
+        def search_book(book):
+            results = []
             params = urllib.parse.urlencode({
                 "pattern": query, "books.name": book["name"], "format": "xml", "pageLength": 2,
             })
@@ -129,7 +128,7 @@ class KiwixClient:
                 xml = get_text(f"{self.base_url}/search?{params}", timeout=6)
                 root = ET.fromstring(xml)
             except Exception:
-                continue
+                return []
             for item in root.iter("item"):
                 title = (item.findtext("title") or "").strip()
                 link = self.local_link((item.findtext("link") or "").strip())
@@ -137,6 +136,17 @@ class KiwixClient:
                 if title and link:
                     results.append({"title": title, "link": link, "snippet": desc,
                                     "book": book["title"], "book_name": book["name"]})
+            return results
+
+        # Cover every selected library with a bounded number of concurrent requests.
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            results = [result for batch in pool.map(search_book, ordered) for result in batch]
+        terms = set(tokenize(query))
+        def relevance(result):
+            title = set(tokenize(result["title"]))
+            snippet = set(tokenize(result["snippet"]))
+            return 2 * len(terms & title) + len(terms & snippet)
+        results.sort(key=relevance, reverse=True)
         return results[:limit]
 
     def article_text(self, link, max_chars=20000):

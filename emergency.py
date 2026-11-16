@@ -202,9 +202,17 @@ def _print_answer(engine, question, lang, history):
 def _engine_with_launcher(args, settings):
     from app.engine import Engine
     from app.launcher import Launcher
+    from app.startup import load_selection, _select_model
+    try:
+        _select_model(settings, load_selection())
+    except ValueError:
+        pass  # Available guides remain usable with damaged setup metadata.
     launcher = Launcher(settings, say=lambda *_: None)
     if not args.no_engines:
-        started = launcher.start_llm()
+        backend = settings.get("llm_backend", "auto")
+        from app.llm import detect_llm
+        started = (backend in ("auto", "llamacpp", "openai")
+                   and detect_llm(settings) is None and launcher.start_llm())
         launcher.start_kiwix()
         engine = Engine(settings)
         if started and launcher.procs:

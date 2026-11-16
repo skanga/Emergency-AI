@@ -214,6 +214,12 @@ def download(url, dest, expected_size=None, sha256=None, retries=5, verify_zim=F
     if ((expected_size is not None or sha256 or verify_zim) and _file_valid(dest, expected_size, sha256)
             and (not verify_zim or _zim_checksum_valid(dest))):
         return dest
+    part = dest + ".part"
+    if ((expected_size is not None or sha256 or verify_zim)
+            and _file_valid(part, expected_size, sha256)
+            and (not verify_zim or _zim_checksum_valid(part))):
+        os.replace(part, dest)
+        return dest
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     remaining = _remaining_download(dest, expected_size)
     if remaining is not None:
