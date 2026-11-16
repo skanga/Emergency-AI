@@ -18,9 +18,9 @@ Se a internet, a energia e os serviços pararem, este kit continua funcionando n
 
 ## Como funciona
 
-O CUDA é opcional: a configuração oferece o download ao detectar uma GPU NVIDIA. Para adicioná-lo a um kit com escolhas salvas, use `.\run.bat prepare --resume --cuda --yes` ou `./run.sh prepare --resume --cuda --yes`. O download inclui as bibliotecas necessárias, sem exigir o toolkit de desenvolvimento CUDA. No Windows/Linux, o modo `auto` tenta CUDA, Vulkan e CPU, nessa ordem. `--no-cuda` evita novos downloads, mas não remove o motor já instalado. [Compatibilidade e detalhes](README.md#quick-start).
+O CUDA é opcional: a configuração oferece o download ao detectar uma GPU NVIDIA. Para adicioná-lo a um kit com escolhas salvas, use `.\run.bat prepare --resume --cuda --yes` ou `./run.sh prepare --resume --cuda --yes`. O download inclui as bibliotecas necessárias, sem exigir o toolkit de desenvolvimento CUDA. No Windows/Linux, o modo `auto` tenta CUDA, Vulkan e CPU, nessa ordem. `--no-cuda` evita novos downloads, mas não remove o motor já instalado. [Compatibilidade e detalhes](docs/technical-reference.md#acceleration-and-updates).
 
-A preparação inclui motores CPU e Vulkan separados no Windows/Linux e usa Metal no macOS. A cada inicialização, o kit detecta as GPUs disponíveis e tenta usar a CPU se a inicialização com GPU falhar. Os drivers precisam estar instalados. Para um kit com escolhas salvas, execute `.\run.bat prepare --resume --yes` (Windows) ou `./run.sh prepare --resume --yes` (Linux/macOS) para adicionar o novo motor. A opção `llm_acceleration` em `config/settings.local.json` aceita `auto` (padrão), `cpu`, `cuda`, `vulkan` ou `metal`. Veja os [detalhes de configuração](README.md#configuration).
+A preparação inclui motores CPU e Vulkan separados no Windows/Linux e usa Metal no macOS. A cada inicialização, o kit detecta as GPUs disponíveis e tenta usar a CPU se a inicialização com GPU falhar. Os drivers precisam estar instalados. Para um kit com escolhas salvas, execute `.\run.bat prepare --resume --yes` (Windows) ou `./run.sh prepare --resume --yes` (Linux/macOS) para adicionar o novo motor. A opção `llm_acceleration` em `config/settings.local.json` aceita `auto` (padrão), `cpu`, `cuda`, `vulkan` ou `metal`. Veja os [detalhes de configuração](docs/technical-reference.md#configuration).
 
 ```
  Pergunta ──► busca nos guias do kit (BM25) ─┐
@@ -61,7 +61,7 @@ Linux / macOS:
 curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -o install.sh && sh install.sh
 ```
 
-Precisa de internet, sem administrador. Aceita pastas novas ou vazias, exceto pelos instaladores; não atualiza um kit instalado. O Python tem versão fixa e SHA-256 verificado. Modelos e bibliotecas são opcionais no primeiro uso. Veja [requisitos e detalhes](README.md#1-download-the-kit-no-git-or-python-required). O script é salvo antes da execução para permitir revisão. No Windows, tudo está em um único arquivo `.bat`, com código PowerShell embutido.
+Precisa de internet, sem administrador. Aceita pastas novas ou vazias, exceto pelos instaladores; não atualiza um kit instalado. O Python tem versão fixa e SHA-256 verificado. Modelos e bibliotecas são opcionais no primeiro uso. Veja [requisitos e detalhes](docs/technical-reference.md#terminal-installation-and-platform-support). O script é salvo antes da execução para permitir revisão. No Windows, tudo está em um único arquivo `.bat`, com código PowerShell embutido.
 
 Ao terminar, o instalador oferece executar `run.bat prepare` ou `run.sh prepare` para configurar os componentes opcionais. Pressione Enter ou responda `y` para começar; responda `n` para deixar para depois. Sem terminal interativo, essa pergunta é omitida. O Python deste computador é reutilizado; outros sistemas selecionados recebem seus próprios runtimes quando necessário.
 
@@ -86,13 +86,13 @@ Use `.\run.bat prepare` no Windows ou `./run.sh prepare` no Linux/macOS para esc
 
 O comando `prepare` pergunta:
 
-1. **Modelo de IA:** `lfm3-1.7b` (default, ~1.1 GB, 8 GB RAM), `gemma4-e2b` (~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licenças](README.md#model-choices).
+1. **Modelo de IA:** `lfm3-1.7b` (default, ~1.1 GB, 8 GB RAM), `gemma4-e2b` (~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licenças](docs/downloads.md#model-choices).
 2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) ou `full` (~77 GiB, Wikipedia sem imagens).
 3. **Bibliotecas arquivadas opcionais:** cópias antigas do WikEM e wikiHow, com data e tamanho. Nenhuma é selecionada por padrão, nem no perfil `full`.
 4. **Sistemas:** só este computador, ou **Windows + Linux + macOS** (kit universal para pendrive).
 5. **Python portátil:** a preparação informa quais runtimes instalados serão reutilizados. Se todos os sistemas selecionados já tiverem Python, não faz essa pergunta. Caso contrário, pergunta apenas sobre baixar ou reparar os sistemas restantes; recusar mantém as cópias existentes.
 
-**Kiwix** permite ler sites salvos sem internet; um arquivo **ZIM** contém essas páginas. **WikEM** é uma referência de medicina de emergência para profissionais; a cópia opcional é de **junho de 2020** e pode estar desatualizada. **WikiMed** reúne artigos médicos da Wikipédia e é uma coleção diferente. **wikiHow** contém guias ilustrados para tarefas práticas. As cópias arquivadas são opcionais via `--archives`; consulte [datas, tamanhos e comandos](README.md#optional-archived-libraries).
+**Kiwix** permite ler sites salvos sem internet; um arquivo **ZIM** contém essas páginas. **WikEM** é uma referência de medicina de emergência para profissionais; a cópia opcional é de **junho de 2020** e pode estar desatualizada. **WikiMed** reúne artigos médicos da Wikipédia e é uma coleção diferente. **wikiHow** contém guias ilustrados para tarefas práticas. As cópias arquivadas são opcionais via `--archives`; consulte [datas, tamanhos e comandos](docs/downloads.md#optional-archived-libraries).
 
 Sem perguntas (ex.: para automatizar):
 
@@ -223,7 +223,7 @@ Emergency-AI/
 
 - Código: [MIT](LICENSE).
 - Guias em `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md).
-- Modelos, Kiwix, llama.cpp e bases ZIM baixados com o comando `prepare` têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto).  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](README.md#model-choices).
+- Modelos, Kiwix, llama.cpp e bases ZIM baixados com o comando `prepare` têm suas próprias licenças (veja `config/models.json` e as páginas de cada projeto).  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](docs/downloads.md#model-choices).
 
 ## Contribua
 
