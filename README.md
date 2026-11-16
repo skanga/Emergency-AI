@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="web/icon.svg" alt="Emergency AI" width="88" height="88">
+  <img src="web/icon.svg" alt="Emergency-AI" width="88" height="88">
 </p>
 
-<h1 align="center">Emergency AI</h1>
+<h1 align="center">Emergency-AI</h1>
 
 <p align="center"><strong>Practical knowledge, available offline.</strong><br>Read guides, search reference libraries, and ask an optional AI assistant on your own computer.</p>
 
@@ -15,11 +15,11 @@
 
 <p align="center">Windows · macOS · Linux<br>English · <a href="README.pt.md">Português</a> · <a href="README.es.md">Español</a></p>
 
-Prepare Emergency AI while you have internet, then use the downloaded guides, libraries, and AI model offline. The app opens in your browser and runs on your computer. You still need power—for example, a laptop with a charged battery.
+Download and configure Emergency-AI while you have internet, then use the downloaded guides, libraries, and AI model offline. The app opens in your browser and runs on your computer. You still need power—for example, a laptop with a charged battery.
 
-![Emergency AI home screen with guide navigation, suggested questions, and model and library selectors](docs/images/emergency-ai.png)
+![Emergency-AI home screen with guide navigation, suggested questions, and model and library selectors](docs/images/emergency-ai.png)
 
-**Watch Emergency AI in action**
+**Watch Emergency-AI in action**
 
 https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 
@@ -46,7 +46,7 @@ The installer includes Python, the software that runs the app. You do not need t
 
 ## Install
 
-Create a new, empty folder where you want to keep Emergency AI. Save the installer for your computer in that folder. On GitHub, right-click the download link and choose **Save link as**.
+Create a new, empty folder where you want to keep Emergency-AI. Save the installer for your computer in that folder. On GitHub, right-click the download link and choose **Save link as**.
 
 | Computer | Download | Run the installer |
 |---|---|---|
@@ -68,7 +68,7 @@ Downloads can take a long time. Keep the installer window open until it finishes
 
 ## Open it and try it
 
-After installation, open the launcher in your Emergency AI folder. Use the same launcher on future visits; you do not need to install again.
+After installation, open the launcher in your Emergency-AI folder. Use the same launcher on future visits; you do not need to install again.
 
 | Computer | Open the app |
 |---|---|
@@ -91,7 +91,7 @@ These guides are included in the project folder so you can keep them with the ki
 | You want to… | Read |
 |---|---|
 | Install for the first time and choose setup options | [Getting started](docs/getting-started.md) |
-| Use guides, questions, languages, and source links | [Using Emergency AI](docs/using-emergency-ai.md) |
+| Use guides, questions, languages, and source links | [Using Emergency-AI](docs/using-emergency-ai.md) |
 | Connect a phone | [Use it on your phone](docs/using-emergency-ai.md#use-it-on-your-phone) |
 | Choose models or download more libraries | [Downloads and models](docs/downloads.md) |
 | Add documents or move the kit to another computer | [User guide](docs/using-emergency-ai.md#add-your-own-documents) |
@@ -100,7 +100,7 @@ These guides are included in the project folder so you can keep them with the ki
 
 ## Limitations
 
-Emergency AI is educational material, not a replacement for emergency services or professional medical care. AI answers can be wrong, and a citation does not prove that an answer is supported. The bundled guides have [known content issues awaiting review](TODO.md). Downloaded libraries are snapshots and may contain outdated information.
+Emergency-AI is educational material, not a replacement for emergency services or professional medical care. AI answers can be wrong, and a citation does not prove that an answer is supported. The bundled guides have [known content issues awaiting review](TODO.md). Downloaded libraries are snapshots and may contain outdated information.
 
 Local-network sharing is enabled by default. Connected devices can read indexed personal documents too. See [phone access and sharing controls](docs/using-emergency-ai.md#use-it-on-your-phone).
 
