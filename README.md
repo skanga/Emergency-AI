@@ -15,7 +15,7 @@
 
 <p align="center">Windows · macOS · Linux<br>English · <a href="README.pt.md">Português</a> · <a href="README.es.md">Español</a></p>
 
-Download and configure Emergency-AI while you have internet, then use the downloaded guides, libraries, and AI model offline. The app opens in your browser and runs on your computer. You still need power—for example, a laptop with a charged battery.
+Download and configure Emergency-AI while you have internet, then use the downloaded guides, libraries, and AI model offline. The app opens in your browser and runs on your computer. You still need power-for example, a laptop with a charged battery.
 
 ![Emergency-AI home screen with guide navigation, suggested questions, and model and library selectors](docs/images/emergency-ai.png)
 
@@ -56,7 +56,7 @@ Create a new, empty folder where you want to keep Emergency-AI. Save the install
 
 Need help opening a terminal or choosing downloads? Follow [Getting started](docs/getting-started.md). Experienced users can use the [terminal installation commands](docs/technical-reference.md#terminal-installation-and-platform-support).
 
-**Windows installation walkthrough (2:19)** — download the installer, choose the lightweight model and minimal libraries, then search a guide and ask a question. Long download waits are trimmed from the video.
+**Windows installation walkthrough (2:19)** - download the installer, choose the lightweight model and minimal libraries, then search a guide and ask a question. Long download waits are trimmed from the video.
 
 https://github.com/user-attachments/assets/3c3d246f-f09e-45c0-a4ba-8772f8008c8d
 
