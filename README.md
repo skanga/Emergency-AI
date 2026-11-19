@@ -4,7 +4,7 @@
 
 <h1 align="center">Emergency-AI</h1>
 
-<p align="center"><strong>Practical knowledge, available offline.</strong><br>Read guides, search reference libraries, and ask an optional AI assistant on your own computer.</p>
+<p align="center"><strong>Practical emergency knowledge, available offline.</strong><br>Read guides, search reference libraries, and ask an AI emergency questions when the Internet is down.</p>
 
 <p align="center">
   <a href="#install"><strong>Install</strong></a> ·
@@ -28,7 +28,7 @@ https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 | Feature | What you can do |
 |---|---|
 | **Included guides** | Read and search practical information about water, food, shelter, first aid, repairs, energy, and more, in English, Portuguese, or Spanish. |
-| **Optional AI** | Ask questions in everyday language. The local model uses retrieved passages to write answers; source links let you check the material. |
+| **Optional AI Model** | Ask questions in everyday language. The local model uses retrieved passages to write answers; source links let you check the material. |
 | **Extra libraries** | Download reference collections such as medical Wikipedia, repair guides, and post-disaster manuals for offline use. |
 | **Phone access** | Use a phone's browser over the same local network while the app runs on your computer. |
 | **Your documents** | Add text documents to the kit and include them in searches. |
