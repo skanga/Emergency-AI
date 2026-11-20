@@ -73,7 +73,8 @@ class HTTPBoundaryTests(unittest.TestCase):
     def test_invalid_content_length_rejected(self):
         for length in ("no", "-1"):
             with self.subTest(length=length):
-                self.assertEqual(self.request(headers={"Content-Type": "application/json", "Content-Length": length})[0], 400)
+                # Header rejection can close the socket before a body is sent.
+                self.assertEqual(self.request(body=b"", headers={"Content-Type": "application/json", "Content-Length": length})[0], 400)
 
     def test_foreign_origin_rejected(self):
         self.assertEqual(self.request(headers={"Content-Type": "application/json", "Origin": "https://untrusted.example"})[0], 403)

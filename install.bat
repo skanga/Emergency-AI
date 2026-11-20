@@ -72,6 +72,8 @@ function Assert-InstallDestination($Path) {
 try {
     if (-not $Destination) {
         $current = (Get-Location).Path
+        # A retained cache does not make a retry choose a nested destination.
+        $cache = Join-Path $current '.downloads'
         $empty = $true
         try { Assert-InstallDestination $current } catch { $empty = $false }
         $Destination = if ($empty -or (Split-Path -Leaf $current) -eq 'Emergency-AI' -or
@@ -83,11 +85,10 @@ try {
     if (-not (Test-Path -LiteralPath $parent -PathType Container)) { throw 'Parent folder must exist.' }
     if (-not (Get-Command tar.exe -ErrorAction SilentlyContinue)) { throw 'tar.exe is required (included in current Windows 10/11).' }
     if (-not (Get-Command curl.exe -ErrorAction SilentlyContinue)) { throw 'curl.exe is required (included in current Windows 10/11).' }
-    $cacheName = Split-Path -Leaf $target
-    if (-not $cacheName) { $cacheName = 'Emergency-AI' }
-    $cache = Join-Path $parent ('.' + $cacheName + '-downloads')
+    $cache = Join-Path $target '.downloads'
     Assert-InstallDestination $target
     if ((Test-Path -LiteralPath $cache) -and ((Get-Item -LiteralPath $cache -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'Download cache must not be a link.' }
+    New-Item -ItemType Directory -Path $target -Force | Out-Null
     New-Item -ItemType Directory -Path $cache -Force | Out-Null
     $log = Join-Path $cache 'install.log'
     Write-Host "Installation log: $log"
@@ -106,12 +107,15 @@ try {
         default { throw "Unsupported Windows architecture: $arch" }
     }
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    $stage = Join-Path $parent ('.emergency-install-' + [guid]::NewGuid().ToString('N'))
+    $stage = Join-Path $target ('.emergency-install-' + [guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $stage | Out-Null
     Write-Host 'Downloading Emergency AI source...'
     $source = Join-Path $stage 'source.zip'
     Fetch-Archive 'https://github.com/skanga/Emergency-AI/archive/refs/heads/main.zip' $source
-    Expand-Archive -LiteralPath $source -DestinationPath (Join-Path $stage 'source')
+    $sourceDir = Join-Path $stage 'source'
+    New-Item -ItemType Directory -Path $sourceDir | Out-Null
+    & tar.exe -xf $source -C $sourceDir
+    if ($LASTEXITCODE -ne 0) { throw 'Could not extract source archive.' }
     $kit = Join-Path $stage 'source/Emergency-AI-main'
     if (-not (Test-Path -LiteralPath (Join-Path $kit 'emergency.py') -PathType Leaf) -or
         -not (Test-Path -LiteralPath (Join-Path $kit 'run.bat') -PathType Leaf)) { throw 'Source archive is incomplete.' }
@@ -135,17 +139,13 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Portable Python cannot run on this computer.' }
     @{ complete = $true; asset = $asset } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $runtime 'installation.json') -Encoding ASCII
     Assert-InstallDestination $target
-    if (Test-Path -LiteralPath $target) {
-        foreach ($child in Get-ChildItem -LiteralPath $kit -Force) {
-            $path = Join-Path $target $child.Name
-            # Keep the downloaded installers, including the batch file running now.
-            if ($child.Name -in @('install.bat', 'install.sh') -and (Test-Path -LiteralPath $path)) { continue }
-            if ($child.PSIsContainer) { [IO.Directory]::Move($child.FullName, $path) }
-            else { [IO.File]::Move($child.FullName, $path) }
-            $moved += $path
-        }
-    } else {
-        [IO.Directory]::Move($kit, $target)
+    foreach ($child in Get-ChildItem -LiteralPath $kit -Force) {
+        $path = Join-Path $target $child.Name
+        # Keep the downloaded installers, including the batch file running now.
+        if ($child.Name -in @('install.bat', 'install.sh') -and (Test-Path -LiteralPath $path)) { continue }
+        if ($child.PSIsContainer) { [IO.Directory]::Move($child.FullName, $path) }
+        else { [IO.File]::Move($child.FullName, $path) }
+        $moved += $path
     }
     $activated = $true
     Write-Host "Installed in: $target"
@@ -160,7 +160,7 @@ try {
     [Console]::Error.WriteLine("Installation failed: " + $_.Exception.Message + ". Retry install.bat after correcting the problem. Log: $log")
     exit 1
 } finally {
-    if ($stage -and ([IO.Path]::GetDirectoryName($stage) -eq $parent) -and
+    if ($stage -and ([IO.Path]::GetDirectoryName($stage) -eq $target) -and
         ([IO.Path]::GetFileName($stage) -like '.emergency-install-*') -and
         (Test-Path -LiteralPath $stage)) {
         Remove-Item -LiteralPath $stage -Recurse -Force

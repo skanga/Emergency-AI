@@ -52,7 +52,7 @@ class BootstrapTests(unittest.TestCase):
                 archive.addfile(info, io.BytesIO(data))
         self.env["BOOTSTRAP_FIXTURES"] = str(self.root)
 
-    def run_installer(self, *, corrupt=False, fail=False, cwd=None, destination="installed kit", reply=None, open_reply="n"):
+    def run_installer(self, *, corrupt=False, fail=False, cwd=None, destination="installed kit", reply=None, open_reply="n", publication_failure=False):
         cwd = cwd or self.root
         digest = hashlib.sha256(self.runtime.read_bytes()).hexdigest()
         # Substitute only the pinned digest; production download hosts stay fixed.
@@ -61,7 +61,15 @@ class BootstrapTests(unittest.TestCase):
         script = re.sub(r"\b[0-9a-f]{64}\b", "0" * 64 if corrupt else digest, script)
         if os.name == "nt":
             self.assertIn("\n# POWERSHELL\n", script, "Windows installer must contain its own implementation")
+            if publication_failure:
+                # Publish ordinary files before the deliberate .downloads collision.
+                script = script.replace(
+                    'foreach ($child in Get-ChildItem -LiteralPath $kit -Force)',
+                    'foreach ($child in Get-ChildItem -LiteralPath $kit -Force | Sort-Object Name -Descending)')
             mock_download = '''
+if ($env:BOOTSTRAP_NO_EXPAND_ARCHIVE -eq '1') {
+    function Expand-Archive { throw 'Incompatible archive module' }
+}
 if ($env:BOOTSTRAP_NO_FILEHASH -eq '1') {
     function Get-FileHash { throw 'Get-FileHash is unavailable' }
 }
@@ -126,6 +134,71 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
                               input=(reply + "\n" + open_reply + "\n") if reply is not None else "",
                               capture_output=True, timeout=30)
 
+    def download_cache(self):
+        if os.name == 'nt':
+            return self.root / 'installed kit' / '.downloads'
+        return self.root / '.installed kit-downloads'
+
+    def remove_published_files(self):
+        target = self.root / 'installed kit'
+        if os.name != 'nt':
+            shutil.rmtree(target)
+            return
+        for child in target.iterdir():
+            if child.name == '.downloads':
+                continue
+            if child.is_dir():
+                shutil.rmtree(child)
+            else:
+                child.unlink()
+
+    def assert_not_published(self):
+        target = self.root / 'installed kit'
+        if os.name == 'nt':
+            self.assertTrue(target.is_dir())
+            self.assertEqual(list(target.iterdir()), [target / '.downloads'])
+        else:
+            self.assertFalse(target.exists())
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows installer layout')
+    def test_cache_and_staging_stay_inside_destination(self):
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        target = self.root / 'installed kit'
+        self.assertTrue((target / '.downloads/install.log').is_file())
+        self.assertFalse(list(self.root.glob('.*-downloads')))
+        self.assertFalse(list(target.glob('.emergency-install-*')))
+        requests = (self.root / 'requests.txt').read_text().splitlines()
+        self.assertTrue(requests)
+        for request in requests:
+            self.assertIn('-o ' + str(target) + os.sep, request)
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows installer rollback')
+    def test_publication_failure_preserves_cache_and_rolls_back_files(self):
+        # A source directory colliding with the cache fails during publication,
+        # after ordinary source files have already been moved into the target.
+        with zipfile.ZipFile(self.root / 'source.zip', 'a') as archive:
+            archive.writestr('Emergency-AI-main/.downloads/conflict.txt', b'fixture')
+        result = self.run_installer(publication_failure=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assert_not_published()
+        cached = list(self.download_cache().glob('cpython*.part'))
+        self.assertEqual(len(cached), 1)
+        self.assertEqual(cached[0].read_bytes(), self.runtime.read_bytes())
+        self.assertFalse(list(self.root.glob('.emergency-install-*')))
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows installer retry selection')
+    def test_default_retry_in_custom_folder_keeps_destination(self):
+        target = self.root / 'custom folder'
+        target.mkdir()
+        result = self.run_installer(cwd=target, destination=None, fail=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertTrue((target / '.downloads/install.log').is_file())
+        result = self.run_installer(cwd=target, destination=None)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertTrue((target / 'emergency.py').is_file())
+        self.assertFalse((target / 'Emergency-AI').exists())
+
     def test_download_extract_and_place_portable_runtime(self):
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -135,6 +208,21 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.assertFalse(list(self.root.glob(".emergency-install-*")))
         if os.name != "nt":
             self.assertTrue(os.access(target / "run.sh", os.X_OK))
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows source extraction')
+    def test_source_extraction_does_not_require_archive_module(self):
+        self.env['BOOTSTRAP_NO_EXPAND_ARCHIVE'] = '1'
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertTrue((self.root / 'installed kit/emergency.py').is_file())
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows source extraction')
+    def test_invalid_source_archive_is_not_published(self):
+        (self.root / 'source.zip').write_bytes(b'not a zip archive')
+        result = self.run_installer()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Could not extract source archive', result.stdout + result.stderr)
+        self.assert_not_published()
 
     def test_existing_destination_is_never_overwritten(self):
         target = self.root / "installed kit"
@@ -151,7 +239,7 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.env['BOOTSTRAP_NO_FILEHASH'] = '1'
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        shutil.rmtree(self.root / 'installed kit')
+        self.remove_published_files()
         self.env['BOOTSTRAP_NO_PYTHON'] = '1'
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -163,26 +251,26 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         result = self.run_installer(corrupt=True)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('checksum mismatch', (result.stdout + result.stderr).lower())
-        self.assertFalse((self.root / 'installed kit').exists())
-        self.assertFalse(list(self.root.glob('.*-downloads/cpython*.part')))
+        self.assert_not_published()
+        self.assertFalse(list(self.download_cache().glob('cpython*.part')))
 
     def test_bad_checksum_does_not_publish_installation(self):
         result = self.run_installer(corrupt=True)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("checksum", (result.stdout + result.stderr).lower())
-        self.assertFalse((self.root / "installed kit").exists())
+        self.assert_not_published()
         self.assertFalse(list(self.root.glob(".emergency-install-*")))
 
     def test_network_failure_can_be_retried(self):
         result = self.run_installer(fail=True)
         self.assertNotEqual(result.returncode, 0)
-        self.assertFalse((self.root / "installed kit").exists())
+        self.assert_not_published()
         self.assertEqual(self.run_installer().returncode, 0)
 
     def test_failed_download_leaves_readable_log(self):
         result = self.run_installer(fail=True)
         self.assertNotEqual(result.returncode, 0)
-        logs = list(self.root.glob('.*-downloads/install.log'))
+        logs = list(self.download_cache().glob('install.log'))
         self.assertEqual(len(logs), 1)
         self.assertIn('attempt', logs[0].read_text().lower())
         self.assertIn('install.log', result.stdout + result.stderr)
@@ -191,7 +279,7 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.env['BOOTSTRAP_INTERRUPT'] = '1'
         result = self.run_installer()
         self.assertNotEqual(result.returncode, 0)
-        partial = list(self.root.glob('.*-downloads/cpython*.part'))
+        partial = list(self.download_cache().glob('cpython*.part'))
         self.assertEqual(len(partial), 1)
         self.assertEqual(partial[0].stat().st_size, 3)
         self.env['BOOTSTRAP_INTERRUPT'] = '0'
@@ -204,7 +292,7 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         target = self.root / 'installed kit'
         self.assertEqual(target.parent, self.root)
-        shutil.rmtree(target)
+        self.remove_published_files()
         self.env['BOOTSTRAP_NO_PYTHON'] = '1'
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
