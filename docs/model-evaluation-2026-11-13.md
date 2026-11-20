@@ -65,6 +65,6 @@ Keep thinking off by default for this workload. The thinking-on sample did not i
 
 ## Reproduction and artifacts
 
-Use the [manual harness instructions](../tests/manual/README.md). The harness is outside automatic CI and downloads nothing during its test run. Full local outputs and server logs are in `output/model-tests/`. The [portable result snapshot](model-evaluation-2026-11-13.json) contains 36 measured requests: the 34-request main matrix, the temperature follow-up, and the post-fix 16-token verification. Absolute workspace paths are replaced by `${REPO}`. The snapshot preserves pre-fix outputs as evidence rather than rewriting history.
+Use the [manual harness instructions](../tests/manual/README.md). The harness is outside automatic CI and downloads nothing during its test run. Full local outputs and server logs are in `output/model-tests/`. The former JSON result snapshot is available in Git history.
 
 Model sources: [baseline GGUF](https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF), [Qwen3-4B-Instruct GGUF](https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF), [Qwen3.5-4B GGUF](https://huggingface.co/bartowski/Qwen_Qwen3.5-4B-GGUF). Runtime: [llama.cpp b12345](https://github.com/ggml-org/llama.cpp/releases/tag/b12345).

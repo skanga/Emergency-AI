@@ -1,5 +1,14 @@
 *.sh text eol=lf
 *.command text eol=lf
 *.bat text eol=crlf
+
+# Keep development assets in Git, but omit them from source downloads.
+docs/video/ export-ignore
+docs/video/** export-ignore
+tests/ export-ignore
+tests/** export-ignore
+.github/ export-ignore
+.github/** export-ignore
+TODO.md export-ignore
 # Preserve the bundled encoder exactly as upstream, including blank-line indentation.
 app/vendor/qrcodegen.py text eol=lf whitespace=-blank-at-eol

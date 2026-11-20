@@ -44,4 +44,4 @@ Expand the evaluated source-grounding cases before promoting a model. Include ab
 
 See the [manual harness](../tests/manual/README.md). Run `python -B tests/manual/real_models.py --skip-thinking-case --output-prefix retrieval-update-` to repeat all thirteen current common cases per model while preserving old output files. The saved run used the eleven existing cases and the two new challenges in separate batches. Model IDs in the snapshot include batch labels; the model filenames, sizes and hashes identify the exact artifacts.
 
-The [result snapshot](retrieval-evaluation-2026-11-13.json) contains questions, complete supplied passages, answers and generation metadata for human review. Local logs are in `output/model-tests/`. Generated text is retained as evidence, including errors.
+The former JSON result snapshot is available in Git history. Local logs are in `output/model-tests/`.

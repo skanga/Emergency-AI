@@ -72,7 +72,7 @@ The menu and README identify current recommendations, alternatives, RAM estimate
 
 ## Reproduction and limits
 
-See [manual test instructions](../tests/manual/README.md), the three pinned public manifests, and the [full result snapshot](model-tier-evaluation-2026-11-13.json). Local file paths are replaced with `${LOCAL_MODEL_DIR}` and workspace paths with `${REPO}`. Model names, quantizations, hashes, settings, questions, supplied passages, visible answers and generation metadata are retained. No hidden reasoning traces or weights are stored in the snapshot.
+See [manual test instructions](../tests/manual/README.md) and the three pinned public manifests. The former JSON result snapshot is available in Git history.
 
 Source fidelity is still unresolved across the catalogue. Citation syntax is not a support check; missing evidence is not evidence of absence. The bundled power-consumption estimates were only checked for faithful repetition, not independently validated. Medical guidance, complex tasks, battery use, full-context memory, GPU acceleration, other operating systems and statistical repeatability were not evaluated here. The recommendations can change with broader testing, but a published model ID must not be silently remapped to new weights.
 
