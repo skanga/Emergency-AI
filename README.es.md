@@ -1,163 +1,113 @@
-# Emergency AI
+<p align="center">
+  <img src="web/icon.svg" alt="Emergency-AI" width="88" height="88">
+</p>
 
-**Conocimiento y asistencia sin internet cuando los servicios dejan de funcionar.** — en Windows, Linux y macOS.
+<h1 align="center">Emergency-AI</h1>
 
-[🇧🇷 Português](README.pt.md) · [🇺🇸 English](README.md) · 🇪🇸 Español
+<p align="center"><strong>Conocimientos prácticos para emergencias, disponibles sin internet.</strong><br>Lee guías, busca en bibliotecas de referencia y haz preguntas sobre emergencias a una IA cuando no haya internet.</p>
 
-Si internet, la electricidad y los servicios se caen, este kit sigue funcionando en una laptop o un pendrive:
+<p align="center">
+  <a href="#instalación"><strong>Instalar</strong></a> ·
+  <a href="docs/getting-started.md">Primeros pasos</a> ·
+  <a href="docs/using-emergency-ai.md">Guía de uso</a> ·
+  <a href="docs/troubleshooting.md">Ayuda</a>
+</p>
 
-- 📚 **Guías prácticas con fuentes citadas** (ES, PT, EN): agua, fuego, refugio, comida, huerta y cría de animales, recolección/pesca/caza, **primeros auxilios y medicina**, higiene y jabón casero, **alcohol** (fermentación, destilación, antiséptico y combustible), energía solar, radio y navegación, herramientas y nudos, salud mental y comunidad, y listas para 72 horas y **1 año**.
-- 🤖 **IA local** que responde cualquier pregunta en lenguaje natural **citando las fuentes** — corre en tu propia computadora (llama.cpp u Ollama); nada sale a internet.
-- 🌐 **Bibliotecas offline de Kiwix**: Wikipedia de medicina, manuales post-desastre, *Donde no hay doctor*, iFixit, Appropedia y más — la IA también busca en ellas.
-- 📱 **Interfaz web** en el navegador, que se puede compartir en la red local (otros teléfonos se conectan por Wi-Fi, aun sin internet).
-- 🔍 **Modo sin IA**: incluso sin modelo, la búsqueda en las guías funciona en cualquier PC con Python.
+<p align="center">Windows · macOS · Linux<br><a href="README.md">English</a> · <a href="README.pt.md">Português</a> · Español</p>
 
-> ⚠️ **Aviso:** contenido educativo. No reemplaza a médicos, bomberos ni servicios de emergencia. Las orientaciones de salud siguen directrices públicas (OMS, Cruz Roja/IFRC, AHA, CDC, Hesperian…) citadas en cada sección.
+Descarga y configura Emergency-AI mientras tengas internet; después podrás usar las guías, las bibliotecas y el modelo de IA descargados sin conexión. La aplicación se abre en el navegador y funciona en tu computadora. Sigue necesitando energía; por ejemplo, una laptop con la batería cargada.
 
----
+![Pantalla de inicio de Emergency-AI con navegación por las guías, preguntas sugeridas y selectores de modelo y bibliotecas](docs/images/emergency-ai.png)
 
-## Cómo funciona
+**Mira Emergency-AI en acción**
 
-CUDA es opcional: la configuración ofrece la descarga al detectar una GPU NVIDIA. Para añadirlo a un kit con opciones guardadas, usa `.\run.bat prepare --resume --cuda --yes` o `./run.sh prepare --resume --cuda --yes`. La descarga incluye las bibliotecas necesarias, sin exigir el toolkit de desarrollo CUDA. En Windows/Linux, el modo `auto` intenta CUDA, Vulkan y CPU, en ese orden. `--no-cuda` evita nuevas descargas, pero no elimina el motor instalado. [Compatibilidad y detalles](docs/technical-reference.md#acceleration-and-updates).
+https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 
-La preparación incluye motores CPU y Vulkan separados en Windows/Linux y usa Metal en macOS. En cada inicio, el kit detecta las GPU disponibles e intenta usar la CPU si falla el inicio con GPU. Los controladores deben estar instalados. Para un kit con opciones guardadas, ejecuta `.\run.bat prepare --resume --yes` (Windows) o `./run.sh prepare --resume --yes` (Linux/macOS) para añadir el nuevo motor. La opción `llm_acceleration` en `config/settings.local.json` acepta `auto` (predeterminado), `cpu`, `cuda`, `vulkan` o `metal`. Consulta los [detalles de configuración](docs/technical-reference.md#configuration).
+## Qué puedes hacer
 
-```
- Pregunta ──► búsqueda en las guías del kit (BM25) ─┐
-          └─► búsqueda en Kiwix (archivos .zim) ─────┼─► modelo de lenguaje local ──► respuesta con fuentes [1] [2]
-                                                     └─► (¿sin modelo? muestra los fragmentos más relevantes)
-```
-
-Los archivos grandes (modelos, bases ZIM, motores) **no van al git**: el repositorio queda liviano y cada persona arma su kit con el comando `prepare`.
-
----
-
-## Inicio rápido
-
-### 1. Descarga el repositorio
-
-**Sin Git ni Python instalado:** abre una terminal en la carpeta donde quieras guardar el kit. El instalador crea una subcarpeta `Emergency-AI`, o usa la carpeta actual si ya tiene ese nombre y está vacía, salvo por `install.bat` / `install.sh`. El kit incluye el código, los lanzadores y Python portátil para esta computadora.
-
-Windows (PowerShell):
-
-```powershell
-curl.exe -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.bat -o install.bat
-if ($LASTEXITCODE -eq 0) { .\install.bat }
-```
-
-Linux / macOS:
-
-```sh
-curl -fL https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh -o install.sh && sh install.sh
-```
-
-Necesita internet, sin permisos de administrador. Acepta carpetas nuevas o vacías, salvo por los instaladores; no actualiza un kit instalado. Python tiene una versión fija y SHA-256 verificado. Los modelos y las bibliotecas son opcionales al abrir el kit. Consulta [requisitos y detalles](docs/technical-reference.md#terminal-installation-and-platform-support). El script se guarda antes de ejecutarlo para permitir su revisión. En Windows, todo está en un único archivo `.bat`, con código PowerShell integrado.
-
-Al terminar, el instalador ofrece ejecutar `run.bat prepare` o `run.sh prepare` para configurar los componentes opcionales. Pulsa Enter o responde `y` para empezar; responde `n` para dejarlo para después. Sin terminal interactiva, se omite esta pregunta. Se reutiliza Python de esta computadora; los otros sistemas seleccionados reciben sus propios runtimes cuando sea necesario.
-
-Alternativa para quienes ya usan Git y Python:
-
-```bash
-git clone https://github.com/skanga/Emergency-AI.git
-cd Emergency-AI
-```
-
-### 2. Abre el kit
-
-| Sistema | Cómo ejecutar |
+| Función | Qué puedes hacer |
 |---|---|
-| **Windows** | doble clic en `.\run.bat` |
-| **macOS** | doble clic en `run.command` (la 1.ª vez: clic derecho › Abrir) |
-| **Linux** | `./run.sh --lang es` |
+| **Guías incluidas** | Lee y busca información práctica sobre agua, alimentos, refugio, primeros auxilios, reparaciones, energía y otros temas, en inglés, portugués o español. |
+| **Modelo de IA opcional** | Haz preguntas en lenguaje cotidiano. El modelo local utiliza fragmentos recuperados para redactar respuestas; los enlaces a las fuentes permiten comprobar el material. |
+| **Bibliotecas adicionales** | Descarga colecciones de referencia, como Wikipedia de medicina, guías de reparación y manuales post-desastre, para usarlas sin conexión. |
+| **Acceso desde el teléfono** | Usa el navegador de un teléfono conectado a la misma red local mientras la aplicación funciona en tu computadora. |
+| **Tus documentos** | Añade documentos de texto al kit e inclúyelos en las búsquedas. |
 
-En el primer uso, elige descargar los componentes opcionales (con internet) o abrir las guías incluidas. Se recuerda la elección de usar solo las guías. Si falta algún componente seleccionado, puedes reanudar la preparación o continuar con lo disponible. Sin una terminal interactiva, la aplicación inicia sin preguntas ni descargas.
+**Puedes empezar sin IA.** Las guías incluidas están listas para leer y consultar sin descargar un modelo ni bibliotecas adicionales.
 
-Usa `.\run.bat prepare` en Windows o `./run.sh prepare` en Linux/macOS para elegir componentes. Añade `--resume` para reanudar las opciones guardadas en esta computadora; usa `status` para revisar el kit. Se necesita Python 3.8+ instalado o una copia portátil compatible dentro del kit.
+## Antes de empezar
 
-El comando `prepare` pregunta:
+- **Computadora:** Windows 10/11, macOS o Linux en un sistema x86-64 o ARM64 compatible. Consulta los [detalles de compatibilidad](docs/technical-reference.md#terminal-installation-and-platform-support).
+- **Internet:** necesario para la instalación y las descargas opcionales. Prepara el kit antes de una interrupción del servicio.
+- **Memoria:** se recomiendan 8 GB de RAM del sistema para el modelo ligero de IA. No se necesita una tarjeta gráfica dedicada. La búsqueda en las guías no requiere el modelo de IA.
+- **Almacenamiento:** las bibliotecas adicionales empiezan en unos 3 GiB; el modelo ligero añade unos 1,1 GB. Reserva espacio adicional para el software, la extracción y las actualizaciones. Consulta las [opciones de descarga](docs/downloads.md).
 
-1. **Modelo de IA:** `lfm3-1.7b` (default, ~1.1 GB, 8 GB RAM), `gemma4-e2b` (~3.2 GB, 16 GB RAM), `qwen35-9b` (~6.2 GB, 24 GB RAM). [Model choices / licencias](docs/downloads.md#model-choices).
-2. **Bibliotecas Kiwix:** `minimal` (~3 GiB), `recommended` (~8 GiB) o `full` (~77 GiB, Wikipedia sin imágenes).
-3. **Bibliotecas archivadas opcionales:** copias antiguas de WikEM y wikiHow, con fecha y tamaño. Ninguna se selecciona de forma predeterminada, tampoco en `full`.
-4. **Sistemas:** solo esta computadora, o **Windows + Linux + macOS** (kit universal para pendrive).
-5. **Python portátil:** la preparación indica qué runtimes instalados se reutilizarán. Si todos los sistemas seleccionados ya tienen Python, omite esta pregunta. De lo contrario, pregunta solo por descargar o reparar los sistemas restantes; rechazar conserva las copias existentes.
+El instalador incluye Python, el software que ejecuta la aplicación. No necesitas instalar Python ni Git por separado.
 
-**Kiwix** permite leer sitios guardados sin internet; un archivo **ZIM** contiene esas páginas. **WikEM** es una referencia de medicina de urgencias para profesionales; la copia opcional es de **junio de 2020** y puede estar desactualizada. **WikiMed** reúne artículos médicos de Wikipedia y es una colección distinta. **wikiHow** contiene guías ilustradas para tareas prácticas. Las copias archivadas son opcionales mediante `--archives`; consulta [fechas, tamaños y comandos](docs/downloads.md#optional-archived-libraries).
+## Instalación
 
-Sin preguntas:
+Crea una carpeta nueva y vacía donde quieras guardar Emergency-AI. Guarda en ella el instalador correspondiente a tu computadora. En GitHub, haz clic derecho en el enlace de descarga y elige **Guardar enlace como**.
 
-**Windows (PowerShell):**
+| Computadora | Descarga | Ejecutar el instalador |
+|---|---|---|
+| **Windows** | [install.bat](https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.bat) | Haz doble clic en `install.bat`. |
+| **macOS** | [install.sh](https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh) | Abre Terminal en esa carpeta y ejecuta `sh install.sh`. |
+| **Linux** | [install.sh](https://raw.githubusercontent.com/skanga/Emergency-AI/main/install.sh) | Abre una terminal en esa carpeta y ejecuta `sh install.sh`. |
 
-```powershell
-.\run.bat --lang es prepare --model gemma4-e2b --zims recommended --os all --python
-```
+¿Necesitas ayuda para abrir una terminal o elegir las descargas? Sigue la guía de [primeros pasos](docs/getting-started.md). Los usuarios con experiencia pueden usar los [comandos de instalación en la terminal](docs/technical-reference.md#terminal-installation-and-platform-support).
 
-**Linux / macOS:**
+**Instalación en Windows paso a paso (2:19)**: descarga el instalador, elige el modelo ligero y las bibliotecas mínimas, y después busca en una guía y haz una pregunta. Se han recortado las esperas largas de las descargas.
 
-```sh
-./run.sh --lang es prepare --model gemma4-e2b --zims recommended --os all --python
-```
+https://github.com/user-attachments/assets/3c3d246f-f09e-45c0-a4ba-8772f8008c8d
 
-### 3. Úsalo (sin internet)
+Cuando el instalador pregunte por la configuración inicial, elige **Y** para añadir la IA y las bibliotecas ahora. Para empezar con una instalación pequeña, elige **Recommended choices**, el modelo ligero **LFM3 1.7B**, las bibliotecas **minimal** y **this computer**. Selecciona estas opciones explícitamente; pulsar Enter en cada pregunta no selecciona necesariamente las bibliotecas mínimas.
 
-| Sistema | Cómo abrir |
+Para empezar solo con las guías incluidas, omite la configuración inicial y abre la aplicación. En el menú del primer uso, elige **Use guides now and remember this choice**. Puedes añadir las descargas más adelante.
+
+Las descargas pueden tardar mucho. Mantén abierta la ventana del instalador hasta que termine. Si falla una descarga, consulta las [instrucciones de recuperación](docs/troubleshooting.md#installation-or-downloads-stopped).
+
+## Abre la aplicación y pruébala
+
+Después de instalar, abre el lanzador de la carpeta Emergency-AI. Usa el mismo lanzador las próximas veces; no necesitas volver a instalar.
+
+| Computadora | Abrir la aplicación |
 |---|---|
-| **Windows** | `.\run.bat --lang es` (o doble clic en `.\run.bat` y botón **ES**) |
-| **macOS** | `run.command` |
-| **Linux** | `./run.sh --lang es` |
+| **Windows** | Haz doble clic en `run.bat`. |
+| **macOS** | Haz doble clic en `run.command`. En el primer uso, haz clic derecho y elige **Abrir** si es necesario. |
+| **Linux** | Abre una terminal en la carpeta y ejecuta `./run.sh`. |
 
-El navegador abre <http://127.0.0.1:8090>. El acceso desde la red local está activado de forma predeterminada. La consola muestra la dirección de red y un código QR para teléfonos en la misma red, incluso sin internet. Usa `--local-only` para permitir el acceso solo desde esta computadora. Para dejar el español como predeterminado, crea `config/settings.local.json` con `{ "language": "es" }`.
+El navegador debería abrirse en <http://127.0.0.1:8090>. Mantén abierta la ventana de terminal de la aplicación mientras la uses.
 
-### 4. Llévalo en un pendrive
+1. Abre una guía desde la barra lateral o busca un tema como **agua**.
+2. Prueba a hacer una pregunta con **Ask the AI**. Si no hay un modelo, la aplicación muestra fragmentos de las fuentes.
+3. Abre un enlace a una fuente debajo de la respuesta para leer el material original.
 
-Copia **toda la carpeta** a un pendrive o disco externo formateado en **exFAT** (funciona en los tres sistemas y admite archivos de más de 4 GB).
+Antes de depender del kit sin conexión, [pruébalo sin internet](docs/getting-started.md#check-that-it-works-offline). Para detener la aplicación, vuelve a su ventana de terminal y pulsa **Ctrl+C**.
 
----
+## Guías y ayuda
 
-## Otras formas de uso
+Estas guías se incluyen en la carpeta del proyecto para que puedas conservarlas con el kit. Los videos anteriores están alojados en internet.
 
-**Windows (PowerShell):**
+| Quieres… | Consulta |
+|---|---|
+| Instalar por primera vez y elegir las opciones de configuración | [Primeros pasos](docs/getting-started.md) |
+| Usar las guías, las preguntas, los idiomas y los enlaces a las fuentes | [Uso de Emergency-AI](docs/using-emergency-ai.md) |
+| Conectar un teléfono | [Uso desde el teléfono](docs/using-emergency-ai.md#use-it-on-your-phone) |
+| Elegir modelos o descargar más bibliotecas | [Descargas y modelos](docs/downloads.md) |
+| Añadir documentos o trasladar el kit a otra computadora | [Guía de uso](docs/using-emergency-ai.md#add-your-own-documents) |
+| Solucionar una descarga fallida o una aplicación que no se abre | [Solución de problemas](docs/troubleshooting.md) |
+| Configurar motores, usar comandos de terminal o ejecutar pruebas | [Referencia técnica](docs/technical-reference.md) |
 
-```powershell
-.\run.bat --lang es chat                    # chat en la terminal
-.\run.bat --lang es ask "¿cómo preparo suero oral casero?"
-.\run.bat --lang es search quemadura
-.\run.bat status
-.\run.bat start --local-only                # desactivar el acceso desde la red local
-.\run.bat prepare --search survival         # buscar más bibliotecas Kiwix
-```
+## Limitaciones
 
-**Linux / macOS:**
+Emergency-AI es material educativo, no un sustituto de los servicios de emergencia ni de la atención médica profesional. Las respuestas de la IA pueden ser incorrectas, y una cita no demuestra que la fuente respalde la respuesta. Las guías incluidas tienen [problemas de contenido conocidos pendientes de revisión](TODO.md). Las bibliotecas descargadas son copias de un momento determinado y pueden contener información desactualizada.
 
-```sh
-./run.sh --lang es chat                    # chat en la terminal
-./run.sh --lang es ask "¿cómo preparo suero oral casero?"
-./run.sh --lang es search quemadura
-./run.sh status
-./run.sh start --local-only                # desactivar el acceso desde la red local
-./run.sh prepare --search survival         # buscar más bibliotecas Kiwix
-```
+El acceso desde la red local está activado de forma predeterminada. Los dispositivos conectados también pueden leer los documentos personales indexados. Consulta los [controles de acceso y uso compartido](docs/using-emergency-ai.md#use-it-on-your-phone).
 
-**Ollama:** si usas [Ollama](https://ollama.com), ejecuta `ollama pull qwen2.5:3b` — se detecta automáticamente. También funciona cualquier servidor local compatible con la API de OpenAI (LM Studio, llamafile, KoboldCpp, Jan): ajusta `llm_url`.
+## Contribuciones y licencias
 
-**Kiwix Desktop:** [Kiwix Desktop](https://kiwix.org) abre los archivos `.zim` de `zim/`. Para que la IA use su *Servidor local*, pon `{ "kiwix_url": "http://127.0.0.1:<puerto>" }` en `config/settings.local.json`. El paquete de Kiwix Desktop para Windows (~150 MB) supera el límite de 100 MB por archivo de GitHub: publícalo como **adjunto de una Release** en lugar de hacer commit.
+Las correcciones con fuentes, las guías nuevas y las traducciones son bienvenidas. Mantén una línea `> Source:` en las secciones en inglés que contengan orientación técnica o de salud, y usa la etiqueta equivalente en las traducciones. Mantén los mismos nombres de archivo para las guías en todos los idiomas. Consulta las [comprobaciones para desarrolladores](docs/technical-reference.md#tests).
 
-## Agrega tu propio conocimiento
+Código: [MIT](LICENSE). Guías incluidas: [CC BY-SA 4.0](LICENSE-CONTENT.md). El software, las bibliotecas y los modelos descargados tienen sus propias licencias; consulta las [opciones de modelos](docs/downloads.md#model-choices).
 
-Coloca archivos `.md` o `.txt` en `knowledge/extra/` (recetas familiares, mapas del barrio, contactos, manuales). Se indexan y la IA los cita.
-
-## Requisitos
-
-- **Mínimo (solo búsqueda):** cualquier PC con Python 3.8+.
-- **Con IA:** 4 GB de RAM (modelo ligero), 8 GB recomendados; CPU x86-64 con AVX2 o Apple Silicon/ARM64. No requiere tarjeta gráfica.
-- **Disco:** de 3 GB (kit mínimo) a 100+ GB (kit completo).
-
-## Pruebas
-
-```bash
-python -m unittest discover -s tests
-```
-
-## Licencias
-
-Código: [MIT](LICENSE). Guías en `knowledge/`: [CC BY-SA 4.0](LICENSE-CONTENT.md). Los modelos, Kiwix, llama.cpp y archivos ZIM descargados con el comando `prepare` tienen sus propias licencias.  Gemma 4 E2B / Qwen / Ministral: Apache 2.0. LFM3: LFM Open License v1.0. [Details](docs/downloads.md#model-choices).
+Basado en [IA da Sobrevivência](https://github.com/sdalberto/ia-da-sobrevivencia), de Silviano Dalberto Pessi (Ideias Livres Desenvolvimentos) y sus colaboradores. Se conservan los avisos originales de licencia y derechos de autor. Los códigos QR sin conexión que se muestran en la terminal utilizan el [codificador QR](app/vendor/README.md) de Project Nayuki, con licencia MIT.
