@@ -58,7 +58,7 @@ For a lightweight Apache-licensed alternative, choose `qwen35-2b`. `qwen3-4b` of
 
 Sampler presets accompany the verified filenames, so model-specific sampling is used during normal llama.cpp inference. Explicit backend/model settings take priority. Weights are pinned to artifact revisions and hashes; the separate llama.cpp runtime is still refreshed to the latest compatible release on preparation.
 
-See the [tier comparison](model-tier-evaluation-2026-11-13.md) for the tested candidates, quantizations, local-model observations, and remaining source-fidelity errors. A larger model or a different quantizer does not guarantee a better answer. The bundled source content still needs the review recorded in [content review backlog](../TODO.md).
+A larger model or a different quantizer does not guarantee a better answer. The bundled source content still needs the review recorded in [content review backlog](../TODO.md).
 
 ## Optional archived libraries
 

@@ -135,7 +135,7 @@ For an existing kit, rerun preparation to add the accelerated engine. If setup c
 
 **Optional NVIDIA CUDA:** interactive setup offers CUDA when `nvidia-smi` detects an NVIDIA GPU. For an existing kit with saved choices, run `.\run.bat prepare --resume --cuda --yes` (Windows) or `./run.sh prepare --resume --cuda --yes` (Linux). For a new kit, add `--cuda` to `prepare`; it also works when preparing for a different computer with `--os`. CUDA adds roughly 0.6–0.8 GB of downloads per selected Windows/Linux platform, plus extraction space. The engine and its matching runtime libraries are installed together in `<platform>-cuda/`; the full CUDA development toolkit is unnecessary. Preparation picks the newest CUDA version with a matching library archive in the selected llama.cpp release (currently CUDA 13 where available). Older GPUs/drivers may be incompatible, in which case startup falls back to Vulkan/CPU. NVIDIA detection only controls the offer; actual CUDA compatibility is checked at launch.
 
-The CUDA download choice is saved for `--resume`. Unattended new setup does not add CUDA unless `--cuda` is specified. `--no-cuda` skips future CUDA downloads without deleting an installed engine; set `llm_acceleration` to `vulkan` or `cpu` to avoid using it. [Local CUDA/Vulkan comparison and reproduction steps](acceleration-check-2026-11-14.md).
+The CUDA download choice is saved for `--resume`. Unattended new setup does not add CUDA unless `--cuda` is specified. `--no-cuda` skips future CUDA downloads without deleting an installed engine; set `llm_acceleration` to `vulkan` or `cpu` to avoid using it.
 
 
 
@@ -204,7 +204,7 @@ node --check web/app.js
 
 GitHub Actions runs the Python tests on Windows, Linux and macOS with Python 3.11 and 3.14. The tests use temporary artifacts and mock services; they do not download full models or ZIM libraries.
 
-Real-model checks run separately: see the [manual harness](../tests/manual/README.md), the [November 2026 CPU evaluation](model-evaluation-2026-11-13.md), the [retrieval follow-up](retrieval-evaluation-2026-11-13.md), and the [tier comparison](model-tier-evaluation-2026-11-13.md).
+Real-model checks run separately: see the [manual harness](../tests/manual/README.md).
 
 ## Glossary
 
