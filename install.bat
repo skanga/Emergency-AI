@@ -55,6 +55,17 @@ function Fetch-Archive($Uri, $OutFile, [bool]$Resume = $false) {
     }
     throw "Download failed after three attempts. Download files retained for retry"
 }
+function Get-InstallPath($Path) {
+    $full = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path)
+    if (Test-Path -LiteralPath $full) {
+        # Get-Item expands Windows 8.3 aliases; Resolve-Path can retain them.
+        return (Get-Item -LiteralPath $full -Force).FullName
+    }
+    # A new destination may still have short aliases in its existing ancestors.
+    $directory = Split-Path -Parent $full
+    if (-not $directory -or $directory -eq $full) { return $full }
+    return Join-Path (Get-InstallPath $directory) (Split-Path -Leaf $full)
+}
 function Assert-InstallDestination($Path) {
     if (-not (Test-Path -LiteralPath $Path)) { return }
     $item = Get-Item -LiteralPath $Path -Force
@@ -71,7 +82,7 @@ function Assert-InstallDestination($Path) {
 }
 try {
     if (-not $Destination) {
-        $current = (Get-Location).Path
+        $current = Get-InstallPath (Get-Location).Path
         # A retained cache does not make a retry choose a nested destination.
         $cache = Join-Path $current '.downloads'
         $empty = $true
@@ -79,7 +90,7 @@ try {
         $Destination = if ($empty -or (Split-Path -Leaf $current) -eq 'Emergency-AI' -or
             $current -eq [IO.Path]::GetPathRoot($current)) { '.' } else { 'Emergency-AI' }
     }
-    $target = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Destination)
+    $target = Get-InstallPath $Destination
     $parent = Split-Path -Parent $target
     if (-not $parent) { $parent = $target }
     if (-not (Test-Path -LiteralPath $parent -PathType Container)) { throw 'Parent folder must exist.' }

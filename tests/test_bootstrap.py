@@ -24,7 +24,7 @@ class BootstrapTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="Emergency bootstrap ")
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name)
+        self.root = Path(self.tmp.name).resolve()
         self.env = dict(os.environ, PYTHONHOME=sys.base_prefix)
         files = {"emergency.py": b"# fixture\n",
                  "run.bat": b'@echo off\r\necho %* > "%~dp0setup-args.txt"\r\nif "%~1"=="" type nul > "%~dp0setup-args.txt"\r\nexit /b 0\r\n',
@@ -257,6 +257,63 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('Could not extract source archive', result.stdout + result.stderr)
         self.assert_not_published()
+
+    def short_path(self, path):
+        import ctypes
+        from ctypes import wintypes
+
+        get_short_path = ctypes.WinDLL('kernel32', use_last_error=True).GetShortPathNameW
+        get_short_path.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+        get_short_path.restype = wintypes.DWORD
+        buffer = ctypes.create_unicode_buffer(32768)
+        length = get_short_path(str(path), buffer, len(buffer))
+        if not length:
+            raise ctypes.WinError(ctypes.get_last_error())
+        self.assertLess(length, len(buffer))
+        if buffer.value.casefold() == str(path).casefold():
+            self.skipTest('Filesystem does not provide a distinct Windows short path')
+        return Path(buffer.value)
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows short paths')
+    def test_short_path_installation(self):
+        short_root = self.short_path(self.root)
+        for existing in (False, True):
+            with self.subTest(existing=existing):
+                name = 'existing destination' if existing else 'new destination'
+                target = self.root / name
+                if existing:
+                    target.mkdir()
+                    destination = self.short_path(target)
+                else:
+                    destination = short_root / name
+                result = self.run_installer(destination=str(destination))
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertTrue((target / 'emergency.py').is_file())
+                self.assertTrue((target / 'install.log').is_file())
+                self.assertFalse((target / '.downloads').exists())
+                self.assertFalse(list(target.glob('.emergency-install-*')))
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows short paths')
+    def test_short_path_retry_reuses_verified_download(self):
+        destination = self.short_path(self.root) / 'installed kit'
+        self.env['BOOTSTRAP_RUNTIME_FAIL'] = '1'
+        result = self.run_installer(destination=str(destination))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Simulated runtime failure', result.stdout + result.stderr)
+        self.assert_not_published()
+        cached = list(self.download_cache().glob('cpython*.part'))
+        self.assertEqual(len(cached), 1)
+        self.assertEqual(cached[0].read_bytes(), self.runtime.read_bytes())
+        self.env['BOOTSTRAP_RUNTIME_FAIL'] = '0'
+        self.env['BOOTSTRAP_NO_PYTHON'] = '1'
+        result = self.run_installer(destination=str(destination))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('Reusing verified', result.stdout)
+        target = self.root / 'installed kit'
+        self.assertTrue((target / 'emergency.py').is_file())
+        self.assertTrue((target / 'install.log').is_file())
+        self.assertFalse(self.download_cache().exists())
+        self.assertFalse(list(target.glob('.emergency-install-*')))
 
     def test_existing_destination_is_never_overwritten(self):
         target = self.root / "installed kit"
