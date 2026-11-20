@@ -44,6 +44,25 @@ https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 
 O instalador inclui o Python, o software que executa o aplicativo. Você não precisa instalar Python ou Git separadamente.
 
+### Espaço em disco aproximado
+
+Estas são sugestões de capacidade de armazenamento, não tamanhos de instalação garantidos:
+
+| Capacidade | Uso sugerido |
+|---|---|
+| **16 GB** | Bibliotecas `minimal` e o modelo leve LFM3, para uma plataforma sem os pacotes CUDA opcionais. |
+| **32 GB** | Bibliotecas `recommended` e o modelo equilibrado, para uma plataforma. |
+| **64 GB** | Bibliotecas `recommended` e o modelo equilibrado, com os componentes de execução para todas as plataformas compatíveis e suporte opcional a GPU. |
+| **256 GB ou mais** | Bibliotecas `full`, arquivos históricos opcionais do wikiHow/WikEM, modelos adicionais e componentes de execução para várias plataformas. Confira o espaço disponível antes de baixar tudo. |
+
+As **sugestões de 16–64 GB excluem a Wikipédia completa e os arquivos históricos opcionais**. Os requisitos reais variam conforme os downloads; reserve espaço para a extração e as atualizações.
+
+- Os modelos e os arquivos de conhecimento são compartilhados entre plataformas, não duplicados para cada sistema operacional. Os componentes de execução específicos de cada plataforma ocupam espaço adicional.
+- CUDA significa os pacotes de execução CUDA do projeto, não o toolkit completo de desenvolvimento nem os instaladores de drivers da NVIDIA. O computador onde o kit será executado ainda precisa de drivers compatíveis.
+- Use **exFAT em vez de FAT32** para armazenamento entre plataformas: alguns arquivos ultrapassam o limite de 4 GB por arquivo do FAT32.
+- O maior modelo listado atualmente, **Qwen3.8 27B**, recomenda **32 GB de RAM do sistema**. A capacidade do disco, por si só, não garante que ele funcione bem.
+- Para carregar os modelos mais rápido, use uma unidade USB 3 rápida ou um SSD externo. Maior capacidade, por si só, não significa armazenamento mais rápido.
+
 ## Instalação
 
 Crie uma pasta nova e vazia onde deseja guardar o Emergency-AI. Salve nela o instalador correspondente ao seu computador. No GitHub, clique com o botão direito no link de download e escolha **Salvar link como**.

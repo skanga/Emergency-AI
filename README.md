@@ -44,6 +44,25 @@ https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 
 The installer includes Python, the software that runs the app. You do not need to install Python or Git separately.
 
+### Approximate disk space
+
+These are suggested drive capacities, not guaranteed installation sizes:
+
+| Capacity | Suggested use |
+|---|---|
+| **16 GB** | `minimal` libraries plus the lightweight LFM3 model, for one platform without optional CUDA packages. |
+| **32 GB** | `recommended` libraries plus the balanced model, for one platform. |
+| **64 GB** | `recommended` libraries plus the balanced model, with runtimes for all supported platforms and optional GPU support. |
+| **256 GB or more** | `full` libraries, optional wikiHow/WikEM archives, additional models, and multiple platform runtimes. Check available space before downloading everything. |
+
+The **16–64 GB suggestions exclude full Wikipedia and optional archives**. Actual requirements vary with downloads; leave room for extraction and updates.
+
+- Models and knowledge files are shared across platforms, not duplicated for each OS. Platform-specific runtimes add space.
+- CUDA means the project's CUDA runtime packages, not the full development toolkit or NVIDIA driver installers. Compatible drivers are still required on the host.
+- Use **exFAT rather than FAT32** for cross-platform storage: some files exceed FAT32's 4 GB file-size limit.
+- The largest currently listed model, **Qwen3.8 27B**, recommends **32 GB system RAM**. Disk capacity alone does not guarantee it will run well.
+- For faster model loading, use a fast USB 3 drive or external SSD. Larger capacity alone does not mean faster storage.
+
 ## Install
 
 Create a new, empty folder where you want to keep Emergency-AI. Save the installer for your computer in that folder. On GitHub, right-click the download link and choose **Save link as**.
