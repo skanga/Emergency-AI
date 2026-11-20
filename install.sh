@@ -31,21 +31,17 @@ check_destination() {
 }
 if [ "$#" -eq 0 ]; then
     destination=$PWD
+    cache="${destination%/}/.downloads"
     if [ "$(basename "$PWD")" != Emergency-AI ] && ! is_volume_root "$PWD" &&
         ! (check_destination) >/dev/null 2>&1; then
         destination=Emergency-AI
     fi
 fi
-if [ -d "$destination" ] && is_volume_root "$destination"; then
-    cache_name=$(basename "$destination")
-    if [ "$cache_name" = / ]; then cache_name=Emergency-AI; fi
-    cache="${destination%/}/.$cache_name-downloads"
-fi
+cache="${destination%/}/.downloads"
 check_destination
 parent=$(cd "$(dirname "$destination")" && pwd) || die "Parent folder must exist."
 destination="$parent/$(basename "$destination")"
 if [ "$destination" = // ]; then destination=/; fi
-if [ -d "$destination" ] && is_volume_root "$destination"; then parent=$destination; fi
 for tool in curl tar mktemp; do
     command -v "$tool" >/dev/null 2>&1 || die "Required tool missing: $tool"
 done
@@ -77,15 +73,13 @@ case "$(uname -s)-$arch" in
         expected=e956e60bc9465d577ef8062059aa05cd3a2665b4b8678a2ed24e432368330b8f ;;
     *) die "Supported systems: Linux (glibc) and macOS." ;;
 esac
-stage=$(mktemp -d "${parent%/}/.emergency-install-XXXXXXXX")
-cache_name=$(basename "$destination")
-if [ "$cache_name" = / ]; then cache_name=Emergency-AI; fi
-cache="${parent%/}/.$cache_name-downloads"
+cache="${destination%/}/.downloads"
 [ ! -L "$cache" ] || die "Download cache must not be a link."
-mkdir -p "$cache"
+mkdir -p "$destination" "$cache"
 log="$cache/install.log"
 echo "Installation log: $log"
 activated=no
+stage=$(mktemp -d "${destination%/}/.emergency-install-XXXXXXXX")
 mkdir "$stage/moved"
 cleanup() {
     if [ "$activated" = no ]; then
@@ -144,20 +138,29 @@ tar -xzf "$archive" -C "$runtime"
 printf '{"complete": true, "asset": "%s"}\n' "$asset" > "$runtime/installation.json"
 chmod +x "$stage/kit/run.sh" "$stage/kit/run.command"
 check_destination
-if [ -d "$destination" ]; then
-    for entry in "$stage/kit/"* "$stage/kit/".[!.]* "$stage/kit/"..?*; do
-        [ -e "$entry" ] || [ -L "$entry" ] || continue
-        name=${entry##*/}
-        case "$name" in
-            install.bat|install.sh) [ -f "$destination/$name" ] && continue ;;
-        esac
-        mv "$entry" "$destination/$name"
-        : > "$stage/moved/$name"
-    done
-else
-    mv "$stage/kit" "$destination"
-fi
+for entry in "$stage/kit/"* "$stage/kit/".[!.]* "$stage/kit/"..?*; do
+    [ -e "$entry" ] || [ -L "$entry" ] || continue
+    name=${entry##*/}
+    case "$name" in
+        install.bat|install.sh) [ -f "$destination/$name" ] && continue ;;
+    esac
+    # Do not merge source directories into the cache or other existing entries.
+    [ ! -e "$destination/$name" ] && [ ! -L "$destination/$name" ] || die "Destination entry already exists: $name"
+    mv "$entry" "$destination/$name"
+    : > "$stage/moved/$name"
+done
 activated=yes
+cleanup_downloads() {
+    saved_log="${destination%/}/install.log"
+    [ ! -e "$saved_log" ] && [ ! -L "$saved_log" ] || return 1
+    mv -- "$log" "$saved_log" || return 1
+    log=$saved_log
+    echo "Installation log: $log"
+    rm -rf -- "$cache"
+}
+if ! cleanup_downloads; then
+    echo "WARNING: Installation succeeded, but download cleanup failed. Log: $log. Remove $cache manually when no longer needed." >&2
+fi
 echo "Installed in: $destination"
 echo "Open run.command on macOS, or run ./run.sh inside that folder."
 echo "The launcher lets you download optional AI components or open the included guides."

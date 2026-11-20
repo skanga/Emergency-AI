@@ -45,7 +45,7 @@ class BootstrapTests(unittest.TestCase):
             if os.name == "nt":
                 archive.add(sys.executable, arcname="python/python.exe")
             else:
-                data = b'#!/bin/sh\nexit 0\n'
+                data = b'#!/bin/sh\n[ "$BOOTSTRAP_RUNTIME_FAIL" != 1 ]\n'
                 info = tarfile.TarInfo("python/bin/python3")
                 info.mode = 0o755
                 info.size = len(data)
@@ -66,7 +66,18 @@ class BootstrapTests(unittest.TestCase):
                 script = script.replace(
                     'foreach ($child in Get-ChildItem -LiteralPath $kit -Force)',
                     'foreach ($child in Get-ChildItem -LiteralPath $kit -Force | Sort-Object Name -Descending)')
+            script = script.replace(
+                "    & (Join-Path $runtime 'python/python.exe')",
+                "    if ($env:BOOTSTRAP_RUNTIME_FAIL -eq '1') { throw 'Simulated runtime failure' }\n"
+                "    & (Join-Path $runtime 'python/python.exe')")
             mock_download = '''
+if ($env:BOOTSTRAP_CLEANUP_FAIL -eq '1') {
+    function Remove-Item {
+        param($LiteralPath, [switch]$Recurse, [switch]$Force, $ErrorAction)
+        if ((Split-Path -Leaf $LiteralPath) -eq '.downloads') { throw 'Simulated cleanup failure' }
+        Microsoft.PowerShell.Management\\Remove-Item @PSBoundParameters
+    }
+}
 if ($env:BOOTSTRAP_NO_EXPAND_ARCHIVE -eq '1') {
     function Expand-Archive { throw 'Incompatible archive module' }
 }
@@ -99,6 +110,15 @@ function curl.exe {
                 script = script.replace(parameter, parameter + "\nfunction Read-Host { if ($args[0] -like 'Open Emergency*') { return $env:BOOTSTRAP_OPEN_REPLY }; return $env:BOOTSTRAP_REPLY }\n")
             command = ["cmd", "/d", "/c", name]
         else:
+            script = script.replace('set -eu', '''set -eu
+if [ "${BOOTSTRAP_CLEANUP_FAIL:-}" = 1 ]; then
+    rm() {
+        for arg do
+            case "$arg" in */.downloads) echo 'Simulated cleanup failure' >&2; return 1 ;; esac
+        done
+        command rm "$@"
+    }
+fi''', 1)
             if reply is not None:
                 script = script.replace('[ -t 0 ]', 'true')
             mock = self.root / "bin"
@@ -135,37 +155,20 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
                               capture_output=True, timeout=30)
 
     def download_cache(self):
-        if os.name == 'nt':
-            return self.root / 'installed kit' / '.downloads'
-        return self.root / '.installed kit-downloads'
-
-    def remove_published_files(self):
-        target = self.root / 'installed kit'
-        if os.name != 'nt':
-            shutil.rmtree(target)
-            return
-        for child in target.iterdir():
-            if child.name == '.downloads':
-                continue
-            if child.is_dir():
-                shutil.rmtree(child)
-            else:
-                child.unlink()
+        return self.root / 'installed kit' / '.downloads'
 
     def assert_not_published(self):
         target = self.root / 'installed kit'
-        if os.name == 'nt':
-            self.assertTrue(target.is_dir())
-            self.assertEqual(list(target.iterdir()), [target / '.downloads'])
-        else:
-            self.assertFalse(target.exists())
+        self.assertTrue(target.is_dir())
+        self.assertEqual(list(target.iterdir()), [target / '.downloads'])
 
-    @unittest.skipUnless(os.name == 'nt', 'Windows installer layout')
     def test_cache_and_staging_stay_inside_destination(self):
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         target = self.root / 'installed kit'
-        self.assertTrue((target / '.downloads/install.log').is_file())
+        self.assertTrue((target / 'install.log').is_file())
+        self.assertIn('attempt', (target / 'install.log').read_text().lower())
+        self.assertFalse((target / '.downloads').exists())
         self.assertFalse(list(self.root.glob('.*-downloads')))
         self.assertFalse(list(target.glob('.emergency-install-*')))
         requests = (self.root / 'requests.txt').read_text().splitlines()
@@ -173,12 +176,44 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         for request in requests:
             self.assertIn('-o ' + str(target) + os.sep, request)
 
-    @unittest.skipUnless(os.name == 'nt', 'Windows installer rollback')
+    def test_cache_cleanup_failure_does_not_fail_installation(self):
+        self.env['BOOTSTRAP_CLEANUP_FAIL'] = '1'
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('Simulated cleanup failure', result.stdout + result.stderr)
+        target = self.root / 'installed kit'
+        self.assertTrue((target / 'emergency.py').is_file())
+        self.assertTrue((target / 'install.log').is_file())
+        self.assertTrue(self.download_cache().is_dir())
+
+    def add_source_file(self, name, data=b'fixture'):
+        name = 'Emergency-AI-main/' + name
+        if os.name == 'nt':
+            with zipfile.ZipFile(self.root / 'source.zip', 'a') as archive:
+                archive.writestr(name, data)
+        else:
+            source = self.root / 'source.tar.gz'
+            original = source.read_bytes()
+            with tarfile.open(fileobj=io.BytesIO(original), mode='r:gz') as old, tarfile.open(source, 'w:gz') as archive:
+                for member in old.getmembers():
+                    archive.addfile(member, old.extractfile(member))
+                info = tarfile.TarInfo(name)
+                info.size = len(data)
+                archive.addfile(info, io.BytesIO(data))
+
+    def test_log_preservation_failure_retains_cache(self):
+        self.add_source_file('install.log/conflict.txt')
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('WARNING', result.stdout + result.stderr)
+        self.assertTrue((self.root / 'installed kit/emergency.py').is_file())
+        self.assertTrue((self.download_cache() / 'install.log').is_file())
+        self.assertEqual(len(list(self.download_cache().glob('cpython*.part'))), 1)
+
     def test_publication_failure_preserves_cache_and_rolls_back_files(self):
         # A source directory colliding with the cache fails during publication,
         # after ordinary source files have already been moved into the target.
-        with zipfile.ZipFile(self.root / 'source.zip', 'a') as archive:
-            archive.writestr('Emergency-AI-main/.downloads/conflict.txt', b'fixture')
+        self.add_source_file('.downloads/conflict.txt')
         result = self.run_installer(publication_failure=True)
         self.assertNotEqual(result.returncode, 0)
         self.assert_not_published()
@@ -187,7 +222,6 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.assertEqual(cached[0].read_bytes(), self.runtime.read_bytes())
         self.assertFalse(list(self.root.glob('.emergency-install-*')))
 
-    @unittest.skipUnless(os.name == 'nt', 'Windows installer retry selection')
     def test_default_retry_in_custom_folder_keeps_destination(self):
         target = self.root / 'custom folder'
         target.mkdir()
@@ -237,9 +271,12 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
     @unittest.skipUnless(os.name == "nt", "Windows installer hashing")
     def test_install_and_cache_reuse_without_get_filehash(self):
         self.env['BOOTSTRAP_NO_FILEHASH'] = '1'
+        self.env['BOOTSTRAP_RUNTIME_FAIL'] = '1'
         result = self.run_installer()
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.remove_published_files()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Simulated runtime failure', result.stdout + result.stderr)
+        self.assert_not_published()
+        self.env['BOOTSTRAP_RUNTIME_FAIL'] = '0'
         self.env['BOOTSTRAP_NO_PYTHON'] = '1'
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -288,11 +325,12 @@ cp "$BOOTSTRAP_FIXTURES/$source" "$out"
         self.assertIn('-C -', (self.root / 'requests.txt').read_text())
 
     def test_verified_python_cache_is_reused_after_retry(self):
+        self.env['BOOTSTRAP_RUNTIME_FAIL'] = '1'
         result = self.run_installer()
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        target = self.root / 'installed kit'
-        self.assertEqual(target.parent, self.root)
-        self.remove_published_files()
+        self.assertNotEqual(result.returncode, 0)
+        self.assert_not_published()
+        self.assertEqual(len(list(self.download_cache().glob('cpython*.part'))), 1)
+        self.env['BOOTSTRAP_RUNTIME_FAIL'] = '0'
         self.env['BOOTSTRAP_NO_PYTHON'] = '1'
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

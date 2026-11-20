@@ -52,6 +52,9 @@ class InstallerDestinationTests(unittest.TestCase):
                     self.assertEqual(self.select(platform, tmp), current)
                 with self.subTest(platform=platform, case="explicit"):
                     self.assertEqual(self.select(platform, tmp, "custom"), current / "custom")
+                (current / '.downloads').mkdir()
+                with self.subTest(platform=platform, case="retry with cache"):
+                    self.assertEqual(self.select(platform, tmp), current)
                 (current / "personal.txt").touch()
                 with self.subTest(platform=platform, case="populated"):
                     self.assertEqual(self.select(platform, tmp), current / "Emergency-AI")

@@ -166,6 +166,18 @@ try {
         Remove-Item -LiteralPath $stage -Recurse -Force
     }
 }
+if ($activated) {
+    try {
+        # Preserve diagnostics before removing downloads; never overwrite source files.
+        $savedLog = Join-Path $target 'install.log'
+        [IO.File]::Move($log, $savedLog)
+        $log = $savedLog
+        Write-Host "Installation log: $log"
+        Remove-Item -LiteralPath $cache -Recurse -Force
+    } catch {
+        Write-Warning "Installation succeeded, but download cleanup failed: $($_.Exception.Message). Log: $log. Remove $cache manually when no longer needed."
+    }
+}
 if (-not [Console]::IsInputRedirected) {
     $answer = Read-Host 'Run first-time setup now (run.bat prepare)? [Y/n]'
     if ([string]::IsNullOrEmpty($answer) -or $answer -match '^(?i:y|yes)$') {
