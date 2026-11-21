@@ -137,7 +137,19 @@ For an existing kit, rerun preparation to add the accelerated engine. If setup c
 
 The CUDA download choice is saved for `--resume`. Unattended new setup does not add CUDA unless `--cuda` is specified. `--no-cuda` skips future CUDA downloads without deleting an installed engine; set `llm_acceleration` to `vulkan` or `cpu` to avoid using it.
 
+### WSL CUDA library selection
 
+On Linux kernels identified as WSL, CUDA probing and model startup use the same library selection. The launcher checks `/usr/lib/wsl/lib` for a CUDA driver and PTX compiler pair. Otherwise it looks for a driver-store directory under `/usr/lib/wsl/drivers` whose `libcuda.so.1.1` matches `/usr/lib/wsl/lib/libcuda.so.1` by file identity and includes `libnvidia-ptxjitcompiler.so.1`. This supports hard links as well as symlinks.
+
+Some WSL versions use a small forwarding library instead. If no file identity matches, the launcher accepts exactly one complete driver-store pair. Multiple unmatched candidates are left unresolved; it never selects a version by directory-name ordering. Missing or inaccessible WSL files leave the existing environment and backend fallback usable.
+
+For CUDA children, the selected WSL directory precedes the engine directory and inherited `LD_LIBRARY_PATH` entries. Empty and duplicate entries are removed. The parent environment is unchanged, and WSL driver paths are not injected into Kiwix, Vulkan, CPU, Windows, or macOS processes. No driver-store name is hardcoded. `logs/gpu-probe.log` retains timestamped probe output, exit codes, and the WSL directory selection; `logs/llm.log` contains model startup output.
+
+### Kiwix startup readiness
+
+The launcher validates the Atom feed at `/catalog/v2/entries?count=1` before reusing an occupied Kiwix port or reporting a newly spawned server ready. A new process gets a 30-second readiness window with short HTTP timeouts. Failed children are reaped, and cancellation during the readiness wait cleans up launcher-owned processes.
+
+Binding starts at `127.0.0.1`. On WSL only, a child that exits with `ERROR: IP address is not available on this system: 127.0.0.1` is retried once with `--address ipv4`. Only output from the current attempt is examined; older appended log messages cannot trigger the retry. This fallback binds all IPv4 interfaces and is announced in the terminal. The client URL remains `http://127.0.0.1:8092` (or the configured port). The retry has its own readiness window. Other failures preserve loopback-only binding and are reported with the `logs/kiwix.log` location.
 
 ## Download integrity and disk checks
 

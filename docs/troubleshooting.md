@@ -34,9 +34,19 @@ If you wanted AI, check whether setup completed. Run `.\run.bat status` or `./ru
 
 If the engine exits while loading, check `logs/llm.log`. A model may need more memory than the computer can provide. Close other applications or choose a smaller installed model from the model menu. See [model choices](downloads.md#model-choices).
 
+## The AI uses CPU even though a GPU is installed
+
+The launcher tests each installed GPU engine before loading the model. It reports whether the probe crashed, timed out, or found no usable devices, then tries the next backend. Check `logs/gpu-probe.log` for the executable, exit code, and driver error output. Model-loading errors are in `logs/llm.log`. `AI ready using cuda` confirms CUDA model startup succeeded.
+
+On WSL, the launcher automatically prefers the Windows-provided NVIDIA driver libraries for CUDA. This avoids mixing the WSL driver with an Ubuntu-installed PTX compiler. It discovers the directory each time the kit starts; no machine-specific shell variable is normally needed. If several driver directories exist and none can be matched to the active driver, it preserves the existing library path rather than guessing. The probe log records when no WSL directory was selected. The launcher does not install or remove drivers.
+
 ## Libraries are missing from the menu
 
 Restart Emergency AI after downloading libraries. Check that the files are present in `zim/` and that setup installed the Kiwix server for this computer. Run the status command above for details. If you manage Kiwix separately, it must load the downloaded files too.
+
+Wait for `Kiwix ready` in the terminal. The launcher checks the catalog before reporting success and stops a server that fails to become ready within 30 seconds. Check `logs/kiwix.log` if startup fails. A port occupied by a different service is reported as a conflict.
+
+Some WSL systems have multiple IPv4 addresses on the loopback interface. Kiwix can then reject `127.0.0.1` as unavailable even though it exists. For that exact startup error, the launcher retries once with `--address ipv4` and prints a notice. This fallback listens on all IPv4 interfaces, so the Kiwix libraries may be reachable directly from your network. Other startup failures do not trigger this fallback. A separate Kiwix terminal is no longer needed for this case.
 
 If libraries appear but are excluded from questions, check the **Libraries** dropdown and the **use Kiwix libraries** checkbox. Sidebar search searches the included guides, not the Kiwix libraries.
 

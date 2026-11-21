@@ -2,21 +2,71 @@
 
 import glob
 import os
+import platform
 import re
 import shutil
+import signal
 import socket
 import subprocess
 import sys
 import time
+import xml.etree.ElementTree as ET
 
 from .config import LOG_DIR, MODELS_DIR, RUNTIME_DIR, ZIM_DIR, exe, is_windows, load_json, platform_key, CONFIG_DIR
-from .net import get_json
+from .net import get_json, get_text
+
+_WSL_LIB_DIR = "/usr/lib/wsl/lib"
+_WSL_DRIVERS_DIR = "/usr/lib/wsl/drivers"
+
+
+def _is_wsl():
+    return sys.platform == "linux" and any(word in platform.release().lower() for word in ("microsoft", "wsl"))
+
+
+def _wsl_driver_dir():
+    """Find the PTX compiler paired with WSL's active CUDA driver, not a Linux driver."""
+    if not _is_wsl():
+        return None
+    active = os.path.join(_WSL_LIB_DIR, "libcuda.so.1")
+    compiler = "libnvidia-ptxjitcompiler.so.1"
+    if not os.path.isfile(active):
+        return None
+    if os.path.isfile(os.path.join(_WSL_LIB_DIR, compiler)):
+        return _WSL_LIB_DIR
+    candidates, matches = [], []
+    try:
+        with os.scandir(_WSL_DRIVERS_DIR) as entries:
+            for entry in entries:
+                try:
+                    driver = os.path.join(entry.path, "libcuda.so.1.1")
+                    if not (os.path.isfile(driver) and os.path.isfile(os.path.join(entry.path, compiler))):
+                        continue
+                    candidates.append(entry.path)
+                    if os.path.samefile(active, driver):
+                        matches.append(entry.path)
+                except OSError:
+                    continue
+    except OSError:
+        return None
+    if matches:
+        return matches[0] if len(matches) == 1 else None
+    # Newer WSL uses a forwarding library rather than a hard link. Only select
+    # a driver-store pair when there is exactly one; never guess among versions.
+    return candidates[0] if len(candidates) == 1 else None
 
 
 def port_in_use(port, host="127.0.0.1"):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.settimeout(0.5)
         return s.connect_ex((host, port)) == 0
+
+
+def _kiwix_available(port, timeout=1.5):
+    try:
+        xml = get_text(f"http://127.0.0.1:{port}/catalog/v2/entries?count=1", timeout=timeout)
+        return ET.fromstring(xml).tag == "{http://www.w3.org/2005/Atom}feed"
+    except (OSError, ValueError, ET.ParseError):
+        return False
 
 
 def _find_in(base, names):
@@ -89,42 +139,77 @@ def _ensure_exec(path):
             pass
 
 
-def _env_for(binary):
+def _env_for(binary, backend=None):
     env = os.environ.copy()
     bindir = os.path.dirname(binary)
     if sys.platform == "darwin":
         env["DYLD_LIBRARY_PATH"] = bindir + os.pathsep + env.get("DYLD_LIBRARY_PATH", "")
     elif not is_windows():
-        env["LD_LIBRARY_PATH"] = bindir + os.pathsep + env.get("LD_LIBRARY_PATH", "")
+        driver = _wsl_driver_dir() if backend == "cuda" else None
+        paths = [driver, bindir] + env.get("LD_LIBRARY_PATH", "").split(os.pathsep)
+        env["LD_LIBRARY_PATH"] = os.pathsep.join(dict.fromkeys(p for p in paths if p))
     # Local services must not use a proxy.
     env["NO_PROXY"] = "127.0.0.1,localhost"
     return env
 
 
-def _spawn(cmd, logname):
+def _spawn(cmd, logname, backend=None):
     os.makedirs(LOG_DIR, exist_ok=True)
     with open(os.path.join(LOG_DIR, logname), "ab") as log:
-        kwargs = {"stdout": log, "stderr": subprocess.STDOUT, "stdin": subprocess.DEVNULL, "env": _env_for(cmd[0])}
+        kwargs = {"stdout": log, "stderr": subprocess.STDOUT, "stdin": subprocess.DEVNULL, "env": _env_for(cmd[0], backend)}
         if is_windows():
             kwargs["creationflags"] = getattr(subprocess, "CREATE_NO_WINDOW", 0)
         return subprocess.Popen(cmd, **kwargs)
 
 
 def gpu_devices(binary, backend):
-    """Probe the engine on this machine, including its driver dependencies."""
+    """Return (devices, failure reason), retaining driver errors for diagnosis."""
     _ensure_exec(binary)
+    env = _env_for(binary, backend)
+    devices, reason = [], ""
+    stdout, stderr, returncode = "", "", None
     try:
         result = subprocess.run([binary, "--list-devices"], capture_output=True,
                                 text=True, encoding="utf-8", errors="replace", timeout=15,
-                                env=_env_for(binary), stdin=subprocess.DEVNULL,
+                                env=env, stdin=subprocess.DEVNULL,
                                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if is_windows() else 0)
-        if result.returncode:
-            return []
-        prefix = {"vulkan": r"Vulkan\d+", "cuda": r"CUDA\d+", "metal": r"MTL\d+|Metal\d*"}[backend]
-        pattern = rf"^\s*({prefix}):\s*(.+)$"
-        return re.findall(pattern, result.stdout + "\n" + result.stderr, re.MULTILINE)
-    except (OSError, subprocess.TimeoutExpired):
-        return []
+        stdout, stderr, returncode = result.stdout, result.stderr, result.returncode
+        if returncode < 0:
+            try:
+                name = signal.Signals(-returncode).name
+            except ValueError:
+                name = str(-returncode)
+            reason = f"probe crashed ({name})"
+        elif returncode:
+            reason = f"probe exited with code {returncode}"
+        else:
+            prefix = {"vulkan": r"Vulkan\d+", "cuda": r"CUDA\d+", "metal": r"MTL\d+|Metal\d*"}[backend]
+            devices = re.findall(rf"^\s*({prefix}):\s*(.+)$", stdout + "\n" + stderr, re.MULTILINE)
+            if not devices:
+                reason = "no usable devices reported"
+    except subprocess.TimeoutExpired as e:
+        reason = "probe timed out after 15 seconds"
+        stdout, stderr = e.stdout or b"", e.stderr or b""
+    except OSError as e:
+        reason = f"could not run probe: {e}"
+    if isinstance(stdout, bytes):
+        stdout = stdout.decode("utf-8", errors="replace")
+    if isinstance(stderr, bytes):
+        stderr = stderr.decode("utf-8", errors="replace")
+    driver_note = ""
+    if backend == "cuda" and _is_wsl():
+        driver = next((p for p in env.get("LD_LIBRARY_PATH", "").split(os.pathsep)
+                       if p == _WSL_LIB_DIR or os.path.dirname(p) == _WSL_DRIVERS_DIR), None)
+        driver_note = "WSL driver directory: " + (driver or "not selected (missing, inaccessible or ambiguous)") + "\n"
+    try:
+        os.makedirs(LOG_DIR, exist_ok=True)
+        with open(os.path.join(LOG_DIR, "gpu-probe.log"), "a", encoding="utf-8") as log:
+            log.write(f"\n[{time.strftime('%Y-%m-%d %H:%M:%S')}] {backend}: {binary}\n"
+                      f"{driver_note}return code: {returncode}\nresult: {reason or 'devices available'}\n"
+                      f"stdout:\n{stdout}\nstderr:\n{stderr}\n")
+    except OSError:
+        pass  # A diagnostic log failure must not disable an otherwise usable engine.
+    return devices, reason
 
 
 class Launcher:
@@ -132,6 +217,7 @@ class Launcher:
         self.settings = settings
         self.say = say
         self.procs = []
+        self._stop_generation = 0
         self.llm_process = None
         self.llm_model = None
         self.llm_acceleration = None
@@ -195,13 +281,13 @@ class Launcher:
                 gpu = binary if backend == "metal" and platform_key().startswith("macos-") else None
                 if backend in ("vulkan", "cuda"):
                     gpu, _ = find_llama_server(backend)
-                devices = gpu_devices(gpu, backend) if gpu else []
+                devices, reason = gpu_devices(gpu, backend) if gpu else ([], "engine not installed")
                 if devices:
                     gpu_cmd = [gpu] + cmd[1:] + ["--device", ",".join(d[0] for d in devices),
                                                "--n-gpu-layers", "auto", "--fit", "on"]
                     self.say(f"  Starting AI with {backend}: " + "; ".join(d[1] for d in devices))
                     try:
-                        process = _spawn(gpu_cmd, "llm.log")
+                        process = _spawn(gpu_cmd, "llm.log", backend=backend)
                     except OSError as e:
                         self.say(f"  GPU startup failed: {e}")
                     else:
@@ -228,7 +314,8 @@ class Launcher:
                             return False
                     self.say(f"  {backend} failed to load the model; trying the next backend. See logs/llm.log.")
                 else:
-                    self.say(f"  No usable {backend} device/build; trying the next backend.")
+                    detail = " See logs/gpu-probe.log." if gpu else ""
+                    self.say(f"  {backend}: {reason}; trying the next backend.{detail}")
             cmd += ["--device", "none", "--n-gpu-layers", "0"]
         elif acceleration == "cpu":
             cmd += ["-ngl", "0"]
@@ -244,12 +331,16 @@ class Launcher:
             return False
 
     def start_kiwix(self):
+        generation = self._stop_generation
         if not self.settings.get("kiwix_enabled", True):
             return False
         port = int(self.settings.get("kiwix_port", 8092))
         if port_in_use(port):
-            self.say(f"  • Kiwix is already running on port {port}.")
-            return True
+            if _kiwix_available(port):
+                self.say(f"  • Kiwix is already running on port {port}.")
+                return True
+            self.say(f"  • Port {port} is occupied but does not serve a valid Kiwix catalog.")
+            return False
         zims = find_zims()
         if not zims:
             self.say("  • No .zim libraries in zim/ — the AI will use only the kit guides.")
@@ -260,14 +351,73 @@ class Launcher:
             self.say(f"    and set kiwix_url in config/settings.local.json (current: {self.settings.get('kiwix_url')}).")
             return False
         _ensure_exec(binary)
-        cmd = [binary, "--address", "127.0.0.1", "--port", str(port)] + zims
-        try:
-            self.procs.append(_spawn(cmd, "kiwix.log"))
-            self.say(f"  • Starting Kiwix with {len(zims)} library/libraries.")
-            return True
-        except OSError as e:
-            self.say(f"  • Failed to start kiwix-serve: {e} (see logs/kiwix.log)")
+        logpath = os.path.join(LOG_DIR, "kiwix.log")
+        address_error = "ERROR: IP address is not available on this system: 127.0.0.1"
+        for address in ("127.0.0.1", "ipv4"):
+            if generation != self._stop_generation:
+                return False
+            cmd = [binary, "--address", address, "--port", str(port)] + zims
+            try:
+                offset = os.path.getsize(logpath) if os.path.exists(logpath) else 0
+                process = _spawn(cmd, "kiwix.log")
+            except OSError as e:
+                self.say(f"  • Failed to start kiwix-serve: {e} (see logs/kiwix.log)")
+                return False
+            self.procs.append(process)
+            try:
+                self.say(f"  • Starting Kiwix with {len(zims)} library/libraries.")
+                if generation != self._stop_generation:
+                    ready, reason = False, "startup cancelled"
+                else:
+                    ready, reason = self._wait_for_kiwix(process, port)
+            except BaseException:
+                # Startup precedes the web server's cleanup block; also stop the AI.
+                self.stop()
+                raise
+            if process not in self.procs:
+                return False  # A concurrent stop cancels both the wait and any retry.
+            if ready and generation == self._stop_generation:
+                self.say("  • Kiwix ready.")
+                return True
+            exited = process.poll() is not None
+            try:
+                self._stop_process(process)
+            except (OSError, subprocess.TimeoutExpired) as e:
+                self.say(f"  • Could not stop kiwix-serve; retry cancelled: {e}")
+                return False
+            if process in self.procs:
+                self.procs.remove(process)
+            if generation != self._stop_generation:
+                return False
+            output = ""
+            try:
+                with open(logpath, "rb") as log:
+                    log.seek(offset)
+                    output = log.read(65536).decode("utf-8", errors="replace")
+            except OSError:
+                pass
+            if (address == "127.0.0.1" and _is_wsl() and exited
+                    and address_error in (line.strip() for line in output.splitlines())):
+                self.say("  • Kiwix rejected the WSL loopback address; retrying on all IPv4 interfaces. "
+                         "Kiwix may be reachable from your network.")
+                continue
+            self.say(f"  • Kiwix failed: {reason} (see logs/kiwix.log)")
             return False
+
+    def _wait_for_kiwix(self, process, port):
+        deadline = time.monotonic() + 30
+        while process in self.procs:
+            code = process.poll()
+            if code is not None:
+                return False, f"exited with code {code}"
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return False, "startup timed out after 30 seconds"
+            if _kiwix_available(port, timeout=min(1.5, remaining)):
+                if process in self.procs and process.poll() is None:
+                    return True, ""
+            time.sleep(min(0.2, max(0, deadline - time.monotonic())))
+        return False, "startup cancelled"
 
     @staticmethod
     def _stop_process(process):
@@ -290,6 +440,7 @@ class Launcher:
         self.llm_acceleration = None
 
     def stop(self):
+        self._stop_generation += 1
         self.llm_process = None
         for process in list(self.procs):
             try:
