@@ -5,7 +5,7 @@ import time
 
 from . import i18n
 from .kiwix import KiwixClient
-from .knowledge import KnowledgeBase, strip_accents, tokenize
+from .knowledge import KnowledgeBase, is_relevant, strip_accents, tokenize
 from .llm import LLMError, detect_llm
 
 
@@ -70,6 +70,8 @@ class Engine:
                 for r in self.kiwix.search(question, lang, limit=int(self.settings.get("kiwix_results", 3)),
                                            book_names=kiwix_books):
                     text = self.kiwix.article_text(r["link"])
+                    if not is_relevant(query, text):
+                        continue
                     sources.append({
                         "kind": "kiwix", "doc_title": r["book"], "section": r["title"],
                         "link": r["link"], "text": text, "book_name": r["book_name"],

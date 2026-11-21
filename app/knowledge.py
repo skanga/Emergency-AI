@@ -87,6 +87,41 @@ def tokenize(text):
     return out
 
 
+# Request framing is weak evidence only when other query terms are present.
+_WEAK_TERMS = {'write', 'number', 'numbers', 'please', 'give', 'show',
+               'escreva', 'escrever', 'escribe', 'escribir', 'numero', 'numeros'}
+
+
+def _relevance_words(text):
+    words = TOKEN_RE.findall(strip_accents(text.lower()))
+    return {w for w in words if w not in STOPWORDS and len(w) > 1}
+
+
+def _word_variants(word):
+    # Deliberately narrow: preserve singular/plural matches without conflating
+    # arbitrary six-character prefixes such as compute and computer.
+    return {word, word[:-1]} if word.endswith('s') and len(word) > 3 else {word}
+
+
+def is_relevant(query, text):
+    """Reject incidental-only overlap, not incomplete topic coverage.
+
+    One meaningful match suffices. Weak-only queries retain their literal
+    matches, and explicit multilingual synonyms remain valid evidence.
+    """
+    words = _relevance_words(query)
+    meaningful = {w for w in words if w not in _WEAK_TERMS and not any(c.isdigit() for c in w)}
+    terms = meaningful or words
+    passage = set().union(*(_word_variants(w) for w in _relevance_words(text)))
+    for term in terms:
+        if _word_variants(term) & passage:
+            return True
+        for group in SYNONYMS:
+            if term in group and any(_word_variants(s) & passage for s in group):
+                return True
+    return False
+
+
 class Chunk:
     __slots__ = ("id", "lang", "doc_id", "doc_title", "section", "anchor", "text", "tokens", "tf", "length")
 
@@ -269,7 +304,7 @@ class KnowledgeBase:
                 # A section heading is a stronger topic signal than a body mention.
                 if tok in section_tokens:
                     score += 2 * w * idf
-            if score > 0:
+            if score > 0 and is_relevant(query, ch.text + '\n' + ch.section + '\n' + ch.doc_title):
                 # Boost passages containing multiple distinct query terms.
                 coverage = sum(1 for t in q_counts if t in ch.tf) / len(q_counts)
                 scored.append((score * (0.6 + 0.4 * coverage), ch))
