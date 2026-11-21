@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import signal
 import subprocess
@@ -72,7 +73,7 @@ class GpuProbeTests(unittest.TestCase):
         with patch.object(launcher.subprocess, 'Popen') as popen:
             launcher._spawn(['/kit/llama-server', '-m', 'model.gguf'], 'llm.log', backend='cuda')
         self.assertEqual(self.run.call_args.kwargs['env'], popen.call_args.kwargs['env'])
-        self.assertTrue(popen.call_args.kwargs['env']['LD_LIBRARY_PATH'].startswith('/usr/lib/wsl/drivers/active:/kit'))
+        self.assertTrue(popen.call_args.kwargs['env']['LD_LIBRARY_PATH'].startswith(os.pathsep.join(['/usr/lib/wsl/drivers/active', '/kit'])))
 
 
 class BackendSelectionTests(unittest.TestCase):

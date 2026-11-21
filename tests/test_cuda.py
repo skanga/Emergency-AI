@@ -50,7 +50,7 @@ class CudaTests(unittest.TestCase):
     def test_cuda_probe_reports_cuda_devices(self):
         with patch.object(launcher.subprocess, 'run', return_value=Mock(returncode=0,
                 stdout='Available devices:\n  CUDA0: NVIDIA GPU (8192 MiB, 7000 MiB free)\n', stderr='')):
-            self.assertEqual(launcher.gpu_devices('engine', 'cuda')[0][0], 'CUDA0')
+            self.assertEqual(launcher.gpu_devices('engine', 'cuda')[0][0][0], 'CUDA0')
 
     def test_cuda_failure_tries_vulkan_before_cpu(self):
         for success, expected in [('cuda', ['cuda']), ('vulkan', ['cuda', 'vulkan']),
@@ -63,8 +63,8 @@ class CudaTests(unittest.TestCase):
                 stack.enter_context(patch.object(launcher, 'find_llama_server',
                                                 side_effect=lambda backend=None: (backend or 'cpu', 'llama.cpp')))
                 stack.enter_context(patch.object(launcher, 'gpu_devices',
-                                                side_effect=lambda binary, backend: [(backend + '0', 'GPU')]))
-                spawn = stack.enter_context(patch.object(launcher, '_spawn', side_effect=lambda *a: Mock()))
+                                                side_effect=lambda binary, backend: ([(backend + '0', 'GPU')], '')))
+                spawn = stack.enter_context(patch.object(launcher, '_spawn', side_effect=lambda *a, **kw: Mock()))
                 engine = launcher.Launcher({}, say=lambda *_: None)
                 stack.enter_context(patch.object(engine, '_gpu_ready',
                                                 side_effect=lambda *a: engine.llm_acceleration == success))

@@ -44,9 +44,11 @@ class AccelerationTests(unittest.TestCase):
                       stderr='ggml_vulkan: Found 1 Vulkan devices\n')
         with patch.object(launcher.subprocess, 'run', return_value=result):
             self.assertEqual(launcher.gpu_devices('engine', 'vulkan'),
-                             [('Vulkan0', 'AMD Radeon (8192 MiB, 7000 MiB free)')])
+                             ([('Vulkan0', 'AMD Radeon (8192 MiB, 7000 MiB free)')], ''))
             result.returncode = 1
-            self.assertEqual(launcher.gpu_devices('engine', 'vulkan'), [])
+            devices, reason = launcher.gpu_devices('engine', 'vulkan')
+            self.assertEqual(devices, [])
+            self.assertTrue(reason)
 
     def setUp(self):
         self.stack = contextlib.ExitStack()
@@ -63,7 +65,7 @@ class AccelerationTests(unittest.TestCase):
 
     def test_auto_uses_vulkan_and_waits_for_health(self):
         engine = launcher.Launcher({}, say=lambda *_: None)
-        with patch.object(launcher, 'gpu_devices', return_value=[('Vulkan0', 'GPU')]), \
+        with patch.object(launcher, 'gpu_devices', return_value=([('Vulkan0', 'GPU')], '')), \
                 patch.object(launcher, 'get_json', return_value={'status': 'ok'}):
             self.assertTrue(engine.start_llm())
         command = self.spawn.call_args.args[0]
@@ -76,7 +78,7 @@ class AccelerationTests(unittest.TestCase):
         gpu, cpu = Mock(), Mock()
         gpu.poll.return_value = 1
         self.spawn.side_effect = [gpu, cpu]
-        with patch.object(launcher, 'gpu_devices', return_value=[('Vulkan0', 'GPU')]):
+        with patch.object(launcher, 'gpu_devices', return_value=([('Vulkan0', 'GPU')], '')):
             self.assertTrue(engine.start_llm())
         gpu.wait.assert_called_once()
         command = self.spawn.call_args.args[0]
@@ -94,14 +96,14 @@ class AccelerationTests(unittest.TestCase):
 
     def test_no_devices_uses_cpu(self):
         engine = launcher.Launcher({}, say=lambda *_: None)
-        with patch.object(launcher, 'gpu_devices', return_value=[]):
+        with patch.object(launcher, 'gpu_devices', return_value=([], 'no devices')):
             self.assertTrue(engine.start_llm())
         self.assertEqual(self.spawn.call_args.args[0][0], 'cpu')
 
     def test_macos_uses_metal(self):
         engine = launcher.Launcher({}, say=lambda *_: None)
         with patch.object(launcher, 'platform_key', return_value='macos-arm64'), \
-                patch.object(launcher, 'gpu_devices', return_value=[('Metal', 'Apple M1')]), \
+                patch.object(launcher, 'gpu_devices', return_value=([('Metal', 'Apple M1')], '')), \
                 patch.object(launcher, 'get_json', return_value={'status': 'ok'}):
             self.assertTrue(engine.start_llm())
         self.assertEqual(engine.llm_acceleration, 'metal')
@@ -110,17 +112,19 @@ class AccelerationTests(unittest.TestCase):
     def test_probe_failure_is_cpu_fallback(self):
         for failure in (OSError('missing driver'), launcher.subprocess.TimeoutExpired('engine', 15)):
             with self.subTest(failure=failure), patch.object(launcher.subprocess, 'run', side_effect=failure):
-                self.assertEqual(launcher.gpu_devices('engine', 'vulkan'), [])
+                devices, reason = launcher.gpu_devices('engine', 'vulkan')
+                self.assertEqual(devices, [])
+                self.assertTrue(reason)
 
     def test_probe_recognizes_current_metal_device_ids(self):
         result = Mock(returncode=0, stdout='Available devices:\n  MTL0: Apple M4 (32768 MiB, 24000 MiB free)\n', stderr='')
         with patch.object(launcher.subprocess, 'run', return_value=result):
-            self.assertEqual(launcher.gpu_devices('engine', 'metal')[0][0], 'MTL0')
+            self.assertEqual(launcher.gpu_devices('engine', 'metal')[0][0][0], 'MTL0')
 
     def test_gpu_spawn_failure_falls_back(self):
         self.spawn.side_effect = [OSError('missing library'), Mock()]
         engine = launcher.Launcher({}, say=lambda *_: None)
-        with patch.object(launcher, 'gpu_devices', return_value=[('Vulkan0', 'GPU')]):
+        with patch.object(launcher, 'gpu_devices', return_value=([('Vulkan0', 'GPU')], '')):
             self.assertTrue(engine.start_llm())
         self.assertEqual(engine.llm_acceleration, 'cpu')
         self.assertEqual(len(engine.procs), 1)
@@ -140,7 +144,7 @@ class AccelerationTests(unittest.TestCase):
         def cancelled(*args):
             engine.stop_llm()
             return False
-        with patch.object(launcher, 'gpu_devices', return_value=[('Vulkan0', 'GPU')]), \
+        with patch.object(launcher, 'gpu_devices', return_value=([('Vulkan0', 'GPU')], '')), \
                 patch.object(engine, '_gpu_ready', side_effect=cancelled):
             self.assertFalse(engine.start_llm())
         self.assertEqual(self.spawn.call_count, 1)
@@ -153,7 +157,7 @@ class AccelerationTests(unittest.TestCase):
 
     def test_interrupted_gpu_loading_stops_owned_process(self):
         engine = launcher.Launcher({}, say=lambda *_: None)
-        with patch.object(launcher, 'gpu_devices', return_value=[('Vulkan0', 'GPU')]), \
+        with patch.object(launcher, 'gpu_devices', return_value=([('Vulkan0', 'GPU')], '')), \
                 patch.object(engine, '_gpu_ready', side_effect=KeyboardInterrupt):
             with self.assertRaises(KeyboardInterrupt):
                 engine.start_llm()
