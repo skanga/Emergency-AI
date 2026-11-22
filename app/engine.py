@@ -107,7 +107,8 @@ class Engine:
             lines.append(f"[{s['n']}] {label}: {s['doc_title']} — {s['section']}\n{s['text']}")
         ctx = "\n\n".join(lines) if lines else "(—)"
         user = f"{i18n.SOURCES_HEADER[lang]}:\n{ctx}\n\n{i18n.QUESTION_HEADER[lang]}: {question}"
-        messages = [{"role": "system", "content": i18n.SYSTEM_PROMPT[lang]}]
+        prompt = i18n.SYSTEM_PROMPT[lang] if lines else i18n.general_knowledge_prompt(lang)
+        messages = [{"role": "system", "content": prompt}]
         for h in (history or [])[-4:]:
             if h.get("role") in ("user", "assistant") and h.get("content"):
                 messages.append({"role": h["role"], "content": h["content"]})
@@ -151,22 +152,25 @@ class Engine:
         lang = lang if lang in i18n.SYSTEM_PROMPT else "en"
         t0 = time.time()
         sources = self.retrieve(question, lang, history, use_kiwix, kiwix_books)
-        llm = self.llm() if use_llm and any(not s.get("context_omitted") for s in sources) else None
+        llm = self.llm() if use_llm else None
         model_unavailable = llm is None
+        reason = 'ai_disabled' if not use_llm else ('model_unavailable' if llm is None else None)
+        grounded = any(not s.get('context_omitted') for s in sources)
         mode = "llm" if llm else "search"
         generation = {}
         if llm:
             try:
                 messages, fitted, generation = self.fit_messages(llm, question, lang, sources, history)
-                if any(not s.get('context_omitted') for s in fitted):
-                    sources = fitted
-                else:
-                    llm, mode = None, 'search'
+                sources = fitted
+                grounded = any(not s.get('context_omitted') for s in sources)
             except (LLMError, OSError) as e:
                 yield 'token', i18n.LLM_ERROR[lang].format(err=str(e)[:120])
                 llm, mode = None, 'search'
+                reason = 'generation_failed'
         yield "sources", sources
         if llm:
+            if not grounded:
+                yield 'token', i18n.UNGROUNDED_NOTE[lang]
             got = False
             try:
                 for tok in llm.stream_chat(messages, generation):
@@ -178,18 +182,21 @@ class Engine:
                 yield "token", i18n.LLM_ERROR[lang].format(err=str(e)[:120])
                 yield "token", self.extractive_answer(lang, sources, model_unavailable=False)
                 mode = "search"
+                reason = 'generation_failed'
             if generation.get('incomplete'):
                 key = 'limit' if generation.get('finish_reason') == 'length' else 'interrupted'
                 yield 'token', i18n.INCOMPLETE_ANSWER[lang][key] + '\n\n'
             if not got and mode == "llm":
                 yield "token", self.extractive_answer(lang, sources, model_unavailable=False)
                 mode = "search"
+                reason = 'generation_failed'
         else:
             yield "token", self.extractive_answer(lang, sources, model_unavailable=model_unavailable)
         if self.is_medical(question):
             yield "token", i18n.MEDICAL_FOOTER[lang]
         yield "done", {"mode": mode, "seconds": round(time.time() - t0, 1),
-                       "llm": llm.describe() if llm else None, "generation": generation}
+                       "llm": llm.describe() if llm else None, "generation": generation,
+                       "grounded": grounded, "reason": reason}
 
     def answer_text(self, question, lang="en", **kw):
         text, sources, info = [], [], {}

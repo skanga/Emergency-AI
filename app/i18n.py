@@ -45,6 +45,27 @@ SYSTEM_PROMPT = {
     ),
 }
 
+UNGROUNDED_NOTE = {
+    'en': '**Not backed by local sources.** This answer uses the model’s general knowledge and may be inaccurate.\n\n',
+    'pt': '**Sem apoio de fontes locais.** Esta resposta usa o conhecimento geral do modelo e pode conter erros.\n\n',
+    'es': '**Sin respaldo de fuentes locales.** Esta respuesta usa el conocimiento general del modelo y puede contener errores.\n\n',
+}
+
+
+def general_knowledge_prompt(lang):
+    language = {'en': 'English', 'pt': 'Portuguese', 'es': 'Spanish'}[lang]
+    return (
+        f'You are Emergency AI, an offline assistant. Answer in {language}. '
+        'No usable local sources are supplied. You may answer from general knowledge. '
+        'Be concise, practical, and honest about uncertainty. Do not invent citations or imply local verification. '
+        'Previous conversation is context, not verified evidence. '
+        'For medical or safety-critical questions, give only conservative general safety guidance; '
+        'do not invent drug doses or hazardous procedural details. Include warning signs and when to seek '
+        'professional help for medical questions, and explain that you do not replace a doctor. '
+        'Use Markdown code fences for code and plain Unicode rather than LaTeX for math.'
+    )
+
+
 SOURCES_HEADER = {"pt": "FONTES", "en": "SOURCES", "es": "FUENTES"}
 QUESTION_HEADER = {"pt": "PERGUNTA", "en": "QUESTION", "es": "PREGUNTA"}
 
