@@ -42,6 +42,28 @@ Sizes change with new editions. Add the model download, software, and room for e
 
 Choose `none` to skip extra libraries. Archived libraries are separate and never included automatically, even in `full`.
 
+### Select library languages
+
+Interactive setup asks for comma-separated library languages (`en`, `pt`, `es`, or `all`), suggesting the interface language. Profile sizes above are **all-language estimates**; confirmation lists the selected collections and filtered size.
+
+For Portuguese libraries plus English reference collections:
+
+```powershell
+.\run.bat prepare --zims full --zim-languages pt --include-english-references
+```
+
+For Portuguese and Spanish only:
+
+```powershell
+.\run.bat prepare --zims full --zim-languages pt,es --no-include-english-references
+```
+
+On Linux/macOS replace `.\run.bat` with `./run.sh`. Existing unattended commands without language flags still select all languages. `--resume` restores language choices; explicit flags override them.
+
+English references include medical, disaster, water, food, knots, repair and energy collections within the chosen profile—not full English Wikipedia or Wikivoyage. The minimal profile is entirely English: selecting only Portuguese or Spanish without English references produces no libraries, so choose another profile or skip libraries.
+
+Language filtering does not change model weights or interface language. Explicit `--archives` selections are independent of this filter. Narrowing languages **does not delete existing libraries**; move unwanted `.zim` files out of `zim/` yourself if necessary.
+
 ## Model choices
 
 These are the recommended starting points from our CPU source-following tests, not a claim of universal best accuracy. All choices run text-only with thinking off by default. Downloads are optional and model weights never go into Git.

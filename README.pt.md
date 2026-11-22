@@ -40,7 +40,7 @@ https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 - **Computador:** Windows 10/11, macOS ou Linux em um sistema x86-64 ou ARM64 compatível. Veja os [detalhes de compatibilidade](docs/technical-reference.md#terminal-installation-and-platform-support).
 - **Internet:** necessária para a instalação e os downloads opcionais. Prepare o kit antes de uma interrupção do serviço.
 - **Memória:** recomendam-se 8 GB de RAM do sistema para o modelo leve de IA. Não é necessária uma placa de vídeo dedicada. A pesquisa nos guias não precisa do modelo de IA.
-- **Armazenamento:** as bibliotecas extras começam em cerca de 3 GiB; o modelo leve acrescenta cerca de 1,1 GB. Reserve espaço adicional para o software, a extração e as atualizações. Veja as [opções de download](docs/downloads.md).
+- **Armazenamento:** as bibliotecas extras começam em cerca de 3 GiB; o modelo leve acrescenta cerca de 1,1 GB. Reserve espaço adicional para o software, a extração e as atualizações. Veja as [opções de download](docs/downloads.md). Use `prepare --zims full --zim-languages pt` para baixar apenas bibliotecas em português; adicione `--include-english-references` para incluir referências em inglês. Os arquivos existentes são mantidos.
 
 O instalador inclui o Python, o software que executa o aplicativo. Você não precisa instalar Python ou Git separadamente.
 

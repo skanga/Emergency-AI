@@ -56,7 +56,7 @@ Enter the number shown beside the choice. Do not assume every default matches th
 
 Choose **None** for the model if you only want to read and search documents. You can also choose **None** for libraries. The included guides remain available in both cases.
 
-Model RAM figures are recommendations, not guaranteed minimums. Larger models and library collections need more memory or storage. See [Downloads and models](downloads.md) before choosing them.
+Model RAM figures are recommendations, not guaranteed minimums. Larger models and library collections need more memory or storage. See [Downloads and models](downloads.md) before choosing them. Setup also asks for library languages (EN/PT/ES or all) and optionally English reference collections. Profile estimates include all languages; confirmation shows the filtered size. The minimal profile is English-only.
 
 Wait for setup to finish. Download times depend on your connection and selections. If setup reports a failure, follow [download recovery](troubleshooting.md#installation-or-downloads-stopped).
 

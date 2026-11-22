@@ -298,7 +298,8 @@ def cmd_prepare(args, settings):
     try:
         return prepare.run(lang=args.lang, model=args.model, zims=args.zims, oses=args.os, python=args.python,
                            yes=args.yes, search=args.search, skip_tools=args.skip_tools, archives=args.archives,
-                           resume=args.resume, cuda=args.cuda)
+                           resume=args.resume, cuda=args.cuda, zim_languages=args.zim_languages,
+                           include_english_references=args.include_english_references)
     except (ValueError, OSError) as e:
         print(f"Preparation failed: {e}", file=sys.stderr)
         return 1
@@ -330,6 +331,11 @@ def main():
     pr = sub.add_parser("prepare", help="download model, engines and libraries (requires internet)")
     pr.add_argument("--model", help="model ID in config/models.json or 'none'")
     pr.add_argument("--zims", help="minimal | recommended | full | none")
+    pr.add_argument("--zim-languages", help="Comma-separated library languages (en,pt,es), or all")
+    references = pr.add_mutually_exclusive_group()
+    references.add_argument("--include-english-references", dest="include_english_references", action="store_true", default=None,
+                            help="Also include English reference collections in the chosen profile")
+    references.add_argument("--no-include-english-references", dest="include_english_references", action="store_false")
     pr.add_argument("--archives", help="optional OLD snapshots: none (default) | all | comma-separated IDs: "
                     "wikem, wikihow-en, wikihow-es, wikihow-pt; see README for dates and sizes")
     pr.add_argument("--os", help="this | all | comma-separated list (e.g. windows-x86_64,macos-arm64)")

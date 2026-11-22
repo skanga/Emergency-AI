@@ -40,7 +40,7 @@ https://github.com/user-attachments/assets/653a4d45-961d-4599-a794-f7ebf48aed10
 - **Computer:** Windows 10/11, macOS, or Linux on a supported x86-64 or ARM64 system. See [platform details](docs/technical-reference.md#terminal-installation-and-platform-support).
 - **Internet:** needed for installation and optional downloads. Prepare before an outage.
 - **Memory:** the lightweight AI model recommends 8 GB system RAM. A dedicated graphics card is not required. Guide search does not need the AI model.
-- **Storage:** extra libraries start at about 3 GiB; the lightweight model adds about 1.1 GB. Allow additional space for software, extraction, and updates. See [download choices](docs/downloads.md).
+- **Storage:** extra libraries start at about 3 GiB; the lightweight model adds about 1.1 GB. Allow additional space for software, extraction, and updates. See [download choices](docs/downloads.md). Select library languages to reduce downloads—for example, `prepare --zims full --zim-languages pt,es` downloads only Portuguese/Spanish profile entries. English references can be added separately; existing files are kept.
 
 The installer includes Python, the software that runs the app. You do not need to install Python or Git separately.
 

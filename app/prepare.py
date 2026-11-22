@@ -888,8 +888,34 @@ def choose_cuda(lang):
     return _yes(prompts.get(lang, prompts["en"]), T.get(lang, T["en"]))
 
 
+def select_zims(config, profile, languages, include_english_references):
+    codes = {code.strip().lower() for code in languages.split(",")}
+    supported = {entry["lang"] for entry in config["zims"]}
+    if codes != {"all"} and (not codes or not codes <= supported):
+        raise ValueError("Unknown ZIM languages: " + languages)
+    if profile != "none" and profile not in config["profiles"]:
+        raise ValueError("Unknown ZIM profile: " + profile)
+    selected = {}
+    for entry in config["zims"]:
+        if profile in entry.get("profiles", []) and (
+                codes == {"all"} or entry["lang"] in codes or
+                (include_english_references and entry.get("english_reference", False))):
+            selected[entry["name"]] = entry
+    return list(selected.values())
+
+
+LANGUAGE_PROMPTS = {
+    "en": ("Library languages (en,pt,es or all)", "Include English reference collections (+{gb:.2f} GiB)? [Y/n] ",
+           "No libraries match. Enter different languages or 'none' to skip.", "All-language estimates"),
+    "pt": ("Idiomas das bibliotecas (en,pt,es ou all)", "Incluir referências em inglês (+{gb:.2f} GiB)? [S/n] ",
+           "Nenhuma biblioteca corresponde. Escolha outros idiomas ou 'none' para pular.", "Estimativas para todos os idiomas"),
+    "es": ("Idiomas de bibliotecas (en,pt,es o all)", "¿Incluir referencias en inglés (+{gb:.2f} GiB)? [S/n] ",
+           "No hay bibliotecas coincidentes. Elija otros idiomas o 'none' para omitir.", "Estimaciones para todos los idiomas"),
+}
+
+
 def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, search=None, skip_tools=False,
-        archives=None, resume=False, cuda=None):
+        archives=None, resume=False, cuda=None, zim_languages=None, include_english_references=None):
     from .startup import load_selection, save_selection
     if resume:
         saved = load_selection(RUNTIME_DIR)
@@ -898,6 +924,9 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         model = model if model is not None else saved.get("model", "none")
         zims = zims if zims is not None else saved.get("zims", "none")
         archives = archives if archives is not None else saved.get("archives", "none")
+        zim_languages = zim_languages if zim_languages is not None else saved.get("zim_languages", "all")
+        include_english_references = (include_english_references if include_english_references is not None
+                                      else saved.get("include_english_references", False))
         python = python if python is not None else saved.get("python", False)
         cuda = cuda if cuda is not None else saved.get("cuda", False)
         oses = oses or ",".join(saved.get("platforms", [platform_key()]))
@@ -949,16 +978,42 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
         raise ValueError("Unknown model: " + str(model))
 
     # ZIMs
+    language_prompt, reference_prompt, empty_prompt, estimates_label = LANGUAGE_PROMPTS.get(lang, LANGUAGE_PROMPTS["en"])
     if zims is None:
         if interactive:
+            print(estimates_label)
             opts = [(k, f"{k}: {v}") for k, v in zims_cfg["profiles"].items()]
             opts.append(("none", tr["none"].split("(")[0].strip()))
             zims = _ask(tr["zim_q"], opts, 2, tr)
         else:
             zims = "minimal"
-    chosen_zims = [z for z in zims_cfg["zims"] if zims in z.get("profiles", [])] if zims != "none" else []
-    if zims != "none" and (zims not in zims_cfg["profiles"] or not chosen_zims):
-        raise ValueError("Unknown or empty ZIM profile: " + str(zims))
+    while True:
+        if interactive and zims != "none" and zim_languages is None:
+            zim_languages = input(f"{language_prompt} [{lang}]: ").strip() or lang
+        if zim_languages is None:
+            zim_languages = "all"
+        try:
+            chosen_zims = select_zims(zims_cfg, zims, zim_languages, False)
+        except ValueError as exc:
+            if not interactive:
+                raise
+            print(exc)
+            zim_languages = None
+            continue
+        if interactive and zims != "none" and include_english_references is None:
+            extras = select_zims(zims_cfg, zims, zim_languages, True)
+            additional = sum(e["size_gb"] for e in extras if e not in chosen_zims)
+            include_english_references = _yes(reference_prompt.format(gb=additional), tr) if additional else False
+        chosen_zims = select_zims(zims_cfg, zims, zim_languages, bool(include_english_references))
+        if chosen_zims or zims == "none":
+            break
+        if not interactive:
+            raise ValueError("No libraries match the selected languages; change languages/profile or use --zims none.")
+        print(empty_prompt)
+        zim_languages = input(f"{language_prompt}: ").strip()
+        if zim_languages == "none":
+            zims, zim_languages = "none", "all"
+        include_english_references = None
 
     # Archived snapshots are always opt-in, including with --yes and --zims full.
     archive_entries = zims_cfg.get("archives", [])
@@ -999,6 +1054,9 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     est = ((chosen_model.get("size_bytes", chosen_model["size_gb"] * 10**9) / 1024**3)
            if chosen_model else 0) + sum(z.get("size_gb", 0) for z in chosen_zims)
     est += sum(a["size_bytes"] for a in chosen_archives) / 1024 ** 3
+    for entry in chosen_zims + chosen_archives:
+        print(f"  {entry['name']} [{entry['lang']}] ~{entry['size_gb']:.2f} GiB")
+    print("Existing libraries are kept; archive selections are independent of language filters.")
     print(f"\nSelected model/library data: approximately {est:.1f} GiB before reusing existing files.")
     print("Remaining download bytes and extraction space are checked on each component's destination drive.")
     if interactive and not _yes(tr["confirm"], tr):
@@ -1008,7 +1066,8 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     results = []
 
     # Save intent before any network operation so interrupted setup is resumable.
-    save_selection({"model": model, "zims": zims, "python": bool(python), "cuda": bool(cuda),
+    save_selection({"zim_languages": zim_languages, "include_english_references": bool(include_english_references),
+                    "model": model, "zims": zims, "python": bool(python), "cuda": bool(cuda),
                     "archives": ",".join(a["id"] for a in chosen_archives) or "none", "platforms": platforms}, RUNTIME_DIR)
 
     def record(name, operation, *args):
@@ -1049,7 +1108,9 @@ def run(lang="en", model=None, zims=None, oses=None, python=None, yes=False, sea
     with open(manifest + ".tmp", "w", encoding="utf-8") as f:
         json.dump({"prepared": time.strftime("%Y-%m-%d %H:%M"), "platforms": platforms,
                    "model": chosen_model["file"] if chosen_model else None,
-                   "zim_profile": zims,
+                   "zim_profile": zims, "zim_languages": zim_languages,
+                   "include_english_references": bool(include_english_references),
+                   "zim_collections": [e["name"] for e in chosen_zims],
                    "archives": [{"id": a["id"], "snapshot": a["snapshot"], "url": a["url"]} for a in chosen_archives],
                    "ready": ok == len(results), "components": results}, f, indent=2)
     os.replace(manifest + ".tmp", manifest)
