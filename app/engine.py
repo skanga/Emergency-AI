@@ -155,22 +155,22 @@ class Engine:
         llm = self.llm() if use_llm else None
         model_unavailable = llm is None
         reason = 'ai_disabled' if not use_llm else ('model_unavailable' if llm is None else None)
-        grounded = any(not s.get('context_omitted') for s in sources)
+        sources_supplied = False
         mode = "llm" if llm else "search"
         generation = {}
         if llm:
             try:
                 messages, fitted, generation = self.fit_messages(llm, question, lang, sources, history)
                 sources = fitted
-                grounded = any(not s.get('context_omitted') for s in sources)
+                sources_supplied = any(not s.get('context_omitted') for s in sources)
             except (LLMError, OSError) as e:
                 yield 'token', i18n.LLM_ERROR[lang].format(err=str(e)[:120])
                 llm, mode = None, 'search'
                 reason = 'generation_failed'
         yield "sources", sources
         if llm:
-            if not grounded:
-                yield 'token', i18n.UNGROUNDED_NOTE[lang]
+            note = i18n.SOURCES_SUPPLIED_NOTE if sources_supplied else i18n.UNGROUNDED_NOTE
+            yield 'token', note[lang]
             got = False
             try:
                 for tok in llm.stream_chat(messages, generation):
@@ -196,7 +196,7 @@ class Engine:
             yield "token", i18n.MEDICAL_FOOTER[lang]
         yield "done", {"mode": mode, "seconds": round(time.time() - t0, 1),
                        "llm": llm.describe() if llm else None, "generation": generation,
-                       "grounded": grounded, "reason": reason}
+                       "sources_supplied": sources_supplied, "reason": reason}
 
     def answer_text(self, question, lang="en", **kw):
         text, sources, info = [], [], {}

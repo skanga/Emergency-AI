@@ -96,7 +96,7 @@ Mung beans, lentils, alfalfa, wheat: soak for 8–12 h, drain and rinse 2 times 
 
 - Fruit and acidic pickles (with vinegar) can be preserved in a boiling-water bath.
 - **Low-acid foods (meat, beans, corn, heart of palm, vegetables) require sterilization in a pressure canner** made for canning. A water bath does not kill *Clostridium botulinum* spores.
-- If in doubt about a low-acid home-canned food: boil it for 10 minutes before eating, or discard it.
+- If the safety of a home-canned food is uncertain, **discard it without tasting it**. Do not rely on boiling to make suspect food safe to eat.
 
 > Sources: USDA Complete Guide to Home Canning (2015); National Center for Home Food Preservation. https://nchfp.uga.edu
 

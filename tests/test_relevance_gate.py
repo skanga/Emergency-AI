@@ -62,8 +62,23 @@ class RelevanceGateTests(unittest.TestCase):
         self.assertEqual([], sources)
         self.assertIn('Not backed by local sources', answer)
         self.assertIn('Python code', answer)
-        self.assertFalse(info['grounded'])
+        self.assertFalse(info['sources_supplied'])
+        self.assertNotIn('grounded', info)
         self.assertEqual('llm', info['mode'])
+
+    def test_supplied_sources_are_not_claimed_as_verified(self):
+        engine = Engine({'kiwix_enabled': False})
+        before = engine.retrieve('How do I sharpen a knife?', 'en')
+        model = Mock()
+        model.options.return_value = {'context': 8192, 'max_tokens': 2048, 'context_margin': 256}
+        model.count_prompt.return_value = 100
+        model.stream_chat.return_value = iter(['Answer'])
+        engine.llm = Mock(return_value=model)
+        answer, sources, info = engine.answer_text('How do I sharpen a knife?')
+        self.assertEqual([s['id'] for s in before], [s['id'] for s in sources])
+        self.assertTrue(info['sources_supplied'])
+        self.assertNotIn('grounded', info)
+        self.assertIn('citations are not independently verified', answer)
 
     def test_ai_disabled_is_not_model_unavailable(self):
         engine = Engine({'kiwix_enabled': False})

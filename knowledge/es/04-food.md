@@ -96,7 +96,7 @@ Frijol mungo (moyashi), lentejas, alfalfa, trigo: remójelos 8–12 h, escúrral
 
 - Las frutas y los encurtidos ácidos (con vinagre) pueden conservarse a baño María.
 - **Los alimentos de baja acidez (carnes, frijoles, maíz, palmito, verduras) exigen esterilización en olla de presión** apta para conservas. El baño María no mata las esporas de *Clostridium botulinum*.
-- Si tiene dudas sobre una conserva casera de baja acidez: hiérvala 10 minutos antes de comerla, o deséchela.
+- Si tiene dudas sobre la seguridad de una conserva casera, **deséchela sin probarla**. No confíe en hervir un alimento sospechoso para hacerlo seguro para el consumo.
 
 > Fuentes: USDA Complete Guide to Home Canning (2015); National Center for Home Food Preservation. https://nchfp.uga.edu
 

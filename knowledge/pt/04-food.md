@@ -96,7 +96,7 @@ Feijão-moyashi, lentilha, alfafa, trigo: deixe de molho 8–12 h, escorra e enx
 
 - Frutas e picles ácidos (com vinagre) podem ser conservados em banho-maria.
 - **Alimentos de baixa acidez (carnes, feijão, milho, palmito, legumes) exigem esterilização em panela de pressão** própria para conservas. Banho-maria não mata os esporos de *Clostridium botulinum*.
-- Na dúvida sobre uma conserva caseira de baixa acidez: ferva por 10 minutos antes de comer, ou descarte.
+- Se houver dúvida sobre a segurança de uma conserva caseira, **descarte sem provar**. Não confie na fervura para tornar um alimento suspeito seguro para consumo.
 
 > Fontes: USDA Complete Guide to Home Canning (2015); National Center for Home Food Preservation. https://nchfp.uga.edu
 
