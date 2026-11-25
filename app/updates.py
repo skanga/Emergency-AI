@@ -420,7 +420,7 @@ def _tool(row, app, timeout, root=None, fetch_json=None):
             row.update(status='unavailable',reason='No same-minor Python asset for this platform triple.')
             return row
         asset = max(assets,key=lambda a:tuple(int(n) for n in re.findall(r'\d+',a['name'].split('+')[0])))
-        sha = asset.get('digest','').replace('sha256:','',1)
+        sha = (asset.get('digest') or '').replace('sha256:','',1)
         row['candidate'] = _candidate(asset['name'],asset['browser_download_url'],asset.get('size'),sha if re.fullmatch('[a-f0-9]{64}',sha) else None,plat,asset=asset['name'],path=installed.get('path'))
         in_use=True
         if root is not None and installed.get('path'):
@@ -428,10 +428,13 @@ def _tool(row, app, timeout, root=None, fetch_json=None):
                 Path(sys.executable).resolve().relative_to((root/installed['path']).resolve())
             except ValueError:
                 in_use=False
-        legacy_links=bool(root is not None and installed.get('path') and any(p.is_symlink() for p in (root/installed['path']).rglob('*')))
-        if legacy_links:
-            row.update(status='manual',reason='Existing Python contains symlinks; a verified materialized baseline is required before transactional activation.')
-            return row
+        if root is not None and installed.get('path'):
+            from .upgrade_assets import _runtime_files
+            try:
+                _runtime_files(Path(root), installed['path'], preserve_file_links=True)
+            except (ValueError, OSError, RuntimeError) as exc:
+                row.update(status='manual',reason='Existing Python tree needs repair: ' + str(exc))
+                return row
         verified=bool(row['candidate']['sha256'] and asset.get('size'))
         row.update(status='current' if installed.get('asset')==asset['name'] else 'available' if verified and not in_use else 'manual',reason='Verified same-minor Python; current interpreter is independent.' if verified and not in_use else 'Use separate system Python for activation; publisher digest/size are required.')
     elif component=='kiwix-tools':

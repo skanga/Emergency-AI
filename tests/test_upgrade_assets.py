@@ -35,6 +35,27 @@ class AssetTests(unittest.TestCase):
         self.assertEqual((destination/'lib/libtest.so').read_bytes(), b'test')
         self.assertFalse((destination/'lib/libtest.so').is_symlink())
 
+    def test_compressed_link_materialization_does_not_rewind_decompressor(self):
+        import gzip
+        import io
+        import tarfile
+        archive=self.root/'links.tar.gz'
+        with tarfile.open(archive,'w:gz') as target:
+            entry=tarfile.TarInfo('lib/data');entry.size=1024
+            target.addfile(entry,io.BytesIO(b'x'*1024))
+            for number in range(4):
+                link=tarfile.TarInfo('lib/link'+str(number));link.type=tarfile.SYMTYPE
+                link.linkname='data';target.addfile(link)
+        rewinds=[];original=gzip.GzipFile.seek
+        def seek(stream,offset,whence=0):
+            if whence==0 and offset<stream.tell():rewinds.append(offset)
+            return original(stream,offset,whence)
+        with patch.object(gzip.GzipFile,'seek',seek):
+            upgrade_assets._materialize_tar(archive,self.root/'materialized.tar')
+        with tarfile.open(self.root/'materialized.tar') as result:
+            self.assertEqual(result.extractfile('lib/link3').read(),b'x'*1024)
+        self.assertEqual(rewinds,[])
+
     def test_runtime_archive_rejects_escaping_and_cyclic_links(self):
         import tarfile
         for name in ('../../outside', '/etc/passwd', 'link'):
@@ -128,7 +149,8 @@ class AssetTests(unittest.TestCase):
         relative='runtime/python/'+platform_key()
         folder=self.root/relative
         (folder/'python/bin').mkdir(parents=True)
-        (folder/'python/bin/python3').write_bytes(b'old')
+        (folder/'python/bin/python3.12').write_bytes(b'old')
+        (folder/'python/bin/python3').symlink_to('python3.12')
         payload=io.BytesIO()
         with tarfile.open(fileobj=payload,mode='w:gz') as archive:
             info=tarfile.TarInfo('python/bin/python3.12');info.size=3;info.mode=0o755
@@ -138,9 +160,37 @@ class AssetTests(unittest.TestCase):
         self.payload=payload.getvalue()
         record={'component':'python','status':'available','installed':{'path':relative,'asset':'cpython-3.12.1+old'},'candidate':{'path':relative,'asset':'cpython-3.12.9+new','platform':platform_key(),'url':'https://example.com/python.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
         with patch('app.prepare.download',side_effect=self.download), patch('app.upgrade_assets.subprocess.run'):
-            upgrade_assets.upgrade(self.root,record)
+            transaction=upgrade_assets.upgrade(self.root,record)
         self.assertEqual((folder/'python/bin/python3').read_bytes(),b'new')
         self.assertFalse((folder/'python/bin/python3').is_symlink())
+        from upgrade_recovery import rollback
+        rollback(self.root,transaction)
+        self.assertTrue((folder/'python/bin/python3').is_symlink())
+        self.assertEqual(str((folder/'python/bin/python3').readlink()),'python3.12')
+        self.assertEqual((folder/'python/bin/python3').read_bytes(),b'old')
+
+    def test_python_external_link_refuses_before_download(self):
+        from app.config import platform_key
+        relative='runtime/python/'+platform_key()
+        folder=self.root/relative;folder.mkdir(parents=True)
+        (folder/'external').symlink_to(self.root/'models/old.gguf')
+        record={'component':'python','status':'available','installed':{'path':relative},'candidate':{'path':relative}}
+        with patch('app.prepare.download') as fetch:
+            with self.assertRaises(ValueError): upgrade_assets.upgrade(self.root,record)
+        fetch.assert_not_called()
+
+    def test_python_health_checks_app_with_target_interpreter(self):
+        folder=self.root/'runtime/python/test'
+        (folder/'python/bin').mkdir(parents=True)
+        (folder/'python/bin/python3').write_bytes(b'python')
+        (self.root/'emergency.py').write_text('pass')
+        with patch('app.upgrade_assets.subprocess.run') as run:
+            upgrade_assets.verify_python(folder,{'asset':'cpython-3.12.16+20261124'},self.root)
+        self.assertEqual(run.call_count,2)
+        command=run.call_args.args[0]
+        self.assertEqual(command[0],str(folder/'python/bin/python3'))
+        self.assertIn('_UPGRADE_BOOTSTRAP',command[4])
+        self.assertEqual(command[-1],str(self.root))
 
     def test_in_use_python_refuses_before_download(self):
         relative='runtime/python/test'

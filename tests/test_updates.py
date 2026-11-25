@@ -199,6 +199,9 @@ class UpdateTests(unittest.TestCase):
 
     def test_python_candidate_matches_exact_triple(self):
         self.write('runtime/python/linux-x86_64/installation.json', {'complete':True,'asset':'cpython-3.12.1+20240101-x86_64-unknown-linux-gnu-install_only.tar.gz'})
+        binary=self.root/'runtime/python/linux-x86_64/python3.12'
+        binary.write_bytes(b'python')
+        binary.with_name('python3').symlink_to('python3.12')
         asset='cpython-3.12.9+20260101-x86_64-unknown-linux-gnu-install_only.tar.gz'
         with patch.object(updates,'_json',side_effect=lambda u,t: {'assets':[{'name':asset,'browser_download_url':'https://github.com/astral-sh/python-build-standalone/releases/download/20260101/'+asset,'size':42,'digest':'sha256:'+'a'*64}]} if 'python-build-standalone' in u else {'sha':'b'*40}):
             row=next(r for r in updates.check(self.root)['components'] if r['component']=='python')

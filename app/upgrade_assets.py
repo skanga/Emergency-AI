@@ -1,5 +1,6 @@
 """Stage, verify and transact explicitly selected managed asset updates."""
 import hashlib
+import gzip
 import json
 import os
 import re
@@ -57,6 +58,16 @@ def _download(candidate, stage):
 
 
 def _materialize_tar(archive, destination):
+    # Link targets require random access. Rewinding gzip for every link repeatedly
+    # decompresses the distribution, so spool once before resolving members.
+    with open(archive, 'rb') as stream:
+        compressed = stream.read(2) == b'\x1f\x8b'
+    if compressed:
+        with tempfile.TemporaryDirectory(dir=Path(destination).parent) as temp:
+            raw = Path(temp)/'source.tar'
+            with gzip.open(archive, 'rb') as source, raw.open('wb') as target:
+                shutil.copyfileobj(source, target, length=1024*1024)
+            return _materialize_tar(raw, destination)
     with tarfile.open(archive) as source,tarfile.open(destination,'w') as target:
         for member in source.getmembers():
             _path(Path(destination).parent,member.name.rstrip('/'))
@@ -149,6 +160,25 @@ def _active_model(root):
     return next((p for p in models if p.name==default),max(models,key=lambda p:p.stat().st_size))
 
 
+def _runtime_files(root, relative, preserve_file_links=False):
+    """Validate the old tree before replacement; only internal file links are supported."""
+    destination = _path(root, relative)
+    changes = {}
+    for path in destination.rglob('*'):
+        if preserve_file_links and path.is_symlink():
+            _path(root, path.parent.relative_to(root).as_posix())
+            path.resolve(strict=True).relative_to(destination.resolve())
+            if not path.is_file():
+                raise ValueError('Runtime directory links are unsupported')
+        else:
+            _path(root, path.relative_to(root).as_posix())
+        if path.is_file():
+            changes[path.relative_to(root).as_posix()] = None
+        elif not path.is_dir():
+            raise ValueError('Runtime special files are unsupported')
+    return changes
+
+
 def _runtime_changes(root, installed, candidate, stage, component):
     relative = installed['path']
     expected = {'llama':'runtime/llama.cpp/','kiwix-tools':'runtime/kiwix-tools/','document-tools':'runtime/document-tools/'}[component]
@@ -189,17 +219,7 @@ def _runtime_changes(root, installed, candidate, stage, component):
         if model is not None:
             verify_model(root,model,runtime=content,backend=candidate.get('backend'))
         (content/'release.json').write_text(json.dumps({'tag':candidate['tag'],'asset':candidate['asset'],'model_check':'passed' if model is not None else 'not_run: no local model'}),encoding='utf-8')
-    changes = {}
-    for path in destination.rglob('*'):
-        if component == 'llama' and path.is_symlink():
-            _path(root,path.parent.relative_to(root).as_posix())
-            path.resolve(strict=True).relative_to(destination.resolve())
-            if not path.is_file():
-                raise ValueError('Runtime directory links are unsupported')
-        else:
-            _path(root,path.relative_to(root).as_posix())
-        if path.is_file():
-            changes[path.relative_to(root).as_posix()]=None
+    changes = _runtime_files(root, relative, preserve_file_links=component in ('llama','python'))
     for path in content.rglob('*'):
         if path.is_file():
             changes[relative+'/'+path.relative_to(content).as_posix()]=str(path)
@@ -232,9 +252,7 @@ def upgrade(root, record, allow_unverified=False):
         if pdf or installed.get('document_format')=='nautilus' or installed.get('index_path'):
             raise ValueError('This collection requires an index migration before upgrade')
     if component=='python':
-        folder=_path(root,installed.get('path',''))
-        if any(path.is_symlink() for path in folder.rglob('*')):
-            raise ValueError('Existing Python contains symlinks; migrate it to a verified materialized installation using separate system Python before automatic activation')
+        _runtime_files(root, installed.get('path',''), preserve_file_links=True)
     old=_path(root,installed.get('path',''))
     if not old.exists():
         raise ValueError('Installed managed asset is missing')
@@ -290,7 +308,7 @@ def upgrade(root, record, allow_unverified=False):
         manifest_path.write_text(json.dumps(manifest,indent=2),encoding='utf-8')
         changes['runtime/installation.json']=str(manifest_path)
         from upgrade_recovery import Transaction
-        transaction=Transaction(root,component,preserve_file_links=component=='llama')
+        transaction=Transaction(root,component,preserve_file_links=component in ('llama','python'))
         def verify():
             if component=='model':
                 verify_model(root,_path(root,destination))
@@ -304,19 +322,24 @@ def upgrade(root, record, allow_unverified=False):
             elif component=='document-tools':
                 verify_document(_path(root,destination),candidate)
             elif component=='python':
-                verify_python(_path(root,destination),candidate)
+                verify_python(_path(root,destination),candidate,root)
             elif component=='kiwix-tools':
                 verify_runtime(_path(root,destination),'kiwix-serve')
         return transaction.apply(changes,verify=verify)
 
 
-def verify_python(folder,candidate):
+def verify_python(folder,candidate,app_root=None):
     executable=Path(folder)/'python'/('python.exe' if os.name=='nt' else 'bin/python3')
     version=re.match(r'cpython-(3\.\d+)\.',candidate.get('asset',''))
     if not executable.is_file() or not version:
         raise ValueError('Python executable or version identity is missing')
     script="import sys,ssl,sqlite3,importlib; assert '.'.join(map(str,sys.version_info[:2])) == " + repr(version[1]) + "; ssl.create_default_context(); sqlite3.connect(':memory:').execute('select 1'); importlib.import_module('json')"
-    subprocess.run([str(executable),'-I','-c',script],stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True,timeout=30)
+    subprocess.run([str(executable),'-I','-B','-c',script],stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True,timeout=30)
+    if app_root is not None and (Path(app_root)/'emergency.py').is_file():
+        probe = "import runpy,sys; root=sys.argv[1]; sys.path.insert(0,root); p=root+'/emergency.py'; sys.argv=[p,'--help']; runpy.run_path(p,init_globals={'_UPGRADE_BOOTSTRAP':True},run_name='__main__')"
+        subprocess.run([str(executable),'-I','-B','-c',probe,str(app_root)],cwd=str(app_root),
+                       stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True,timeout=30)
+
 
 
 def _python_changes(root,installed,candidate,stage):
@@ -332,13 +355,9 @@ def _python_changes(root,installed,candidate,stage):
     fresh=stage/'python-extracted'
     _materialize_tar(archive, sanitized)
     _extract(sanitized,fresh)
-    verify_python(fresh,candidate)
+    verify_python(fresh,candidate,root)
     (fresh/'installation.json').write_text(json.dumps({'complete':True,'asset':candidate['asset']}),encoding='utf-8')
-    changes={}
-    for path in _path(root,relative).rglob('*'):
-        _path(root,path.relative_to(root).as_posix())
-        if path.is_file():
-            changes[path.relative_to(root).as_posix()]=None
+    changes = _runtime_files(root, relative, preserve_file_links=True)
     for path in fresh.rglob('*'):
         if path.is_file():
             changes[relative+'/'+path.relative_to(fresh).as_posix()]=str(path)
