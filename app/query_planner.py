@@ -47,6 +47,7 @@ class QueryPlan:
     scope: dict
     queries_by_language: dict[str, tuple[str, ...]]
     limited_cross_language: bool
+    context_turns: tuple[str, ...] = ()
 
 
 def symptom_topics(text):
@@ -122,13 +123,15 @@ def plan_query(question, request_language='en', history=()):
     """
     request_language = normalize_language(request_language)
     current = normalize(question)
-    user_turns = [normalize(m.get('content', '')) for m in (history or ())
+    user_turns = [m.get('content', '') for m in (history or ())
                   if m.get('role') == 'user'][-3:]
     topics, negated, context = [], [], []
+    raw_context = []
     age = None
     consciousness = None
     focus = []
-    for turn in user_turns + [current]:
+    for raw_turn in user_turns + [question]:
+        turn = normalize(raw_turn)
         turn_topics = matching_topics(turn)
         denied_topics = set()
         for name, spec in _topics().items():
@@ -155,6 +158,7 @@ def plan_query(question, request_language='en', history=()):
         if nonmedical or reset or (positive_topics and topics and not set(positive_topics) & set(topics) and 'cpr' not in positive_topics):
             topics, negated, context, age = [], [], [], None
             consciousness = None
+            raw_context = []
         if nonmedical:
             continue
         for name in positive_topics:
@@ -172,6 +176,7 @@ def plan_query(question, request_language='en', history=()):
         consciousness = _consciousness(turn) or consciousness
         if turn != current:
             context.append(turn)
+            raw_context.append(raw_turn)
     prior = ' '.join(context)
     # Prefer specific contamination over generic flooding.
     if 'water_chemical' in topics and 'flood' in topics:
@@ -190,4 +195,4 @@ def plan_query(question, request_language='en', history=()):
     else:
         queries[request_language] = (current,) if current else ()
     return QueryPlan(question, request_language, tuple(prior.split()), tuple(topics),
-                     {'age_group': age, 'consciousness': consciousness, 'negated_facts': tuple(negated), 'focus_terms': tuple(focus) if not topics else ()}, queries, not bool(topics))
+                     {'age_group': age, 'consciousness': consciousness, 'negated_facts': tuple(negated), 'focus_terms': tuple(focus) if not topics else ()}, queries, not bool(topics), tuple(raw_context))

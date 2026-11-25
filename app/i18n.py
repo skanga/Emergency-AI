@@ -6,7 +6,7 @@ SYSTEM_PROMPT = {
         "quando a internet e os serviços estão fora do ar. Responda SEMPRE em português do Brasil, "
         "de forma clara, prática e em passos numerados quando fizer sentido.\n"
         "Regras:\n"
-        "1. Use as FONTES quando apoiarem a resposta. Cite as afirmações apoiadas com o número entre colchetes, ex.: [1], [2].\n"
+        "1. Use as FONTES quando apoiarem a resposta. Cite as afirmações apoiadas com o número entre colchetes, ex.: [S1], [S2].\n"
         "2. Não recuse perguntas comuns de programação ou matemática por falta de fontes relevantes. Responda às partes não cobertas usando conhecimento geral sob o título 'Sem apoio de fontes locais'.\n"
         "3. Em temas de saúde: inclua sinais de alerta e quando procurar ajuda profissional; nunca invente doses de "
         "remédios — remeta à bula ou ao profissional; lembre que a orientação não substitui um médico.\n"
@@ -18,7 +18,7 @@ SYSTEM_PROMPT = {
         "You are Emergency AI, an offline assistant that provides knowledge and assistance when the internet and "
         "services are down. ALWAYS answer in English, clearly and practically, using numbered steps when useful.\n"
         "Rules:\n"
-        "1. Use supplied SOURCES where they support the answer. Cite supported claims inline with the number in brackets, e.g. [1], [2].\n"
+        "1. Use supplied SOURCES where they support the answer. Cite supported claims inline with the number in brackets, e.g. [S1], [S2].\n"
         "2. Do not refuse ordinary programming, mathematics, or other non-safety-critical questions just because sources are irrelevant. Answer uncovered portions from general knowledge under the heading 'Not backed by local sources'.\n"
         "3. For health topics: include warning signs and when to seek professional help; never invent drug "
         "doses — refer to the label or a professional; remind that this does not replace a doctor.\n"
@@ -32,7 +32,7 @@ SYSTEM_PROMPT = {
         "internet y los servicios no funcionan. Responde SIEMPRE en español, de forma clara y práctica, con "
         "pasos numerados cuando sea útil.\n"
         "Reglas:\n"
-        "1. Usa las FUENTES cuando respalden la respuesta. Cita las afirmaciones respaldadas con el número entre corchetes, p. ej. [1], [2].\n"
+        "1. Usa las FUENTES cuando respalden la respuesta. Cita las afirmaciones respaldadas con el número entre corchetes, p. ej. [S1], [S2].\n"
         "2. No rechaces preguntas comunes de programación o matemáticas por falta de fuentes pertinentes. Responde las partes no cubiertas con conocimiento general bajo el título 'Sin respaldo de fuentes locales'.\n"
         "3. En temas de salud: incluye señales de alarma y cuándo buscar ayuda profesional; nunca inventes dosis "
         "de medicamentos — remite al prospecto o a un profesional; recuerda que esto no reemplaza a un médico.\n"
@@ -159,4 +159,11 @@ REVIEWED_SOURCE_OMITTED = {
     'en': '**Reviewed passage not supplied.** The preferred source could not fit as a complete passage. Procedural recommendations are withheld; inspect the original references below.\n\n',
     'pt': '**Trecho revisado não fornecido.** A fonte preferida não coube como trecho completo. As recomendações de procedimentos foram suspensas; consulte as referências originais abaixo.\n\n',
     'es': '**Fragmento revisado no proporcionado.** La fuente preferida no cupo como fragmento completo. Se omiten las recomendaciones de procedimientos; consulte las referencias originales abajo.\n\n',
+}
+
+
+ANSWER_WITHHELD = {
+    'en': '**Generated answer withheld.** A citation or action-condition check failed. Consult the original references below and seek qualified help. These checks do not establish medical accuracy or verify every claim.\n\n',
+    'pt': '**Resposta gerada retida.** Falhou uma verificação de citação ou das condições de uma ação. Consulte as referências originais abaixo e procure ajuda qualificada. Estas verificações não garantem a exatidão médica nem verificam todas as afirmações.\n\n',
+    'es': '**Respuesta generada retenida.** Falló una comprobación de citas o de las condiciones de una acción. Consulte las referencias originales a continuación y busque ayuda cualificada. Estas comprobaciones no garantizan la exactitud médica ni verifican todas las afirmaciones.\n\n',
 }

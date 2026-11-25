@@ -89,14 +89,15 @@ class RelevanceGateTests(unittest.TestCase):
     def test_prompt_switches_only_without_usable_sources(self):
         engine = Engine({'kiwix_enabled': False})
         from app import i18n
+        from app.answer_validation import PROMPT
         for lang in ('en', 'pt', 'es'):
-            self.assertEqual(i18n.general_knowledge_prompt(lang),
+            self.assertEqual(i18n.general_knowledge_prompt(lang) + PROMPT,
                              engine.build_messages('question', lang, [])[0]['content'])
             source = {'n': 1, 'kind': 'kit', 'doc_title': 'Guide', 'section': 'Topic', 'text': 'Evidence'}
-            self.assertEqual(i18n.SYSTEM_PROMPT[lang],
+            self.assertEqual(i18n.SYSTEM_PROMPT[lang] + PROMPT,
                              engine.build_messages('question', lang, [source])[0]['content'])
             source['context_omitted'] = True
-            self.assertEqual(i18n.general_knowledge_prompt(lang),
+            self.assertEqual(i18n.general_knowledge_prompt(lang) + PROMPT,
                              engine.build_messages('question', lang, [source])[0]['content'])
 
     def test_incidental_matches_are_rejected(self):

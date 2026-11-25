@@ -45,10 +45,11 @@ class LLMHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "text/event-stream")
         self.end_headers()
-        for piece in ["Ferva a água ", "por 1 minuto [1]. ", "Depois use o soro [2]."]:
+        for piece in ["Ferva a água ", "por 1 minuto [S1]. ", "Depois use o soro [S2]."]:
             chunk = {"choices": [{"delta": {"content": piece}}]}
             self.wfile.write(f"data: {json.dumps(chunk)}\n\n".encode())
             self.wfile.flush()
+        self.wfile.write(b'data: {"choices":[{"finish_reason":"stop"}]}\n\n')
         self.wfile.write(b"data: [DONE]\n\n")
 
 

@@ -1,0 +1,762 @@
+{
+  "reference_commit": "d90635a53254fcc476af25b79dab3d57af130791",
+  "production_changes": false,
+  "focused_tests": {
+    "relevance_quality": 23,
+    "source_policy": 17,
+    "conflict_context": 9,
+    "failures": 0
+  },
+  "source_diagnostics": [
+    {
+      "case": "cpr",
+      "scope": {
+        "age_group": null,
+        "consciousness": "unresponsive",
+        "negated_facts": [],
+        "focus_terms": []
+      },
+      "topics": [
+        "cpr"
+      ],
+      "conflicts": [],
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:2",
+          "n": 1,
+          "kind": "kit",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "title": "First aid and health care",
+          "recorded_score": 31,
+          "current_score": 31,
+          "prior_score": 31,
+          "heading_bonus": 0
+        },
+        {
+          "id": "9258f7facd71b9df8e79b5fc",
+          "n": 2,
+          "kind": "kiwix",
+          "section": "Order of CPR in a first aid sequence",
+          "title": "Cardiopulmonary resuscitation",
+          "recorded_score": 125,
+          "current_score": 125,
+          "prior_score": 25,
+          "heading_bonus": 100
+        },
+        {
+          "id": "f9693cbed9f381c20ba723ec",
+          "n": 3,
+          "kind": "kiwix",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "title": "Cardiac arrest",
+          "recorded_score": 120,
+          "current_score": 120,
+          "prior_score": 35,
+          "heading_bonus": 85
+        },
+        {
+          "id": "7140ab52fb52ba0901123f16",
+          "n": 4,
+          "kind": "kiwix",
+          "section": "Management",
+          "title": "Cardiac arrest",
+          "recorded_score": 98,
+          "current_score": 98,
+          "prior_score": 23,
+          "heading_bonus": 75
+        },
+        {
+          "id": "en:07-first-aid-medicine:1",
+          "n": 5,
+          "kind": "kit",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "title": "First aid and health care",
+          "recorded_score": 9,
+          "current_score": 9,
+          "prior_score": 9,
+          "heading_bonus": 0
+        }
+      ]
+    },
+    {
+      "case": "anaphylaxis",
+      "scope": {
+        "age_group": "child",
+        "consciousness": null,
+        "negated_facts": [],
+        "focus_terms": []
+      },
+      "topics": [
+        "anaphylaxis"
+      ],
+      "conflicts": [],
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:14",
+          "n": 1,
+          "kind": "kit",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "title": "First aid and health care",
+          "recorded_score": 23,
+          "current_score": 23,
+          "prior_score": 23,
+          "heading_bonus": 0
+        },
+        {
+          "id": "26537309aa7d4f8a68807d21",
+          "n": 2,
+          "kind": "kiwix",
+          "section": "Management › Epinephrine",
+          "title": "Anaphylaxis",
+          "recorded_score": 112,
+          "current_score": 112,
+          "prior_score": 27,
+          "heading_bonus": 85
+        },
+        {
+          "id": "fbb67c3dec0e76816192419f",
+          "n": 3,
+          "kind": "kiwix",
+          "section": "Management › Preparedness",
+          "title": "Anaphylaxis",
+          "recorded_score": 60,
+          "current_score": 60,
+          "prior_score": 20,
+          "heading_bonus": 40
+        },
+        {
+          "id": "6df32773352edc98d0667811",
+          "n": 4,
+          "kind": "kiwix",
+          "section": "Anaphylaxis",
+          "title": "Anaphylaxis",
+          "recorded_score": 57,
+          "current_score": 57,
+          "prior_score": 17,
+          "heading_bonus": 40
+        }
+      ]
+    },
+    {
+      "case": "portuguese",
+      "scope": {
+        "age_group": null,
+        "consciousness": null,
+        "negated_facts": [],
+        "focus_terms": []
+      },
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "conflicts": [],
+      "sources": [
+        {
+          "id": "pt:02-fire:7",
+          "n": 1,
+          "kind": "kit",
+          "section": "Segurança",
+          "title": "Fogo: como acender com coisas simples",
+          "recorded_score": 11,
+          "current_score": 11,
+          "prior_score": 11,
+          "heading_bonus": 0
+        },
+        {
+          "id": "cae2aaa84c5e9e4a4f350caf",
+          "n": 2,
+          "kind": "kiwix",
+          "section": "Treatment",
+          "title": "Carbon monoxide poisoning",
+          "recorded_score": 100,
+          "current_score": 100,
+          "prior_score": 25,
+          "heading_bonus": 75
+        },
+        {
+          "id": "e2304d5c0b271611d0a1b585",
+          "n": 3,
+          "kind": "kiwix",
+          "section": "Carbon monoxide poisoning",
+          "title": "Carbon monoxide poisoning",
+          "recorded_score": 72,
+          "current_score": 72,
+          "prior_score": 32,
+          "heading_bonus": 40
+        },
+        {
+          "id": "pt:10-energy-light:3",
+          "n": 5,
+          "kind": "kit",
+          "section": "Baterias de carro e geradores",
+          "title": "Energia, luz e eletricidade sem a rede",
+          "recorded_score": 6,
+          "current_score": 6,
+          "prior_score": 6,
+          "heading_bonus": 0
+        },
+        {
+          "id": "pt:03-shelter:6",
+          "n": 6,
+          "kind": "kit",
+          "section": "Aquecimento seguro",
+          "title": "Abrigo e temperatura corporal",
+          "recorded_score": 4,
+          "current_score": 4,
+          "prior_score": 4,
+          "heading_bonus": 0
+        }
+      ]
+    },
+    {
+      "case": "stroke",
+      "scope": {
+        "age_group": null,
+        "consciousness": null,
+        "negated_facts": [],
+        "focus_terms": []
+      },
+      "topics": [
+        "stroke"
+      ],
+      "conflicts": [],
+      "sources": [
+        {
+          "id": "01844ec2fa8cd838c2b8537a",
+          "n": 1,
+          "kind": "kiwix",
+          "section": "Management",
+          "title": "Stroke",
+          "recorded_score": 87,
+          "current_score": 87,
+          "prior_score": 12,
+          "heading_bonus": 75
+        },
+        {
+          "id": "75990a5dd32dc7cb203a41b1",
+          "n": 2,
+          "kind": "kiwix",
+          "section": "Stroke (main) › Management",
+          "title": "Stroke (main)",
+          "recorded_score": 52,
+          "current_score": 52,
+          "prior_score": 17,
+          "heading_bonus": 35
+        },
+        {
+          "id": "0c23ea7c35fd404fe0994ac8",
+          "n": 3,
+          "kind": "kiwix",
+          "section": "Signs and symptoms › Subtypes",
+          "title": "Stroke",
+          "recorded_score": 51,
+          "current_score": 51,
+          "prior_score": 11,
+          "heading_bonus": 40
+        }
+      ]
+    },
+    {
+      "case": "infant_followup",
+      "scope": {
+        "age_group": "infant",
+        "consciousness": "unresponsive",
+        "negated_facts": [],
+        "focus_terms": []
+      },
+      "topics": [
+        "cpr",
+        "choking"
+      ],
+      "conflicts": [],
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:2",
+          "n": 1,
+          "kind": "kit",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "title": "First aid and health care",
+          "recorded_score": 20,
+          "current_score": 20,
+          "prior_score": 20,
+          "heading_bonus": 0
+        },
+        {
+          "id": "74afe468d01eb2b3529a57eb",
+          "n": 2,
+          "kind": "kiwix",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old) › Unconscious infants",
+          "title": "Choking",
+          "recorded_score": 165,
+          "current_score": 165,
+          "prior_score": 35,
+          "heading_bonus": 130
+        },
+        {
+          "id": "e225be0ae6238908e4b7a947",
+          "n": 3,
+          "kind": "kiwix",
+          "section": "Treatment › Basic treatment (first aid)",
+          "title": "Choking",
+          "recorded_score": 113,
+          "current_score": 113,
+          "prior_score": 13,
+          "heading_bonus": 100
+        },
+        {
+          "id": "en:07-first-aid-medicine:3",
+          "n": 5,
+          "kind": "kit",
+          "section": "Choking (airway obstruction)",
+          "title": "First aid and health care",
+          "recorded_score": 12,
+          "current_score": 12,
+          "prior_score": 12,
+          "heading_bonus": 0
+        },
+        {
+          "id": "en:07-first-aid-medicine:1",
+          "n": 6,
+          "kind": "kit",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "title": "First aid and health care",
+          "recorded_score": 8,
+          "current_score": 8,
+          "prior_score": 8,
+          "heading_bonus": 0
+        }
+      ]
+    },
+    {
+      "case": "diabetes",
+      "scope": {
+        "age_group": null,
+        "consciousness": "unresponsive",
+        "negated_facts": [],
+        "focus_terms": []
+      },
+      "topics": [
+        "diabetes"
+      ],
+      "conflicts": [],
+      "sources": [
+        {
+          "id": "56acf297582c6c287ff4f04b",
+          "n": 1,
+          "kind": "kiwix",
+          "section": "Hypoglycemia › Management",
+          "title": "Hypoglycemia",
+          "recorded_score": 92,
+          "current_score": 92,
+          "prior_score": 17,
+          "heading_bonus": 75
+        },
+        {
+          "id": "3cc539ba1c6418e1f02470fa",
+          "n": 2,
+          "kind": "kiwix",
+          "section": "Management",
+          "title": "Diabetes",
+          "recorded_score": 91,
+          "current_score": 91,
+          "prior_score": 16,
+          "heading_bonus": 75
+        },
+        {
+          "id": "11cf0f9ab523ae1a3c8a8975",
+          "n": 3,
+          "kind": "kiwix",
+          "section": "Treatment",
+          "title": "Hypoglycemia",
+          "recorded_score": 88,
+          "current_score": 88,
+          "prior_score": 13,
+          "heading_bonus": 75
+        }
+      ]
+    }
+  ],
+  "boundary_probes": {
+    "specialist_heading_vs_body": {
+      "real_management_score": 92,
+      "identical_body_specialist_heading_score": 0,
+      "expanded_IV_abbreviation_score": 0
+    },
+    "adult_rule_in_infant_context": {
+      "age": "infant",
+      "consciousness": "unresponsive",
+      "source_starts_with_adult": true,
+      "score": 20,
+      "conflicts": []
+    },
+    "citation_namespace": {
+      "supplied_numbers": [
+        1,
+        2,
+        3
+      ],
+      "internal_42_in_prompt": true,
+      "output_filter_passes_invalid_citation": true
+    },
+    "cpr_conflict_blind_spot": {
+      "local_guide_retained": true,
+      "stopping_rule_included": true,
+      "conflicts": []
+    }
+  },
+  "infant_extraction": {
+    "exact_saved_passage_reproduced": true,
+    "blocks": [
+      {
+        "path": [
+          [
+            2,
+            "Treatment"
+          ],
+          [
+            3,
+            "Particular cases"
+          ],
+          [
+            4,
+            "Infants (babies under 1 year-old)"
+          ]
+        ],
+        "is_warning": true,
+        "text": "In the chest thrusts manoeuver, the baby's body is placed lying face up on a surface (it can be the rescuer's thighs, lap or forearm). Then, the rescuer does the compressions pressing with only two fingers on the lower half of the bone that is along the middle of the chest from the neck to the belly (on the chest bone, named sternum, on its part that is the nearest to the belly). Abdominal thrusts are not recommended in children less than one year old because they can cause liver damage.[59]"
+      },
+      {
+        "path": [
+          [
+            2,
+            "Treatment"
+          ],
+          [
+            3,
+            "Particular cases"
+          ],
+          [
+            4,
+            "Infants (babies under 1 year-old)"
+          ],
+          [
+            5,
+            "Unconscious infants"
+          ]
+        ],
+        "is_warning": false,
+        "text": "Until emergency services arrive, the American Heart Association[59] recommends starting cardiopulmonary resuscitation (CPR) adapted to infants (<1 year old). It is a cycle of resuscitation[60] that alternates compressions and rescue breaths, like in a normal CPR, but with some differences:\nThe rescuer begins by making 30 compressions, pressing, with two thumbs or the heel of one's hand, on the lower half of the bone in the middle of the chest (the sternum, on its part that is the nearest to the belly), at an approximate rate of nearly 2 per second (100-120 compressions per minute)."
+      }
+    ]
+  },
+  "model_experiment": {
+    "temperature": 0,
+    "top_k": 1,
+    "seeds": [
+      41,
+      73
+    ],
+    "interpretation": "Two greedy repeatability runs per configuration, not independent sampling trials. Raw model request/response records remain in /tmp.",
+    "results": [
+      {
+        "case": "anaphylaxis",
+        "variant": "ablated",
+        "seed": 41,
+        "seconds": 8.778,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": false,
+          "answer_sha256": "eb6b6a5b11b955c6eac08055848bfa0acc87c0f3bd9a05f716eab308dccfa66a"
+        }
+      },
+      {
+        "case": "anaphylaxis",
+        "variant": "ablated",
+        "seed": 73,
+        "seconds": 8.655,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": false,
+          "answer_sha256": "eb6b6a5b11b955c6eac08055848bfa0acc87c0f3bd9a05f716eab308dccfa66a"
+        }
+      },
+      {
+        "case": "anaphylaxis",
+        "variant": "full",
+        "seed": 41,
+        "seconds": 16.324,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": false,
+          "answer_sha256": "7e41118c07600a2e84e4f015305acb3266a6068eec46e6abc2a6b25c39f8fa4f"
+        }
+      },
+      {
+        "case": "anaphylaxis",
+        "variant": "full",
+        "seed": 73,
+        "seconds": 16.531,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": false,
+          "answer_sha256": "7e41118c07600a2e84e4f015305acb3266a6068eec46e6abc2a6b25c39f8fa4f"
+        }
+      },
+      {
+        "case": "cpr",
+        "variant": "ablated",
+        "seed": 41,
+        "seconds": 15.981,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": true,
+          "answer_sha256": "8d3f048855c33da067cc32fafb43c8d2c0906442b1c20a39e1ee87b0bb810f12"
+        }
+      },
+      {
+        "case": "cpr",
+        "variant": "ablated",
+        "seed": 73,
+        "seconds": 16.942,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": true,
+          "answer_sha256": "8d3f048855c33da067cc32fafb43c8d2c0906442b1c20a39e1ee87b0bb810f12"
+        }
+      },
+      {
+        "case": "cpr",
+        "variant": "full",
+        "seed": 41,
+        "seconds": 24.15,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": true,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": true,
+          "answer_sha256": "cccde8b4608ebd2592828031761e02b0ac9d9edbc964d9a23731195dff4dd9e0"
+        }
+      },
+      {
+        "case": "cpr",
+        "variant": "full",
+        "seed": 73,
+        "seconds": 19.474,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": true,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": true,
+          "answer_sha256": "cccde8b4608ebd2592828031761e02b0ac9d9edbc964d9a23731195dff4dd9e0"
+        }
+      },
+      {
+        "case": "infant_followup",
+        "variant": "ablated",
+        "seed": 41,
+        "seconds": 22.967,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": true,
+          "answer_sha256": "43592a04640c47f6e241cc79d693b333865b4ccb42242333db05efbe0b82039f"
+        }
+      },
+      {
+        "case": "infant_followup",
+        "variant": "ablated",
+        "seed": 73,
+        "seconds": 22.5,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": true,
+          "answer_sha256": "43592a04640c47f6e241cc79d693b333865b4ccb42242333db05efbe0b82039f"
+        }
+      },
+      {
+        "case": "infant_followup",
+        "variant": "full",
+        "seed": 41,
+        "seconds": 18.581,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": true,
+          "answer_sha256": "629e0cded3de7a2f47da757023e5ecdad33c3bccf76942054c89fb71023fb8ff"
+        }
+      },
+      {
+        "case": "infant_followup",
+        "variant": "full",
+        "seed": 73,
+        "seconds": 19.081,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": true,
+          "answer_sha256": "629e0cded3de7a2f47da757023e5ecdad33c3bccf76942054c89fb71023fb8ff"
+        }
+      },
+      {
+        "case": "portuguese",
+        "variant": "ablated",
+        "seed": 41,
+        "seconds": 18.07,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": false,
+          "answer_sha256": "b7b240c4a2043a3f5ce17d9cfa0c3f0a1e47315a9e7cd31f5d94b464536fa7f7"
+        }
+      },
+      {
+        "case": "portuguese",
+        "variant": "ablated",
+        "seed": 73,
+        "seconds": 17.457,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": false,
+          "answer_sha256": "b7b240c4a2043a3f5ce17d9cfa0c3f0a1e47315a9e7cd31f5d94b464536fa7f7"
+        }
+      },
+      {
+        "case": "portuguese",
+        "variant": "full",
+        "seed": 41,
+        "seconds": 16.49,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": false,
+          "answer_sha256": "9dd5dd76b07cd85d3b3eba6585f1b8b401347ca447acb70fe5ef851e239f04b2"
+        }
+      },
+      {
+        "case": "portuguese",
+        "variant": "full",
+        "seed": 73,
+        "seconds": 17.403,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": false,
+          "cpr_mentioned": false,
+          "answer_sha256": "9dd5dd76b07cd85d3b3eba6585f1b8b401347ca447acb70fe5ef851e239f04b2"
+        }
+      },
+      {
+        "case": "stroke",
+        "variant": "ablated",
+        "seed": 41,
+        "seconds": 19.224,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": true,
+          "cpr_mentioned": false,
+          "answer_sha256": "37588cda4f74977b0f666c610dd0bfedb3f5f015c310fb5bb767e042a61eb5ac"
+        }
+      },
+      {
+        "case": "stroke",
+        "variant": "ablated",
+        "seed": 73,
+        "seconds": 18.359,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": true,
+          "cpr_mentioned": false,
+          "answer_sha256": "37588cda4f74977b0f666c610dd0bfedb3f5f015c310fb5bb767e042a61eb5ac"
+        }
+      },
+      {
+        "case": "stroke",
+        "variant": "full",
+        "seed": 41,
+        "seconds": 15.675,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": true,
+          "cpr_mentioned": false,
+          "answer_sha256": "19b436d94016ba897492d8ca9b2a4812fc1354c87d61de91a8d752c20fd83c5d"
+        }
+      },
+      {
+        "case": "stroke",
+        "variant": "full",
+        "seed": 73,
+        "seconds": 15.946,
+        "finish_reason": "stop",
+        "error": null,
+        "checks": {
+          "invalid_citations": [],
+          "pregnancy_mentioned": false,
+          "twenty_minute_mention": true,
+          "cpr_mentioned": false,
+          "answer_sha256": "19b436d94016ba897492d8ca9b2a4812fc1354c87d61de91a8d752c20fd83c5d"
+        }
+      }
+    ]
+  }
+}

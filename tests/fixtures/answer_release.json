@@ -1,0 +1,185 @@
+[
+  {
+    "id": "cpr",
+    "request": {
+      "q": "My dad just collapsed. He is unresponsive and only gasping every few seconds. What should I do right now?",
+      "lang": "en",
+      "history": []
+    },
+    "answer": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\nYour father is in cardiac arrest. Gasping is not normal breathing; it means his heart has stopped pumping effectively [S5]. You must act immediately.\n\n### **Immediate Actions**\n\n1.  **Ensure Safety:** Check the scene for dangers (fire, electricity, traffic) before touching him [S5].\n2.  **Call for Help:** Shout for someone to call emergency services and get an Automated External Defibrillator (AED) if one is nearby [S1][S2].\n    *   *If you are alone with no phone nearby:* Call emergency services first, then return immediately to start CPR if EMS will take a few minutes to arrive [S2].\n3.  **Start CPR Immediately:** Do not wait for an AED if it is not immediately available.\n    *   **Hand Placement:** Place the heel of one hand (or two hands stacked) in the **center of the chest** (lower half of the breastbone). Keep arms straight [S1].\n    *   **Compress Hard and Fast:** Push down **5 to 6 cm** deep at a rate of **100 to 120 times per minute** (rhythm of \"Stayin' Alive\") [S1][S3].\n    *   **Allow Full Recoil:** Let the chest rise completely between pushes [S1].\n    *   **Breaths:** If you are trained and comfortable, give 30 compressions followed by 2 rescue breaths. If you are not trained or unwilling to give breaths, do **continuous compressions only** [S1].\n4.  **Use an AED if Available:** As soon as the AED arrives, turn it on and follow its voice prompts immediately [S2]. It analyzes the heart rhythm and can deliver a shock if needed [S3].\n5.  **Continue Until Help Arrives or He Moves:** Do not stop compressions until the person starts breathing normally, professional help takes over, or you are physically exhausted [S1].\n\n### **Special Considerations**\n*   **Drowning:** If your father collapsed in water, rescue breaths are especially critical [S1].\n*   **Pregnancy:** If he is pregnant and past 20 weeks, push the uterus to the left side during compressions; if no pulse returns after 4 minutes, call for an emergency C-section [S3].\n\n### **When to Stop**\nGenerally, CPR can be stopped after about 20 minutes if there is no return of a heartbeat, **unless**:\n*   He shows signs of life (breathing normally, moving) [S3].\n*   Help arrives and takes over [S1].\n*   You are too exhausted to continue [S1].\n*   Exceptions apply for severe hypothermia or drowning victims, where CPR should continue longer [S3].\n\n> **Disclaimer:** This information is for emergency guidance only and does not replace professional medical advice. Always refer to local emergency protocols and AHA/Red Cross guidelines when possible.",
+    "sources": [
+      {
+        "n": 1,
+        "context_omitted": false
+      },
+      {
+        "n": 2,
+        "context_omitted": false
+      },
+      {
+        "n": 3,
+        "context_omitted": false
+      },
+      {
+        "n": 4,
+        "context_omitted": false
+      },
+      {
+        "n": 5,
+        "context_omitted": false
+      }
+    ]
+  },
+  {
+    "id": "portuguese",
+    "request": {
+      "q": "Estamos usando um gerador a gasolina dentro da garagem com a porta aberta. Todos estão com dor de cabeça e enjoo. O que fazer?",
+      "lang": "pt",
+      "history": []
+    },
+    "answer": "**Trechos locais fornecidos.** Eles podem não apoiar todas as partes da resposta; as citações não foram verificadas de forma independente.\n\n**SITUAÇÃO DE RISCO IMEDIATO: MONÓXIDO DE CARBONO (CO)**\n\nOs sintomas relatados (dor de cabeça, enjoo) são clássicos de intoxicação por monóxido de carbono. O CO é inodoro e incolor; a porta aberta na garagem pode ser insuficiente para evitar o acúmulo do gás em um ambiente semi-fechado.\n\n**AÇÕES IMEDIATAS:**\n\n1.  **EVACUE AGORA:** Saia imediatamente da garagem com todas as pessoas afetadas, levando-as para um local totalmente aberto ao ar livre (ponto mais alto se possível). [S1]\n2.  **DESATIVE A FONTE DE RISCO:** Desligue o gerador a gasolina de imediato. Não tente consertá-lo no local. [S5]\n3.  **VENTILAÇÃO (Se seguro):** Se houver outra pessoa não afetada e segura, abra todas as portas e janelas da garagem apenas após ter evacuado todos os ocupantes. [S1]\n4.  **PRESTAÇÃO DE PRIMEIROS SOCORROS:**\n    *   Mantenha a vítima em ambiente ventilado.\n    *   Se a vítima estiver inconsciente ou não respirando, inicie RCP (Reanimação Cardiopulmonar) até que chegue ajuda profissional. [S2]\n    *   **Oxigênio:** O tratamento imediato consiste na administração de oxigênio ao ar livre ou através de máscara não rebreathing (se disponível). Isso reduz a meia-vida do carboxihemoglobina em cerca de 4 horas para 1 hora e 20 minutos. [S2]\n5.  **BUSCA DE AJUDA MÉDICA:** Procure atendimento médico emergencial imediatamente, mesmo que os sintomas pareçam melhorar após o ar fresco. Intoxicações graves podem causar complicações como arritmias, convulsões ou danos neurológicos tardios. [S1][S3]\n\n**SEM APOIO DE FONTES LOCAIS (Conhecimento Geral):**\n*   **Sinais de Alerta:** Além de dor de cabeça e náusea, procure por confusão mental, tontura extrema, sonolência incontrolável ou perda de consciência. [S1][S3]\n*   **Prevenção Futura:** Nunca utilize geradores, fogões a gás ou churrasqueiras em ambientes fechados (garagens, casas, barracas), mesmo que a porta esteja aberta. A ventilação cruzada muitas vezes não é suficiente para dispersar o CO rapidamente. [S1][S5]\n*   **Equipamento:** Considere instalar detectores de monóxido de carbono na residência e na garagem para alertas futuros. [S3]\n\n**Aviso Importante:** Esta orientação não substitui a avaliação médica profissional. Intoxicação por CO é uma emergência grave com risco de morte silenciosa.\n\n> ⚠️ Orientação de primeiros socorros, não substitui atendimento médico. Havendo socorro disponível, procure-o.",
+    "sources": [
+      {
+        "n": 1,
+        "context_omitted": false
+      },
+      {
+        "n": 2,
+        "context_omitted": false
+      },
+      {
+        "n": 3,
+        "context_omitted": false
+      },
+      {
+        "n": 4,
+        "context_omitted": true
+      },
+      {
+        "n": 5,
+        "context_omitted": false
+      },
+      {
+        "n": 6,
+        "context_omitted": false
+      }
+    ]
+  },
+  {
+    "id": "infant_followup",
+    "request": {
+      "q": "She is unconscious now and still not breathing. I have never learned CPR. Tell me exactly what to do.",
+      "lang": "en",
+      "history": [
+        {
+          "role": "user",
+          "content": "My 8-month-old is choking on food, cannot cry or breathe, and is turning blue. What do I do?"
+        },
+        {
+          "role": "assistant",
+          "content": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\nThis is a life-threatening emergency. Act immediately.\n\n**1. Assess the situation**\n*   Confirm the infant (< 1 year) **cannot cough, speak, or breathe**.\n*   Note that they are turning blue (cyanosis), indicating severe lack of oxygen [1].\n\n**2. Perform Infant Choking First Aid**\nDo **not** give abdominal thrusts to an infant [1]. Follow these steps exactly:\n*   **Position 1:** Turn the baby face-down along your forearm, supporting the head so it is lower than the chest. Hold the forearm against your other hand to keep the head low [1].\n*   **Back Blows:** Give **5 firm back blows** between the shoulder blades using the heel of your free hand [1].\n*   **Position 2:** Turn the baby face-up, keeping the head lower than the chest. Support the head and neck with one hand [1].\n*   **Chest Thrusts:** Give **5 chest thrusts** in the center of the chest (lower half of the sternum) using two fingers [1].\n*   **Repeat:** Alternate 5 back blows and 5 chest thrusts until the object is dislodged or the baby becomes unconscious.\n\n**3. If the baby becomes unconscious**\n*   Lower the baby gently to a firm, flat surface.\n*   Call for emergency help immediately if possible.\n*   Begin **CPR**: Check the mouth for a visible object; remove it only if you can see it clearly [1]. Give rescue breaths and chest compressions as per standard infant CPR protocols.\n\n**Important Warnings:**\n*   Do not slap the baby or hit them on the back while they are standing or sitting upright [1].\n*   Do not perform abdominal thrusts (Heimlich maneuver) on an infant, as this can cause internal injury [1].\n*   If you are unsure about any step, prioritize safety and get professional help immediately.\n\n> Source: IFRC 2020; European Resuscitation Council Guidelines 2021 — First Aid / Basic Life Support [1].\n\n> ⚠️ First-aid guidance only; it does not replace medical care. If help is available, seek it."
+        }
+      ]
+    },
+    "answer": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\nThis is a life-threatening emergency. Since the baby is **unconscious** and **not breathing**, you must start **Infant CPR immediately**. Do not waste time searching for the object if it is not clearly visible.\n\n**Immediate Action Steps:**\n\n1.  **Call for Help**\n    *   Shout for someone to call emergency services (911, 999, etc.) and get an AED if available [S2].\n    *   If you are alone, do this while moving the baby only if necessary to access a phone; otherwise, proceed immediately to CPR.\n\n2.  **Position the Baby**\n    *   Place the infant on their back on a firm, flat surface (floor or ground). Do not use soft furniture [S2].\n    *   Ensure the head is straight and neutral (do not tilt it too far back) to keep the airway open [S2].\n\n3.  **Check the Mouth**\n    *   Look inside the mouth for a visible object [S2].\n    *   **Remove the object ONLY if you can see it clearly.** Use a finger sweep gently; do not perform blind sweeps as this can push the object deeper [S2].\n    *   If you cannot see the object, **do not try to dig for it**. Proceed immediately to compressions [S2].\n\n4.  **Start Infant CPR (30 Compressions : 2 Breaths)**\n    Since you have never learned CPR, follow this simplified cycle based on current guidelines:\n    *   **Hand Placement:** Place the tip of **two fingers** in the center of the chest (lower half of the sternum/bone) [S1].\n    *   **Compressions:** Push hard and fast.\n        *   Depth: About 4 cm (approx. 1/3 of chest depth) [S2].\n        *   Rate: Fast, roughly 100–120 beats per minute (think the beat of \"Stayin' Alive\") [S1].\n        *   Allow the chest to fully rise after each push.\n    *   **Count:** Perform **30 compressions** continuously without stopping to look for the object again or check breathing [S2].\n    *   **Rescue Breaths (if trained):**\n        *   After 30 compressions, tilt the head slightly back and cover both the mouth and nose with your mouth.\n        *   Give **1 gentle breath** (watch the chest rise).\n        *   Give a second breath immediately after.\n        *   If you are **not trained** to give rescue breaths, perform **continuous compressions only** until help arrives [S1].\n    *   **Repeat:** Continue cycles of 30 compressions and 2 breaths (or just compressions) until the baby starts breathing, an AED tells you to pause, or emergency responders take over.\n\n5.  **Use an AED if Available**\n    *   If an Automated External Defibrillator (AED) arrives, turn it on and follow its voice instructions [S2].\n    *   For infants, one pad goes on the chest and one on the back (or use pediatric pads/settings if available) [S2].\n\n**Critical Warnings:**\n*   **Do not stop.** Continue until the baby breathes normally or professionals take over. Fatigue is dangerous; if you get tired, have another person switch places every 2 minutes [S1].\n*   **Do not delay CPR** to try to remove a hidden object; compressions can help move blood and potentially dislodge the obstruction [S2].\n*   This guidance is for immediate emergency stabilization. Professional medical care is required immediately after this procedure.\n\n> Sources: IFRC 2020 Guidelines, American Heart Association 2020 CPR Guidelines [S1], [S2], [S5].\n\n> ⚠️ First-aid guidance only; it does not replace medical care. If help is available, seek it.",
+    "sources": [
+      {
+        "n": 1,
+        "context_omitted": false
+      },
+      {
+        "n": 2,
+        "context_omitted": false
+      },
+      {
+        "n": 3,
+        "context_omitted": false
+      },
+      {
+        "n": 4,
+        "context_omitted": true
+      },
+      {
+        "n": 5,
+        "context_omitted": false
+      },
+      {
+        "n": 6,
+        "context_omitted": false
+      }
+    ]
+  },
+  {
+    "id": "anaphylaxis",
+    "request": {
+      "q": "My child ate peanuts and now has a swollen tongue, wheezing and feels faint. We have her prescribed epinephrine auto-injector. Should I try antihistamine first?",
+      "lang": "en",
+      "history": []
+    },
+    "answer": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\n**DO NOT WAIT FOR ANTIHISTAMINES.** Antihistamines (like Benadryl) **do not replace epinephrine** and are too slow to stop life-threatening swelling or breathing issues [S1]. Your child's symptoms (swollen tongue, wheezing, faintness) indicate severe anaphylaxis.\n\n**IMMEDIATE ACTION STEPS:**\n\n1.  **Inject Epinephrine Immediately:**\n    *   Use the prescribed auto-injector right now.\n    *   Remove the safety cap.\n    *   Hold firmly against the **outer thigh** (through clothing if necessary).\n    *   Press hard until you hear a click and hold for the time specified in the device instructions (usually 3 seconds).\n    *   Massage the area gently for 10 seconds.\n    *   *Note:* A second dose may be needed in 5–15 minutes if symptoms do not improve [S1][S2].\n\n2.  **Position the Child:**\n    *   Lay the child down on their back and raise their legs (unless breathing is severely compromised, in which case keep them sitting up) to help blood flow to vital organs [S1].\n\n3.  **Call Emergency Services Immediately:**\n    *   Dial your local emergency number (e.g., 911) right now. Do not wait for symptoms to get worse [S4]. Even if the child seems better after the injection, they need urgent medical observation because anaphylaxis can return [S4].\n\n4.  **Administer Antihistamines ONLY AFTER Epinephrine:**\n    *   If you have antihistamine tablets or syrup, give them **only after** the epinephrine is given and while waiting for help. They may help with itching but will not stop the anaphylaxis [S1].\n\n**WARNING SIGNS OF WORSENING CONDITION (Seek immediate professional help if these occur):**\n*   Difficulty breathing or inability to speak in full sentences.\n*   Blue or pale lips/skin.\n*   Loss of consciousness or unresponsiveness.\n*   Vomiting.\n*   Symptoms returning after initial improvement [S4].\n\n**Disclaimer:** This information is for emergency guidance only and does not replace professional medical advice. Always follow the specific instructions on your epinephrine device label.\n\n> ⚠️ First-aid guidance only; it does not replace medical care. If help is available, seek it.",
+    "sources": [
+      {
+        "n": 1,
+        "context_omitted": false
+      },
+      {
+        "n": 2,
+        "context_omitted": false
+      },
+      {
+        "n": 3,
+        "context_omitted": false
+      },
+      {
+        "n": 4,
+        "context_omitted": false
+      }
+    ]
+  },
+  {
+    "id": "stroke",
+    "request": {
+      "q": "My mother suddenly has a drooping face and slurred speech but says she feels fine. It started 20 minutes ago. Should we wait?",
+      "lang": "en",
+      "history": []
+    },
+    "answer": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\n**DO NOT WAIT.** This is a medical emergency. Even if she \"feels fine,\" the symptoms describe a stroke (specifically involving cranial nerves or motor pathways). Time lost reduces the chance of saving brain tissue and minimizing permanent damage.\n\n### Immediate Action Steps\n1.  **Call Emergency Services Immediately** → Dial your local emergency number (e.g., 911, 112) now. Do not drive her yourself unless no other option exists.\n2.  **Note the Time** → Record the exact time symptoms started (20 minutes ago). This is critical for determining eligibility for clot-busting drugs (tPA), which are often only effective within a few hours of onset.\n3.  **Keep Her Safe** → Have her sit or lie down in a comfortable position. Keep her calm and still to prevent falls or further injury.\n4.  **Do Not Give Food or Drink** → She has slurred speech and potential swallowing difficulties; eating or drinking could cause choking or aspiration pneumonia.\n\n### Why You Cannot Wait\n*   **Stroke is an Emergency:** Stroke warrants immediate medical attention regardless of how the patient feels, as internal brain damage can be occurring silently [S1].\n*   **Symptom Specifics:** A drooping face and slurred speech indicate involvement of cranial nerves or specific brain areas (like Broca's area for speech). While some sources note that brainstem strokes can cause altered vision/hearing and facial weakness, they also list \"decreased reflexes: gag, swallow\" as potential signs [42]. Slurred speech often implies difficulty coordinating the muscles needed for swallowing safely.\n*   **Window of Treatment:** Many treatments (like thrombolysis) have a narrow time window (often <3 to 4.5 hours). Waiting even 30 minutes significantly reduces treatment options and outcomes.\n\n### Warning Signs Checklist (FAST + More)\nVerify these signs while waiting for help:\n*   **F**ace: Does one side droop? (Confirmed in your scenario) [42]\n*   **A**rms: Can she raise both arms symmetrically? Is one drifting down?\n*   **S**peech: Is her speech slurred or is she unable to repeat simple phrases? (Confirmed in your scenario) [S3]\n*   **T**ime: Call emergency services immediately.\n*   **Other Signs:** Look for vision changes, severe headache, confusion, or balance problems [42].\n\n### Important Medical Note\n*   **Do Not Administer Medication:** Do not give aspirin, blood thinners, or any other drugs unless explicitly instructed by a dispatcher or doctor. If the stroke is hemorrhagic (bleeding), aspirin can worsen it [S2].\n*   **Professional Help Required:** Diagnosis requires imaging (CT/MRI) to distinguish between ischemic and hemorrhagic strokes. Treatment differs completely between the two [S1].\n\n**Summary:** The \"feeling fine\" aspect does not rule out a severe stroke. Go to the hospital now.",
+    "sources": [
+      {
+        "n": 1,
+        "context_omitted": false
+      },
+      {
+        "n": 2,
+        "context_omitted": false
+      },
+      {
+        "n": 3,
+        "context_omitted": false
+      }
+    ]
+  },
+  {
+    "id": "diabetes",
+    "request": {
+      "q": "My diabetic husband took insulin but missed lunch. Now he is unconscious. Should I pour orange juice or honey into his mouth?",
+      "lang": "en",
+      "history": []
+    },
+    "answer": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\n**DO NOT POUR FLUIDS INTO AN UNCONSCIOUS MOUTH.**\nPouring orange juice, honey, or any liquid into the mouth of an unconscious person causes immediate choking and aspiration (liquid entering the lungs), which can be fatal. [S3]\n\nYour husband requires **emergency medical attention immediately**. Hypoglycemia in an unconscious person is a life-threatening emergency.\n\n### Immediate Action Steps\n1.  **Call Emergency Services**: Dial your local emergency number (e.g., 911) immediately. Tell them the patient is diabetic, unconscious, and likely hypoglycemic.\n2.  **Check for Breathing**: Look, listen, and feel for breathing. If he is not breathing or only gasping, begin CPR if you are trained to do so.\n3.  **Do Not Give Oral Food/Drink**: Since he is unconscious, he cannot protect his airway. Do not attempt to feed him orange juice, honey, sugar tablets, or gel.\n4.  **Positioning**: If possible and safe, place him on his side (recovery position) to prevent choking if he vomits.\n\n### Medical Treatment (For Trained Personnel/EMS)\nIf you have no way to reach emergency services and a trained healthcare provider is present:\n*   **IV Dextrose**: The standard treatment for unconscious hypoglycemia is an IV bolus of Dextrose 50% (D50), which delivers 25g of glucose. [S1]\n*   **Glucagon**: If IV access cannot be established, a glucagon injection (1mg SC or IM) may be used. However, efficacy depends on the patient having adequate liver glycogen stores; it may not work in cases of chronic alcohol use, malnutrition, or liver disease. [S1]\n\n### General Diabetes Management Context\n*   **Prevention**: Standard diabetes management aims to keep blood sugar normal without causing lows through diet, exercise, and medication. A common rule for *conscious* hypoglycemia is the \"15-15 Rule\" (15g carbs, wait 15 mins), but this **only applies if the person is awake and able to swallow safely**. [S2][S3]\n*   **Warning Signs**: Seek professional help immediately for unconsciousness, confusion, seizures, or inability to wake up after a meal or insulin dose.\n\n**Disclaimer**: This information is for emergency guidance only and does not replace professional medical advice. Always refer to local emergency protocols and medical professionals for treatment.\n\n> ⚠️ First-aid guidance only; it does not replace medical care. If help is available, seek it.",
+    "sources": [
+      {
+        "n": 1,
+        "context_omitted": false
+      },
+      {
+        "n": 2,
+        "context_omitted": false
+      },
+      {
+        "n": 3,
+        "context_omitted": false
+      }
+    ]
+  }
+]

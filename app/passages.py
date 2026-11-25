@@ -93,7 +93,9 @@ def _render(node):
                 if node.tag == 'ol' and re.fullmatch(r'[+-]?\d+', value):
                     number = int(value)
                 marker = f'{number}. ' if node.tag == 'ol' else '- '
-                lines.append(marker + _render(child).strip())
+                item = _render(child).strip().splitlines()
+                lines.append(marker + item[0] if item else marker.rstrip())
+                lines.extend(' ' * len(marker) + line for line in item[1:])
                 number += 1
         return '\n' + '\n'.join(lines) + '\n'
     if node.tag == 'tr':
@@ -103,7 +105,14 @@ def _render(node):
 
 
 def _clean(text):
-    return '\n'.join(line.strip() for line in re.sub(r'[^\S\n]+', ' ', text).splitlines() if line.strip())
+    lines = []
+    for line in text.splitlines():
+        cleaned = re.sub(r'\s+', ' ', line).strip()
+        if cleaned:
+            # Rendering adds structural indentation to nested list items.
+            indent = len(line) - len(line.lstrip(' ')) if re.match(r'(?:[-*]|\d+\.) ', cleaned) else 0
+            lines.append(' ' * indent + cleaned)
+    return '\n'.join(lines)
 
 
 def _anchor(node):
@@ -139,7 +148,47 @@ def _blocks(node):
 
 
 def _warning(text):
-    return bool(re.search(r'\b(warning|caution|never|only|do not|must not|aviso|atenção|nunca|somente|advertencia|precaución|solo|no usar)\b', text, re.I))
+    # "Only two fingers" is a step, not a scope warning. Keep explicit
+    # constraints and prohibitions, including localized caution wording.
+    return bool(re.search(
+        r'\b(warnings?|cautions?|never|do not|must not|not recommended|'
+        r'only (?:for|if|when|after)|(?:adults?|infants?|children) only|(?:somente|apenas) (?:para|se|quando)|aviso|atenção|nunca|não|nao|'
+        r'advertencias?|precaución|solo (?:para|si)|no (?:usar|use|introduzca))\b', text, re.I))
+
+
+def _inherited_cautions(blocks):
+    """Carry caution sentences, never the unrelated steps surrounding them.
+
+    Source blocks in their original section are untouched. Split inherited
+    prose only at sentence/list boundaries, retaining conditional clauses.
+    """
+    cautions = []
+    for _, text in blocks:
+        parents = []
+        for line in text.splitlines():
+            indent = len(line) - len(line.lstrip())
+            while parents and parents[-1][0] >= indent:
+                parents.pop()
+            content = re.sub(r'^(?:\d+\. |[-*] )', '', line.strip())
+            # Keep a conditional prefix attached across a semicolon. Other
+            # semicolons separate steps from cautions in prose.
+            conditional = re.match(r'^(if|when|se|quando|si|cuando)\b', content, re.I)
+            if conditional:
+                # Do not detach warnings from a preceding conditional action,
+                # or import that parent action into a different procedure.
+                prefix = re.split(r'\b(?:do not|never|must not|nunca|não|nao)\b', content, maxsplit=1, flags=re.I)[0]
+                if re.search(r'[.!?]|\b(?:give|press|monitor|perform|administer|start)\b', prefix, re.I):
+                    parents.append((indent, None))  # Suppress descendants too.
+                    continue
+            separator = r'(?<=[.!?])\s+' if conditional else r';|(?<=[.!?])\s+'
+            for sentence in re.split(separator, content):
+                sentence = sentence.strip()
+                if _warning(sentence):
+                    context = [parent for _, parent in parents]
+                    if all(parent and re.match(r'^(if|when|se|quando|si|cuando)\b', parent, re.I) for parent in context):
+                        cautions.append('\n'.join(context + [sentence]))
+            parents.append((indent, content))
+    return cautions
 
 
 def extract_passages(raw_html, *, archive='', version='', article_url='', max_prose_chars=4000):
@@ -164,7 +213,7 @@ def extract_passages(raw_html, *, archive='', version='', article_url='', max_pr
             level = int(tag[1])
             while headings and headings[-1][0] >= level:
                 headings.pop()
-            ancestors = [b for _, _, parent in headings for b in parent['blocks'] if _warning(b[1])]
+            ancestors = [text for _, _, parent in headings for text in _inherited_cautions(parent['blocks'])]
             section = {'path': tuple(h[1] for h in headings) + (text,), 'anchor': anchor, 'blocks': [], 'ancestors': ancestors}
             headings.append((level, text, section))
         elif text:
@@ -183,7 +232,7 @@ def extract_passages(raw_html, *, archive='', version='', article_url='', max_pr
                 break
             if any(_warning(heading) or heading.lower() in {'warnings', 'cautions'} for heading in path[len(section['path']):]):
                 cautions.extend(text for _, text in following['blocks'])
-        inherited = [text for _, text in section['ancestors']]
+        inherited = section['ancestors']
         groups = [[]]
         size = 0
         for _, text in blocks:

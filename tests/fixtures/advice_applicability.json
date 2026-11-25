@@ -1,0 +1,86 @@
+{
+  "cpr": {
+    "request": {
+      "q": "My dad just collapsed. He is unresponsive and only gasping every few seconds. What should I do right now?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    },
+    "sources": [
+      {
+        "id": "f9693cbed9f381c20ba723ec",
+        "kind": "kiwix",
+        "doc_title": "WikiMed Medical Encyclopedia",
+        "section": "Management › Cardiopulmonary resuscitation",
+        "text": "Main article:\n\nCardiopulmonary resuscitation §\n\nCompressions with rescue breaths\n\nEarly cardiopulmonary resuscitation (CPR) is essential to surviving cardiac arrest with good neurological function.[80][30] It is recommended that it be started as soon as possible with minimal interruptions once begun. The components of CPR that make the greatest difference in survival are chest compressions and defibrillating shockable rhythms.[81] After defibrillation, chest compressions should be continued for two minutes before another rhythm check.[30] This is based on a compression rate of 100-120 compressions per minute, a compression depth of 5–6 centimeters into the chest, full chest recoil, and a ventilation rate of 10 breath ventilations per minute.[30] Mechanical chest compressions (as performed by a machine) are no better than chest compressions performed by hand.[82] It is unclear if a few minutes of CPR before defibrillation results in different outcomes than immediate defibrillation.[83]\n\nCorrectly performed bystander CPR has been shown to increase survival, however it is performed in fewer than 30% of out-of-hospital cardiac arrests (OHCAs) as of 2007.[84] A 2019 meta-analysis found that use of dispatcher-assisted CPR improved outcomes, including survival, when compared with undirected bystander CPR.[85] Likewise, a 2022 systematic review on exercise-related cardiac arrests supported early intervention of bystander CPR and AED use (for shockable rhythms) as they improve survival outcomes.[86]\n\nIf high-quality CPR has not resulted in return of spontaneous circulation and the person's heart rhythm is in asystole, stopping CPR and pronouncing the person's death is generally reasonable after 20 minutes.[87] Exceptions to this include certain cases with hypothermia or drowning victims.[81][87] Some of these cases should have longer and more sustained CPR until they are nearly normothermic.[81]\n\nIf cardiac arrest occurs after 20 weeks of pregnancy, the uterus should be pulled or pushed to the left during CPR.[88] If a pulse has not returned by four minutes, an emergency Cesarean section is recommended.[88]",
+        "title": "Cardiac arrest"
+      }
+    ]
+  },
+  "diabetes": {
+    "request": {
+      "q": "My diabetic husband took insulin but missed lunch. Now he is unconscious. Should I pour orange juice or honey into his mouth?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    },
+    "sources": [
+      {
+        "id": "56acf297582c6c287ff4f04b",
+        "kind": "kiwix",
+        "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+        "section": "Hypoglycemia › Management",
+        "text": "Algorithm for the management of hypoglycemia\n\n- If awake and able to tolerate POs\n- Oral glucose\n- If altered mental status or otherwise unable to tolerate POs\n- Dextrose 50% 50mL bolus IV (equals \"one amp\")\n- Contains 25g glucose\n- Glucagon 1mg SC or IM (if unable to achieve IV access)[5]\n- Onset of action slower than IV dextrose (7-10min)\n- Efficacy dependent on hepatic glycogen stores (less effective in chronic ETOH, cirrhosis, malnourished, neonate, in-born errors, glycogen storage disease, etc.)[6]",
+        "title": "Hypoglycemia"
+      },
+      {
+        "id": "11cf0f9ab523ae1a3c8a8975",
+        "kind": "kiwix",
+        "doc_title": "WikiMed Medical Encyclopedia",
+        "section": "Treatment",
+        "text": "See also:\n\nGlucose-elevating agent\n\nAfter hypoglycemia in a person is identified, rapid treatment is necessary and can be life-saving.[1] The main goal of treatment is to raise blood glucose back to normal levels, which is done through various ways of administering glucose, depending on the severity of the hypoglycemia, what is on-hand to treat, and who is administering the treatment.[1][3] A general rule used by the American Diabetes Association is the \"15-15 Rule,\" which suggests consuming or administering 15 grams of a carbohydrate, followed by a 15-minute wait and re-measurement of blood glucose level to assess if blood glucose has returned to normal levels.[5]",
+        "title": "Hypoglycemia"
+      }
+    ]
+  },
+  "anaphylaxis": {
+    "request": {
+      "q": "My child ate peanuts and now has a swollen tongue, wheezing and feels faint. We have her prescribed epinephrine auto-injector. Should I try antihistamine first?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    },
+    "sources": [
+      {
+        "id": "26537309aa7d4f8a68807d21",
+        "kind": "kiwix",
+        "doc_title": "WikiMed Medical Encyclopedia",
+        "section": "Management › Epinephrine",
+        "text": "An old version of an EpiPen brand auto-injector\n\nEpinephrine (adrenaline) (1:1000) is the primary treatment for anaphylaxis with no absolute contraindication to its use.[8] It is recommended that an epinephrine solution be given intramuscularly into the mid anterolateral thigh as soon as the diagnosis is suspected. The injection may be repeated every 5 to 15 minutes if there is insufficient response.[8] A second dose is needed in 16–35% of episodes with more than two doses rarely required.[8] The intramuscular route is preferred over subcutaneous administration because the latter may have delayed absorption.[8][62] It is recommended that after diagnosis and treatment of anaphylaxis, the patient should be kept under observation in an appropriate clinical setting until symptoms have fully resolved.[54] Minor adverse effects from epinephrine include tremors, anxiety, headaches, and palpitations.[3] People on β-blockers may be resistant to the effects of epinephrine,[10] but this is less of an issue with \"cardioselective\" β1-blockers. In this situation, if epinephrine is not effective, intravenous glucagon can be administered, which has a mechanism of action independent of β-receptors.[10]\n\nIf necessary, it can also be given intravenously using a dilute epinephrine solution. Intravenous epinephrine, however, has been associated both with dysrhythmia and myocardial infarction.[8] Epinephrine autoinjectors used for self-administration typically come in two doses, one for adults or children who weigh more than 25 kg and one for children who weigh 10 to 25 kg.[63]\n\nMost recently, the FDA has approved an intranasal form of epinephrine under the brand name Neffy,[64] on the basis of its ability to attain levels of epinephrine in people that are believed to be protective against anaphylaxis. There are currently no clinical data on its effectiveness.\n\nDelayed administration of epinephrine in anaphylaxis is associated with increased rates of hospitalization and mortality.[65]",
+        "title": "Anaphylaxis"
+      }
+    ]
+  },
+  "infant_followup": {
+    "request": {
+      "q": "She is unconscious now and still not breathing. I have never learned CPR. Tell me exactly what to do.",
+      "lang": "en",
+      "history": [
+        {
+          "role": "user",
+          "content": "My 8-month-old is choking on food, cannot cry or breathe, and is turning blue. What do I do?"
+        }
+      ],
+      "use_kiwix": true
+    },
+    "sources": [
+      {
+        "id": "en:07-first-aid-medicine:2",
+        "kind": "kit",
+        "doc_title": "First aid and health care",
+        "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+        "text": "**Adult who is unresponsive and not breathing normally:**\n\n1. Call for help and an AED (defibrillator) if one exists.\n2. Hands stacked on the **center of the chest** (lower half of the breastbone), arms straight.\n3. Compress **5 to 6 cm** deep, **100 to 120 times per minute** (the rhythm of the song \"Stayin' Alive\"), letting the chest come back up fully between compressions.\n4. If trained: 30 compressions and 2 rescue breaths. If not: **continuous compressions only**.\n5. Don't stop until the person starts breathing again, help arrives or you are exhausted. Take turns every 2 minutes if there are more people.\n\n**Child (1 year to puberty):** one or two hands, depth of about 1/3 of the chest (~5 cm). **Infant (<1 year):** two fingers, about 4 cm. In children and drowning victims, rescue breaths are especially important.\n\n> Source: American Heart Association — *2020 Guidelines for CPR and Emergency Cardiovascular Care* (and updates). https://cpr.heart.org"
+      }
+    ]
+  }
+}

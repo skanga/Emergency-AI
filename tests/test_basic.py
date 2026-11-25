@@ -98,7 +98,7 @@ class EngineTests(unittest.TestCase):
         self.assertIn("reidratação oral", kiwix_src["text"])
         self.assertNotIn("var x", kiwix_src["text"])
         prompt = mock_servers.LLMHandler.last_request["messages"][-1]["content"]
-        self.assertIn("[1]", prompt)
+        self.assertIn("[S1]", prompt)
         self.assertIn("FONTES", prompt)
 
     def test_llm_down_falls_back(self):

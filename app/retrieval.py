@@ -6,6 +6,7 @@ import time
 import unicodedata
 from urllib.parse import unquote, urlsplit, quote
 
+from .applicability import inapplicability_reason
 from .kiwix import failure_status
 from .document_index import DocumentIndex, document_state
 from .knowledge import STOPWORDS, is_relevant
@@ -182,7 +183,7 @@ def _educational_page(source, plan):
 
 def relevance(source, plan):
     """Relevance/applicability only: this score never resolves factual conflict."""
-    if _educational_page(source, plan):
+    if _educational_page(source, plan) or inapplicability_reason(source, plan):
         return 0
     if not plan.topics and not _general_relevance(source, plan):
         return 0

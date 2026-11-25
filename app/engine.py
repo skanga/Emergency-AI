@@ -4,6 +4,7 @@ import threading
 import time
 
 from . import i18n
+from .answer_validation import PROMPT as VALIDATION_PROMPT, source_for_prompt, validate_answer
 from .kiwix import KiwixClient
 from .knowledge import KnowledgeBase, is_relevant, strip_accents, tokenize
 from .llm import LLMError, detect_llm
@@ -149,11 +150,11 @@ class Engine:
             if s.get("context_omitted"):
                 continue
             label = i18n.KIT_LABEL[lang] if s["kind"] == "kit" else i18n.KIWIX_LABEL[lang]
-            lines.append(f"[{s['n']}] {label}: {s['doc_title']} — {s['section']}\n{s['text']}")
+            lines.append(f"[S{s['n']}] {label}: {s['doc_title']} — {s['section']}\n{source_for_prompt(s['text'])}")
         ctx = "\n\n".join(lines) if lines else "(—)"
         user = f"{i18n.SOURCES_HEADER[lang]}:\n{ctx}\n\n{i18n.QUESTION_HEADER[lang]}: {question}"
         prompt = i18n.SYSTEM_PROMPT[lang] if lines else i18n.general_knowledge_prompt(lang)
-        messages = [{"role": "system", "content": prompt}]
+        messages = [{"role": "system", "content": prompt + VALIDATION_PROMPT}]
         for h in (history or [])[-4:]:
             if h.get("role") in ("user", "assistant") and h.get("content"):
                 messages.append({"role": h["role"], "content": h["content"]})
@@ -194,7 +195,7 @@ class Engine:
         for s in sources:
             if s.get("context_omitted"):
                 continue
-            text = s["text"]
+            text = source_for_prompt(s["text"])
             parts.append(f"### [{s['n']}] {s['doc_title']} › {s['section']}\n\n{text}\n")
         return "\n".join(parts)
 
@@ -248,25 +249,46 @@ class Engine:
         if llm:
             note = i18n.SOURCES_SUPPLIED_NOTE if sources_supplied else i18n.UNGROUNDED_NOTE
             yield 'token', note[lang]
-            got = False
+            chunks = []
+            failed = False
+            oversized = False
+            size = 0
             try:
-                for tok in llm.stream_chat(messages, generation):
-                    got = True
-                    yield "token", tok
+                stream = llm.stream_chat(messages, generation)
+                for tok in stream:
+                    size += len(tok)
+                    if size > 131072:
+                        oversized = True
+                        if hasattr(stream, 'close'):
+                            stream.close()
+                        break
+                    chunks.append(tok)
             except (LLMError, OSError) as e:
                 generation.update(incomplete=True, finish_reason='error')
                 self._llm_checked = 0
+                failed = True
                 yield "token", i18n.LLM_ERROR[lang].format(err=str(e)[:120])
-                yield "token", self.extractive_answer(lang, sources, model_unavailable=False)
-                mode = "search"
-                reason = 'generation_failed'
             if generation.get('incomplete'):
                 key = 'limit' if generation.get('finish_reason') == 'length' else 'interrupted'
                 yield 'token', i18n.INCOMPLETE_ANSWER[lang][key] + '\n\n'
-            if not got and mode == "llm":
+            if oversized:
+                generation.update(incomplete=True, finish_reason='validation_limit',
+                                  validation={'status':'blocked', 'issues':['answer_size_limit'], 'claim_support':'not_verified'})
+                mode, reason = 'search', 'answer_validation_failed'
+                yield 'token', i18n.ANSWER_WITHHELD[lang]
+            elif failed or generation.get('incomplete') or not ''.join(chunks).strip():
+                generation['validation'] = {'status':'not_run', 'issues':['generation_incomplete'],
+                                             'claim_support':'not_verified'}
                 yield "token", self.extractive_answer(lang, sources, model_unavailable=False)
-                mode = "search"
-                reason = 'generation_failed'
+                mode, reason = 'search', 'generation_failed'
+            else:
+                rendered, validation = validate_answer(''.join(chunks), sources, question, lang, history)
+                generation['validation'] = validation
+                if validation['status'] == 'blocked':
+                    mode, reason = 'search', 'answer_validation_failed'
+                    yield 'token', i18n.ANSWER_WITHHELD[lang]
+                else:
+                    yield 'token', rendered
         elif not blocked and not reviewed_omitted:
             yield "token", self.extractive_answer(lang, sources, model_unavailable=model_unavailable)
         if self.is_medical(question):

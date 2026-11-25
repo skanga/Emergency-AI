@@ -1,0 +1,1514 @@
+{
+  "summary": {
+    "cases": 59,
+    "gold_recall": {
+      "matched": 15,
+      "annotated": 30,
+      "rate": 0.5
+    },
+    "by_language": {
+      "en": {
+        "matched": 8,
+        "annotated": 18
+      },
+      "pt": {
+        "matched": 4,
+        "annotated": 6
+      },
+      "es": {
+        "matched": 3,
+        "annotated": 6
+      }
+    },
+    "retrieval_p95_seconds": 1.366,
+    "unannotated_cases": 29,
+    "human_precision": null,
+    "answer_safety_review": "pending",
+    "release_gates_passed": false,
+    "limitation": "Gold-section matches only. Independent relevance and safety annotation is required."
+  },
+  "cases": [
+    {
+      "id": "heldout-01",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "id": "en:07-first-aid-medicine:2"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Order of CPR in a first aid sequence",
+          "id": "7b01e1adec0cec26d63cc9e3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Cardiopulmonary resuscitation",
+          "id": "89420eef3118222ed6a6116c"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Chain of survival",
+          "id": "45fc74c190fdac04549835bf"
+        },
+        {
+          "kind": "kit",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "id": "en:07-first-aid-medicine:1"
+        }
+      ]
+    },
+    {
+      "id": "heldout-02",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Parada card\u00edaca: RCP (reanima\u00e7\u00e3o cardiopulmonar)",
+          "id": "pt:07-first-aid-medicine:2"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Order of CPR in a first aid sequence",
+          "id": "7b01e1adec0cec26d63cc9e3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Cardiopulmonary resuscitation",
+          "id": "89420eef3118222ed6a6116c"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Chain of survival",
+          "id": "45fc74c190fdac04549835bf"
+        },
+        {
+          "kind": "kit",
+          "section": "Avalia\u00e7\u00e3o inicial: seguran\u00e7a e X-ABCDE",
+          "id": "pt:07-first-aid-medicine:1"
+        }
+      ]
+    },
+    {
+      "id": "heldout-03",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Paro card\u00edaco: RCP (reanimaci\u00f3n cardiopulmonar)",
+          "id": "es:07-first-aid-medicine:2"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Order of CPR in a first aid sequence",
+          "id": "7b01e1adec0cec26d63cc9e3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Cardiopulmonary resuscitation",
+          "id": "89420eef3118222ed6a6116c"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Chain of survival",
+          "id": "45fc74c190fdac04549835bf"
+        },
+        {
+          "kind": "kit",
+          "section": "Evaluaci\u00f3n inicial: seguridad y X-ABCDE",
+          "id": "es:07-first-aid-medicine:1"
+        }
+      ]
+    },
+    {
+      "id": "heldout-04",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Basic treatment (first aid)",
+          "id": "e225be0ae6238908e4b7a947"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Particular cases \u203a Infants (babies under 1 year-old)",
+          "id": "10d1449b1c65ef32d6a25f7e"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Prevention \u203a Prevention for babies and children",
+          "id": "d2178c962fb1b059c91680ca"
+        }
+      ]
+    },
+    {
+      "id": "heldout-05",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Engasgo (obstru\u00e7\u00e3o das vias a\u00e9reas)",
+          "id": "pt:07-first-aid-medicine:3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Basic treatment (first aid)",
+          "id": "e225be0ae6238908e4b7a947"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Particular cases \u203a Infants (babies under 1 year-old)",
+          "id": "10d1449b1c65ef32d6a25f7e"
+        }
+      ]
+    },
+    {
+      "id": "heldout-06",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Atragantamiento (obstrucci\u00f3n de la v\u00eda a\u00e9rea)",
+          "id": "es:07-first-aid-medicine:3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Basic treatment (first aid)",
+          "id": "e225be0ae6238908e4b7a947"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Particular cases \u203a Infants (babies under 1 year-old)",
+          "id": "10d1449b1c65ef32d6a25f7e"
+        }
+      ]
+    },
+    {
+      "id": "heldout-07",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "id": "en:07-first-aid-medicine:14"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Adjuncts",
+          "id": "9e486b57c4e56a79431bb0bb"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Preparedness",
+          "id": "fbb67c3dec0e76816192419f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Anaphylaxis \u203a Clinical Features \u203a Expected Course \u203a Biphasic (10-20%)",
+          "id": "f84c7ce0b6d12a78c8088b8c"
+        }
+      ]
+    },
+    {
+      "id": "heldout-08",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Rea\u00e7\u00e3o al\u00e9rgica grave (anafilaxia)",
+          "id": "pt:07-first-aid-medicine:14"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Adjuncts",
+          "id": "9e486b57c4e56a79431bb0bb"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Preparedness",
+          "id": "fbb67c3dec0e76816192419f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Anaphylaxis \u203a Disposition \u203a Admit",
+          "id": "4d8279c676251349e6f8418d"
+        }
+      ]
+    },
+    {
+      "id": "heldout-09",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Reacci\u00f3n al\u00e9rgica grave (anafilaxia)",
+          "id": "es:07-first-aid-medicine:14"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Adjuncts",
+          "id": "9e486b57c4e56a79431bb0bb"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Preparedness",
+          "id": "fbb67c3dec0e76816192419f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Anaphylaxis \u203a Disposition \u203a Admit",
+          "id": "4d8279c676251349e6f8418d"
+        }
+      ]
+    },
+    {
+      "id": "heldout-10",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Management",
+          "id": "01844ec2fa8cd838c2b8537a"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Stroke (main) \u203a Management",
+          "id": "25ab479cba45a20999b9f9d9"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Causes \u203a Embolic stroke",
+          "id": "bbb6e06672556129526d8d20"
+        }
+      ]
+    },
+    {
+      "id": "heldout-11",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Management",
+          "id": "01844ec2fa8cd838c2b8537a"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Stroke (main) \u203a Management",
+          "id": "25ab479cba45a20999b9f9d9"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Causes \u203a Cerebral hypoperfusion",
+          "id": "ca745adc2909b315b828bff2"
+        }
+      ]
+    },
+    {
+      "id": "heldout-12",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Management",
+          "id": "01844ec2fa8cd838c2b8537a"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Stroke (main) \u203a Management",
+          "id": "25ab479cba45a20999b9f9d9"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Causes \u203a Cerebral hypoperfusion",
+          "id": "ca745adc2909b315b828bff2"
+        }
+      ]
+    },
+    {
+      "id": "heldout-13",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Safety",
+          "id": "en:02-fire:7"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment",
+          "id": "cae2aaa84c5e9e4a4f350caf"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Carbon monoxide poisoning",
+          "id": "e2304d5c0b271611d0a1b585"
+        },
+        {
+          "kind": "kit",
+          "section": "Devices and data",
+          "id": "en:10-energy-light:5"
+        },
+        {
+          "kind": "kit",
+          "section": "Car batteries and generators",
+          "id": "en:10-energy-light:3"
+        },
+        {
+          "kind": "kit",
+          "section": "Safe heating",
+          "id": "en:03-shelter:6"
+        }
+      ]
+    },
+    {
+      "id": "heldout-14",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Seguran\u00e7a",
+          "id": "pt:02-fire:7"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment",
+          "id": "cae2aaa84c5e9e4a4f350caf"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Carbon monoxide poisoning",
+          "id": "e2304d5c0b271611d0a1b585"
+        },
+        {
+          "kind": "kit",
+          "section": "Baterias de carro e geradores",
+          "id": "pt:10-energy-light:3"
+        },
+        {
+          "kind": "kit",
+          "section": "Aquecimento seguro",
+          "id": "pt:03-shelter:6"
+        }
+      ]
+    },
+    {
+      "id": "heldout-15",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Seguridad",
+          "id": "es:02-fire:7"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment",
+          "id": "cae2aaa84c5e9e4a4f350caf"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Carbon monoxide poisoning",
+          "id": "e2304d5c0b271611d0a1b585"
+        },
+        {
+          "kind": "kit",
+          "section": "Calefacci\u00f3n segura",
+          "id": "es:03-shelter:6"
+        },
+        {
+          "kind": "kit",
+          "section": "Bater\u00edas de auto y generadores",
+          "id": "es:10-energy-light:3"
+        }
+      ]
+    },
+    {
+      "id": "heldout-16",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Storage",
+          "id": "en:01-water:6"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe Water School \u2014 page 30",
+          "id": "2014f4a6162e0623136e233f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe Water School \u2014 page 25",
+          "id": "3cca240828a8f09c6abd1bfb"
+        }
+      ]
+    },
+    {
+      "id": "heldout-17",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "As primeiras 72 horas",
+          "id": "pt:00-priorities:2"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe Water School \u2014 page 30",
+          "id": "2014f4a6162e0623136e233f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe Water School \u2014 page 25",
+          "id": "3cca240828a8f09c6abd1bfb"
+        },
+        {
+          "kind": "kit",
+          "section": "Queimaduras",
+          "id": "pt:07-first-aid-medicine:6"
+        }
+      ]
+    },
+    {
+      "id": "heldout-18",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Quemaduras",
+          "id": "es:07-first-aid-medicine:6"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe Water School \u2014 page 30",
+          "id": "2014f4a6162e0623136e233f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe Water School \u2014 page 25",
+          "id": "3cca240828a8f09c6abd1bfb"
+        }
+      ]
+    },
+    {
+      "id": "heldout-19",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Burns",
+          "id": "en:07-first-aid-medicine:6"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Burns \u203a Management",
+          "id": "f8f196bda44f39972abf7dd3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Burns \u203a Management \u203a Fluid Resuscitation \u203a Indications based on Total Body Surface Area (TBSA) of Burn \u203a Fluid Quantity",
+          "id": "3d414c1f96752b0947a6cd1f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Burns \u203a Management \u203a Fluid Resuscitation \u203a Indications based on Total Body Surface Area (TBSA) of Burn \u203a Types of fluids",
+          "id": "c2ee2d302ca75b500c2dbcfa"
+        }
+      ]
+    },
+    {
+      "id": "heldout-20",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Heatstroke and heat exhaustion",
+          "id": "en:07-first-aid-medicine:12"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a First aid",
+          "id": "0899ba2bc0dc6f3e09214a10"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Heat stroke \u203a Management \u203a Rapid Cooling \u203a Techniques",
+          "id": "68aa7faba734621a0ac6113a"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Heat stroke \u203a Management \u203a Rapid Cooling",
+          "id": "a80cec681ddf2a5291d3033f"
+        },
+        {
+          "kind": "kit",
+          "section": "Extreme heat",
+          "id": "en:03-shelter:5"
+        }
+      ]
+    },
+    {
+      "id": "heldout-21",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "0c1dc175fe90d253ead7831b"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a First aid during a seizure",
+          "id": "0c1dc175fe90d253ead7831b"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a First aid and acute management of seizures",
+          "id": "286360ad3d62defd7f0b0e2c"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Seizure \u203a Management",
+          "id": "108eacc1885b304fd69fdf7f"
+        }
+      ]
+    },
+    {
+      "id": "heldout-22",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Particular cases \u203a Infants (babies under 1 year-old) \u203a Unconscious infants",
+          "id": "73a08625ae443f925c5edde5"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Basic treatment (first aid)",
+          "id": "e225be0ae6238908e4b7a947"
+        }
+      ]
+    },
+    {
+      "id": "heldout-23",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "id": "en:07-first-aid-medicine:14"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Adjuncts",
+          "id": "9e486b57c4e56a79431bb0bb"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Preparedness",
+          "id": "fbb67c3dec0e76816192419f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Anaphylaxis \u203a Clinical Features \u203a Expected Course \u203a Biphasic (10-20%)",
+          "id": "f84c7ce0b6d12a78c8088b8c"
+        }
+      ]
+    },
+    {
+      "id": "heldout-24",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-01",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "The four stroke cycle - diesel engine",
+          "id": "52742c00f84f3563f5f74609"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Diesel engine",
+          "id": "83ad252a4eb167df9cba2349"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Diesel engine suppliers",
+          "id": "9b576338a9ccd9a85781389a"
+        }
+      ]
+    },
+    {
+      "id": "negative-02",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-03",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-04",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-05",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-06",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-07",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-08",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-09",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-10",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-11",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "negative-12",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Diagnosis \u203a Blood testing",
+          "id": "ac732bc7b2e590e3adc4081f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Diagnosis \u203a Skin prick testing",
+          "id": "2969943ae131e03ccc8b9881"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Diagnosis \u203a Other testing",
+          "id": "58aae1bfd3f84043e5503350"
+        }
+      ]
+    },
+    {
+      "id": "original-allergy_followup",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "id": "en:07-first-aid-medicine:14"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Preparedness",
+          "id": "fbb67c3dec0e76816192419f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Adjuncts",
+          "id": "9e486b57c4e56a79431bb0bb"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Anaphylaxis \u203a Clinical Features \u203a Expected Course \u203a Biphasic (10-20%)",
+          "id": "f84c7ce0b6d12a78c8088b8c"
+        }
+      ]
+    },
+    {
+      "id": "original-anaphylaxis",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "id": "en:07-first-aid-medicine:14"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Preparedness",
+          "id": "fbb67c3dec0e76816192419f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Adjuncts",
+          "id": "9e486b57c4e56a79431bb0bb"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Anaphylaxis \u203a Clinical Features \u203a Expected Course \u203a Biphasic (10-20%)",
+          "id": "f84c7ce0b6d12a78c8088b8c"
+        }
+      ]
+    },
+    {
+      "id": "original-bleeding",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Severe bleeding",
+          "id": "en:07-first-aid-medicine:4"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management",
+          "id": "318b58994be35576a8b67565"
+        },
+        {
+          "kind": "kiwix",
+          "section": "External wound management \u203a Direct pressure",
+          "id": "eac56cf90c89074ebdf98165"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Emergency bleeding control",
+          "id": "05690a5a5f1b0ce89815e3e9"
+        },
+        {
+          "kind": "kit",
+          "section": "Wounds and infection prevention",
+          "id": "en:07-first-aid-medicine:7"
+        },
+        {
+          "kind": "kit",
+          "section": "The first 72 hours",
+          "id": "en:00-priorities:2"
+        },
+        {
+          "kind": "kit",
+          "section": "The rule of 3",
+          "id": "en:00-priorities:1"
+        }
+      ]
+    },
+    {
+      "id": "original-burn",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Burns",
+          "id": "en:07-first-aid-medicine:6"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Burns \u203a Management",
+          "id": "f8f196bda44f39972abf7dd3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Wound care",
+          "id": "732bf23517c134131db719e8"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Burns \u203a Management \u203a Fluid Resuscitation \u203a Indications based on Total Body Surface Area (TBSA) of Burn \u203a Types of fluids",
+          "id": "c2ee2d302ca75b500c2dbcfa"
+        }
+      ]
+    },
+    {
+      "id": "original-co",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Safety",
+          "id": "en:02-fire:7"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment",
+          "id": "cae2aaa84c5e9e4a4f350caf"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Carbon monoxide poisoning",
+          "id": "e2304d5c0b271611d0a1b585"
+        },
+        {
+          "kind": "kit",
+          "section": "Safe heating",
+          "id": "en:03-shelter:6"
+        },
+        {
+          "kind": "kit",
+          "section": "Car batteries and generators",
+          "id": "en:10-energy-light:3"
+        },
+        {
+          "kind": "kit",
+          "section": "Devices and data",
+          "id": "en:10-energy-light:5"
+        }
+      ]
+    },
+    {
+      "id": "original-cpr",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "id": "en:07-first-aid-medicine:2"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Order of CPR in a first aid sequence",
+          "id": "7b01e1adec0cec26d63cc9e3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Cardiopulmonary resuscitation",
+          "id": "89420eef3118222ed6a6116c"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Order of CPR in a first aid sequence \u203a Exception to the main sequence",
+          "id": "61bc8538189b549aebc7001d"
+        },
+        {
+          "kind": "kit",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "id": "en:07-first-aid-medicine:1"
+        }
+      ]
+    },
+    {
+      "id": "original-dehydration",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Diarrhea and dehydration \u2014 oral rehydration solution",
+          "id": "en:07-first-aid-medicine:9"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Oral rehydration therapy",
+          "id": "c1b5e547a1d7bb1324f5c664"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Preparation",
+          "id": "21b81c9f5c0b8b71d63aea2c"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Oral rehydration therapy",
+          "id": "9a69b022209d28d3730e33c6"
+        },
+        {
+          "kind": "kit",
+          "section": "Signs of dehydration",
+          "id": "en:01-water:8"
+        },
+        {
+          "kind": "kit",
+          "section": "Shock",
+          "id": "en:07-first-aid-medicine:5"
+        }
+      ]
+    },
+    {
+      "id": "original-diabetes",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Diabetic hypoglycemia",
+          "id": "e65df3a20575977a6fb99df4"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Causes \u203a Non-diabetic \u203a Surreptitious insulin use",
+          "id": "dc806fa831f4ebf978600c5a"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Causes \u203a Non-diabetic \u203a Autoimmune hypoglycemia",
+          "id": "2a4c22c685bb972fd42616b0"
+        }
+      ]
+    },
+    {
+      "id": "original-flood",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Floodwater and rats",
+          "id": "en:08-hygiene-sanitation:5"
+        }
+      ]
+    },
+    {
+      "id": "original-food",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Order of consumption in a crisis",
+          "id": "en:04-food:2"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe food handling procedures (from market to consumer)",
+          "id": "0cb2753df8521ecf7fdbee3b"
+        }
+      ]
+    },
+    {
+      "id": "original-grease_fire",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "original-heatstroke",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Heatstroke and heat exhaustion",
+          "id": "en:07-first-aid-medicine:12"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Heat stroke \u203a Management \u203a Rapid Cooling \u203a Techniques",
+          "id": "68aa7faba734621a0ac6113a"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a First aid",
+          "id": "0899ba2bc0dc6f3e09214a10"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Heat stroke \u203a Management \u203a Rapid Cooling",
+          "id": "a80cec681ddf2a5291d3033f"
+        },
+        {
+          "kind": "kit",
+          "section": "Extreme heat",
+          "id": "en:03-shelter:5"
+        }
+      ]
+    },
+    {
+      "id": "original-infant_choking",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Basic treatment (first aid)",
+          "id": "e225be0ae6238908e4b7a947"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Particular cases \u203a Infants (babies under 1 year-old)",
+          "id": "10d1449b1c65ef32d6a25f7e"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Prevention \u203a Prevention for babies and children",
+          "id": "d2178c962fb1b059c91680ca"
+        }
+      ]
+    },
+    {
+      "id": "original-infant_followup",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "id": "en:07-first-aid-medicine:1"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Particular cases \u203a Infants (babies under 1 year-old) \u203a Unconscious infants",
+          "id": "73a08625ae443f925c5edde5"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Basic treatment (first aid)",
+          "id": "e225be0ae6238908e4b7a947"
+        }
+      ]
+    },
+    {
+      "id": "original-poison",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Caustic ingestion \u203a Management",
+          "id": "45c0835107736e7015522939"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Caustic ingestion \u203a Management \u203a Controversial or Contraindicated",
+          "id": "423474f3ba5bce4d81205d23"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Caustic ingestion",
+          "id": "b4649ea056d1c2c0ce094454"
+        }
+      ]
+    },
+    {
+      "id": "original-portuguese",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Seguran\u00e7a",
+          "id": "pt:02-fire:7"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment",
+          "id": "cae2aaa84c5e9e4a4f350caf"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Carbon monoxide poisoning",
+          "id": "e2304d5c0b271611d0a1b585"
+        },
+        {
+          "kind": "kit",
+          "section": "Baterias de carro e geradores",
+          "id": "pt:10-energy-light:3"
+        },
+        {
+          "kind": "kit",
+          "section": "Aquecimento seguro",
+          "id": "pt:03-shelter:6"
+        }
+      ]
+    },
+    {
+      "id": "original-seizure",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "0c1dc175fe90d253ead7831b"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a First aid during a seizure",
+          "id": "0c1dc175fe90d253ead7831b"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a First aid and acute management of seizures",
+          "id": "286360ad3d62defd7f0b0e2c"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management",
+          "id": "99ef49d7675591a6827bd99b"
+        }
+      ]
+    },
+    {
+      "id": "original-snake",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Snakebite (Brazil)",
+          "id": "en:07-first-aid-medicine:13"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a First aid",
+          "id": "edf24f07d569416f73b3d725"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment",
+          "id": "52243e39c82363d5b0cdec1f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Treatment \u203a Outmoded",
+          "id": "a93403409f5ddc8c0365ca0f"
+        }
+      ]
+    },
+    {
+      "id": "original-spanish",
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Paro card\u00edaco: RCP (reanimaci\u00f3n cardiopulmonar)",
+          "id": "es:07-first-aid-medicine:2"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Order of CPR in a first aid sequence",
+          "id": "7b01e1adec0cec26d63cc9e3"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Cardiopulmonary resuscitation",
+          "id": "89420eef3118222ed6a6116c"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Management \u203a Chain of survival",
+          "id": "45fc74c190fdac04549835bf"
+        },
+        {
+          "kind": "kit",
+          "section": "Evaluaci\u00f3n inicial: seguridad y X-ABCDE",
+          "id": "es:07-first-aid-medicine:1"
+        }
+      ]
+    },
+    {
+      "id": "original-stroke",
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Management",
+          "id": "01844ec2fa8cd838c2b8537a"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Stroke (main) \u203a Management",
+          "id": "25ab479cba45a20999b9f9d9"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Signs and symptoms \u203a Subtypes",
+          "id": "0c23ea7c35fd404fe0994ac8"
+        }
+      ]
+    },
+    {
+      "id": "original-water_bleach",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": []
+    },
+    {
+      "id": "original-water_chemical",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kit",
+          "section": "Storage",
+          "id": "en:01-water:6"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe Water School \u2014 page 30",
+          "id": "2014f4a6162e0623136e233f"
+        },
+        {
+          "kind": "kiwix",
+          "section": "Safe Water School \u2014 page 25",
+          "id": "3cca240828a8f09c6abd1bfb"
+        }
+      ]
+    },
+    {
+      "id": "original-electrical",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "included_sections": [
+        {
+          "kind": "kiwix",
+          "section": "Prevention \u203a Basic electrical safety",
+          "id": "3947f68854edaeb6413d3d98"
+        }
+      ]
+    }
+  ]
+}
