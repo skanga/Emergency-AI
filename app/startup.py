@@ -78,11 +78,22 @@ def inspect(settings):
         profile = selection.get("zims", "none")
         archive_ids = str(selection.get("archives", "none"))
         if settings.get("kiwix_enabled", True) and (profile != "none" or archive_ids != "none"):
-            if profile != "none" and profile not in libraries.get("profiles", {}):
-                missing.append("Unknown library profile: " + str(profile))
-            for entry in libraries.get("zims", []):
-                if profile not in entry.get("profiles", []):
-                    continue
+            from .prepare import select_zims
+
+            selected_libraries = []
+            if profile != "none":
+                if profile not in libraries.get("profiles", {}):
+                    missing.append("Unknown library profile: " + str(profile))
+                else:
+                    try:
+                        selected_libraries = select_zims(
+                            libraries, profile,
+                            selection.get("zim_languages", "all"),
+                            selection.get("include_english_references", False),
+                        )
+                    except (ValueError, TypeError, AttributeError) as exc:
+                        missing.append("Invalid saved library selection: " + str(exc))
+            for entry in selected_libraries:
                 prefix = entry["name"] + ("_" + entry["variant"] if entry.get("variant") else "") + "_"
                 if not (any(os.path.basename(p).startswith(prefix) for p in files)
                             or any(n == entry["name"] or n.startswith(prefix) for n in served)):

@@ -77,6 +77,76 @@ class StartupTests(unittest.TestCase):
         ask.assert_not_called()
         setup.assert_not_called()
 
+    def test_complete_english_selection_starts_without_setup(self):
+        cfg = prepare.load_json(str(Path(prepare.CONFIG_DIR) / "zims.json"))
+        self.save(zims="recommended", zim_languages="en",
+                  include_english_references=False)
+        self.kiwix.return_value = "kiwix-serve"
+        entries = prepare.select_zims(cfg, "recommended", "en", False)
+        for entry in entries:
+            prefix = entry["name"] + ("_" + entry["variant"] if entry.get("variant") else "")
+            (self.root / "zim" / (prefix + "_2026-01.zim")).write_bytes(b"library")
+        with patch("builtins.input", return_value="2") as ask, patch.object(prepare, "run") as setup:
+            report = self.startup.ensure_ready(self.settings, interactive=True)
+        self.assertEqual(report["missing"], [])
+        self.assertEqual(report["state"], "ready")
+        ask.assert_not_called()
+        setup.assert_not_called()
+        (self.root / "zim" / "zimgit-water_en_2026-01.zim").unlink()
+        report = self.startup.inspect(self.settings)
+        self.assertEqual(report["state"], "incomplete")
+        self.assertEqual(report["missing"], ["Library: zimgit-water_en"])
+
+    def test_startup_checks_saved_language_selection(self):
+        cfg = prepare.load_json(str(Path(prepare.CONFIG_DIR) / "zims.json"))
+        self.kiwix.return_value = "kiwix-serve"
+        cases = [({}, "all", False)]
+        cases += [
+            ({"zim_languages": languages, "include_english_references": refs}, languages, refs)
+            for languages, refs in [("en", False), ("pt", False), ("es", False),
+                                    ("pt,es", False), ("all", False), ("pt", True)]
+        ]
+        for saved, languages, refs in cases:
+            with self.subTest(saved=saved):
+                self.save(zims="full", **saved)
+                expected = {"Library: " + entry["name"] for entry in
+                            prepare.select_zims(cfg, "full", languages, refs)}
+                report = self.startup.inspect(self.settings)
+                self.assertEqual(set(report["missing"]), expected)
+                self.assertEqual(report["state"], "incomplete")
+
+    def test_invalid_saved_library_filter_is_reported(self):
+        self.kiwix.return_value = "kiwix-serve"
+        for languages in ("xx", "", "all,pt", None, ["en"]):
+            with self.subTest(languages=languages):
+                self.save(zims="recommended", zim_languages=languages)
+                report = self.startup.inspect(self.settings)
+                self.assertEqual(report["state"], "incomplete")
+                self.assertTrue(any(item.startswith("Invalid saved library selection:")
+                                    for item in report["missing"]))
+        self.save(zims="unknown", zim_languages="en")
+        self.assertIn("Unknown library profile: unknown",
+                      self.startup.inspect(self.settings)["missing"])
+
+    def test_archive_checks_are_independent_of_language_selection(self):
+        self.kiwix.return_value = "kiwix-serve"
+        self.save(zims="none", zim_languages="pt", archives="wikem")
+        report = self.startup.inspect(self.settings)
+        self.assertEqual(report["missing"], ["Archive: wikem (2020-06)"])
+        self.save(zims="none", zim_languages="pt", archives="none")
+        self.assertEqual(self.startup.inspect(self.settings)["state"], "ready")
+
+    def test_external_libraries_honor_saved_language_selection(self):
+        cfg = prepare.load_json(str(Path(prepare.CONFIG_DIR) / "zims.json"))
+        self.save(zims="recommended", zim_languages="en")
+        books = [{"name": entry["name"]} for entry in
+                 prepare.select_zims(cfg, "recommended", "en", False)]
+        with patch.object(self.startup.KiwixClient, "available", return_value=True), \
+                patch.object(self.startup.KiwixClient, "books", return_value=books):
+            report = self.startup.inspect(self.settings)
+        self.assertEqual(report["missing"], [])
+        self.assertEqual(report["state"], "ready")
+
     def test_external_kiwix_does_not_hide_missing_selected_libraries(self):
         self.save(zims="minimal")
         with patch.object(self.startup.KiwixClient, "available", return_value=True), \
