@@ -158,6 +158,8 @@
         name.textContent = book.title;
         const detail = document.createElement("small");
         detail.textContent = [book.lang, book.name].filter(Boolean).join(" · ");
+        const documents = book.capabilities && book.capabilities.documents;
+        if (documents && documents.state !== "not_applicable") detail.textContent += " · " + retrievalLabel(documents.state);
         name.append(detail);
         label.append(checkbox, name);
         options.append(label);
@@ -479,17 +481,70 @@
     return w;
   }
 
+  function retrievalLabel(code) {
+    if (code === "no_selection") code = "none_selected";
+    const labels = {
+      en: {success: "searched", zero_hits: "no matches", no_relevant_passage: "no relevant passage", disabled: "disabled", none_selected: "none selected", catalog_error: "catalog unavailable", identity_error: "archive unavailable", http_error: "search failed", parse_error: "invalid response", timeout: "timed out", not_searched_budget: "not searched: request limit", index_needed: "PDF index needed", indexed: "indexed", partially_indexed: "partially indexed", browse_only: "browse only", unsupported_index: "index unavailable", context_budget: "Context limit", context_chars: "Context limit", token_budget: "Model context limit", conflict_unresolved: "Unresolved disagreement", reviewed_precedence: "Superseded by reviewed policy"},
+      pt: {success: "pesquisada", zero_hits: "sem resultados", no_relevant_passage: "sem trecho relevante", disabled: "desativada", none_selected: "nenhuma selecionada", catalog_error: "catálogo indisponível", identity_error: "arquivo indisponível", http_error: "falha na busca", parse_error: "resposta inválida", timeout: "tempo esgotado", not_searched_budget: "não pesquisada: limite", index_needed: "PDF precisa de índice", indexed: "indexada", partially_indexed: "parcialmente indexada", browse_only: "somente leitura", unsupported_index: "índice indisponível", context_budget: "Limite de contexto", context_chars: "Limite de contexto", token_budget: "Limite do modelo", conflict_unresolved: "Divergência não resolvida", reviewed_precedence: "Substituído por revisão"},
+      es: {success: "buscada", zero_hits: "sin resultados", no_relevant_passage: "sin pasaje relevante", disabled: "desactivada", none_selected: "ninguna seleccionada", catalog_error: "catálogo no disponible", identity_error: "archivo no disponible", http_error: "falló la búsqueda", parse_error: "respuesta inválida", timeout: "tiempo agotado", not_searched_budget: "sin buscar: límite", index_needed: "PDF necesita índice", indexed: "indexada", partially_indexed: "parcialmente indexada", browse_only: "solo lectura", unsupported_index: "índice no disponible", context_budget: "Límite de contexto", context_chars: "Límite de contexto", token_budget: "Límite del modelo", conflict_unresolved: "Desacuerdo no resuelto", reviewed_precedence: "Sustituido por revisión"},
+    };
+    return (labels[lang] || labels.en)[code] || ({en:"Unavailable",pt:"Indisponível",es:"No disponible"}[lang]);
+  }
+
+  function retrievalSummary(report, sources = null) {
+    const words = {
+      en: {used:"Library passages used", libraries:"Libraries", conflict:"Sources disagree; contested advice withheld.", reviewed:"Reviewed source correction", snapshot:"snapshot"},
+      pt: {used:"Trechos de bibliotecas usados", libraries:"Bibliotecas", conflict:"As fontes divergem; orientação contestada omitida.", reviewed:"Correção de fonte revisada", snapshot:"arquivo"},
+      es: {used:"Pasajes de bibliotecas usados", libraries:"Bibliotecas", conflict:"Las fuentes discrepan; consejo en disputa omitido.", reviewed:"Corrección de fuente revisada", snapshot:"archivo"},
+    }[lang];
+    const lines = [];
+    const outcome = {en:{failed:"Retrieval failed",partial:"Retrieval partially completed",fetch:"Article fetch failures",skipped:"Articles not fetched"},pt:{failed:"Falha na recuperação",partial:"Recuperação parcial",fetch:"Falhas ao buscar artigos",skipped:"Artigos não obtidos"},es:{failed:"Falló la recuperación",partial:"Recuperación parcial",fetch:"Fallos al obtener artículos",skipped:"Artículos no obtenidos"}}[lang];
+    if (["failed", "partial"].includes(report.status)) lines.push(outcome[report.status]);
+    const fetchFailures = (report.fetches || []).filter(f => !["success", "rejected", "empty_content", "not_fetched_budget"].includes(f.status)).length;
+    if (fetchFailures) lines.push(outcome.fetch + ": " + fetchFailures);
+    if (report.not_fetched_budget) lines.push(outcome.skipped + ": " + report.not_fetched_budget);
+    if (report.status === "zero_hits" && (report.libraries || []).some(library => library.hits > 0)) lines.push(retrievalLabel("no_relevant_passage"));
+    if (sources !== null) lines.push(words.used + ": " + sources.filter(s => s.kind === "kiwix" && !s.context_omitted).length);
+    for (const library of report.libraries || []) {
+      let line = library.name + ": " + retrievalLabel(library.status);
+      if (library.index && library.index.state !== "not_applicable") line += " · " + retrievalLabel(library.index.state);
+      lines.push(line);
+    }
+    if (!(report.libraries || []).length && report.status) lines.push(words.libraries + ": " + retrievalLabel(report.status));
+    for (const conflict of report.conflicts || []) lines.push((conflict.resolution === "unresolved" ? words.conflict : words.reviewed) + " " + (conflict.explanation || ""));
+    return lines.join("\n");
+  }
+
+  function renderRetrieval(container, report, sources = null) {
+    if (!report) return;
+    let box = container.querySelector(".retrieval-status");
+    if (!box) {
+      box = document.createElement("details");
+      box.className = "retrieval-status";
+      container.appendChild(box);
+    }
+    const label = {en:"Source search and coverage",pt:"Busca e cobertura das fontes",es:"Búsqueda y cobertura de fuentes"}[lang];
+    box.open = (report.conflicts || []).some(c => c.resolution === "unresolved");
+    box.innerHTML = `<summary>${label}</summary><div>${esc(retrievalSummary(report, sources)).replace(/\n/g, "<br>")}</div>`;
+  }
+
   function renderSources(container, sources) {
     if (!sources || !sources.length) return;
     const box = document.createElement("div");
     box.className = "sources";
-    box.innerHTML = `<h4>${t("sources")}</h4>` + sources.map((s) => {
-      const label = esc(s.doc_title) + " › " + esc(s.section);
+    const render = (s) => {
+      let label = esc(s.doc_title) + " › " + esc(s.section);
+      if (s.issued) label += " · " + ({en:"Snapshot",pt:"Arquivo",es:"Archivo"}[lang]) + ": " + esc(s.issued.slice(0, 10));
+      if (s.context_omitted) label += " · " + esc(retrievalLabel(s.context_omitted_reason || s.omission_reason || "context_budget"));
       if (s.kind === "kiwix") {
         return `<a class="src" id="src-${s.n}" href="/kiwix${esc(s.link)}" target="_blank" rel="noopener"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kiwix")}</span></a>`;
       }
       return `<a class="src" id="src-${s.n}" href="#" data-guide="${esc(s.doc_id)}" data-anchor="${esc(s.anchor)}"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kit")}</span></a>`;
-    }).join("");
+    };
+    const included = sources.filter(s => !s.context_omitted).map(render).join("");
+    const omitted = sources.filter(s => s.context_omitted).map(render).join("");
+    const notUsed = {en:"Not used in this answer",pt:"Não usadas nesta resposta",es:"No usadas en esta respuesta"}[lang];
+    box.innerHTML = `<h4>${t("sources")}</h4>` + included + (omitted ? `<details><summary>${notUsed}</summary>${omitted}</details>` : "");
     container.appendChild(box);
   }
 
@@ -502,7 +557,7 @@
     const w = addMsg("ai", `<div class="md typing">${t("thinking")}</div>`);
     const body = w.querySelector(".bubble");
     const out = body.querySelector(".md");
-    let text = "", sources = [], started = false;
+    let text = "", sources = [], started = false, retrieval = null;
     const t0 = Date.now();
     try {
       const resp = await fetch("/api/ask", {
@@ -528,13 +583,14 @@
           const dataLine = (block.match(/^data: (.*)$/m) || [])[1];
           if (!ev || dataLine === undefined) continue;
           const data = JSON.parse(dataLine);
-          if (ev === "sources") sources = data;
+          if (ev === "retrieval") { retrieval = data; renderRetrieval(body, retrieval); }
+          else if (ev === "sources") { sources = data; if (retrieval) renderRetrieval(body, retrieval, sources); }
           else if (ev === "token") {
             if (!started) { started = true; text = ""; }
             text += data;
             out.innerHTML = md(text, { cites: true });
             w.scrollIntoView({ block: "end" });
-          } else if (ev === "done") { info = data; completed = true; }
+          } else if (ev === "done") { info = data; completed = true; if (info.retrieval) renderRetrieval(body, info.retrieval, sources); }
           else if (ev === "error") throw new Error(data.error);
         }
       }

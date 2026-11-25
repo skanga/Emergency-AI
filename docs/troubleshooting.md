@@ -77,3 +77,21 @@ Make sure you copied the whole folder. Another operating system or processor may
 ## Still stuck
 
 Report the operating system, the command or launcher you used, the exact error, and whether the problem happened during installation or normal use in a [GitHub issue](https://github.com/skanga/Emergency-AI/issues). Review any logs before sharing them; include only the relevant error details.
+
+## Libraries are enabled but no library passage was used
+
+Open **Source search and coverage** beneath the answer. A successful search can still lead to a fetch failure, irrelevant passages or passages that cannot fit. **Not used in this answer** lists omitted references and reasons. A library being reachable does not mean its search or PDF index is working.
+
+- **Archive unavailable / catalog unavailable:** verify the local Kiwix server and selected archive. Saved logical names survive archive version updates; a removed library is reported explicitly.
+- **No matches:** native search succeeded without results. **No relevant passage** means matches were found but rejected as evidence.
+- **Article fetch failures:** search worked, but article content could not be read within the body/time limits.
+- **PDF index needed:** prepare the selected document collection explicitly. Merely installing a ZIM does not index its PDFs.
+- **Partially indexed / browse only:** inspect the preparation report for excluded pages or failed documents. Scans and suspect layouts are not supplied as reliable text; no automatic OCR runs during an answer.
+- **Unresolved disagreement:** the application withholds the contested recommendation. A reviewed, version-specific policy can resolve a known conflict without changing the original guide.
+
+```sh
+python3 emergency.py diagnose-retrieval --libraries wikipedia_en_medicine 'My child is choking.'
+python3 emergency.py index-libraries --libraries zimgit-medicine_en --prepare-tool
+```
+
+The second command may download the pinned extraction tool; ordinary questions never do. If an index refresh fails or is cancelled, the previous valid index for that archive version remains active. A new archive UUID requires preparation of the new version. To explicitly remove indexes for unselected or superseded archives, add `--cleanup` to `index-libraries`; this does not remove source documents or ZIMs.

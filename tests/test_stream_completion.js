@@ -7,18 +7,20 @@ async function check(completed, sourcesSupplied = true) {
   const bubble = {querySelector: () => out, appendChild: n => metadata.push(n.textContent)};
   const message = {querySelector: () => bubble, scrollIntoView() {}};
   let reads = 0;
-  const stream = 'event: token\ndata: "Partial answer"\n\n' +
+  const retrievalEvents = [];
+  const stream = 'event: retrieval\ndata: {"conflicts":[{"resolution":"unresolved"}]}\n\n' + 'event: token\ndata: "Partial answer"\n\n' +
     (completed ? 'event: done\ndata: ' + JSON.stringify({mode: 'llm', seconds: 1, sources_supplied: sourcesSupplied}) + '\n\n' : '');
   const context = vm.createContext({busy: false, lang: 'en', chatHistory: [], librarySelection: null,
     $: s => s === '#welcome' ? null : (nodes[s] ??= {checked: false}),
     modelSwitching: () => false, addMsg: () => message, esc: s => s, t: s => s, md: s => s,
-    renderSources() {}, renderModels() {}, document: {createElement: () => ({})}, TextDecoder, Date,
+    renderSources() {}, renderRetrieval(container, report) { retrievalEvents.push(report); }, renderModels() {}, document: {createElement: () => ({})}, TextDecoder, Date,
     fetch: async () => ({ok: true, body: {getReader: () => ({read: async () => reads++ ?
       {done: true} : {done: false, value: Buffer.from(stream)}})}})});
   vm.runInContext(source.slice(source.indexOf('  async function ask(question)'),
     source.indexOf('  // ---------------- sidebar search')), context);
   await context.ask('Question');
   assert.equal(context.chatHistory.length, 2);
+  assert.equal(retrievalEvents[0].conflicts[0].resolution, 'unresolved');
   assert(context.chatHistory[1].content.includes('Partial answer'));
   assert.equal(out.innerHTML.includes('Interrupted response'), !completed);
   assert.equal(context.chatHistory[1].content.includes('Interrupted response'), !completed);

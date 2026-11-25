@@ -179,21 +179,39 @@ def _print_answer(engine, question, lang, history):
     m = MSG[lang]
     sys.stdout.write(f"\n{m['ai']}: ")
     sys.stdout.flush()
-    text, sources, info = [], [], {}
+    text, sources, info, retrieval = [], [], {}, {}
     for kind, data in engine.answer(question, lang, history=history):
         if kind == "sources":
             sources = data
+        elif kind == "retrieval":
+            retrieval = data
+            from app.retrieval_cli import conflict_notice
+            notice = conflict_notice(data, lang)
+            if notice:
+                print('\n' + notice, flush=True)
         elif kind == "token":
             text.append(data)
             sys.stdout.write(data)
             sys.stdout.flush()
         elif kind == "done":
             info = data
+            retrieval = info.get('retrieval', retrieval)
     if sources:
-        print(f"\n\n{m['src']}:")
-        for s in sources:
-            where = s.get("link") or f"knowledge/{s['lang']}/{s['doc_id']}.md#{s['anchor']}"
-            print(f"  [{s['n']}] {s['doc_title']} › {s['section']}  ({where})")
+        from app.retrieval_cli import state_label
+        for omitted in (False, True):
+            group = [s for s in sources if bool(s.get('context_omitted')) == omitted]
+            if not group:
+                continue
+            suffix = {'en':' — not used', 'pt':' — não usadas', 'es':' — no usadas'}[lang] if omitted else ''
+            print(f"\n\n{m['src']}{suffix}:")
+            for s in group:
+                where = s.get("link") or f"knowledge/{s['lang']}/{s['doc_id']}.md#{s['anchor']}"
+                reason = state_label(s.get('context_omitted_reason', 'context_budget'), lang) if omitted else ''
+                snapshot = (' · ' + {'en':'Snapshot','pt':'Arquivo','es':'Archivo'}[lang] + ': ' + s['issued'][:10]) if s.get('issued') else ''
+                print(f"  [{s['n']}] {s['doc_title']} › {s['section']}{snapshot}  ({where}) {reason}")
+    if retrieval:
+        from app.retrieval_cli import summary_text
+        print(summary_text(retrieval, sources, lang))
     mode = m["mode_llm"] if info.get("mode") == "llm" else m["mode_search"]
     print(f"  — {mode}, {info.get('seconds', 0)}s\n")
     return "".join(text)
@@ -306,6 +324,7 @@ def cmd_prepare(args, settings):
 
 
 def main():
+    from app.retrieval_cli import diagnose, index_libraries
     settings = load_settings()
     p = argparse.ArgumentParser(description="Emergency AI — offline knowledge and assistance when services go down")
     p.add_argument("--lang", choices=LANGS, default=settings.get("language", "en"))
@@ -327,6 +346,14 @@ def main():
     se.add_argument("text", nargs="+")
     se.add_argument("-k", type=int, default=5)
     sub.add_parser("status", help="show installed components")
+    diagnostic = sub.add_parser("diagnose-retrieval", help="inspect retrieval without model generation")
+    diagnostic.add_argument("text", nargs="+")
+    diagnostic.add_argument("--libraries", help="comma-separated logical library names; empty selects none")
+    diagnostic.add_argument("--output", help="explicitly save diagnostic JSON (may contain private prompt text)")
+    indexing = sub.add_parser("index-libraries", help="prepare selected PDF collections for offline search")
+    indexing.add_argument("--libraries", required=True, help="comma-separated logical collection names")
+    indexing.add_argument("--prepare-tool", action="store_true", help="explicitly download the verified optional PDF extractor")
+    indexing.add_argument("--cleanup", action="store_true", help="remove generated indexes for unselected or superseded archives")
 
     pr = sub.add_parser("prepare", help="download model, engines and libraries (requires internet)")
     pr.add_argument("--model", help="model ID in config/models.json or 'none'")
@@ -352,7 +379,7 @@ def main():
 
     # Launchers forward arguments unchanged; no subcommand means start.
     argv = sys.argv[1:]
-    cmds = ("start", "chat", "ask", "search", "status", "prepare")
+    cmds = ("start", "chat", "ask", "search", "status", "prepare", "diagnose-retrieval", "index-libraries")
     pos = next((i for i, a in enumerate(argv) if a in cmds), None)
     if pos:
         argv = [argv[pos]] + argv[:pos] + argv[pos + 1:]
@@ -380,7 +407,8 @@ def main():
     if cmd == "start" and not hasattr(args, "host"):
         args.host, args.port, args.no_browser = None, None, False
     return {"start": cmd_start, "chat": cmd_chat, "ask": cmd_ask, "search": cmd_search,
-     "status": cmd_status, "prepare": cmd_prepare}[cmd](args, settings)
+     "status": cmd_status, "prepare": cmd_prepare, "diagnose-retrieval": diagnose,
+     "index-libraries": index_libraries}[cmd](args, settings)
 
 
 if __name__ == "__main__":

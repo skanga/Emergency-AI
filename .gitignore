@@ -3,6 +3,7 @@ __pycache__/
 .venv/
 logs/
 output/
+indexes/
 .playwright-cli/
 config/settings.local.json
 models/*

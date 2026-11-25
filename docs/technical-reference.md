@@ -235,3 +235,34 @@ Real-model checks run separately: see the [manual harness](../tests/manual/READM
 | **Python / portable Python** | Python runs the Emergency AI application. A portable copy travels inside the kit so another computer can run it without a separate installation. |
 | **Setup / profile** | Run `.\run.bat prepare` on Windows, `./run.sh prepare` on Linux/macOS to choose and download components. Setup is also offered in the first-use menu. A profile is a named bundle of libraries: `minimal`, `recommended` or `full`. |
 | **GiB / MiB** | Units of file size: 1 GiB = 1,024 MiB, about 1.07 GB. Download sizes in these guides are approximate; leave extra room for the model, software and future updates. |
+
+## Library passage retrieval
+
+Catalog names remain the saved browser selection keys. Search uses the archive identifier in each catalog entry's same-service HTML link. UUID, served name, logical name, archive date, article URL, and section anchor remain separate. An archive snapshot date is not a clinical revision date.
+
+Retrieval always searches the local guides. A deterministic EN/PT/ES planner prepares concise library queries and carries relevant user follow-up facts, including age, consciousness and negation. Assistant-generated diagnoses do not become retrieval facts. Unknown concepts retain lexical queries and expose limited translation coverage.
+
+The library pipeline has an eight-second request budget, at most four concurrent jobs, twenty native searches, two queries per library, forty candidate articles and twelve article fetches. Libraries get a first attempt before retries. Diagnostics identify selections not searched within the budget. HTML bodies are capped at 8 MiB. The memory passage cache holds at most 64 entries and four million characters, keyed by archive version, URL and extractor version. These are implementation limits, not promises that every selected library will produce evidence.
+
+Complete heading sections, lists and tables are ranked before source limits. Reference lists, quizzes, incidental topic collisions, translation stubs and incompatible explicit scopes are rejected. The best directly applicable local procedure is protected; remaining evidence competes by relevance. `search_results` and `kiwix_results` retain their existing roles. `context_chars` remains the optional total source-text ceiling, default 7,000; explicit local overrides are respected. Backend token accounting can omit additional whole passages. Sources carry omission reasons and links even when their text was not supplied.
+
+The `retrieval` streaming event arrives before answer tokens. Final metadata contains the updated report after fitting. Catalog reachability, native search results, article-fetch failures, PDF index coverage and actual source inclusion are separate facts. The browser and CLI expose them separately.
+
+### Local knowledge and conflicting references
+
+Retrieval and indexing treat `knowledge/en`, `knowledge/pt`, `knowledge/es` and `knowledge/extra` as inputs. They never rewrite them. Disposable document indexes live under `indexes/`, or the explicit `document_index_dir` setting; use an absolute path for that override.
+
+`config/source-policy.json` starts with no precedence rules. Rules require a topic, scope, exact passage IDs and source versions, reviewer, review date and rationale. A preferred source must be one of the explicitly bound sources. Scores, recent archive filenames, duplicate copies and model confidence cannot establish authority. Use `diagnose-retrieval` to inspect actual IDs and versions before creating a reviewed rule.
+
+Conflict detection covers reviewed rules and differing quantities in matching statements with compatible identifiable qualifiers. It does **not** detect arbitrary paraphrases or certify medical accuracy. Known unresolved conflicts survive source caps and token fitting. The application withholds procedural generation and extractive advice and displays a conflict notice, retaining the original references. Reviewed corrections identify the preferred version and rationale; if that preferred passage cannot fit, the application withholds the recommendation rather than falling back to superseded guidance.
+
+### Inspection and rollback
+
+```sh
+python3 emergency.py diagnose-retrieval --lang en 'My dad collapsed and is only gasping.'
+python3 emergency.py diagnose-retrieval --libraries wikipedia_en_medicine --output /tmp/retrieval.json 'How do I recognize heatstroke?'
+```
+
+Diagnostics do not start or query the generator for an answer. Default output goes to the terminal; saving potentially private prompt text requires `--output`. The manual evaluator can separately use read-only backend token accounting.
+
+The repair branch can be tested on an isolated port with `llm_backend=none`. Keep the previous code and local settings for rollback. Old application versions ignore generated indexes and the additive catalog configuration field; HTML browsing and guide-only operation do not depend on the PDF tools. Do not remove archives, local settings or knowledge files to roll back. Deployment remains gated on the retrieval and answer-review results in the implementation evaluation report.

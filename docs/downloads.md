@@ -142,3 +142,17 @@ Non-interactive:
 ```
 
 For GPU downloads, update behavior, and integrity checks, see the [technical reference](technical-reference.md#acceleration-and-updates).
+
+## Optional PDF collection preparation
+
+Native HTML library retrieval remains standard-library-only. PDF collection preparation uses the separately pinned Xpdf 4.06 `pdftotext` and `pdfinfo` tools. `config/document-tools.json` records the official artifact URL, byte size, SHA-256, version, source URL and license metadata. The current validated extraction platform is **Linux x86_64**. Other platforms explicitly report unsupported extraction; their existing guide and HTML retrieval paths remain available.
+
+```sh
+python3 emergency.py index-libraries --libraries zimgit-medicine_en --prepare-tool
+```
+
+Tool downloads use the existing verified-download workflow and occur only with explicit `--prepare-tool`. The complete upstream README, COPYING, COPYING3 and documentation tree are retained under `runtime/document-tools/`. Upstream provides the tool under GPL version 2 or 3; retain its notices and follow its source-distribution requirements when redistributing binaries. The pinned source is available at [Xpdf 4.06 source](https://dl.xpdfreader.com/xpdf-4.06.tar.gz).
+
+Preparation limits are 256 MiB input per PDF, 2,000 pages per PDF, 120 seconds for each document's fetch/extraction/processing path, and 64 MiB captured extraction output. The Python preparation API accepts explicit limit overrides; the emergency answer path does not. The SQLite index requires FTS5. Unsupported SQLite builds report that capability instead of attempting a runtime install.
+
+Manifests are parsed as data without executing JavaScript. Paths must stay within the selected archive. The index records document hashes, archive versions and page references. Unchanged documents reuse extracted pages; replacement indexes activate atomically. Expect temporary disk space for the archive, extracted tools, a downloaded PDF and the replacement index. The pinned Linux tool archive is approximately 15.4 MiB; index size depends on readable text coverage.

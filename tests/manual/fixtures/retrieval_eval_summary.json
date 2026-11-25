@@ -1,0 +1,2811 @@
+{
+  "date": "2026-11-25",
+  "summary": {
+    "cases": 59,
+    "gold_recall": {
+      "matched": 3,
+      "annotated": 30,
+      "rate": 0.1
+    },
+    "by_language": {
+      "en": {
+        "matched": 3,
+        "annotated": 18
+      },
+      "pt": {
+        "matched": 0,
+        "annotated": 6
+      },
+      "es": {
+        "matched": 0,
+        "annotated": 6
+      }
+    },
+    "retrieval_p95_seconds": 0.806,
+    "unannotated_cases": 29,
+    "human_precision": null,
+    "answer_safety_review": "pending",
+    "release_gates_passed": false,
+    "limitation": "Gold-section matches only. Independent relevance and safety annotation is required."
+  },
+  "local_knowledge_files": 46,
+  "local_knowledge_unchanged": true,
+  "cases": [
+    {
+      "id": "heldout-01",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.217,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Gardening and livestock to survive a year or more",
+          "section": "Fertilizing with what you have",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Stockpile for 1 year (estimate per adult)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Snakebite (Brazil)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Mental health, community and security",
+          "section": "The mind is the main piece of equipment",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-02",
+      "split": "heldout",
+      "language": "pt",
+      "seconds": 0.189,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Avaliação inicial: segurança e X-ABCDE",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Energia, luz e eletricidade sem a rede",
+          "section": "Dispositivos e dados",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Parada cardíaca: RCP (reanimação cardiopulmonar)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Horta e criação para sobreviver um ano ou mais",
+          "section": "Culturas recomendadas (clima tropical/subtropical)",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-03",
+      "split": "heldout",
+      "language": "es",
+      "seconds": 0.718,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Paro cardíaco: RCP (reanimación cardiopulmonar)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence › Exception to the main sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Exception_to_the_main_sequence",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "heldout-04",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.376,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Preserving food without a refrigerator",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Human body and health › Nutrition, food, and drink › Alcohol",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/List_of_common_misconceptions_about_science%2C_technology%2C_and_mathematics#Alcohol",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Human body and health › Nutrition, food, and drink",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/List_of_common_misconceptions_about_science%2C_technology%2C_and_mathematics#Nutrition%2C_food%2C_and_drink",
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "Hygiene, sanitation and homemade soap",
+          "section": "Latrines and feces management",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Biology › Mammals",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/List_of_common_misconceptions_about_science%2C_technology%2C_and_mathematics#Mammals",
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "Survival priorities",
+          "section": "From the first week to the first month",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Order of consumption in a crisis",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Water for cooking",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-05",
+      "split": "heldout",
+      "language": "pt",
+      "seconds": 0.201,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Engasgo (obstrução das vias aéreas)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Febre",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Ferramentas, nós e reparos",
+          "section": "Nós essenciais",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Parto de emergência",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Horta e criação para sobreviver um ano ou mais",
+          "section": "Sementes: o recurso mais estratégico",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-06",
+      "split": "heldout",
+      "language": "es",
+      "seconds": 0.201,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Atragantamiento (obstrucción de la vía aérea)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Fiebre",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Agua: encontrar, purificar y almacenar",
+          "section": "Almacenamiento",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Herramientas, nudos y reparaciones",
+          "section": "Nudos esenciales",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Parto de emergencia",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-07",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.193,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Hygiene, sanitation and homemade soap",
+          "section": "Latrines and feces management",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Emergency childbirth",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Preserving food without a refrigerator",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Water: finding, purifying and storing it",
+          "section": "Water: finding, purifying and storing it",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-08",
+      "split": "heldout",
+      "language": "pt",
+      "seconds": 0.183,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Picada de cobra (Brasil)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Reação alérgica grave (anafilaxia)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Prioridades de sobrevivência",
+          "section": "A regra dos 3",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Álcool: fermentação, destilação e usos (antisséptico e combustível)",
+          "section": "1. Fermentação (fazer o \"mosto\" ou \"vinho\")",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Higiene, saneamento e sabão caseiro",
+          "section": "Higiene, saneamento e sabão caseiro",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-09",
+      "split": "heldout",
+      "language": "es",
+      "seconds": 0.187,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Reacción alérgica grave (anafilaxia)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Atragantamiento (obstrucción de la vía aérea)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Prioridades de supervivencia",
+          "section": "Pensando en 1 año o más",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Paro cardíaco: RCP (reanimación cardiopulmonar)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Parto de emergencia",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-10",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.83,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Hygiene, sanitation and homemade soap",
+          "section": "Garbage",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "How to replace the battery in your iPhone 5s › Introduction › 225 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/How%2Bto%2Breplace%2Bthe%2Bbattery%2Bin%2Byour%2BiPhone%2B5s/19239",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "How to replace the battery in your iPhone 5s › Introduction › 225 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/How%2Bto%2Breplace%2Bthe%2Bbattery%2Bin%2Byour%2BiPhone%2B5s/19239",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "How to replace the battery in your iPhone 5s › Introduction › 225 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/How%2Bto%2Breplace%2Bthe%2Bbattery%2Bin%2Byour%2BiPhone%2B5s/19239",
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Tools, knots and repairs",
+          "section": "Essential knots",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Severe bleeding",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Alcohol: fermentation, distillation and uses (antiseptic and fuel)",
+          "section": "4. Uses",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-11",
+      "split": "heldout",
+      "language": "pt",
+      "seconds": 0.179,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Fogo: como acender com coisas simples",
+          "section": "Métodos de ignição",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Horta e criação para sobreviver um ano ou mais",
+          "section": "Sementes: o recurso mais estratégico",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Sangramento grave",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Engasgo (obstrução das vias aéreas)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Diarreia e desidratação — soro de reidratação oral",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-12",
+      "split": "heldout",
+      "language": "es",
+      "seconds": 0.184,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Prioridades de supervivencia",
+          "section": "Pensando en 1 año o más",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Sangrado grave",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Reacción alérgica grave (anafilaxia)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Fuego: cómo encenderlo con cosas simples",
+          "section": "Seguridad",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Fuego: cómo encenderlo con cosas simples",
+          "section": "Métodos de ignición",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-13",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.195,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Hygiene, sanitation and homemade soap",
+          "section": "Latrines and feces management",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Fire: how to light one with simple things",
+          "section": "Safety",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Shelter and body temperature",
+          "section": "Quick shelters",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Energy, light and electricity off the grid",
+          "section": "Devices and data",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Energy, light and electricity off the grid",
+          "section": "Car batteries and generators",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-14",
+      "split": "heldout",
+      "language": "pt",
+      "seconds": 0.188,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Fogo: como acender com coisas simples",
+          "section": "Segurança",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Fraturas, entorses e luxações",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Água: encontrar, purificar e armazenar",
+          "section": "Sinais de desidratação",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeiros socorros e cuidados de saúde",
+          "section": "Engasgo (obstrução das vias aéreas)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Energia, luz e eletricidade sem a rede",
+          "section": "Baterias de carro e geradores",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-15",
+      "split": "heldout",
+      "language": "es",
+      "seconds": 0.197,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Fuego: cómo encenderlo con cosas simples",
+          "section": "Seguridad",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Agua: encontrar, purificar y almacenar",
+          "section": "Señales de deshidratación",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Recolección, pesca y caza",
+          "section": "Plantas silvestres: regla principal",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Fracturas, esguinces y luxaciones",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Energía, luz y electricidad sin la red",
+          "section": "Baterías de auto y generadores",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-16",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.603,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "In-river flood management",
+          "link": "/content/appropedia_en_all_maxi_2026-02/In-river_flood_management",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management approaches › Improving climate resilience of water and sanitation services",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Water_security#Improving_climate_resilience_of_water_and_sanitation_services",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Water, drought and flood news UK",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Water%2C_drought_and_flood_news_UK",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-17",
+      "split": "heldout",
+      "language": "pt",
+      "seconds": 0.452,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Higiene, saneamento e sabão caseiro",
+          "section": "Água de enchente e ratos",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "In-river flood management",
+          "link": "/content/appropedia_en_all_maxi_2026-02/In-river_flood_management",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "Ego battery lawn mower safety switch connector replacement › Introduction › 10 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/Ego%2Bbattery%2Blawn%2Bmower%2Bsafety%2Bswitch%2Bconnector%2Breplacement/125314",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "energypedia",
+          "section": "Using Hydro Power Plants for Flood Prevention",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Using_Hydro_Power_Plants_for_Flood_Prevention",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-18",
+      "split": "heldout",
+      "language": "es",
+      "seconds": 0.418,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Higiene, saneamiento y jabón casero",
+          "section": "Agua de inundación y ratas",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "In-river flood management",
+          "link": "/content/appropedia_en_all_maxi_2026-02/In-river_flood_management",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "Ego battery lawn mower safety switch connector replacement › Introduction › 10 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/Ego%2Bbattery%2Blawn%2Bmower%2Bsafety%2Bswitch%2Bconnector%2Breplacement/125314",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "energypedia",
+          "section": "Using Hydro Power Plants for Flood Prevention",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Using_Hydro_Power_Plants_for_Flood_Prevention",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-19",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.189,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Heatstroke and heat exhaustion",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Shelter and body temperature",
+          "section": "Shelter and body temperature",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Shelter and body temperature",
+          "section": "Choosing the site",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Shelter and body temperature",
+          "section": "Safe heating",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-20",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.419,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Hygiene, sanitation and homemade soap",
+          "section": "Latrines and feces management",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Emergency medical treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_exhaustion#Emergency_medical_treatment",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Hyperthermia#Treatment",
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Shelter and body temperature",
+          "section": "Shelter and body temperature",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Preserving food without a refrigerator",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Heat stroke",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_stroke",
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Heatstroke and heat exhaustion",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Shelter and body temperature",
+          "section": "Choosing the site",
+          "link": null,
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "heldout-21",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 1.169,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "iPhone 6 Battery Replacement › Introduction › 412 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/iPhone%2B6%2BBattery%2BReplacement/29363",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "iPhone 6 Battery Replacement › Introduction › 412 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/iPhone%2B6%2BBattery%2BReplacement/29363",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "iPhone 6 Battery Replacement › Introduction › 412 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/iPhone%2B6%2BBattery%2BReplacement/29363",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "heldout-22",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.634,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 1,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old) › Unconscious infants",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Unconscious_infants",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid) › Anti-choking devices",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Anti-choking_devices",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "heldout-23",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.663,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "26537309aa7d4f8a68807d21"
+        ]
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "NREMT Skillset/Epinephrine Auto-Injector",
+          "link": "/content/appropedia_en_all_maxi_2026-02/NREMT_Skillset/Epinephrine_Auto-Injector",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Anaphylaxis › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Anaphylaxis#Management",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "heldout-24",
+      "split": "heldout",
+      "language": "en",
+      "seconds": 0.453,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Solid foods › First aid for choking",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Infant_food_safety#First_aid_for_choking",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid) › Anti-choking devices",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Anti-choking_devices",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Prehospital protocol pediatric airway obstruction › No",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Prehospital_protocol_pediatric_airway_obstruction#No",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-01",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.706,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Energy, light and electricity off the grid",
+          "section": "Car batteries and generators",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "The four stroke cycle - diesel engine",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine#The_four_stroke_cycle_-_diesel_engine",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Diesel engine",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Diesel engine suppliers",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine#Diesel_engine_suppliers",
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Fire: how to light one with simple things",
+          "section": "Ignition methods",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Alcohol: fermentation, distillation and uses (antiseptic and fuel)",
+          "section": "4. Uses",
+          "link": null,
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "Tools, knots and repairs",
+          "section": "Essential knots",
+          "link": null,
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "link": null,
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "negative-02",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.433,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Emergency childbirth",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Impact on infants and the body",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anti-inflammatory_agents_in_breast_milk#Impact_on_infants_and_the_body",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Late modern medicine › War › Interwar period (1918–1939)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/History_of_medicine#Interwar_period_%281918%E2%80%931939%29",
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Tools, knots and repairs",
+          "section": "Learn and document",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Fever",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Anti-inflammatory agents in breast milk",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anti-inflammatory_agents_in_breast_milk",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "negative-03",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.658,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Seizure › Management › Other Considerations",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Seizure#Other_Considerations",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Seizure (peds) › Management › 2nd Line",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Seizure_(peds)#2nd_Line",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Seizure (peds) › Management › Hyponatremia",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Seizure_(peds)#Hyponatremia",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-04",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.473,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Carbon Monoxide Detector",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Carbon_Monoxide_Detector",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide detector",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_detector",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-05",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.198,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Preserving food without a refrigerator",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Order of consumption in a crisis",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Water for cooking",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "How much a person needs",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Survival priorities",
+          "section": "Thinking about 1 year or more",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-06",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.534,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Ischemic stroke › Craniectomy",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Craniectomy",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Ischemic stroke › Endovascular treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Endovascular_treatment",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Ischemic stroke",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Ischemic_stroke",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-07",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.58,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Water: finding, purifying and storing it",
+          "section": "Where to find water",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Traditional treatments",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snake_venom#Traditional_treatments",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Snake identification",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Snake_identification",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Traditional treatments › Serotherapy",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snake_venom#Serotherapy",
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Water: finding, purifying and storing it",
+          "section": "Water: finding, purifying and storing it",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Water: finding, purifying and storing it",
+          "section": "Distillation (salt water, chemically contaminated water)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Gardening and livestock to survive a year or more",
+          "section": "Water for the garden",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Water for cooking",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-08",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.181,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Shelter and body temperature",
+          "section": "Extreme heat",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Heatstroke and heat exhaustion",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Water: finding, purifying and storing it",
+          "section": "How much you need",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Food: stockpiling, preparation and preservation",
+          "section": "Order of consumption in a crisis",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Energy, light and electricity off the grid",
+          "section": "Devices and data",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-09",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.583,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "In-river flood management",
+          "link": "/content/appropedia_en_all_maxi_2026-02/In-river_flood_management",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "Ego battery lawn mower safety switch connector replacement › Introduction › 10 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/Ego%2Bbattery%2Blawn%2Bmower%2Bsafety%2Bswitch%2Bconnector%2Breplacement/125314",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "energypedia",
+          "section": "Using Hydro Power Plants for Flood Prevention",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Using_Hydro_Power_Plants_for_Flood_Prevention",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-10",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.638,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Burns",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Cement burn › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Cement_burn#Management",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Tar burn › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Tar_burn#Management",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Intravenous fluids",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Burn#Intravenous_fluids",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-11",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.499,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 1,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Emergency childbirth",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Core principles › Treatment by attitudes",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Control_mastery_theory#Treatment_by_attitudes",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Examination of Anomalous World Experience (EAWE) › EAWE items",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Self-disorder#EAWE_items",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Session 8. Health in a Cross-Cultural Context",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Peace_Corps_appropriate_community_technology/Development_of_Facilitation_Skills_Criteria#Session_8._Health_in_a_Cross-Cultural_Context",
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "Mental health, community and security",
+          "section": "Community",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Heatstroke and heat exhaustion",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Mental health, community and security",
+          "section": "The mind is the main piece of equipment",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "negative-12",
+      "split": "negative",
+      "language": "en",
+      "seconds": 0.56,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Foraging, fishing and hunting",
+          "section": "Wild plants: the main rule",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Diagnosis › Blood testing",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Blood_testing",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Diagnosis › Skin prick testing",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Skin_prick_testing",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Immunotherapy",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Immunotherapy",
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Shock",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Foraging, fishing and hunting",
+          "section": "Insects",
+          "link": null,
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "Mental health, community and security",
+          "section": "The mind is the main piece of equipment",
+          "link": null,
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-allergy_followup",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.763,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "26537309aa7d4f8a68807d21"
+        ]
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "NREMT Skillset/Epinephrine Auto-Injector",
+          "link": "/content/appropedia_en_all_maxi_2026-02/NREMT_Skillset/Epinephrine_Auto-Injector",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "NREMT Skillset/Epinephrine Auto-Injector/Lab Sheet",
+          "link": "/content/appropedia_en_all_maxi_2026-02/NREMT_Skillset/Epinephrine_Auto-Injector/Lab_Sheet",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-anaphylaxis",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.506,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "NREMT Skillset/Epinephrine Auto-Injector",
+          "link": "/content/appropedia_en_all_maxi_2026-02/NREMT_Skillset/Epinephrine_Auto-Injector",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "NREMT Skillset/Epinephrine Auto-Injector/Lab Sheet",
+          "link": "/content/appropedia_en_all_maxi_2026-02/NREMT_Skillset/Epinephrine_Auto-Injector/Lab_Sheet",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "NREMT Skillset/Epinephrine Auto-injector Trainer",
+          "link": "/content/appropedia_en_all_maxi_2026-02/NREMT_Skillset/Epinephrine_Auto-injector_Trainer",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-bleeding",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.716,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Severe bleeding",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Intracranial hemorrhage (main) › Management › Blood Pressure",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Intracranial_hemorrhage_(main)#Blood_Pressure",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Traumatic intracerebral hemorrhage › Management › Blood Pressure",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Traumatic_intracerebral_hemorrhage#Blood_Pressure",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Uremic bleeding syndrome › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Uremic_bleeding_syndrome#Management",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-burn",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.49,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Burns",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Cement burn › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Cement_burn#Management",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Wound care",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Burn#Wound_care",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Tar burn › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Tar_burn#Management",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-co",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.449,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Signs and symptoms › Chronic poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Chronic_poisoning",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Other",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Other",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-cpr",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.701,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence › Exception to the main sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Exception_to_the_main_sequence",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-dehydration",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.675,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Diarrhea and dehydration — oral rehydration solution",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Reduced concentration oral rehydration solution",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Reduced_concentration_oral_rehydration_solution",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Reduced concentration oral rehydration solution/es",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Reduced_concentration_oral_rehydration_solution/es",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Reduced-osmolarity oral rehydration solution",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Reduced-osmolarity_oral_rehydration_solution",
+          "included": true
+        },
+        {
+          "kind": "kit",
+          "title": "Water: finding, purifying and storing it",
+          "section": "Signs of dehydration",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-diabetes",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.742,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Intake of glucose by mouth",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Diabetic_hypoglycemia#Intake_of_glucose_by_mouth",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Diabetic hypoglycemia",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Diabetic_hypoglycemia",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Glucagon",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Diabetic_hypoglycemia#Glucagon",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-flood",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.581,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "In-river flood management",
+          "link": "/content/appropedia_en_all_maxi_2026-02/In-river_flood_management",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "iFixit in English",
+          "section": "Ego battery lawn mower safety switch connector replacement › Introduction › 10 comments",
+          "link": "/content/ifixit_en_all_2025-12/Guide/Ego%2Bbattery%2Blawn%2Bmower%2Bsafety%2Bswitch%2Bconnector%2Breplacement/125314",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "energypedia",
+          "section": "Related Studies and Articles › Flood Control Challenges for Large Hydro-Electric Reservoirs Examples from the Nam Theun - Nam Kading Basin, Lao PDR, 2013",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Using_Hydro_Power_Plants_for_Flood_Prevention#Flood_Control_Challenges_for_Large_Hydro-Electric_Reservoirs_Examples_from_the_Nam_Theun_-_Nam_Kading_Basin%2C_Lao_PDR%2C_2013",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-food",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.671,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Safe food handling procedures (from market to consumer)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Food_safety#Safe_food_handling_procedures_%28from_market_to_consumer%29",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Regulations by jurisdiction and agency › South Korea › Ministry of Food and Drug Safety",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Food_safety#Ministry_of_Food_and_Drug_Safety",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Solid foods › Commercial baby food",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Infant_food_safety#Commercial_baby_food",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-grease_fire",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.559,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Organisational structure › Fire safety",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Hong_Kong_Fire_Services_Department#Fire_safety",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Organisational structure › Licensing and certification",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Hong_Kong_Fire_Services_Department#Licensing_and_certification",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Overview",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Hong_Kong_Fire_Services_Department#Overview",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-heatstroke",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.633,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Heat stroke › Management › Rapid Cooling › Techniques",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Techniques",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Heat stroke",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_stroke",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Take Protective Measures › After Extreme Heat",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Are_You_Ready%3F/Extreme_heat#After_Extreme_Heat",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-infant_choking",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.665,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Solid foods › First aid for choking",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Infant_food_safety#First_aid_for_choking",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid) › Anti-choking devices",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Anti-choking_devices",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-infant_followup",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.731,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "NREMT Skillset/Infant Cardiopulmonary Resuscitation (CPR)",
+          "link": "/content/appropedia_en_all_maxi_2026-02/NREMT_Skillset/Infant_Cardiopulmonary_Resuscitation_(CPR)",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old) › Unconscious infants",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Unconscious_infants",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid) › Anti-choking devices",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Anti-choking_devices",
+          "included": false
+        },
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-poison",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.661,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 1,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Prognosis and treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Mushroom_poisoning#Prognosis_and_treatment",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Types of food poisoning",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Food_poisoning_and_its_prevention#Types_of_food_poisoning",
+          "included": false
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Types of food poisoning",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Food_poisoning_and_its_prevention/ar#Types_of_food_poisoning",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-portuguese",
+      "split": "original",
+      "language": "pt",
+      "seconds": 0.484,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Hyperbaric oxygen",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Other",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Other",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-seizure",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.806,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › First aid and acute management of seizures",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Epilepsy#First_aid_and_acute_management_of_seizures",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Febrile_seizure#Treatment",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Generalized_tonic%E2%80%93clonic_seizure#Management",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-snake",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.519,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "First aid and health care",
+          "section": "Snakebite (Brazil)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Outmoded",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Outmoded",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Medical Library",
+          "section": "First Aid — page 134",
+          "link": "/content/zimgit-medicine_en_2024-08/files/First%20Aid%20and%20Medicine%20%283%29.pdf#page=134",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-spanish",
+      "split": "original",
+      "language": "es",
+      "seconds": 0.598,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 2,
+      "references": [
+        {
+          "kind": "kit",
+          "title": "Primeros auxilios y cuidados de salud",
+          "section": "Paro cardíaco: RCP (reanimación cardiopulmonar)",
+          "link": null,
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence › Exception to the main sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Exception_to_the_main_sequence",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "original-stroke",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.561,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Ischemic stroke",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Ischemic_stroke",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Hemorrhagic stroke",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Hemorrhagic_stroke",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Stroke unit",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Stroke_unit",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-water_bleach",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.697,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Other › Expanding access to point-of-use water treatment systems",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Decreasing_turbidity_to_optimize_solar_water_disinfection_lit_review/Disadvantages#Expanding_access_to_point-of-use_water_treatment_systems",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "energypedia",
+          "section": "Technologies - In General › Remote Monitoring of Water Treatment Systems in Ethiopia",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Decentralized_Drinking_Water_Supply#Remote_Monitoring_of_Water_Treatment_Systems_in_Ethiopia",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "Appropedia",
+          "section": "Support for technology › Disinfection of drinking water contaminated with Cryptosporidium under natural sunlight",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Decreasing_turbidity_to_optimize_solar_water_disinfection_lit_review/Support_for_technology#Disinfection_of_drinking_water_contaminated_with_Cryptosporidium_under_natural_sunlight",
+          "included": true
+        }
+      ]
+    },
+    {
+      "id": "original-water_chemical",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.505,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "zero_hits",
+      "included_library_passages": 0,
+      "references": []
+    },
+    {
+      "id": "original-electrical",
+      "split": "original",
+      "language": "en",
+      "seconds": 0.603,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "model_token_fit": true,
+      "retrieval_status": "success",
+      "included_library_passages": 3,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "WikiMed Medical Encyclopedia",
+          "section": "Prevention › Basic electrical safety",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#Basic_electrical_safety",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "energypedia",
+          "section": "Electrical Safety and Design › Risk Reduction by Design › Grounding, Protective Earth, and Earth Connection Systems",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Electrical_Safety_and_Design#Grounding%2C_Protective_Earth%2C_and_Earth_Connection_Systems",
+          "included": true
+        },
+        {
+          "kind": "kiwix",
+          "title": "energypedia",
+          "section": "Electrical Safety and Design › Hazard and Risk",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Electrical_Safety_and_Design#Hazard_and_Risk",
+          "included": true
+        }
+      ]
+    }
+  ]
+}

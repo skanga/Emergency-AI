@@ -49,3 +49,15 @@ python -B tests/manual/real_models.py --manifest tests/manual/tier_manifest.json
 Substitute `tier_extra_manifest.json` for LFM3 and `unsloth_manifest.json` for the paired quantizations and official Qwen3.8. Each manifest's `generation` object supplies the tested per-model sampler controls. The catalogue can also provide sampler defaults by exact filename. Explicit backend/model overrides win over catalogue defaults. The output cap is 512 for this concise-answer comparison; it does not change the application's 2,048-token default.
 
 For a user-provided model, create an untracked manifest containing `id`, `file`, `path` (the existing absolute file path), `size_bytes`, `sha256`, and optionally `generation`. The harness reads and hashes that file in place; it does not copy, move, or modify it. Keep local paths out of published manifests. Decision models are outside this chat-generation comparison.
+
+## Kiwix retrieval evaluation
+
+`retrieval_manifest.json` freezes 59 natural questions: 22 original API cases, the electrical browser case, 24 held-out variants and 12 negative/ambiguous cases. Thirty currently have inspected target-section annotations; remaining coverage and human relevance labels are explicitly pending. Do not treat missing annotations as successful abstention or use the held-out cases for vocabulary tuning.
+
+```sh
+python3 -B tests/manual/retrieval_eval.py --manifest tests/manual/retrieval_manifest.json --output /tmp/retrieval-eval.json
+```
+
+The default run uses production retrieval and prompt construction, including read-only token fitting when the existing backend is available. It does not generate answers or start a model. Results record natural questions, actual query attempts, archive versions, fetch/filter outcomes, sources, prompt inclusion and target-section matches. `--settings FILE` supplies isolated settings overrides; `--limit N` is only a smoke run. `--generate` additionally generates answers and captures production fitting; use it only after retrieval gates pass and review critical cases repeatedly.
+
+Target-section matching is narrower than a complete human relevance judgment. The tool deliberately leaves human precision and answer-safety approval unset and never marks release gates passed automatically. Generated reports may contain private prompts and source passages; only save/share them deliberately. The release target remains at least 90% annotated supported-case recall and 90% independently judged included-passage relevance, with no serious new answer-safety regression.

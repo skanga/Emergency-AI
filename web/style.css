@@ -211,3 +211,7 @@ a { color: var(--accent); }
   .main, .view, .doc { overflow: visible; display: block; }
   body { background: #fff; color: #000; }
 }
+/* Retrieval reporting stays outside the streamed answer so interruptions retain it. */
+.retrieval-status { margin: .8rem 0; padding: .65rem; border: 1px solid currentColor; border-radius: .4rem; font-size: .85rem; }
+.retrieval-status summary, .sources details summary { cursor: pointer; }
+.retrieval-status div { margin-top: .5rem; line-height: 1.5; overflow-wrap: anywhere; }

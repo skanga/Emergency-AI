@@ -1,0 +1,840 @@
+{
+  "version": 1,
+  "inputs_frozen": "2026-11-24",
+  "annotation_status": "pending; no recall or precision claims until source inspection",
+  "cases": [
+    {
+      "id": "heldout-01",
+      "split": "heldout",
+      "q": "My father collapsed. He will not respond and takes an occasional snorting breath.",
+      "lang": "en",
+      "expected_topic": "cpr",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Cardiac_arrest",
+          "anchor": "Cardiopulmonary_resuscitation"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-02",
+      "split": "heldout",
+      "q": "Meu pai caiu, não responde e só dá suspiros espaçados.",
+      "lang": "pt",
+      "expected_topic": "cpr",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Cardiac_arrest",
+          "anchor": "Cardiopulmonary_resuscitation"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-03",
+      "split": "heldout",
+      "q": "Mi padre se desplomó, no responde y sólo jadea de vez en cuando.",
+      "lang": "es",
+      "expected_topic": "cpr",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Cardiac_arrest",
+          "anchor": "Cardiopulmonary_resuscitation"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-04",
+      "split": "heldout",
+      "q": "My eight-month-old cannot cry or cough after swallowing food.",
+      "lang": "en",
+      "expected_topic": "choking",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Choking",
+          "anchor": "Infants_(babies_under_1_year-old)"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-05",
+      "split": "heldout",
+      "q": "Meu bebê de oito meses engasgou e não consegue chorar nem tossir.",
+      "lang": "pt",
+      "expected_topic": "choking",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Choking",
+          "anchor": "Infants_(babies_under_1_year-old)"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-06",
+      "split": "heldout",
+      "q": "Mi bebé de ocho meses se atragantó y no puede toser ni llorar.",
+      "lang": "es",
+      "expected_topic": "choking",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Choking",
+          "anchor": "Infants_(babies_under_1_year-old)"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-07",
+      "split": "heldout",
+      "q": "After a bee sting she has swollen lips and trouble breathing.",
+      "lang": "en",
+      "expected_topic": "anaphylaxis",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Anaphylaxis",
+          "anchor": "Epinephrine"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-08",
+      "split": "heldout",
+      "q": "Depois de uma picada de abelha, ela está com os lábios inchados e falta de ar.",
+      "lang": "pt",
+      "expected_topic": "anaphylaxis",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Anaphylaxis",
+          "anchor": "Epinephrine"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-09",
+      "split": "heldout",
+      "q": "Tras una picadura de abeja tiene los labios hinchados y le cuesta respirar.",
+      "lang": "es",
+      "expected_topic": "anaphylaxis",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Anaphylaxis",
+          "anchor": "Epinephrine"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-10",
+      "split": "heldout",
+      "q": "His smile is crooked and suddenly he cannot lift his left arm.",
+      "lang": "en",
+      "expected_topic": "stroke",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Stroke",
+          "anchor": "Management"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-11",
+      "split": "heldout",
+      "q": "O sorriso dele ficou torto e de repente não consegue levantar um braço.",
+      "lang": "pt",
+      "expected_topic": "stroke",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Stroke",
+          "anchor": "Management"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-12",
+      "split": "heldout",
+      "q": "De repente tiene la sonrisa torcida y no puede levantar un brazo.",
+      "lang": "es",
+      "expected_topic": "stroke",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Stroke",
+          "anchor": "Management"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-13",
+      "split": "heldout",
+      "q": "Everyone in the cabin has a headache while the generator runs indoors.",
+      "lang": "en",
+      "expected_topic": "co",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Carbon_monoxide_poisoning",
+          "anchor": "Treatment"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-14",
+      "split": "heldout",
+      "q": "Todos na cabana têm dor de cabeça e o gerador está funcionando lá dentro.",
+      "lang": "pt",
+      "expected_topic": "co",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Carbon_monoxide_poisoning",
+          "anchor": "Treatment"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-15",
+      "split": "heldout",
+      "q": "Todos en la cabaña tienen dolor de cabeza con el generador funcionando dentro.",
+      "lang": "es",
+      "expected_topic": "co",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Carbon_monoxide_poisoning",
+          "anchor": "Treatment"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-16",
+      "split": "heldout",
+      "q": "Floodwater near a pesticide store entered our drinking-water tank.",
+      "lang": "en",
+      "expected_topic": "water_chemical",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "heldout-17",
+      "split": "heldout",
+      "q": "Água da enchente com pesticida entrou no tanque de água potável.",
+      "lang": "pt",
+      "expected_topic": "water_chemical",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "heldout-18",
+      "split": "heldout",
+      "q": "Entró agua de inundación con pesticidas al depósito de agua potable.",
+      "lang": "es",
+      "expected_topic": "water_chemical",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "heldout-19",
+      "split": "heldout",
+      "q": "Hot soup spilled over my forearm and it is blistering.",
+      "lang": "en",
+      "expected_topic": "burn",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "heldout-20",
+      "split": "heldout",
+      "q": "A runner is confused and extremely hot after exercising in the sun.",
+      "lang": "en",
+      "expected_topic": "heatstroke",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Heat_stroke",
+          "anchor": "Treatment"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-21",
+      "split": "heldout",
+      "q": "My brother is jerking on the floor and does not respond.",
+      "lang": "en",
+      "expected_topic": "seizure",
+      "history": [],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Seizure",
+          "anchor": "First_aid_during_a_seizure"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-22",
+      "split": "heldout",
+      "q": "Now he is unconscious. What changes?",
+      "lang": "en",
+      "expected_topic": "choking",
+      "history": [
+        {
+          "role": "user",
+          "content": "My eight-month-old is choking and cannot cough."
+        }
+      ],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Choking",
+          "anchor": "Infants_(babies_under_1_year-old)"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-23",
+      "split": "heldout",
+      "q": "It has been several minutes and breathing is still difficult. We have another injector.",
+      "lang": "en",
+      "expected_topic": "anaphylaxis",
+      "history": [
+        {
+          "role": "user",
+          "content": "She has anaphylaxis and used her epinephrine injector."
+        }
+      ],
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Anaphylaxis",
+          "anchor": "Epinephrine"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "heldout-24",
+      "split": "heldout",
+      "q": "Different problem: the frying oil on my stove has caught fire.",
+      "lang": "en",
+      "expected_topic": "grease_fire",
+      "history": [
+        {
+          "role": "user",
+          "content": "My baby is choking."
+        }
+      ],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-01",
+      "split": "negative",
+      "q": "How does a two-stroke diesel engine work?",
+      "lang": "en",
+      "expected_topic": "engineering",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-02",
+      "split": "negative",
+      "q": "How can I repair an Infant Optics baby camera?",
+      "lang": "en",
+      "expected_topic": "repair",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-03",
+      "split": "negative",
+      "q": "What ingredients are in Seizure Salad?",
+      "lang": "en",
+      "expected_topic": "food",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-04",
+      "split": "negative",
+      "q": "How do I dismantle a carbon monoxide detector?",
+      "lang": "en",
+      "expected_topic": "repair",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-05",
+      "split": "negative",
+      "q": "My food processor motor stopped. How do I repair it?",
+      "lang": "en",
+      "expected_topic": "repair",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-06",
+      "split": "negative",
+      "q": "Explain the butterfly swimming stroke.",
+      "lang": "en",
+      "expected_topic": "sport",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-07",
+      "split": "negative",
+      "q": "How do I water a snake plant?",
+      "lang": "en",
+      "expected_topic": "gardening",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-08",
+      "split": "negative",
+      "q": "My computer froze during a heat simulation.",
+      "lang": "en",
+      "expected_topic": "computing",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-09",
+      "split": "negative",
+      "q": "How does a flood-fill algorithm work?",
+      "lang": "en",
+      "expected_topic": "computing",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-10",
+      "split": "negative",
+      "q": "How do I burn an ISO image to a disc?",
+      "lang": "en",
+      "expected_topic": "computing",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-11",
+      "split": "negative",
+      "q": "Someone feels strange. What happened?",
+      "lang": "en",
+      "expected_topic": "ambiguous",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "negative-12",
+      "split": "negative",
+      "q": "Can you explain allergy testing in general?",
+      "lang": "en",
+      "expected_topic": "background",
+      "history": [],
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-allergy_followup",
+      "split": "original",
+      "q": "I used the injector 6 minutes ago. She is still wheezing and faint. We have a second injector. What now?",
+      "lang": "en",
+      "history": [
+        {
+          "role": "user",
+          "content": "My child ate peanuts and now has a swollen tongue, wheezing and feels faint. We have her prescribed epinephrine auto-injector. Should I try antihistamine first?"
+        },
+        {
+          "role": "assistant",
+          "content": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\n**⚠️ CRITICAL EMERGENCY ACTION REQUIRED ⚠️**\n\nYour child is showing signs of **anaphylaxis** (severe allergic reaction). This is a life-threatening emergency.\n\n**DO NOT wait or try antihistamines first.** Antihistamines help with itching but **do not replace epinephrine** and will not stop the airway swelling or breathing failure [1].\n\n**IMMEDIATE STEPS:**\n1.  **Inject Epinephrine Immediately:** Use the prescribed epinephrine auto-injector right now.\n    *   Inject into the **outer thigh**, even through clothing [1].\n    *   Hold it in place for the time specified on the device (usually 3 seconds).\n2.  **Position the Child:**\n    *   Lay the child down with legs raised to improve blood flow, **OR** keep them sitting up if breathing/swallowing is worse and lying flat makes it harder to breathe [1].\n    *   Keep them warm and calm.\n3.  **Call Emergency Services:** Dial your local emergency number immediately (e.g., 911, 112, SAMU 192) while preparing for possible transport [4].\n4.  **Monitor Breathing:** Watch closely for worsening wheezing or unconsciousness. If symptoms do not improve within 5–15 minutes and a second dose is available, administer another epinephrine injection [1].\n\n**NOT BACKED BY LOCAL SOURCES (General Knowledge):**\n*   **Do not delay:** Minutes matter in anaphylaxis. Swelling of the tongue and throat can block the airway completely. Epinephrine is the only medication that reverses these critical symptoms quickly.\n*   **Antihistamines:** These may be used later as a secondary treatment for lingering hives or itching, but they are never the first step in anaphylaxis management [1].\n*   **Steroids:** Oral steroids (like prednisone) take hours to work and should not be relied upon during the acute emergency phase.\n\n**WARNING SIGNS & PROFESSIONAL HELP:**\n*   **Warning Signs:** Swelling of lips/tongue/throat, shortness of breath, wheezing, widespread hives, dizziness/fainting are definitive signs of anaphylaxis [1].\n*   **Seek Professional Help:** These instructions are first aid only and **do not replace** a doctor or emergency services. Transport the child to a hospital immediately after using epinephrine, as symptoms can return (biphasic reaction) [4].\n\n**Summary:** Inject epinephrine NOW → Call Emergency Services → Monitor breathing.\n\n> ⚠️ First-aid guidance only; it does not replace medical care. If help is available, seek it."
+        }
+      ],
+      "expected_topic": "allergy_followup",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Anaphylaxis",
+          "anchor": "Epinephrine"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-anaphylaxis",
+      "split": "original",
+      "q": "My child ate peanuts and now has a swollen tongue, wheezing and feels faint. We have her prescribed epinephrine auto-injector. Should I try antihistamine first?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "anaphylaxis",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Anaphylaxis",
+          "anchor": "Epinephrine"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-bleeding",
+      "split": "original",
+      "q": "A chainsaw cut my friend's thigh. Blood is spurting and soaking towels despite firm pressure. We are 45 minutes from help. What now?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "bleeding",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-burn",
+      "split": "original",
+      "q": "Boiling water spilled on my arm two minutes ago and the skin is blistering. Should I put ice or butter on it?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "burn",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-co",
+      "split": "original",
+      "q": "We are using a gasoline generator in the garage with the door open during an outage. Everyone has headaches and nausea. Is it safe if I add a fan?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "co",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Carbon_monoxide_poisoning",
+          "anchor": "Treatment"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-cpr",
+      "split": "original",
+      "q": "My dad just collapsed. He is unresponsive and only gasping every few seconds. What should I do right now?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "cpr",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Cardiac_arrest",
+          "anchor": "Cardiopulmonary_resuscitation"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-dehydration",
+      "split": "original",
+      "q": "My 2-year-old has diarrhea, is very sleepy, cannot keep fluids down and has not peed for 10 hours. Can I just make oral rehydration solution at home?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "dehydration",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-diabetes",
+      "split": "original",
+      "q": "My diabetic husband took insulin but missed lunch. Now he is unconscious. Should I pour orange juice or honey into his mouth?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "diabetes",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-flood",
+      "split": "original",
+      "q": "The road ahead has moving floodwater, maybe six inches deep. I have a large SUV and need to get home. Can I drive through slowly?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "flood",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-food",
+      "split": "original",
+      "q": "The power has been out for 10 hours. The refrigerator stayed closed. Can we eat the chicken and milk if they smell normal?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "food",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-grease_fire",
+      "split": "original",
+      "q": "A pan of cooking oil is on fire on my stove. Should I carry it outside or pour water on it?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "grease_fire",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-heatstroke",
+      "split": "original",
+      "q": "My friend collapsed while hiking in extreme heat. He is confused and very hot but still sweating. We have water and a stream nearby. What should we do?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "heatstroke",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Heat_stroke",
+          "anchor": "Treatment"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-infant_choking",
+      "split": "original",
+      "q": "My 8-month-old is choking on food, cannot cry or breathe, and is turning blue. What do I do?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "infant_choking",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Choking",
+          "anchor": "Infants_(babies_under_1_year-old)"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-infant_followup",
+      "split": "original",
+      "q": "She is unconscious now and still not breathing. I have never learned CPR. Tell me exactly what to do.",
+      "lang": "en",
+      "history": [
+        {
+          "role": "user",
+          "content": "My 8-month-old is choking on food, cannot cry or breathe, and is turning blue. What do I do?"
+        },
+        {
+          "role": "assistant",
+          "content": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\nThis is a life-threatening emergency. Act immediately.\n\n**1. Assess the situation**\n*   Confirm the infant (< 1 year) **cannot cough, speak, or breathe**.\n*   Note that they are turning blue (cyanosis), indicating severe lack of oxygen [1].\n\n**2. Perform Infant Choking First Aid**\nDo **not** give abdominal thrusts to an infant [1]. Follow these steps exactly:\n*   **Position 1:** Turn the baby face-down along your forearm, supporting the head so it is lower than the chest. Hold the forearm against your other hand to keep the head low [1].\n*   **Back Blows:** Give **5 firm back blows** between the shoulder blades using the heel of your free hand [1].\n*   **Position 2:** Turn the baby face-up, keeping the head lower than the chest. Support the head and neck with one hand [1].\n*   **Chest Thrusts:** Give **5 chest thrusts** in the center of the chest (lower half of the sternum) using two fingers [1].\n*   **Repeat:** Alternate 5 back blows and 5 chest thrusts until the object is dislodged or the baby becomes unconscious.\n\n**3. If the baby becomes unconscious**\n*   Lower the baby gently to a firm, flat surface.\n*   Call for emergency help immediately if possible.\n*   Begin **CPR**: Check the mouth for a visible object; remove it only if you can see it clearly [1]. Give rescue breaths and chest compressions as per standard infant CPR protocols.\n\n**Important Warnings:**\n*   Do not slap the baby or hit them on the back while they are standing or sitting upright [1].\n*   Do not perform abdominal thrusts (Heimlich maneuver) on an infant, as this can cause internal injury [1].\n*   If you are unsure about any step, prioritize safety and get professional help immediately.\n\n> Source: IFRC 2020; European Resuscitation Council Guidelines 2021 — First Aid / Basic Life Support [1].\n\n> ⚠️ First-aid guidance only; it does not replace medical care. If help is available, seek it."
+        }
+      ],
+      "expected_topic": "infant_followup",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Choking",
+          "anchor": "Infants_(babies_under_1_year-old)"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-poison",
+      "split": "original",
+      "q": "My 3-year-old swallowed drain cleaner five minutes ago. Should I make him vomit or give vinegar to neutralize it?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "poison",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-portuguese",
+      "split": "original",
+      "q": "Estamos usando um gerador a gasolina dentro da garagem com a porta aberta. Todos estão com dor de cabeça e enjoo. O que fazer?",
+      "lang": "pt",
+      "history": [],
+      "expected_topic": "portuguese",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Carbon_monoxide_poisoning",
+          "anchor": "Treatment"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-seizure",
+      "split": "original",
+      "q": "My sister has been shaking in a seizure for six minutes. Should I hold her down and put a spoon in her mouth?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "seizure",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Seizure",
+          "anchor": "First_aid_during_a_seizure"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-snake",
+      "split": "original",
+      "q": "A snake bit my ankle while hiking. I am alone with no phone service. Should I cut it, suck out the venom, or tie a tourniquet?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "snake",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-spanish",
+      "split": "original",
+      "q": "Mi padre no responde y solo jadea de vez en cuando. Estamos en España. ¿Qué hago ahora?",
+      "lang": "es",
+      "history": [],
+      "expected_topic": "spanish",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Cardiac_arrest",
+          "anchor": "Cardiopulmonary_resuscitation"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-stroke",
+      "split": "original",
+      "q": "My mother suddenly has a drooping face and slurred speech but says she feels fine. It started 20 minutes ago. Should we wait?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "stroke",
+      "gold_status": "source_section_inspected_retrieval_relevance_only",
+      "gold_passages": [
+        {
+          "served_name": "wikipedia_en_medicine_maxi_2026-10",
+          "article": "Stroke",
+          "anchor": "Management"
+        }
+      ],
+      "review_note": "Section inspected locally. Relevant evidence; may mix lay and professional interventions. Does not certify clinical correctness or suitability of every statement."
+    },
+    {
+      "id": "original-water_bleach",
+      "split": "original",
+      "q": "We have clear water of uncertain safety, a 1-liter bottle, and plain unscented 6% sodium hypochlorite bleach. How many drops and how long should we wait?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "water_bleach",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-water_chemical",
+      "split": "original",
+      "q": "Floodwater got into our well and the water smells of gasoline. How long should I boil it to make it safe to drink?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "water_chemical",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    },
+    {
+      "id": "original-electrical",
+      "split": "original",
+      "q": "A storm knocked a power line onto my car. I am inside and the car is not burning. Should I get out and walk away?",
+      "lang": "en",
+      "history": [],
+      "expected_topic": "electrical",
+      "gold_status": "pending_source_annotation",
+      "gold_passages": []
+    }
+  ]
+}
