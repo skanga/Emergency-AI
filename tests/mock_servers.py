@@ -7,12 +7,12 @@ from urllib.parse import parse_qs, urlparse
 
 CATALOG = """<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <entry><name>teste_medicina_pt</name><title>Medicina de Teste</title><language>por</language></entry>
+  <entry><name>teste_medicina_pt</name><title>Medicina de Teste</title><language>por</language><link type="text/html" href="/content/teste_medicina_pt_2026-10" /></entry>
 </feed>"""
 
 SEARCH = """<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel>
-  <item><title>Desidratação</title><link>/content/teste_medicina_pt/A/Desidratacao</link>
+  <item><title>Desidratação</title><link>/content/teste_medicina_pt_2026-10/A/Desidratacao</link>
   <description>A &lt;b&gt;desidratação&lt;/b&gt; é a perda excessiva de água...</description></item>
 </channel></rss>"""
 
@@ -71,6 +71,10 @@ class KiwixHandler(BaseHTTPRequestHandler):
         if u.path == "/search":
             q = parse_qs(u.query)
             assert q.get("format") == ["xml"]
+            if q.get("books.name") != ["teste_medicina_pt_2026-10"]:
+                self.send_response(400)
+                self.end_headers()
+                return
             return self._send(SEARCH, "application/rss+xml")
         if u.path.startswith("/content/"):
             return self._send(ARTICLE, "text/html")

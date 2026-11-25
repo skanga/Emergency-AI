@@ -1,0 +1,227 @@
+[
+  {
+    "id": "allergy_followup",
+    "request": {
+      "q": "I used the injector 6 minutes ago. She is still wheezing and faint. We have a second injector. What now?",
+      "lang": "en",
+      "history": [
+        {
+          "role": "user",
+          "content": "My child ate peanuts and now has a swollen tongue, wheezing and feels faint. We have her prescribed epinephrine auto-injector. Should I try antihistamine first?"
+        },
+        {
+          "role": "assistant",
+          "content": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\n**⚠️ CRITICAL EMERGENCY ACTION REQUIRED ⚠️**\n\nYour child is showing signs of **anaphylaxis** (severe allergic reaction). This is a life-threatening emergency.\n\n**DO NOT wait or try antihistamines first.** Antihistamines help with itching but **do not replace epinephrine** and will not stop the airway swelling or breathing failure [1].\n\n**IMMEDIATE STEPS:**\n1.  **Inject Epinephrine Immediately:** Use the prescribed epinephrine auto-injector right now.\n    *   Inject into the **outer thigh**, even through clothing [1].\n    *   Hold it in place for the time specified on the device (usually 3 seconds).\n2.  **Position the Child:**\n    *   Lay the child down with legs raised to improve blood flow, **OR** keep them sitting up if breathing/swallowing is worse and lying flat makes it harder to breathe [1].\n    *   Keep them warm and calm.\n3.  **Call Emergency Services:** Dial your local emergency number immediately (e.g., 911, 112, SAMU 192) while preparing for possible transport [4].\n4.  **Monitor Breathing:** Watch closely for worsening wheezing or unconsciousness. If symptoms do not improve within 5–15 minutes and a second dose is available, administer another epinephrine injection [1].\n\n**NOT BACKED BY LOCAL SOURCES (General Knowledge):**\n*   **Do not delay:** Minutes matter in anaphylaxis. Swelling of the tongue and throat can block the airway completely. Epinephrine is the only medication that reverses these critical symptoms quickly.\n*   **Antihistamines:** These may be used later as a secondary treatment for lingering hives or itching, but they are never the first step in anaphylaxis management [1].\n*   **Steroids:** Oral steroids (like prednisone) take hours to work and should not be relied upon during the acute emergency phase.\n\n**WARNING SIGNS & PROFESSIONAL HELP:**\n*   **Warning Signs:** Swelling of lips/tongue/throat, shortness of breath, wheezing, widespread hives, dizziness/fainting are definitive signs of anaphylaxis [1].\n*   **Seek Professional Help:** These instructions are first aid only and **do not replace** a doctor or emergency services. Transport the child to a hospital immediately after using epinephrine, as symptoms can return (biphasic reaction) [4].\n\n**Summary:** Inject epinephrine NOW → Call Emergency Services → Monitor breathing.\n\n> ⚠️ First-aid guidance only; it does not replace medical care. If help is available, seek it."
+        }
+      ],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "anaphylaxis",
+    "request": {
+      "q": "My child ate peanuts and now has a swollen tongue, wheezing and feels faint. We have her prescribed epinephrine auto-injector. Should I try antihistamine first?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "bleeding",
+    "request": {
+      "q": "A chainsaw cut my friend's thigh. Blood is spurting and soaking towels despite firm pressure. We are 45 minutes from help. What now?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "burn",
+    "request": {
+      "q": "Boiling water spilled on my arm two minutes ago and the skin is blistering. Should I put ice or butter on it?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "co",
+    "request": {
+      "q": "We are using a gasoline generator in the garage with the door open during an outage. Everyone has headaches and nausea. Is it safe if I add a fan?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "cpr",
+    "request": {
+      "q": "My dad just collapsed. He is unresponsive and only gasping every few seconds. What should I do right now?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "dehydration",
+    "request": {
+      "q": "My 2-year-old has diarrhea, is very sleepy, cannot keep fluids down and has not peed for 10 hours. Can I just make oral rehydration solution at home?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "diabetes",
+    "request": {
+      "q": "My diabetic husband took insulin but missed lunch. Now he is unconscious. Should I pour orange juice or honey into his mouth?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "flood",
+    "request": {
+      "q": "The road ahead has moving floodwater, maybe six inches deep. I have a large SUV and need to get home. Can I drive through slowly?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "food",
+    "request": {
+      "q": "The power has been out for 10 hours. The refrigerator stayed closed. Can we eat the chicken and milk if they smell normal?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "grease_fire",
+    "request": {
+      "q": "A pan of cooking oil is on fire on my stove. Should I carry it outside or pour water on it?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "heatstroke",
+    "request": {
+      "q": "My friend collapsed while hiking in extreme heat. He is confused and very hot but still sweating. We have water and a stream nearby. What should we do?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "infant_choking",
+    "request": {
+      "q": "My 8-month-old is choking on food, cannot cry or breathe, and is turning blue. What do I do?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "infant_followup",
+    "request": {
+      "q": "She is unconscious now and still not breathing. I have never learned CPR. Tell me exactly what to do.",
+      "lang": "en",
+      "history": [
+        {
+          "role": "user",
+          "content": "My 8-month-old is choking on food, cannot cry or breathe, and is turning blue. What do I do?"
+        },
+        {
+          "role": "assistant",
+          "content": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\nThis is a life-threatening emergency. Act immediately.\n\n**1. Assess the situation**\n*   Confirm the infant (< 1 year) **cannot cough, speak, or breathe**.\n*   Note that they are turning blue (cyanosis), indicating severe lack of oxygen [1].\n\n**2. Perform Infant Choking First Aid**\nDo **not** give abdominal thrusts to an infant [1]. Follow these steps exactly:\n*   **Position 1:** Turn the baby face-down along your forearm, supporting the head so it is lower than the chest. Hold the forearm against your other hand to keep the head low [1].\n*   **Back Blows:** Give **5 firm back blows** between the shoulder blades using the heel of your free hand [1].\n*   **Position 2:** Turn the baby face-up, keeping the head lower than the chest. Support the head and neck with one hand [1].\n*   **Chest Thrusts:** Give **5 chest thrusts** in the center of the chest (lower half of the sternum) using two fingers [1].\n*   **Repeat:** Alternate 5 back blows and 5 chest thrusts until the object is dislodged or the baby becomes unconscious.\n\n**3. If the baby becomes unconscious**\n*   Lower the baby gently to a firm, flat surface.\n*   Call for emergency help immediately if possible.\n*   Begin **CPR**: Check the mouth for a visible object; remove it only if you can see it clearly [1]. Give rescue breaths and chest compressions as per standard infant CPR protocols.\n\n**Important Warnings:**\n*   Do not slap the baby or hit them on the back while they are standing or sitting upright [1].\n*   Do not perform abdominal thrusts (Heimlich maneuver) on an infant, as this can cause internal injury [1].\n*   If you are unsure about any step, prioritize safety and get professional help immediately.\n\n> Source: IFRC 2020; European Resuscitation Council Guidelines 2021 — First Aid / Basic Life Support [1].\n\n> ⚠️ First-aid guidance only; it does not replace medical care. If help is available, seek it."
+        }
+      ],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "poison",
+    "request": {
+      "q": "My 3-year-old swallowed drain cleaner five minutes ago. Should I make him vomit or give vinegar to neutralize it?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "portuguese",
+    "request": {
+      "q": "Estamos usando um gerador a gasolina dentro da garagem com a porta aberta. Todos estão com dor de cabeça e enjoo. O que fazer?",
+      "lang": "pt",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "seizure",
+    "request": {
+      "q": "My sister has been shaking in a seizure for six minutes. Should I hold her down and put a spoon in her mouth?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "snake",
+    "request": {
+      "q": "A snake bit my ankle while hiking. I am alone with no phone service. Should I cut it, suck out the venom, or tie a tourniquet?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "spanish",
+    "request": {
+      "q": "Mi padre no responde y solo jadea de vez en cuando. Estamos en España. ¿Qué hago ahora?",
+      "lang": "es",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "stroke",
+    "request": {
+      "q": "My mother suddenly has a drooping face and slurred speech but says she feels fine. It started 20 minutes ago. Should we wait?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "water_bleach",
+    "request": {
+      "q": "We have clear water of uncertain safety, a 1-liter bottle, and plain unscented 6% sodium hypochlorite bleach. How many drops and how long should we wait?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "water_chemical",
+    "request": {
+      "q": "Floodwater got into our well and the water smells of gasoline. How long should I boil it to make it safe to drink?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  },
+  {
+    "id": "electrical",
+    "request": {
+      "q": "A storm knocked a power line onto my car. I am inside and the car is not burning. Should I get out and walk away?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    }
+  }
+]

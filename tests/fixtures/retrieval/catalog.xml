@@ -1,0 +1,24 @@
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/terms/"><entry>
+    <id>urn:uuid:f0902c7c-81ad-0490-6f91-fecc14810992</id>
+    <title>WikiMed Medical Encyclopedia</title>
+    <updated>2026-10-10T00:00:00Z</updated>
+    <summary>The largest medical encyclopedia, from Wikipedia</summary>
+    <language>eng</language>
+    <name>wikipedia_en_medicine</name>
+    <flavour>maxi</flavour>
+    <category>wikipedia</category>
+    <tags>medical;wikipedia;_category:wikipedia;_pictures:yes;_videos:no;_details:yes;_ftindex:yes</tags>
+    <articleCount>371615</articleCount>
+    <mediaCount>104515</mediaCount>
+    <link rel="http://opds-spec.org/image/thumbnail" href="/catalog/v2/illustration/f0902c7c-81ad-0490-6f91-fecc14810992/?size=48" type="image/png;width=48;height=48;scale=1" />
+    <link type="text/html" href="/content/wikipedia_en_medicine_maxi_2026-10" />
+    <author>
+      <name>Wikipedia</name>
+    </author>
+    <publisher>
+      <name>openZIM</name>
+    </publisher>
+    <dc:issued>2026-10-10T00:00:00Z</dc:issued>
+    
+  </entry>
+  </feed>
