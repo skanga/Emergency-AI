@@ -1,0 +1,701 @@
+{
+  "topics": {
+    "cpr": {
+      "triggers": [
+        [
+          "cpr"
+        ],
+        [
+          "resuscitation"
+        ],
+        [
+          "ressuscitação"
+        ],
+        [
+          "reanimação"
+        ],
+        [
+          "reanimación"
+        ],
+        [
+          "unresponsive",
+          "gasping"
+        ],
+        [
+          "unconscious",
+          "not breathing"
+        ],
+        [
+          "não responde",
+          "ofegante"
+        ],
+        [
+          "no responde",
+          "jadea"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "cardiopulmonary resuscitation",
+          "CPR"
+        ],
+        "pt": [
+          "ressuscitação cardiopulmonar",
+          "reanimação"
+        ],
+        "es": [
+          "reanimación cardiopulmonar",
+          "RCP"
+        ]
+      }
+    },
+    "choking": {
+      "triggers": [
+        [
+          "choking"
+        ],
+        [
+          "engasgado"
+        ],
+        [
+          "engasgando"
+        ],
+        [
+          "engasgo"
+        ],
+        [
+          "atragantado"
+        ],
+        [
+          "atragantamiento"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "choking",
+          "airway obstruction"
+        ],
+        "pt": [
+          "engasgo",
+          "obstrução das vias aéreas"
+        ],
+        "es": [
+          "atragantamiento",
+          "obstrucción de las vías respiratorias"
+        ]
+      }
+    },
+    "anaphylaxis": {
+      "triggers": [
+        [
+          "anaphylaxis"
+        ],
+        [
+          "anafilaxia"
+        ],
+        [
+          "epinephrine"
+        ],
+        [
+          "epinefrina"
+        ],
+        [
+          "injector"
+        ],
+        [
+          "injetor"
+        ],
+        [
+          "inyector"
+        ],
+        [
+          "swollen tongue",
+          "wheezing"
+        ],
+        [
+          "língua inchada",
+          "chiado"
+        ],
+        [
+          "lengua hinchada",
+          "sibilancias"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "anaphylaxis",
+          "epinephrine"
+        ],
+        "pt": [
+          "anafilaxia",
+          "adrenalina"
+        ],
+        "es": [
+          "anafilaxia",
+          "adrenalina"
+        ]
+      }
+    },
+    "bleeding": {
+      "triggers": [
+        [
+          "bleeding"
+        ],
+        [
+          "hemorragia"
+        ],
+        [
+          "sangramento"
+        ],
+        [
+          "sangrado"
+        ],
+        [
+          "blood",
+          "spurting"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "bleeding",
+          "hemorrhage"
+        ],
+        "pt": [
+          "hemorragia",
+          "sangramento"
+        ],
+        "es": [
+          "hemorragia",
+          "sangrado"
+        ]
+      }
+    },
+    "burn": {
+      "triggers": [
+        [
+          "burn"
+        ],
+        [
+          "burns"
+        ],
+        [
+          "queimadura"
+        ],
+        [
+          "quemadura"
+        ],
+        [
+          "boiling water",
+          "blistering"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "burn",
+          "scald"
+        ],
+        "pt": [
+          "queimadura"
+        ],
+        "es": [
+          "quemadura"
+        ]
+      }
+    },
+    "carbon_monoxide": {
+      "triggers": [
+        [
+          "carbon monoxide"
+        ],
+        [
+          "monóxido de carbono"
+        ],
+        [
+          "generator",
+          "garage"
+        ],
+        [
+          "gerador",
+          "garagem"
+        ],
+        [
+          "generador",
+          "garaje"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "carbon monoxide poisoning"
+        ],
+        "pt": [
+          "intoxicação por monóxido de carbono"
+        ],
+        "es": [
+          "intoxicación por monóxido de carbono"
+        ]
+      }
+    },
+    "dehydration": {
+      "triggers": [
+        [
+          "dehydration"
+        ],
+        [
+          "desidratação"
+        ],
+        [
+          "deshidratación"
+        ],
+        [
+          "diarrhea"
+        ],
+        [
+          "diarreia"
+        ],
+        [
+          "diarrea"
+        ],
+        [
+          "oral rehydration"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "dehydration",
+          "oral rehydration"
+        ],
+        "pt": [
+          "desidratação",
+          "reidratação oral"
+        ],
+        "es": [
+          "deshidratación",
+          "rehidratación oral"
+        ]
+      }
+    },
+    "diabetes": {
+      "triggers": [
+        [
+          "diabetic"
+        ],
+        [
+          "diabetes"
+        ],
+        [
+          "insulin"
+        ],
+        [
+          "insulina"
+        ],
+        [
+          "hypoglycemia"
+        ],
+        [
+          "hipoglicemia"
+        ],
+        [
+          "hipoglucemia"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "hypoglycemia",
+          "diabetes"
+        ],
+        "pt": [
+          "hipoglicemia",
+          "diabetes"
+        ],
+        "es": [
+          "hipoglucemia",
+          "diabetes"
+        ]
+      }
+    },
+    "flood": {
+      "triggers": [
+        [
+          "floodwater"
+        ],
+        [
+          "flood"
+        ],
+        [
+          "enchente"
+        ],
+        [
+          "inundação"
+        ],
+        [
+          "inundación"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "flood safety",
+          "flood"
+        ],
+        "pt": [
+          "inundação",
+          "enchente"
+        ],
+        "es": [
+          "inundación"
+        ]
+      }
+    },
+    "food_safety": {
+      "triggers": [
+        [
+          "refrigerator",
+          "power"
+        ],
+        [
+          "refrigerator",
+          "out"
+        ],
+        [
+          "geladeira",
+          "energia"
+        ],
+        [
+          "refrigerador",
+          "electricidad"
+        ],
+        [
+          "food safety"
+        ],
+        [
+          "segurança alimentar"
+        ],
+        [
+          "seguridad alimentaria"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "food safety",
+          "power outage food"
+        ],
+        "pt": [
+          "segurança alimentar"
+        ],
+        "es": [
+          "seguridad alimentaria"
+        ]
+      }
+    },
+    "fire": {
+      "triggers": [
+        [
+          "cooking oil",
+          "fire"
+        ],
+        [
+          "grease fire"
+        ],
+        [
+          "óleo",
+          "fogo"
+        ],
+        [
+          "aceite",
+          "fuego"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "cooking oil fire",
+          "fire safety"
+        ],
+        "pt": [
+          "incêndio óleo de cozinha",
+          "incêndio"
+        ],
+        "es": [
+          "incendio aceite de cocina",
+          "incendio"
+        ]
+      }
+    },
+    "heatstroke": {
+      "triggers": [
+        [
+          "heatstroke"
+        ],
+        [
+          "heat stroke"
+        ],
+        [
+          "extreme heat",
+          "confused"
+        ],
+        [
+          "insolação"
+        ],
+        [
+          "golpe de calor"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "heat stroke",
+          "heat illness"
+        ],
+        "pt": [
+          "insolação"
+        ],
+        "es": [
+          "golpe de calor"
+        ]
+      }
+    },
+    "poison": {
+      "triggers": [
+        [
+          "drain cleaner"
+        ],
+        [
+          "poisoning"
+        ],
+        [
+          "envenenamento"
+        ],
+        [
+          "intoxicação"
+        ],
+        [
+          "intoxicación"
+        ],
+        [
+          "desentupidor"
+        ],
+        [
+          "limpiador de desagües"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "poisoning",
+          "corrosive ingestion"
+        ],
+        "pt": [
+          "envenenamento",
+          "ingestão corrosivos"
+        ],
+        "es": [
+          "intoxicación",
+          "ingestión corrosivos"
+        ]
+      }
+    },
+    "seizure": {
+      "triggers": [
+        [
+          "seizure"
+        ],
+        [
+          "convulsão"
+        ],
+        [
+          "convulsiones"
+        ],
+        [
+          "convulsión"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "seizure",
+          "epilepsy"
+        ],
+        "pt": [
+          "convulsão",
+          "epilepsia"
+        ],
+        "es": [
+          "convulsión",
+          "epilepsia"
+        ]
+      }
+    },
+    "snakebite": {
+      "triggers": [
+        [
+          "snake",
+          "bit"
+        ],
+        [
+          "snakebite"
+        ],
+        [
+          "cobra",
+          "picada"
+        ],
+        [
+          "serpiente",
+          "mordedura"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "snakebite"
+        ],
+        "pt": [
+          "picada de cobra"
+        ],
+        "es": [
+          "mordedura de serpiente"
+        ]
+      }
+    },
+    "stroke": {
+      "triggers": [
+        [
+          "stroke"
+        ],
+        [
+          "drooping face",
+          "slurred speech"
+        ],
+        [
+          "avc"
+        ],
+        [
+          "acidente vascular cerebral"
+        ],
+        [
+          "accidente cerebrovascular"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "stroke"
+        ],
+        "pt": [
+          "acidente vascular cerebral"
+        ],
+        "es": [
+          "accidente cerebrovascular"
+        ]
+      }
+    },
+    "water_disinfection": {
+      "triggers": [
+        [
+          "water",
+          "bleach"
+        ],
+        [
+          "water",
+          "hypochlorite"
+        ],
+        [
+          "água",
+          "hipoclorito"
+        ],
+        [
+          "agua",
+          "lejía"
+        ],
+        [
+          "agua",
+          "hipoclorito"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "water disinfection",
+          "drinking water"
+        ],
+        "pt": [
+          "desinfecção da água",
+          "água potável"
+        ],
+        "es": [
+          "desinfección del agua",
+          "agua potable"
+        ]
+      }
+    },
+    "water_chemical": {
+      "triggers": [
+        [
+          "water",
+          "gasoline"
+        ],
+        [
+          "água",
+          "gasolina"
+        ],
+        [
+          "agua",
+          "gasolina"
+        ],
+        [
+          "water",
+          "chemical"
+        ],
+        [
+          "água",
+          "química"
+        ],
+        [
+          "agua",
+          "química"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "water chemical contamination",
+          "drinking water contamination"
+        ],
+        "pt": [
+          "contaminação química da água",
+          "água contaminada"
+        ],
+        "es": [
+          "contaminación química del agua",
+          "agua contaminada"
+        ]
+      }
+    },
+    "electrical": {
+      "triggers": [
+        [
+          "power line"
+        ],
+        [
+          "downed wire"
+        ],
+        [
+          "cabo elétrico"
+        ],
+        [
+          "fio elétrico"
+        ],
+        [
+          "cable eléctrico"
+        ],
+        [
+          "línea eléctrica"
+        ]
+      ],
+      "queries": {
+        "en": [
+          "electrical safety",
+          "downed power line"
+        ],
+        "pt": [
+          "segurança elétrica",
+          "fio elétrico caído"
+        ],
+        "es": [
+          "seguridad eléctrica",
+          "cable eléctrico caído"
+        ]
+      }
+    }
+  }
+}
