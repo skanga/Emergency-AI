@@ -1,6 +1,7 @@
 """Explicit, read-only asset verification followed by transactional provenance adoption."""
 import json
 import re
+import subprocess
 import tempfile
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -84,11 +85,11 @@ def _zim(root, path, catalog, timeout):
 
 
 def adopt(root, components, timeout=30):
-    """Caller holds maintenance lock. Hash existing assets; never download asset bytes."""
+    """Caller holds maintenance lock. Verify existing assets; tools use downloaded reference distributions without replacing installed files."""
     from upgrade_recovery import Transaction
     root=Path(root).absolute()
-    if not components or set(components)-{'model','kiwix-data'}:
-        raise ValueError('Adoption supports explicitly selected model and kiwix-data components')
+    if not components or set(components)-{'model','kiwix-data','kiwix-tools','document-tools'}:
+        raise ValueError('Adoption supports models, Kiwix data and reviewed external tools')
     manifest=_read(root/'runtime/installation.json')
     _path(root,'runtime/installation.json')
     records=manifest.setdefault('components',{})
@@ -115,6 +116,15 @@ def adopt(root, components, timeout=30):
             except Exception as exc:
                 result['unknown'].append({'component':'kiwix-data','path':relative,'reason':str(exc)})
         records['kiwix-data']=existing
+    for component in ('kiwix-tools','document-tools'):
+        if component in components:
+            try:
+                from .upgrade_tools import adopt_tool
+                record=adopt_tool(root,component)
+                records[component]=record
+                result['adopted'].append({'component':component,'path':record['path']})
+            except (OSError,ValueError,RuntimeError,subprocess.SubprocessError) as exc:
+                result['unknown'].append({'component':component,'path':None,'reason':str(exc)})
     if result['adopted']:
         _path(root,'runtime/upgrades')
         (root/'runtime/upgrades').mkdir(parents=True,exist_ok=True)

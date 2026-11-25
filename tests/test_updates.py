@@ -195,7 +195,7 @@ class UpdateTests(unittest.TestCase):
         with patch.object(updates,'_json',side_effect=fetch):
             row=next(r for r in updates.check(self.root)['components'] if r['component']=='document-tools')
         self.assertEqual(row['candidate']['identity'],'4.06')
-        self.assertEqual(row['status'],'manual')
+        self.assertEqual(row['status'],'unknown')
 
     def test_python_candidate_matches_exact_triple(self):
         self.write('runtime/python/linux-x86_64/installation.json', {'complete':True,'asset':'cpython-3.12.1+20240101-x86_64-unknown-linux-gnu-install_only.tar.gz'})

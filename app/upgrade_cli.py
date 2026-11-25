@@ -29,7 +29,7 @@ def show(report):
         new = row.get('candidate') or {}
         installed = old.get('commit') or old.get('revision') or old.get('tag') or old.get('file') or old.get('version') or old.get('asset') or 'unknown'
         candidate = new.get('identity') or 'unknown'
-        size = ('; download %s bytes' % new['size']) if new.get('size') else ''
+        size = ('; download %s bytes' % new['size']) if new.get('size') and row['status']=='available' else ''
         label = row['component']
         if old.get('platform'):
             label += ' [' + old['platform'] + ('/' + old['backend'] if old.get('backend') else '') + ']'
@@ -122,9 +122,9 @@ def main(argv=None, root=None):
     p = sub.add_parser('rollback', help='offline restoration of a retained transaction')
     p.add_argument('--root', help='explicit target installation')
     p.add_argument('transaction_id')
-    p = sub.add_parser('adopt', help='verify existing model/archive files and record their provenance without downloading replacements')
+    p = sub.add_parser('adopt', help='verify existing assets/tools and record provenance without replacing installed files')
     p.add_argument('--root', help='explicit target installation')
-    p.add_argument('--component', choices=('model', 'kiwix-data'), action='append', required=True)
+    p.add_argument('--component', choices=('model', 'kiwix-data', 'kiwix-tools', 'document-tools'), action='append', required=True)
     p = sub.add_parser('plan-migration', help='preview a pinned-source migration of a legacy standalone kit')
     p.add_argument('--root')
     p.add_argument('--commit', required=True)
@@ -146,6 +146,8 @@ def main(argv=None, root=None):
             with maintenance_lock(root, reuse=True):
                 if pending(root):
                     raise ValueError('Recover pending transactions before adopting files')
+                if set(args.component) & {'kiwix-tools','document-tools'}:
+                    ensure_stopped(root)
                 result = adopt(root, args.component)
             print(json.dumps(result, indent=2))
             return 1 if result['unknown'] else 0

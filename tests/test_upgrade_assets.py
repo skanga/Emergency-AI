@@ -217,8 +217,8 @@ class AssetTests(unittest.TestCase):
                 info=tarfile.TarInfo('new/'+name);info.size=3;info.mode=0o755
                 archive.addfile(info,io.BytesIO(b'new'))
         self.payload=payload.getvalue()
-        record={'component':'document-tools','status':'available','installed':{'path':relative},'candidate':{'root':'new','binary':'bin/pdftotext','pdfinfo':'bin/pdfinfo','version':'2','platform':platform_key(),'url':'https://example.com/doc.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
-        with patch('app.prepare.download',side_effect=self.download),patch('app.upgrade_assets.subprocess.run'):
+        record={'component':'document-tools','status':'available','installed':{'path':relative,'files':{relative+'/pdftotext':hashlib.sha256(b'old').hexdigest()}},'candidate':{'root':'new','binary':'bin/pdftotext','pdfinfo':'bin/pdfinfo','version':'2','platform':platform_key(),'url':'https://example.com/doc.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
+        with patch('app.prepare.download',side_effect=self.download),patch('app.upgrade_assets.verify_document'),patch('app.upgrade_assets.subprocess.run',return_value=__import__('subprocess').CompletedProcess([],0,stdout=b'Emergency AI tool verification')):
             upgrade_assets.upgrade(self.root,record)
         self.assertEqual((self.root/'runtime/document-tools/new/COPYING').read_bytes(),b'new')
         self.assertEqual(json.loads((self.root/'config/document-tools.json').read_text())['supported_platforms'][platform_key()]['root'],'new')

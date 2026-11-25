@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "kiwix-tools": {
+    "linux-x86_64": {
+      "version": "3.8.2",
+      "asset": "kiwix-tools_linux-x86_64-3.8.2.tar.gz",
+      "root": "kiwix-tools_linux-x86_64-3.8.2",
+      "url": "https://download.kiwix.org/release/kiwix-tools/kiwix-tools_linux-x86_64-3.8.2.tar.gz",
+      "size": 21661067,
+      "sha256": "b0ae98dd344aa0469a15ab42feff6d5aafb79541a82fb4e2647c74b073123815",
+      "reviewed_at": "2026-11-25",
+      "notes": "Project-reviewed SHA-256 of the official HTTPS artifact; publisher MD5 was cross-checked but is not used for automatic verification. This is not a publisher signature. Only this exact platform/artifact has been reviewed."
+    }
+  }
+}

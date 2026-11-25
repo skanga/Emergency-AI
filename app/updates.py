@@ -109,6 +109,9 @@ def inventory(root):
             metadata = _read(root / relative / 'installation.json')
             if metadata:
                 metadata.update(path=relative, platform=platform_key())
+        if not metadata and component=='document-tools':
+            from .upgrade_tools import recognized
+            metadata=recognized(root,component,platform_key())
         rows.append(_row(component, metadata, 'manual', 'Host-managed or artifact provenance is insufficient for automatic updates.'))
     zim_meta = recorded.get('kiwix-data') or []
     zim_catalog = _read(root / 'config/zims.json')
@@ -227,7 +230,7 @@ def check(root, timeout=30, components=None):
     """Return partial results within one deadline; workers never write installation files."""
     deadline = time.monotonic() + max(0, timeout)
     selected = set(components or ())
-    if selected & {'model', 'document-tools'}:
+    if selected & {'model'}:
         selected.add('app')
     requests = {}
     request_lock = threading.Lock()
@@ -280,8 +283,6 @@ def check(root, timeout=30, components=None):
             elif row['component']=='llama':
                 row = _llama(row, remaining(), fetch_json)
             elif row['component'] in ('python','kiwix-tools','document-tools'):
-                if row['component']=='document-tools':
-                    app_ready.wait(remaining())
                 row = _tool(row, app_result, remaining(), Path(root), fetch_json)
             elif row['component']=='kiwix-data':
                 row = _zim(Path(root), row, remaining())
@@ -391,19 +392,18 @@ def _tool(row, app, timeout, root=None, fetch_json=None):
         row.update(status='manual',reason='Foreign platform; activation and execution checks require a matching host.')
         return row
     if component=='document-tools':
-        commit = app.get('candidate') or {}
-        if not commit.get('commit'):
-            raise ValueError('Pinned tool catalog unavailable')
-        url = 'https://raw.githubusercontent.com/{}/{}/config/document-tools.json'.format(commit['repository'],commit['commit'])
-        data = fetch_json(url,timeout).get('supported_platforms',{}).get(plat)
-        if not data:
-            row.update(reason='No supported document tools for this platform.')
-            return row
-        row['candidate'] = dict(data, identity=data['version'], platform=plat, path=installed.get('path'))
+        from .upgrade_tools import catalog
         from .upgrade_assets import document_indexes_present
-        complete=all(data.get(key) for key in ('root','binary','pdfinfo','sha256','size'))
-        indexed=root is None or document_indexes_present(root)
-        row.update(status='current' if installed.get('version')==data['version'] else 'available' if complete and not indexed else 'manual', reason='Verified extractor candidate; no existing document indexes.' if complete and not indexed else 'Extractor metadata is incomplete or existing document indexes need migration.')
+        data=catalog(component,plat)
+        row['candidate']=dict(data,identity=data['version'],path=installed.get('path'))
+        if not installed.get('files'):
+            row.update(status='unknown',reason='Recognized extractor; run --adopt --component document-tools to verify installed files without changing indexes.')
+        elif installed.get('version')==data['version']:
+            row.update(status='current' if installed.get('sha256')==data['sha256'] else 'unknown',
+                       reason='Current project-reviewed extractor; this does not assert upstream latest. Existing indexes are preserved.')
+        else:
+            indexed=root is None or document_indexes_present(root)
+            row.update(status='manual' if indexed else 'available',reason='Existing document indexes require reviewed extractor/index migration.' if indexed else 'Project-pinned extractor candidate; no document indexes.')
     elif component=='python':
         from .prepare import PYTHON_TRIPLES
         triple = PYTHON_TRIPLES.get(plat)
@@ -452,5 +452,17 @@ def _tool(row, app, timeout, root=None, fetch_json=None):
             return row
         _, name=max(matches)
         row['candidate']=_candidate(name,KIWIX_TOOLS_DIR+name,platform=plat,asset=name,path=installed.get('path'))
-        row.update(status='current' if installed.get('asset')==name else 'manual',reason='Publisher listing compared; trusted size and SHA-256 are unavailable for automatic installation.')
+        from .upgrade_tools import catalog
+        try: reviewed=catalog(component,plat)
+        except (OSError,ValueError): reviewed={}
+        if reviewed.get('asset')!=name:
+            row.update(status='manual',reason='Publisher release has no reviewed project SHA-256 pin; review its artifact before automatic installation.')
+        else:
+            row['candidate'].update(reviewed,identity=reviewed['version'])
+            if not installed.get('files'):
+                row.update(status='unknown',reason='Project-pinned release found; run --adopt --component kiwix-tools to verify installed files.')
+            elif installed.get('asset')==name:
+                row.update(status='current' if installed.get('sha256')==reviewed['sha256'] else 'unknown',reason='Publisher release matches project-reviewed SHA-256 pin; not a publisher signature.')
+            else:
+                row.update(status='available',reason='Exact-platform release with project-reviewed size/SHA-256.')
     return row

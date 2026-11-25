@@ -212,6 +212,9 @@ def _runtime_changes(root, installed, candidate, stage, component):
             raise ValueError('Companion distribution path collision')
         shutil.copytree(companion,preserved)
     verify_runtime(content,executable,candidate.get('backend'))
+    if component=='kiwix-tools':
+        from .upgrade_tools import verify_tool
+        verify_tool(root,component,content,candidate)
     if component=='document-tools':
         raise ValueError('Document tool activation requires a reviewed extractor/index migration')
     if component=='llama':
@@ -244,6 +247,9 @@ def upgrade(root, record, allow_unverified=False):
             raise ValueError('Use a separate system Python: python3 emergency.py upgrade --component python --yes; the running bundled interpreter cannot replace itself')
     if component not in ('model','llama','kiwix-tools','document-tools','kiwix-data','python'):
         raise ValueError('Unsupported managed asset component')
+    if component in ('kiwix-tools','document-tools'):
+        from .upgrade_tools import verify_installed
+        verify_installed(root, installed)
     if component=='kiwix-data':
         if _read(root/'config/source-policy.json').get('rules'):
             raise ValueError('Version-scoped source policy requires reviewed archive migration')
@@ -297,6 +303,8 @@ def upgrade(root, record, allow_unverified=False):
         manifest.setdefault('schema_version',1)
         components=manifest.setdefault('components',{})
         metadata=dict(candidate,path=destination)
+        if component in ('kiwix-tools','document-tools'):
+            metadata['files']={name:_hash(source) for name,source in changes.items() if name.startswith(destination+'/') and source is not None}
         if component=='kiwix-data':
             previous=components.get(component,[])
             if isinstance(previous,dict):
@@ -320,11 +328,13 @@ def upgrade(root, record, allow_unverified=False):
             elif component=='kiwix-data':
                 verify_zim(root,_path(root,destination))
             elif component=='document-tools':
-                verify_document(_path(root,destination),candidate)
+                from .upgrade_tools import verify_tool
+                verify_tool(root,component,_path(root,destination),candidate)
             elif component=='python':
                 verify_python(_path(root,destination),candidate,root)
             elif component=='kiwix-tools':
-                verify_runtime(_path(root,destination),'kiwix-serve')
+                from .upgrade_tools import verify_tool
+                verify_tool(root,component,_path(root,destination),candidate)
         return transaction.apply(changes,verify=verify)
 
 
@@ -379,7 +389,11 @@ def verify_document(folder,candidate):
         if not _path(Path(folder),name).is_file():
             raise ValueError('Document tools distribution is incomplete: '+name)
     for name in (candidate['binary'],candidate['pdfinfo']):
-        subprocess.run([str(_path(Path(folder),name)),'-v'],stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True,timeout=30)
+        result=subprocess.run([str(_path(Path(folder),name)),'-v'],stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False,timeout=30)
+        output=(result.stdout+result.stderr).decode('utf-8',errors='replace')
+        expected=Path(name).name+' version '+candidate['version']
+        if result.returncode not in (0,99) or not re.search(re.escape(expected)+r'(?:\s|$)',output):
+            raise ValueError('Document tool version check failed: '+name)
 
 
 def _document_changes(root,installed,candidate,stage):
@@ -394,7 +408,8 @@ def _document_changes(root,installed,candidate,stage):
     fresh=stage/'document-extracted'
     _extract(_download(candidate,stage),fresh)
     content=_path(fresh,candidate['root'])
-    verify_document(content,candidate)
+    from .upgrade_tools import verify_tool
+    verify_tool(root,'document-tools',content,candidate)
     changes={}
     for path in _path(root,installed['path']).rglob('*'):
         _path(root,path.relative_to(root).as_posix())
@@ -429,12 +444,12 @@ def _model_runtime(root):
     return root/'runtime/llama.cpp'/plat,'cpu'
 
 
-def verify_zim(root,archive,timeout=20):
+def verify_zim(root,archive,timeout=20,runtime=None,_address='127.0.0.1'):
     """Open the candidate alone and read its main entry through local Kiwix."""
-    from .launcher import _env_for
+    from .launcher import _env_for, _is_wsl
     from .kiwix import KiwixClient
     from .net import get_text
-    binary=_binary(Path(root)/'runtime/kiwix-tools'/platform_key(),'kiwix-serve')
+    binary=_binary(Path(runtime) if runtime is not None else Path(root)/'runtime/kiwix-tools'/platform_key(),'kiwix-serve')
     if binary is None:
         raise ValueError('Archive upgrade requires managed kiwix-serve for an archive-open and representative-read check')
     with socket.socket() as reserved:
@@ -442,27 +457,33 @@ def verify_zim(root,archive,timeout=20):
         port=reserved.getsockname()[1]
     base='http://127.0.0.1:'+str(port)
     deadline=time.monotonic()+timeout
-    process=subprocess.Popen([str(binary),'--address','127.0.0.1','--port',str(port),str(archive)],
-                             stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,env=_env_for(str(binary)))
-    try:
-        while time.monotonic()<deadline:
-            if process.poll() is not None:
-                raise ValueError('Kiwix could not open the candidate archive')
-            client=KiwixClient(base)
-            books=client.books(deadline=deadline)
-            if books:
-                if len(books)!=1 or not books[0].get('content_url'):
-                    raise ValueError('Candidate archive has no unambiguous main entry')
-                body=get_text(base+books[0]['content_url'],timeout=min(5,max(.01,deadline-time.monotonic())),deadline=deadline,allowed_origin=base)
-                if not body.strip():
-                    raise ValueError('Candidate archive main entry is empty')
-                return
-            time.sleep(min(.1,max(0,deadline-time.monotonic())))
-        raise ValueError('Candidate archive open/read check timed out')
-    finally:
-        process.terminate()
+    with tempfile.TemporaryFile() as diagnostics:
+        process=subprocess.Popen([str(binary),'--address',_address,'--port',str(port),str(archive)],
+                                 stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=diagnostics,env=_env_for(str(binary)))
         try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait(timeout=5)
+            while time.monotonic()<deadline:
+                if process.poll() is not None:
+                    diagnostics.seek(0)
+                    detail=diagnostics.read(2000).decode('utf-8',errors='replace').strip()
+                    if _address=='127.0.0.1' and _is_wsl() and detail=='ERROR: IP address is not available on this system: 127.0.0.1':
+                        print('Kiwix rejected WSL loopback; temporary health check will listen on all IPv4 interfaces and may be reachable from your network.')
+                        return verify_zim(root,archive,timeout=timeout,runtime=runtime,_address='ipv4')
+                    raise ValueError('Kiwix could not open '+Path(archive).name+': '+detail)
+                client=KiwixClient(base)
+                books=client.books(deadline=deadline)
+                if books:
+                    if len(books)!=1 or not books[0].get('content_url'):
+                        raise ValueError('Candidate archive has no unambiguous main entry')
+                    body=get_text(base+books[0]['content_url'],timeout=min(5,max(.01,deadline-time.monotonic())),deadline=deadline,allowed_origin=base)
+                    if not body.strip():
+                        raise ValueError('Candidate archive main entry is empty')
+                    return
+                time.sleep(min(.1,max(0,deadline-time.monotonic())))
+            raise ValueError('Candidate archive open/read check timed out')
+        finally:
+            process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=5)

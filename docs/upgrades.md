@@ -128,9 +128,22 @@ Existing numbered llama.cpp installations (`bNNNNN`) follow that numbered build 
 
 `--component python` checks the installed Python minor version and platform. Apply it using a separate interpreter, for example `python3 emergency.py upgrade --component python` when `python3` is outside the kit. The updater refuses to replace the interpreter running the command. Internal file symlinks are now supported: backups retain their exact targets, while the new distribution is materialized as regular files. Broken links, escaping links and directory links still require manual repair. The staged and installed interpreters must pass SSL/SQLite checks and import the application through its CLI. Python upgrades replace the managed runtime tree, so user-added packages or scripts inside that tree must be separately preserved and reconciled; they are not automatically migrated. The tested installation contained only the bundled pip package.
 
-`--component kiwix-tools` compares the official platform listing. When the publisher does not provide trusted size/hash metadata, automatic installation is unavailable. For manual replacement: stop Kiwix, save its complete old runtime directory and version, verify the official artifact using available publisher integrity information, extract into a separate folder, run `kiwix-serve --version`, and test opening your existing ZIMs before swapping directories. Retain the old folder to reverse the swap.
+`--component kiwix-tools` compares the official platform listing with the reviewed catalog shipped with the updater (`config/runtime-tools.json`). The Linux x86_64 3.8.2 artifact has a project-reviewed size/SHA-256 pin. The publisher supplies MD5, not SHA-256 or a signature; the updater uses the project SHA-256 pin and labels that provenance explicitly. A newer unreviewed release or unsupported platform remains manual until its artifact is reviewed and pinned. New candidates must open and read every installed ZIM before and after activation. Archives and indexes are not replaced by a tool upgrade.
 
-`--component document-tools` uses the pinned tool catalog and preserves licenses. Existing document indexes require a reviewed extractor/index migration; the updater blocks replacement rather than invalidating those indexes silently. Foreign-platform binaries cannot be execution-tested on this host and are reported accordingly.
+`--component document-tools` uses the reviewed catalog shipped with the updater and preserves the full distribution, including licenses. Status refers to the current reviewed catalog version, not a claim about the latest upstream release. Version queries and actual PDF extraction must pass. Existing document indexes require a reviewed extractor/index migration before any newer tool is activated; unchanged-version adoption does not alter indexes. Foreign-platform binaries remain unsupported for execution checks.
+
+### Verify existing external tools
+
+Stop the app and engines, then use the external updater for an older installation:
+
+```sh
+/tmp/emergency-ai-upgrades/run.sh --adopt --root /home/skanga/Emergency \
+  --component kiwix-tools --component document-tools
+```
+
+This downloads reference distributions for verification, checks every installed distribution file and rejects modified/extra files. Only the provenance manifest is changed; no tool, archive or index is replaced. Keep the returned transaction ID for offline rollback with the external updater or retained recovery helper. Later updates recheck recorded installed-file hashes before replacement.
+
+On WSL, a Kiwix health probe may hit the same loopback-address rejection as normal startup. Only that exact error on WSL triggers the existing IPv4 fallback, with an explicit notice that the temporary server may be reachable from the network. Every probe server is stopped afterward.
 
 ## Host drivers and operating system software
 
