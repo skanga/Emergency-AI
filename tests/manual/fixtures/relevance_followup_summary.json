@@ -1,0 +1,3918 @@
+{
+  "baseline_commit": "f218d9b",
+  "historical_summary": {
+    "cases": 59,
+    "gold_recall": {
+      "matched": 28,
+      "annotated": 30,
+      "rate": 0.9333333333333333
+    },
+    "by_language": {
+      "en": {
+        "matched": 16,
+        "annotated": 18
+      },
+      "pt": {
+        "matched": 6,
+        "annotated": 6
+      },
+      "es": {
+        "matched": 6,
+        "annotated": 6
+      }
+    },
+    "retrieval_p95_seconds": 0.944,
+    "unannotated_cases": 29,
+    "human_precision": null,
+    "answer_safety_review": "pending",
+    "release_gates_passed": false,
+    "limitation": "Gold-section matches only. Independent relevance and safety annotation is required."
+  },
+  "fresh_summary": {
+    "cases": 24,
+    "topic_matches": 24,
+    "by_language": {
+      "en": {
+        "matched": 10,
+        "cases": 10
+      },
+      "pt": {
+        "matched": 7,
+        "cases": 7
+      },
+      "es": {
+        "matched": 7,
+        "cases": 7
+      }
+    },
+    "source_applicability_review": "pending",
+    "clinical_review": "not_performed",
+    "generated_answers": 0
+  },
+  "historical_cases": [
+    {
+      "id": "heldout-01",
+      "language": "en",
+      "topics": [
+        "cpr"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "f9693cbed9f381c20ba723ec"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiopulmonary resuscitation",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Cardiopulmonary_resuscitation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-02",
+      "language": "pt",
+      "topics": [
+        "cpr"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "f9693cbed9f381c20ba723ec"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Parada cardíaca: RCP (reanimação cardiopulmonar)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiopulmonary resuscitation",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Cardiopulmonary_resuscitation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Avaliação inicial: segurança e X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-03",
+      "language": "es",
+      "topics": [
+        "cpr"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "f9693cbed9f381c20ba723ec"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Paro cardíaco: RCP (reanimación cardiopulmonar)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiopulmonary resuscitation",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Cardiopulmonary_resuscitation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Evaluación inicial: seguridad y X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-04",
+      "language": "en",
+      "topics": [
+        "choking"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Prevention › Prevention for babies and children",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    },
+    {
+      "id": "heldout-05",
+      "language": "pt",
+      "topics": [
+        "choking"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Engasgo (obstrução das vias aéreas)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Prevention › Prevention for babies and children",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    },
+    {
+      "id": "heldout-06",
+      "language": "es",
+      "topics": [
+        "choking"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Atragantamiento (obstrucción de la vía aérea)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Prevention › Prevention for babies and children",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    },
+    {
+      "id": "heldout-07",
+      "language": "en",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "26537309aa7d4f8a68807d21"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Anaphylaxis",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Adjuncts",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-08",
+      "language": "pt",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "26537309aa7d4f8a68807d21"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Reação alérgica grave (anafilaxia)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Adjuncts",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Preparedness",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-09",
+      "language": "es",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "26537309aa7d4f8a68807d21"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Reacción alérgica grave (anafilaxia)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Adjuncts",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Preparedness",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-10",
+      "language": "en",
+      "topics": [
+        "stroke"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke (main)",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Stroke (main) › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Causes › Embolic stroke",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Embolic_stroke",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-11",
+      "language": "pt",
+      "topics": [
+        "stroke"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke (main)",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Stroke (main) › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Causes › Cerebral hypoperfusion",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Cerebral_hypoperfusion",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-12",
+      "language": "es",
+      "topics": [
+        "stroke"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke (main)",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Stroke (main) › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Causes › Cerebral hypoperfusion",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Cerebral_hypoperfusion",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-13",
+      "language": "en",
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Fire: how to light one with simple things",
+          "section": "Safety",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Hyperbaric oxygen",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energy, light and electricity off the grid",
+          "section": "Devices and data",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energy, light and electricity off the grid",
+          "section": "Car batteries and generators",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Shelter and body temperature",
+          "section": "Safe heating",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-14",
+      "language": "pt",
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Fogo: como acender com coisas simples",
+          "section": "Segurança",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Hyperbaric oxygen",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energia, luz e eletricidade sem a rede",
+          "section": "Baterias de carro e geradores",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Abrigo e temperatura corporal",
+          "section": "Aquecimento seguro",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-15",
+      "language": "es",
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Fuego: cómo encenderlo con cosas simples",
+          "section": "Seguridad",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Hyperbaric oxygen",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Refugio y temperatura corporal",
+          "section": "Calefacción segura",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energía, luz y electricidad sin la red",
+          "section": "Baterías de auto y generadores",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-16",
+      "language": "en",
+      "topics": [
+        "water_chemical"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Water: finding, purifying and storing it",
+          "section": "Storage",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 30",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 25",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-17",
+      "language": "pt",
+      "topics": [
+        "water_chemical"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Prioridades de sobrevivência",
+          "section": "As primeiras 72 horas",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 30",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 25",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Queimaduras",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-18",
+      "language": "es",
+      "topics": [
+        "water_chemical"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Quemaduras",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 30",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 25",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-19",
+      "language": "en",
+      "topics": [
+        "burn"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Burns",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burns",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Burns › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burns",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Burns › Management › Fluid Resuscitation › Indications based on Total Body Surface Area (TBSA) of Burn › Fluid Quantity",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Fluid_Quantity",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burns",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Burns › Management › Fluid Resuscitation › Indications based on Total Body Surface Area (TBSA) of Burn › Types of fluids",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-20",
+      "language": "en",
+      "topics": [
+        "heatstroke"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "6a0f5e2e66fb3ec40be270d8"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Heatstroke and heat exhaustion",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat stroke",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Heat stroke › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_stroke#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat exhaustion",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › First aid",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_exhaustion#First_aid",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Shelter and body temperature",
+          "section": "Extreme heat",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-21",
+      "language": "en",
+      "topics": [
+        "seizure"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "0c1dc175fe90d253ead7831b"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Seizure",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › First aid during a seizure",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Seizure#First_aid_during_a_seizure",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Epilepsy",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › First aid and acute management of seizures",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Epilepsy#First_aid_and_acute_management_of_seizures",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Seizure",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Seizure › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Seizure#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-22",
+      "language": "en",
+      "topics": [
+        "choking"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old) › Unconscious infants",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Unconscious_infants",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    },
+    {
+      "id": "heldout-23",
+      "language": "en",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "26537309aa7d4f8a68807d21"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Adjuncts",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Preparedness",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "heldout-24",
+      "language": "en",
+      "topics": [
+        "fire"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-01",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Diesel engine",
+          "doc_title": "Appropedia",
+          "section": "The four stroke cycle - diesel engine",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine#The_four_stroke_cycle_-_diesel_engine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Diesel engine",
+          "doc_title": "Appropedia",
+          "section": "Diesel engine",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Diesel engine",
+          "doc_title": "Appropedia",
+          "section": "Diesel engine suppliers",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine#Diesel_engine_suppliers",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "negative-02",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-03",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-04",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-05",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-06",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-07",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-08",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-09",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-10",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-11",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "negative-12",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Allergy",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Diagnosis › Blood testing",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Blood_testing",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Allergy",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Diagnosis › Skin prick testing",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Skin_prick_testing",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Allergy",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Diagnosis › Other testing",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Other_testing",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-allergy_followup",
+      "language": "en",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "26537309aa7d4f8a68807d21"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Anaphylaxis",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Preparedness",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-anaphylaxis",
+      "language": "en",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "26537309aa7d4f8a68807d21"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Preparedness",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Anaphylaxis",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-bleeding",
+      "language": "en",
+      "topics": [
+        "bleeding"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Severe bleeding",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Bleeding",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Bleeding#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Emergency bleeding control",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "External wound management › Direct pressure",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Emergency_bleeding_control#Direct_pressure",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Emergency bleeding control",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Emergency bleeding control",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Emergency_bleeding_control",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Wounds and infection prevention",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Survival priorities",
+          "section": "The first 72 hours",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Survival priorities",
+          "section": "The rule of 3",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "link": null,
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    },
+    {
+      "id": "original-burn",
+      "language": "en",
+      "topics": [
+        "burn"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Burns",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burns",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Burns › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burn",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Wound care",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Burn#Wound_care",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burns",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Burns › Management › Fluid Resuscitation › Indications based on Total Body Surface Area (TBSA) of Burn › Types of fluids",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-co",
+      "language": "en",
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Fire: how to light one with simple things",
+          "section": "Safety",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Other",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Other",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Shelter and body temperature",
+          "section": "Safe heating",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energy, light and electricity off the grid",
+          "section": "Car batteries and generators",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energy, light and electricity off the grid",
+          "section": "Devices and data",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-cpr",
+      "language": "en",
+      "topics": [
+        "cpr"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "f9693cbed9f381c20ba723ec"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiopulmonary resuscitation",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Cardiopulmonary_resuscitation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-dehydration",
+      "language": "en",
+      "topics": [
+        "dehydration"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Diarrhea and dehydration — oral rehydration solution",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Oral rehydration therapy",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Oral rehydration therapy",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Oral_rehydration_therapy",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Oral rehydration therapy",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Preparation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Oral_rehydration_therapy#Preparation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Oral rehydration therapy",
+          "doc_title": "Appropedia",
+          "section": "Oral rehydration therapy",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Oral_rehydration_therapy",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Water: finding, purifying and storing it",
+          "section": "Signs of dehydration",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Shock",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-diabetes",
+      "language": "en",
+      "topics": [
+        "diabetes"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Hypoglycemia",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Hypoglycemia › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Hypoglycemia#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Diabetes",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Diabetes#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Hypoglycemia",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Hypoglycemia#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-flood",
+      "language": "en",
+      "topics": [
+        "flood"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Hygiene, sanitation and homemade soap",
+          "section": "Floodwater and rats",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-food",
+      "language": "en",
+      "topics": [
+        "food_safety"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Food: stockpiling, preparation and preservation",
+          "section": "Order of consumption in a crisis",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Food safety",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Safe food handling procedures (from market to consumer)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Food_safety#Safe_food_handling_procedures_%28from_market_to_consumer%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-grease_fire",
+      "language": "en",
+      "topics": [
+        "fire"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "original-heatstroke",
+      "language": "en",
+      "topics": [
+        "heatstroke"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "6a0f5e2e66fb3ec40be270d8"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Heatstroke and heat exhaustion",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat stroke",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Heat stroke › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_stroke#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat stroke",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Heat stroke › Management › Rapid Cooling › Techniques",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Techniques",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Shelter and body temperature",
+          "section": "Extreme heat",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-infant_choking",
+      "language": "en",
+      "topics": [
+        "choking"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Prevention › Prevention for babies and children",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    },
+    {
+      "id": "original-infant_followup",
+      "language": "en",
+      "topics": [
+        "cpr",
+        "choking"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old) › Unconscious infants",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Unconscious_infants",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid) › Unconscious victims",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Unconscious_victims",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-poison",
+      "language": "en",
+      "topics": [
+        "poison"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Caustic ingestion",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Caustic ingestion › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Caustic_ingestion#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Caustic ingestion",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Caustic ingestion › Management › Controversial or Contraindicated",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Caustic_ingestion#Controversial_or_Contraindicated",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Caustic ingestion",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Caustic ingestion",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Caustic_ingestion",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-portuguese",
+      "language": "pt",
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Fogo: como acender com coisas simples",
+          "section": "Segurança",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Hyperbaric oxygen",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energia, luz e eletricidade sem a rede",
+          "section": "Baterias de carro e geradores",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Abrigo e temperatura corporal",
+          "section": "Aquecimento seguro",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-seizure",
+      "language": "en",
+      "topics": [
+        "seizure"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "0c1dc175fe90d253ead7831b"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Seizure",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › First aid during a seizure",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Seizure#First_aid_during_a_seizure",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Epilepsy",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › First aid and acute management of seizures",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Epilepsy#First_aid_and_acute_management_of_seizures",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Generalized tonic–clonic seizure",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Generalized_tonic%E2%80%93clonic_seizure#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-snake",
+      "language": "en",
+      "topics": [
+        "snakebite"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Snakebite (Brazil)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › First aid",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#First_aid",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Outmoded",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Outmoded",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-spanish",
+      "language": "es",
+      "topics": [
+        "cpr"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "f9693cbed9f381c20ba723ec"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Paro cardíaco: RCP (reanimación cardiopulmonar)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiopulmonary resuscitation",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Cardiopulmonary_resuscitation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Evaluación inicial: seguridad y X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-stroke",
+      "language": "en",
+      "topics": [
+        "stroke"
+      ],
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke (main)",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Stroke (main) › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Signs and symptoms › Subtypes",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Subtypes",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-water_bleach",
+      "language": "en",
+      "topics": [
+        "water_disinfection"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": "source_conflict",
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Water: finding, purifying and storing it",
+          "section": "Step 2 — disinfect",
+          "link": null,
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        },
+        {
+          "kind": "kiwix",
+          "title": "Solar Powered Water Systems in Humanitarian Context III - Q&A",
+          "doc_title": "energypedia",
+          "section": "Questions to Jared › Why chlorination but no modern and less dangerous technologies to purify water? Especially from boreholes with expected low turbidity? Chlorine is pretty dangerous stuff and the supply change is another hazard as well as special requirements to the equipment. Why not Ultra-Filtration or UV-C treatment?",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Solar_Powered_Water_Systems_in_Humanitarian_Context_III_-_Q%26A#Why_chlorination_but_no_modern_and_less_dangerous_technologies_to_purify_water%3F_Especially_from_boreholes_with_expected_low_turbidity%3F_Chlorine_is_pretty_dangerous_stuff_and_the_supply_change_is_another_hazard_as_well_as_special_requirements_to_the_equipment._Why_not_Ultra-Filtration_or_UV-C_treatment%3F",
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        },
+        {
+          "kind": "kiwix",
+          "title": "Sodium hypochlorite",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Packaging and sale",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Sodium_hypochlorite#Packaging_and_sale",
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        },
+        {
+          "kind": "kiwix",
+          "title": "Decreasing turbidity to optimize solar water disinfection lit review/Disadvantages",
+          "doc_title": "Appropedia",
+          "section": "Other › Solar disinfection in Nigerian slum",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Decreasing_turbidity_to_optimize_solar_water_disinfection_lit_review/Disadvantages#Solar_disinfection_in_Nigerian_slum",
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energy, light and electricity off the grid",
+          "section": "Light without electricity",
+          "link": null,
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Water: finding, purifying and storing it",
+          "section": "Storage",
+          "link": null,
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Post Disaster Resource Library",
+          "section": "Safe Water School — page 32",
+          "link": "/content/zimgit-post-disaster_en_2024-05/files/Water%20%285%29.pdf#page=32",
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 32",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=32",
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 50",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=50",
+          "context_omitted": true,
+          "context_omitted_reason": "conflict_unresolved"
+        }
+      ]
+    },
+    {
+      "id": "original-water_chemical",
+      "language": "en",
+      "topics": [
+        "water_chemical"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Water: finding, purifying and storing it",
+          "section": "Storage",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 30",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 25",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "original-electrical",
+      "language": "en",
+      "topics": [
+        "electrical"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": null,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Electrical burn",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Prevention › Basic electrical safety",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#Basic_electrical_safety",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Electrical injury",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Electrical injury",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_injury",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kiwix",
+          "title": "Electrical burn",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Causes",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#Causes",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    }
+  ],
+  "fresh_cases": [
+    {
+      "id": "fresh-01",
+      "language": "en",
+      "topics": [
+        "cpr"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiopulmonary resuscitation",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Cardiopulmonary_resuscitation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Initial assessment: safety and X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-02",
+      "language": "pt",
+      "topics": [
+        "cpr"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Parada cardíaca: RCP (reanimação cardiopulmonar)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiopulmonary resuscitation",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Cardiopulmonary_resuscitation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Avaliação inicial: segurança e X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-03",
+      "language": "es",
+      "topics": [
+        "cpr"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Paro cardíaco: RCP (reanimación cardiopulmonar)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiopulmonary resuscitation",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Order of CPR in a first aid sequence",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Cardiopulmonary resuscitation",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Cardiopulmonary_resuscitation",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Cardiac arrest",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Evaluación inicial: seguridad y X-ABCDE",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-04",
+      "language": "en",
+      "topics": [
+        "choking"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Choking (airway obstruction)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Prevention › Prevention for babies and children",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    },
+    {
+      "id": "fresh-05",
+      "language": "pt",
+      "topics": [
+        "choking"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Engasgo (obstrução das vias aéreas)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Airway obstruction",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Lower airway obstruction › Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Airway_obstruction#Management_2",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-06",
+      "language": "es",
+      "topics": [
+        "choking"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Atragantamiento (obstrucción de la vía aérea)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Basic treatment (first aid)",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Airway obstruction",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Lower airway obstruction › Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Airway_obstruction#Management_2",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Choking",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-07",
+      "language": "en",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Anaphylaxis",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Adjuncts",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-08",
+      "language": "pt",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Reação alérgica grave (anafilaxia)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Adjuncts",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Preparedness",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-09",
+      "language": "es",
+      "topics": [
+        "anaphylaxis"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Reacción alérgica grave (anafilaxia)",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Epinephrine",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Epinephrine",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Adjuncts",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Anaphylaxis",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Preparedness",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-10",
+      "language": "en",
+      "topics": [
+        "stroke"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Signs and symptoms › Subtypes",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Subtypes",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke (main)",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Stroke (main) › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-11",
+      "language": "pt",
+      "topics": [
+        "stroke"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke (main)",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Stroke (main) › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Causes › Cerebral hypoperfusion",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Cerebral_hypoperfusion",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-12",
+      "language": "es",
+      "topics": [
+        "stroke"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke (main)",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Stroke (main) › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Causes › Cerebral hypoperfusion",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Cerebral_hypoperfusion",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-13",
+      "language": "en",
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energy, light and electricity off the grid",
+          "section": "Devices and data",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Hyperbaric oxygen",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energy, light and electricity off the grid",
+          "section": "Car batteries and generators",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Fire: how to light one with simple things",
+          "section": "Safety",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Shelter and body temperature",
+          "section": "Safe heating",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-14",
+      "language": "pt",
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Fogo: como acender com coisas simples",
+          "section": "Segurança",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Hyperbaric oxygen",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energia, luz e eletricidade sem a rede",
+          "section": "Baterias de carro e geradores",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Abrigo e temperatura corporal",
+          "section": "Aquecimento seguro",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-15",
+      "language": "es",
+      "topics": [
+        "carbon_monoxide"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Fuego: cómo encenderlo con cosas simples",
+          "section": "Seguridad",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Carbon monoxide poisoning",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Carbon monoxide poisoning",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › Hyperbaric oxygen",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energía, luz y electricidad sin la red",
+          "section": "Baterías de auto y generadores",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Refugio y temperatura corporal",
+          "section": "Calefacción segura",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Energía, luz y electricidad sin la red",
+          "section": "Dispositivos y datos",
+          "link": null,
+          "context_omitted": true,
+          "context_omitted_reason": "context_budget"
+        }
+      ]
+    },
+    {
+      "id": "fresh-16",
+      "language": "en",
+      "topics": [
+        "burn"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "First aid and health care",
+          "section": "Burns",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burns",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Burns › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burn",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Management › Wound care",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Burn#Wound_care",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Burns",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Burns › Management › Fluid Resuscitation › Indications based on Total Body Surface Area (TBSA) of Burn › Types of fluids",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-17",
+      "language": "pt",
+      "topics": [
+        "water_chemical"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Queimaduras",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 30",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Safe Water School",
+          "doc_title": "Water Treatment Library",
+          "section": "Safe Water School — page 25",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-18",
+      "language": "es",
+      "topics": [
+        "heatstroke"
+      ],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Insolación y agotamiento por calor",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat stroke",
+          "doc_title": "WikEM [ARCHIVED 2020-06; may be outdated]",
+          "section": "Heat stroke › Management",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Management",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat stroke",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_stroke#Treatment",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "kind": "kiwix",
+          "title": "Heat exhaustion",
+          "doc_title": "WikiMed Medical Encyclopedia",
+          "section": "Treatment › First aid",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_exhaustion#First_aid",
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-19",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": [
+        {
+          "kind": "kit",
+          "title": null,
+          "doc_title": "Mental health, community and security",
+          "section": "The mind is the main piece of equipment",
+          "link": null,
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ]
+    },
+    {
+      "id": "fresh-20",
+      "language": "pt",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "fresh-21",
+      "language": "es",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "fresh-22",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "fresh-23",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": []
+    },
+    {
+      "id": "fresh-24",
+      "language": "en",
+      "topics": [],
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "topic_match": true,
+      "blocked_reason": null,
+      "references": []
+    }
+  ],
+  "interpretation": "Historical cases are observed regression inputs. Fresh cases were authored and frozen before this change; they are not independent clinical validation."
+}

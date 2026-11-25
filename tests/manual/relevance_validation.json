@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "purpose": "Fresh validation inputs frozen before relevance changes; not independently clinically annotated. Do not tune against failures without marking them observed.",
+  "cases": [
+    {
+      "id": "fresh-01",
+      "lang": "en",
+      "q": "Grandpa is motionless and will not wake up; he makes just a few gasps.",
+      "expected_topic": "cpr"
+    },
+    {
+      "id": "fresh-02",
+      "lang": "pt",
+      "q": "Minha avó está inconsciente e não está respirando.",
+      "expected_topic": "cpr"
+    },
+    {
+      "id": "fresh-03",
+      "lang": "es",
+      "q": "Un hombre está inconsciente y no respira.",
+      "expected_topic": "cpr"
+    },
+    {
+      "id": "fresh-04",
+      "lang": "en",
+      "q": "My baby has food stuck and cannot make a sound or breathe.",
+      "expected_topic": "choking"
+    },
+    {
+      "id": "fresh-05",
+      "lang": "pt",
+      "q": "A criança se engasgou com comida e não consegue respirar.",
+      "expected_topic": "choking"
+    },
+    {
+      "id": "fresh-06",
+      "lang": "es",
+      "q": "La niña se está atragantando con comida.",
+      "expected_topic": "choking"
+    },
+    {
+      "id": "fresh-07",
+      "lang": "en",
+      "q": "After eating shrimp he has a swollen tongue and trouble breathing.",
+      "expected_topic": "anaphylaxis"
+    },
+    {
+      "id": "fresh-08",
+      "lang": "pt",
+      "q": "Depois de comer camarão, está com a língua inchada e dificuldade para respirar.",
+      "expected_topic": "anaphylaxis"
+    },
+    {
+      "id": "fresh-09",
+      "lang": "es",
+      "q": "Después de comer marisco, tiene lengua hinchada y dificultad para respirar.",
+      "expected_topic": "anaphylaxis"
+    },
+    {
+      "id": "fresh-10",
+      "lang": "en",
+      "q": "Suddenly her face is drooping and her speech is slurred.",
+      "expected_topic": "stroke"
+    },
+    {
+      "id": "fresh-11",
+      "lang": "pt",
+      "q": "De repente está com a boca torta e fala enrolada.",
+      "expected_topic": "stroke"
+    },
+    {
+      "id": "fresh-12",
+      "lang": "es",
+      "q": "De repente tiene la cara caída y habla arrastrando las palabras.",
+      "expected_topic": "stroke"
+    },
+    {
+      "id": "fresh-13",
+      "lang": "en",
+      "q": "We have headaches while a generator is running in the basement.",
+      "expected_topic": "carbon_monoxide"
+    },
+    {
+      "id": "fresh-14",
+      "lang": "pt",
+      "q": "Estamos com dor de cabeça, usando um gerador dentro de casa.",
+      "expected_topic": "carbon_monoxide"
+    },
+    {
+      "id": "fresh-15",
+      "lang": "es",
+      "q": "Nos duele la cabeza mientras el generador está dentro de casa.",
+      "expected_topic": "carbon_monoxide"
+    },
+    {
+      "id": "fresh-16",
+      "lang": "en",
+      "q": "I spilled hot tea on my hand and now there are blisters.",
+      "expected_topic": "burn"
+    },
+    {
+      "id": "fresh-17",
+      "lang": "pt",
+      "q": "A água do poço foi contaminada com combustível.",
+      "expected_topic": "water_chemical"
+    },
+    {
+      "id": "fresh-18",
+      "lang": "es",
+      "q": "Está confundido después de correr bajo un calor extremo.",
+      "expected_topic": "heatstroke"
+    },
+    {
+      "id": "fresh-19",
+      "lang": "en",
+      "q": "Show me how the breaststroke swimming technique works.",
+      "expected_topic": null
+    },
+    {
+      "id": "fresh-20",
+      "lang": "pt",
+      "q": "Como consertar a câmera do bebê?",
+      "expected_topic": null
+    },
+    {
+      "id": "fresh-21",
+      "lang": "es",
+      "q": "Cómo grabar una imagen ISO en un disco?",
+      "expected_topic": null
+    },
+    {
+      "id": "fresh-22",
+      "lang": "en",
+      "q": "The engine uses a four-stroke cycle; explain the exhaust stroke.",
+      "expected_topic": null
+    },
+    {
+      "id": "fresh-23",
+      "lang": "en",
+      "q": "Please explain the flood fill algorithm used in image editors.",
+      "expected_topic": null
+    },
+    {
+      "id": "fresh-24",
+      "lang": "en",
+      "q": "My neighbor feels odd today. Can you tell what disease it is?",
+      "expected_topic": null
+    }
+  ]
+}

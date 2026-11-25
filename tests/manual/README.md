@@ -61,3 +61,8 @@ python3 -B tests/manual/retrieval_eval.py --manifest tests/manual/retrieval_mani
 The default run uses production retrieval and prompt construction, including read-only token fitting when the existing backend is available. It does not generate answers or start a model. Results record natural questions, actual query attempts, archive versions, fetch/filter outcomes, sources, prompt inclusion and target-section matches. `--settings FILE` supplies isolated settings overrides; `--limit N` is only a smoke run. `--generate` additionally generates answers and captures production fitting; use it only after retrieval gates pass and review critical cases repeatedly.
 
 Target-section matching is narrower than a complete human relevance judgment. The tool deliberately leaves human precision and answer-safety approval unset and never marks release gates passed automatically. Generated reports may contain private prompts and source passages; only save/share them deliberately. The release target remains at least 90% annotated supported-case recall and 90% independently judged included-passage relevance, with no serious new answer-safety regression.
+
+
+## Relevance follow-up validation
+
+Run `python3 -B tests/manual/relevance_validation.py --output /tmp/relevance-validation.json` for the 24-case EN/PT/ES follow-up set. It uses production retrieval and read-only token fitting, without generation. Report topic/intent checks separately from passage applicability and clinical accuracy. The older 59-case manifest remains unchanged and is now observed regression data. See [the follow-up report](../../docs/reviews/2026-11-25-relevance-followup.md).
