@@ -36,8 +36,8 @@
       ],
       "queries": {
         "en": [
-          "cardiopulmonary resuscitation",
-          "CPR"
+          "cardiac arrest",
+          "cardiopulmonary resuscitation"
         ],
         "pt": [
           "ressuscitação cardiopulmonar",
@@ -47,7 +47,54 @@
           "reanimación cardiopulmonar",
           "RCP"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "unresponsive",
+            "unconscious",
+            "will not respond",
+            "does not respond",
+            "not responding",
+            "will not wake up"
+          ],
+          [
+            "gasping",
+            "gasps",
+            "snorting breath",
+            "not breathing",
+            "does not breathe"
+          ]
+        ],
+        [
+          [
+            "nao responde",
+            "inconsciente"
+          ],
+          [
+            "suspiros",
+            "ofegante",
+            "nao respira",
+            "nao esta respirando"
+          ]
+        ],
+        [
+          [
+            "no responde",
+            "inconsciente"
+          ],
+          [
+            "jadea",
+            "jadeando",
+            "no respira"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "cardiac arrest",
+        "cardiopulmonary resuscitation",
+        "cpr"
+      ]
     },
     "choking": {
       "triggers": [
@@ -68,6 +115,18 @@
         ],
         [
           "atragantamiento"
+        ],
+        [
+          "engasgou"
+        ],
+        [
+          "se engasgando"
+        ],
+        [
+          "atraganto"
+        ],
+        [
+          "atragantando"
         ]
       ],
       "queries": {
@@ -83,7 +142,46 @@
           "atragantamiento",
           "obstrucción de las vías respiratorias"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "cannot cry",
+            "cannot make a sound"
+          ],
+          [
+            "cannot cough",
+            "or cough",
+            "cannot breathe",
+            "or breathe",
+            "swallowing food"
+          ]
+        ],
+        [
+          [
+            "nao consegue chorar",
+            "nao consegue respirar"
+          ],
+          [
+            "comida",
+            "engasgou"
+          ]
+        ],
+        [
+          [
+            "no puede toser",
+            "no puede respirar"
+          ],
+          [
+            "comida",
+            "atraganto"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "choking",
+        "airway obstruction"
+      ]
     },
     "anaphylaxis": {
       "triggers": [
@@ -134,7 +232,46 @@
           "anafilaxia",
           "adrenalina"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "swollen lips",
+            "swollen tongue"
+          ],
+          [
+            "trouble breathing",
+            "difficulty breathing",
+            "wheezing"
+          ]
+        ],
+        [
+          [
+            "labios inchados",
+            "lingua inchada"
+          ],
+          [
+            "falta de ar",
+            "dificuldade para respirar",
+            "chiado"
+          ]
+        ],
+        [
+          [
+            "labios hinchados",
+            "lengua hinchada"
+          ],
+          [
+            "cuesta respirar",
+            "dificultad para respirar",
+            "sibilancias"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "anaphylaxis",
+        "epinephrine"
+      ]
     },
     "bleeding": {
       "triggers": [
@@ -157,8 +294,8 @@
       ],
       "queries": {
         "en": [
-          "bleeding",
-          "hemorrhage"
+          "emergency bleeding control",
+          "bleeding"
         ],
         "pt": [
           "hemorragia",
@@ -168,7 +305,12 @@
           "hemorragia",
           "sangrado"
         ]
-      }
+      },
+      "source_terms": [
+        "emergency bleeding control",
+        "bleeding",
+        "hemorrhage"
+      ]
     },
     "burn": {
       "triggers": [
@@ -200,7 +342,48 @@
         "es": [
           "quemadura"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "hot soup",
+            "hot tea",
+            "boiling water",
+            "hot water"
+          ],
+          [
+            "spilled",
+            "blistering",
+            "blisters",
+            "skin"
+          ]
+        ],
+        [
+          [
+            "agua quente",
+            "agua fervendo"
+          ],
+          [
+            "bolhas",
+            "queimou"
+          ]
+        ],
+        [
+          [
+            "agua caliente",
+            "agua hirviendo"
+          ],
+          [
+            "ampollas",
+            "quemo"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "burn",
+        "burns",
+        "scald"
+      ]
     },
     "carbon_monoxide": {
       "triggers": [
@@ -233,7 +416,46 @@
         "es": [
           "intoxicación por monóxido de carbono"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "generator",
+            "generators"
+          ],
+          [
+            "indoors",
+            "inside",
+            "basement",
+            "cabin",
+            "garage"
+          ]
+        ],
+        [
+          [
+            "gerador"
+          ],
+          [
+            "dentro",
+            "garagem",
+            "cabana"
+          ]
+        ],
+        [
+          [
+            "generador"
+          ],
+          [
+            "dentro",
+            "garaje",
+            "cabana"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "carbon monoxide poisoning",
+        "carbon monoxide"
+      ]
     },
     "dehydration": {
       "triggers": [
@@ -272,7 +494,12 @@
           "deshidratación",
           "rehidratación oral"
         ]
-      }
+      },
+      "source_terms": [
+        "dehydration",
+        "oral rehydration therapy",
+        "oral rehydration solution"
+      ]
     },
     "diabetes": {
       "triggers": [
@@ -311,7 +538,12 @@
           "hipoglucemia",
           "diabetes"
         ]
-      }
+      },
+      "source_terms": [
+        "hypoglycemia",
+        "diabetic hypoglycemia",
+        "diabetes"
+      ]
     },
     "flood": {
       "triggers": [
@@ -343,7 +575,49 @@
         "es": [
           "inundación"
         ]
-      }
+      },
+      "source_terms": [
+        "flood",
+        "flood safety"
+      ],
+      "required_evidence": [
+        [
+          "floodwater",
+          "flood water",
+          "flood waters",
+          "flooding",
+          "agua de enchente",
+          "agua da enchente",
+          "enchente",
+          "inundacao",
+          "inundacion"
+        ],
+        [
+          "do not drive",
+          "never drive",
+          "turn around",
+          "do not walk",
+          "never walk",
+          "moving water",
+          "fast flowing",
+          "flood warning",
+          "avoid floodwater",
+          "avoid flood water",
+          "flood safety",
+          "walk barefoot",
+          "flood emergency",
+          "nao atravesse",
+          "nao ande",
+          "evite atravessar",
+          "nao dirija",
+          "agua da enchente",
+          "nunca cruce",
+          "no camine",
+          "no conduzca",
+          "agua de inundacion"
+        ]
+      ],
+      "body_only_evidence": true
     },
     "food_safety": {
       "triggers": [
@@ -384,7 +658,54 @@
         "es": [
           "seguridad alimentaria"
         ]
-      }
+      },
+      "source_terms": [
+        "food safety",
+        "food storage",
+        "power outage"
+      ],
+      "required_evidence": [
+        [
+          "refrigerator",
+          "fridge",
+          "freezer",
+          "refrigerated",
+          "power outage",
+          "without power",
+          "geladeira",
+          "refrigerador",
+          "congelador",
+          "energia",
+          "electricidad"
+        ],
+        [
+          "food",
+          "meat",
+          "milk",
+          "chicken",
+          "eat",
+          "discard",
+          "alimentos",
+          "comida",
+          "carne",
+          "leite",
+          "leche",
+          "frango",
+          "pollo",
+          "coma",
+          "descarte"
+        ]
+      ],
+      "evidence_scope": [
+        "refrigerator",
+        "fridge",
+        "freezer",
+        "power",
+        "geladeira",
+        "energia",
+        "refrigerador",
+        "electricidad"
+      ]
     },
     "fire": {
       "triggers": [
@@ -406,8 +727,8 @@
       ],
       "queries": {
         "en": [
-          "cooking oil fire",
-          "fire safety"
+          "grease fire",
+          "fire blanket"
         ],
         "pt": [
           "incêndio óleo de cozinha",
@@ -417,7 +738,79 @@
           "incendio aceite de cocina",
           "incendio"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "cooking oil",
+            "frying oil",
+            "grease",
+            "pan"
+          ],
+          [
+            "fire",
+            "flames"
+          ]
+        ],
+        [
+          [
+            "oleo",
+            "frigideira"
+          ],
+          [
+            "fogo",
+            "chamas"
+          ]
+        ],
+        [
+          [
+            "aceite",
+            "sarten"
+          ],
+          [
+            "fuego",
+            "llamas"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "grease fire",
+        "fire blanket",
+        "fire safety"
+      ],
+      "required_evidence": [
+        [
+          "oil",
+          "grease",
+          "pan",
+          "oleo",
+          "frigideira",
+          "aceite",
+          "sarten"
+        ],
+        [
+          "fire",
+          "flames",
+          "fogo",
+          "chamas",
+          "fuego",
+          "llamas"
+        ],
+        [
+          "cover",
+          "extinguish",
+          "never",
+          "do not",
+          "turn off",
+          "cubra",
+          "extinguir",
+          "nunca",
+          "nao",
+          "no",
+          "desligue",
+          "apague"
+        ]
+      ]
     },
     "heatstroke": {
       "triggers": [
@@ -449,7 +842,45 @@
         "es": [
           "golpe de calor"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "confused",
+            "confusion"
+          ],
+          [
+            "extremely hot",
+            "very hot",
+            "extreme heat"
+          ]
+        ],
+        [
+          [
+            "confuso",
+            "confusao"
+          ],
+          [
+            "calor",
+            "quente"
+          ]
+        ],
+        [
+          [
+            "confundido",
+            "confusion"
+          ],
+          [
+            "calor",
+            "caliente"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "heat stroke",
+        "heatstroke",
+        "heat illness"
+      ]
     },
     "poison": {
       "triggers": [
@@ -477,7 +908,7 @@
       ],
       "queries": {
         "en": [
-          "poisoning",
+          "caustic ingestion",
           "corrosive ingestion"
         ],
         "pt": [
@@ -488,7 +919,11 @@
           "intoxicación",
           "ingestión corrosivos"
         ]
-      }
+      },
+      "source_terms": [
+        "caustic ingestion",
+        "corrosive ingestion"
+      ]
     },
     "seizure": {
       "triggers": [
@@ -518,7 +953,44 @@
           "convulsión",
           "epilepsia"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "jerking",
+            "convulsing",
+            "shaking"
+          ],
+          [
+            "does not respond",
+            "unresponsive",
+            "unconscious"
+          ]
+        ],
+        [
+          [
+            "convulsionando"
+          ],
+          [
+            "nao responde",
+            "inconsciente"
+          ]
+        ],
+        [
+          [
+            "convulsionando"
+          ],
+          [
+            "no responde",
+            "inconsciente"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "seizure",
+        "epilepsy",
+        "generalized tonic clonic seizure"
+      ]
     },
     "snakebite": {
       "triggers": [
@@ -548,7 +1020,11 @@
         "es": [
           "mordedura de serpiente"
         ]
-      }
+      },
+      "source_terms": [
+        "snakebite",
+        "snake bite"
+      ]
     },
     "stroke": {
       "triggers": [
@@ -579,7 +1055,48 @@
         "es": [
           "accidente cerebrovascular"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "crooked",
+            "drooping",
+            "facial droop"
+          ],
+          [
+            "smile",
+            "face"
+          ],
+          [
+            "arm",
+            "speech"
+          ]
+        ],
+        [
+          [
+            "sorriso torto",
+            "sorriso dele ficou torto",
+            "boca torta"
+          ],
+          [
+            "braco",
+            "fala"
+          ]
+        ],
+        [
+          [
+            "sonrisa torcida",
+            "cara caida"
+          ],
+          [
+            "brazo",
+            "habla"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "stroke"
+      ]
     },
     "water_disinfection": {
       "triggers": [
@@ -607,7 +1124,7 @@
       "queries": {
         "en": [
           "water disinfection",
-          "drinking water"
+          "water chlorine"
         ],
         "pt": [
           "desinfecção da água",
@@ -617,7 +1134,26 @@
           "desinfección del agua",
           "agua potable"
         ]
-      }
+      },
+      "source_terms": [
+        "water disinfection",
+        "drinking water",
+        "water treatment"
+      ],
+      "required_evidence": [
+        [
+          "water",
+          "agua"
+        ],
+        [
+          "bleach",
+          "chlorine",
+          "hypochlorite",
+          "chlorination",
+          "hipoclorito",
+          "cloro"
+        ]
+      ]
     },
     "water_chemical": {
       "triggers": [
@@ -648,7 +1184,7 @@
       ],
       "queries": {
         "en": [
-          "water chemical contamination",
+          "water contamination",
           "drinking water contamination"
         ],
         "pt": [
@@ -659,7 +1195,93 @@
           "contaminación química del agua",
           "agua contaminada"
         ]
-      }
+      },
+      "symptoms": [
+        [
+          [
+            "water",
+            "well",
+            "drinking water"
+          ],
+          [
+            "pesticide",
+            "pesticides",
+            "fuel",
+            "gasoline",
+            "chemical"
+          ]
+        ],
+        [
+          [
+            "agua",
+            "poco"
+          ],
+          [
+            "pesticida",
+            "pesticidas",
+            "gasolina",
+            "combustivel",
+            "quimica"
+          ]
+        ],
+        [
+          [
+            "agua",
+            "pozo"
+          ],
+          [
+            "pesticida",
+            "pesticidas",
+            "gasolina",
+            "combustible",
+            "quimica"
+          ]
+        ]
+      ],
+      "source_terms": [
+        "water contamination",
+        "drinking water contamination",
+        "water safety"
+      ],
+      "required_evidence": [
+        [
+          "chemical",
+          "chemicals",
+          "gasoline",
+          "fuel",
+          "pesticide",
+          "pesticides",
+          "quimico",
+          "quimicos",
+          "quimica",
+          "quimicas",
+          "gasolina",
+          "combustivel",
+          "combustible",
+          "pesticida",
+          "pesticidas"
+        ],
+        [
+          "cannot",
+          "do not",
+          "not remove",
+          "unsafe",
+          "boiling",
+          "distillation",
+          "treat",
+          "treatment",
+          "nao",
+          "no",
+          "insegura",
+          "ferver",
+          "hervir",
+          "destilacao",
+          "destilacion",
+          "tratar",
+          "tratamento",
+          "tratamiento"
+        ]
+      ]
     },
     "electrical": {
       "triggers": [
@@ -695,7 +1317,232 @@
           "seguridad eléctrica",
           "cable eléctrico caído"
         ]
-      }
+      },
+      "source_terms": [
+        "electrical injury",
+        "electrical safety",
+        "downed power line",
+        "electrical burn"
+      ],
+      "required_evidence": [
+        [
+          "power line",
+          "power lines",
+          "downed wire",
+          "fallen wire",
+          "fallen line",
+          "high voltage",
+          "fio eletrico",
+          "cabo eletrico",
+          "alta tensao",
+          "cable electrico",
+          "linea electrica",
+          "alta tension"
+        ],
+        [
+          "stay",
+          "leave",
+          "call",
+          "avoid",
+          "do not",
+          "never",
+          "keep",
+          "mantenha",
+          "mantenga",
+          "nao",
+          "no",
+          "nunca",
+          "afaste",
+          "ligue",
+          "llame"
+        ]
+      ]
     }
-  }
+  },
+  "non_emergency": [
+    {
+      "groups": [
+        [
+          "stroke",
+          "engine"
+        ],
+        [
+          "stroke",
+          "diesel"
+        ],
+        [
+          "stroke",
+          "swimming"
+        ],
+        [
+          "stroke",
+          "butterfly"
+        ],
+        [
+          "stroke",
+          "breaststroke"
+        ]
+      ],
+      "exclude": [
+        "stroke"
+      ],
+      "focus": [
+        "engine",
+        "diesel",
+        "swimming",
+        "butterfly",
+        "breaststroke"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "seizure salad"
+        ]
+      ],
+      "exclude": [
+        "seizure"
+      ],
+      "focus": [
+        "salad"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "detector",
+          "dismantle"
+        ],
+        [
+          "detector",
+          "repair"
+        ],
+        [
+          "detector",
+          "replace"
+        ]
+      ],
+      "exclude": [
+        "carbon_monoxide"
+      ],
+      "focus": [
+        "detector"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "flood",
+          "algorithm"
+        ],
+        [
+          "flood fill"
+        ]
+      ],
+      "exclude": [
+        "flood"
+      ],
+      "focus": [
+        "algorithm",
+        "flood fill"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "burn",
+          "iso"
+        ],
+        [
+          "burn",
+          "disc"
+        ],
+        [
+          "grabar",
+          "iso"
+        ]
+      ],
+      "exclude": [
+        "burn"
+      ],
+      "focus": [
+        "iso",
+        "disc",
+        "disco"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "camera"
+        ],
+        [
+          "camara"
+        ]
+      ],
+      "exclude": [],
+      "focus": [
+        "camera",
+        "camara"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "food processor"
+        ],
+        [
+          "processador de alimentos"
+        ]
+      ],
+      "exclude": [],
+      "focus": [
+        "food processor",
+        "processador de alimentos"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "snake plant"
+        ]
+      ],
+      "exclude": [
+        "snakebite"
+      ],
+      "focus": [
+        "snake plant"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "computer"
+        ],
+        [
+          "computador"
+        ]
+      ],
+      "exclude": [],
+      "focus": [
+        "computer",
+        "computador"
+      ]
+    },
+    {
+      "groups": [
+        [
+          "allergy",
+          "testing"
+        ]
+      ],
+      "exclude": [
+        "anaphylaxis"
+      ],
+      "focus": [
+        "allergy",
+        "testing"
+      ]
+    }
+  ]
 }

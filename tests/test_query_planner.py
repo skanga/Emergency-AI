@@ -82,3 +82,45 @@ class QueryPlannerTests(unittest.TestCase):
         self.assertEqual(plan_query('What now?', history=history).scope['consciousness'], 'unresponsive')
         self.assertEqual(plan_query('He is awake now', history=history).scope['consciousness'], 'responsive')
         self.assertIsNone(plan_query('New question: repair camera', history=history).scope['consciousness'])
+
+
+class PlannerRelevanceRegressions(unittest.TestCase):
+    def test_observed_multilingual_paraphrases(self):
+        cases = json.loads(Path('tests/manual/retrieval_manifest.json').read_text())['cases']
+        expected = ['cpr'] * 3 + ['choking'] * 3 + ['anaphylaxis'] * 3 + ['stroke'] * 3 + ['carbon_monoxide'] * 3 + ['water_chemical'] * 3 + ['burn', 'heatstroke', 'seizure', 'choking', 'anaphylaxis', 'fire']
+        for case, topic in zip(cases[:24], expected):
+            with self.subTest(case=case['id']):
+                plan = plan_query(case['q'], case['lang'], case.get('history', []))
+                self.assertIn(topic, plan.topics)
+                if topic == 'choking' and case['id'] in ('heldout-04', 'heldout-05', 'heldout-06'):
+                    self.assertEqual(plan.scope['age_group'], 'infant')
+        self.assertNotIn('choking', plan_query(cases[23]['q'], history=cases[23]['history']).topics)
+
+    def test_nonemergency_meanings_do_not_route_to_emergency_topics(self):
+        cases = json.loads(Path('tests/manual/retrieval_manifest.json').read_text())['cases']
+        for case in [c for c in cases if c['split'] == 'negative']:
+            with self.subTest(case=case['id']):
+                self.assertEqual(plan_query(case['q'], case['lang']).topics, ())
+
+    def test_explicit_topic_change_clears_all_patient_facts(self):
+        history = [{'role': 'user', 'content': 'My infant is choking and unconscious'}]
+        for text in ('Different problem: how can I preserve beans?', 'Outro problema: guardar feijão', 'Otro problema: conservar frijoles'):
+            with self.subTest(text=text):
+                plan = plan_query(text, history=history)
+                self.assertEqual(plan.topics, ())
+                self.assertIsNone(plan.scope['age_group'])
+                self.assertIsNone(plan.scope['consciousness'])
+                self.assertEqual(plan.context_terms, ())
+
+    def test_nonmedical_objects_do_not_erase_explicit_emergencies(self):
+        for question, topic in [
+            ('My father has a stroke and slurred speech next to the engine', 'stroke'),
+            ('My sister had a seizure while eating salad', 'seizure'),
+            ('My baby is choking beside the camera', 'choking'),
+        ]:
+            with self.subTest(question=question):
+                self.assertIn(topic, plan_query(question).topics)
+
+    def test_configured_symptoms_override_nonmedical_sense(self):
+        plan = plan_query('My father had a stroke while swimming; his smile is crooked and one arm is weak')
+        self.assertIn('stroke', plan.topics)

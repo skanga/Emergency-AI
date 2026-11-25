@@ -9,7 +9,7 @@ from urllib.parse import unquote, urlsplit, quote
 from .kiwix import failure_status
 from .document_index import DocumentIndex, document_state
 from .knowledge import STOPWORDS, is_relevant
-from .query_planner import matching_topics, normalize, normalize_language
+from .query_planner import matching_topics, normalize, normalize_language, topic_terms, has_topic_evidence
 
 REQUEST_SECONDS = 8
 MAX_SEARCHES = 20
@@ -74,19 +74,75 @@ _ACTION = re.compile(r'\b(call|check|give|place|keep|protect|remove|avoid|cool|p
 
 def _topic_evidence(text, plan):
     # Age suffixes scope a query but are not required adjacency in source prose.
-    phrases = [normalize(q) for values in plan.queries_by_language.values() for q in values]
+    phrases = list(topic_terms(plan.topics)) if plan.topics else [normalize(q) for values in plan.queries_by_language.values() for q in values]
     phrases = [re.sub(r' (infant|bebe|lactante)$', '', phrase) for phrase in phrases]
     return any(re.search(r'\b' + re.escape(phrase) + r's?\b', text) for phrase in phrases if phrase)
+
+
+# These are applicability filters, not assertions of source authority.
+_BACKGROUND = re.compile(r'\b(history|historical|epidemiology|pathophysiology|references|bibliography|regulations|jurisdiction|licensing|certification|organisational|organizational|related studies|related articles|news|comments|suppliers|research|in development|long term|rehabilitation|environmental justice|quality standards|safe drinking water act|climate services|hydro power|hydroelectric|flood control|in river flood management|historia|epidemiologia)\b')
+_SPECIALIST = re.compile(r'\b(craniectomy|thrombolysis|endovascular|surgery|intravenous fluids|airway management|intubation|medications|additional medications|stroke unit|blood pressure|second line|2nd line|hyponatremia|advanced treatment|extracorporeal|alternative medicine|ischemic stroke|hemorrhagic stroke|chronic poisoning)\b')
+_VAGUE = {'someone', 'somebody', 'something', 'strange', 'odd', 'happened', 'feels', 'feeling', 'explain', 'please', 'help', 'today', 'tell', 'person', 'people', 'now', 'alguem', 'algo', 'pessoa', 'alguien', 'persona'}
+
+
+def _local_domain_mismatch(source, plan):
+    title = normalize(source.get('doc_title', ''))
+    heading = normalize(source.get('section', ''))
+    medical = set(plan.topics) - {'fire', 'flood', 'food_safety', 'water_disinfection', 'water_chemical', 'electrical', 'carbon_monoxide'}
+    if medical and any(word in title for word in ('tools', 'knots', 'ferramentas', 'herramientas', 'food', 'alimentos', 'comida', 'alcohol', 'alcool', 'fire', 'fogo', 'fuego', 'hygiene', 'higiene', 'energy', 'energia', 'gardening', 'horta', 'huerta', 'checklist', 'listas')):
+        return True
+    if medical and any(word in heading for word in ('stockpile', 'kit', 'priorities', 'devices', 'checklist', 'estoque', 'reservas', 'maintenance', 'mantenimiento', 'manutencao')):
+        return True
+    if set(plan.topics) & {'water_chemical', 'water_disinfection'} and any(word in title for word in ('alcohol', 'alcool')):
+        return True
+    return False
+
+
+def _general_relevance(source, plan):
+    label = normalize(source.get('title', source.get('doc_title', '')) + ' ' + source.get('section', ''))
+    body = normalize(source.get('text', source.get('snippet', '')))
+    focus = plan.scope.get('focus_terms', ())
+    if focus:
+        return all(' ' + phrase + ' ' in ' ' + label + ' ' for phrase in focus)
+    terms = _words(plan.question + ' ' + ' '.join(plan.context_terms)) - _VAGUE
+    if not terms:
+        return False
+    # Preserve existing multilingual synonyms and singular/plural matching.
+    # Generic titles are valid when the body establishes multiple query terms.
+    matches = sum(is_relevant(term, label + ' ' + body) for term in terms)
+    return matches >= min(2, len(terms))
+
+
+def _section_priority(source, plan):
+    title = normalize(source.get('title', source.get('doc_title', '')))
+    heading = normalize(source.get('section', ''))
+    # PDF page labels repeat the book title, not an extracted procedure heading.
+    leaf = '' if source.get('page') else normalize(source.get('section', '').split(' › ')[-1])
+    concepts = topic_terms(plan.topics)
+    score = 40 if title in concepts else 0
+    if any(p in leaf for p in ('first aid', 'primeiros socorros', 'primeros auxilios')):
+        score += 60
+    elif leaf in ('treatment', 'management', 'tratamento', 'tratamiento', 'what to do'):
+        score += 35
+    elif leaf in concepts and any(p in heading for p in ('treatment', 'management', 'tratamento', 'tratamiento')):
+        score += 45
+    if plan.scope.get('age_group') == 'infant' and any(p in leaf for p in ('infant', 'babies', 'bebe', 'lactante')):
+        score += 45
+    if plan.scope.get('consciousness') == 'unresponsive' and any(p in leaf for p in ('unconscious', 'unresponsive', 'inconsciente')):
+        score += 45
+    return score
 
 
 def _local_topic_evidence(source, plan):
     # Local headings need not repeat the short phrases sent to library search.
     label = normalize(source['section'] + ' ' + source['doc_title'])
+    personal = source.get('doc_id', '').startswith('extra/')
+    if not personal and _local_domain_mismatch(source, plan):
+        return False
     label_topics = set(matching_topics(label))
     if label_topics.intersection(plan.topics) or _topic_evidence(label, plan):
         return True
     # A guide about a different emergency may mention this one as a symptom.
-    personal = source.get('doc_id', '').startswith('extra/')
     if label_topics and not personal:
         return False
     body = normalize(source['text'])
@@ -104,6 +160,9 @@ def _usable_emergency_body(source, plan, label, body):
             return False
     actionable = bool(_ACTION.search(body))
     if any(marker in body for marker in ('translated version', 'translation progress', 'translate this page')) and not actionable:
+        return False
+    direct_title = normalize(source.get('title', source.get('doc_title', ''))) if actionable else ''
+    if not has_topic_evidence(body, plan.topics, plan.question + ' ' + ' '.join(plan.context_terms), direct_title):
         return False
     if source.get('kind') == 'kit':
         return _local_topic_evidence(source, plan)
@@ -125,11 +184,36 @@ def relevance(source, plan):
     """Relevance/applicability only: this score never resolves factual conflict."""
     if _educational_page(source, plan):
         return 0
+    if not plan.topics and not _general_relevance(source, plan):
+        return 0
     title = source.get('title', source.get('doc_title', ''))
     heading = source.get('section', '')
     text = source.get('text', source.get('snippet', ''))
     label = normalize(title + ' ' + heading)
     body = normalize(text)
+    question_context = normalize(plan.question + ' ' + ' '.join(plan.context_terms))
+    special_conditions = (
+        ('cement', 'cimento', 'cemento'), ('tar', 'asfalto'),
+        ('malnutrition', 'desnutricao', 'desnutricion'),
+        ('childbirth', 'parto', 'postpartum', 'pos parto'),
+        ('fever', 'febrile', 'febre', 'fiebre'),
+        ('previous stroke', 'prior stroke', 'avc anterior'),
+    )
+    if plan.topics and any(any(re.search(r'\b' + re.escape(term) + r'\b', label) for term in group)
+                           and not any(re.search(r'\b' + re.escape(term) + r'\b', question_context) for term in group)
+                           for group in special_conditions):
+        return 0
+    if plan.topics and any(term in label and term not in normalize(plan.question) for term in ('fukushima', 'nuclear', 'radioactive')):
+        return 0
+    heading_topics = set(matching_topics(normalize(heading)))
+    if plan.topics and heading_topics and not heading_topics.intersection(plan.topics):
+        return 0
+    if plan.topics and (_BACKGROUND.search(label) or _SPECIALIST.search(normalize(heading))):
+        return 0
+    if plan.scope.get('consciousness') == 'unresponsive' and re.search(r'\b(by mouth|oral intake|oral glucose|via oral|por boca)\b', normalize(heading)):
+        return 0
+    if plan.topics and re.search(r'\b(intravenous|thrombolysis|thrombectomy|craniectomy|neurosurgical|intubation)\b', body) and not re.search(r'\b(call|emergency services|first aid|cardiopulmonary resuscitation|cpr|cool|back blows|direct pressure|protect|do not|never|auto injector|epipen)\b', body):
+        return 0
     if _REFERENCE_HEADING.search(normalize(heading)):
         return 0
     if not _usable_emergency_body(source, plan, label, body):
@@ -152,6 +236,8 @@ def relevance(source, plan):
         'adult': ('adult', 'adults', 'adulto', 'adultos'),
     }
     scoped = {group for group, phrases in groups.items() if any(f' {p} ' in f' {label} ' for p in phrases)}
+    if not age and len(scoped) == 1:
+        return 0
     if age and scoped and age not in scoped:
         return 0
     if 'neonatal' in scoped and age == 'infant' and 'infant' not in scoped:
@@ -160,8 +246,6 @@ def relevance(source, plan):
     queries += [q for values in plan.queries_by_language.values() for q in values]
     queries = [q for q in queries if q]
     if not any(is_relevant(q, title + '\n' + heading + '\n' + text) for q in queries):
-        return 0
-    if not plan.topics and text and not any(is_relevant(q, text) for q in queries):
         return 0
     original = _words(plan.question + ' ' + ' '.join(plan.context_terms))
     terms = set().union(*(_words(q) for q in queries))
@@ -178,7 +262,7 @@ def relevance(source, plan):
         score *= .4
     if any(p in label for p in ('professional', 'clinical protocol', 'advanced life support', 'neonatal resuscitation')):
         score *= .5
-    return score or .1
+    return score + _section_priority(source, plan) if plan.topics else score or .1
 
 
 def local_sources(kb, plan, lang, limit):
@@ -344,7 +428,20 @@ def select_sources(local, library, local_limit, library_limit):
     Per-origin limits are ceilings, not a priority or a required source quota.
     Scores express applicability only; factual conflicts remain for policy.
     """
-    local, library = list(local[:max(0, local_limit)]), list(library[:max(0, library_limit)])
-    protected = local[:1]
-    remaining = sorted(local[1:] + library, key=lambda s: s['retrieval_score'], reverse=True)
+    selected, seen = [], set()
+    for candidates, limit in ((local, local_limit), (library, library_limit)):
+        count = 0
+        for source in candidates:
+            if count >= max(0, limit):
+                break
+            # Keep quantities and punctuation: 1.0 must never collapse into 10.
+            key = ' '.join(source.get('text', '').split())
+            if key and key in seen:
+                continue
+            if key:
+                seen.add(key)
+            selected.append(source)
+            count += 1
+    protected = selected[:1] if local_limit > 0 and local else []
+    remaining = sorted(selected[len(protected):], key=lambda s: s['retrieval_score'], reverse=True)
     return protected + remaining
