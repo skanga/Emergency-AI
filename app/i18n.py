@@ -135,3 +135,28 @@ READ_FULL_SOURCE = {
     "pt": "Abra a fonte completa abaixo. Esta seção está indisponível ou é longa demais para ser incluída na íntegra.",
     "es": "Abra la fuente completa abajo. Esta sección no está disponible o es demasiado larga para incluirla completa.",
 }
+
+
+CONFLICT_UNRESOLVED = {
+    'en': '**Unresolved source disagreement.** Procedural recommendations are withheld. Do not combine or average these instructions. Inspect the original references below and seek qualified help to resolve the disagreement.\n\n',
+    'pt': '**Divergência não resolvida entre fontes.** As recomendações de procedimentos foram suspensas. Não combine nem calcule a média dessas instruções. Consulte as referências originais abaixo e procure ajuda qualificada para resolver a divergência.\n\n',
+    'es': '**Desacuerdo entre fuentes sin resolver.** Se omiten las recomendaciones de procedimientos. No combine ni promedie estas instrucciones. Consulte las referencias originales abajo y busque ayuda cualificada para resolver el desacuerdo.\n\n',
+}
+
+POLICY_UNAVAILABLE = {
+    'en': '**Source policy unavailable.** Procedural recommendations are withheld because the reviewed source policy could not be validated. Inspect the original references below.\n\n',
+    'pt': '**Política de fontes indisponível.** As recomendações de procedimentos foram suspensas porque a política revisada não pôde ser validada. Consulte as referências originais abaixo.\n\n',
+    'es': '**Política de fuentes no disponible.** Se omiten las recomendaciones de procedimientos porque no se pudo validar la política revisada. Consulte las referencias originales abajo.\n\n',
+}
+
+CONFLICT_REVIEWED = {
+    'en': '**Reviewed source correction.** Following {preferred}. Compared exact versions: {versions}. Reason: {rationale} The superseded original remains unchanged and available for inspection.\n\n',
+    'pt': '**Correção de fonte revisada.** Seguindo {preferred}. Versões exatas comparadas: {versions}. Motivo: {rationale} O original substituído permanece inalterado e disponível para consulta.\n\n',
+    'es': '**Corrección de fuente revisada.** Se sigue {preferred}. Versiones exactas comparadas: {versions}. Motivo: {rationale} El original sustituido permanece sin cambios y disponible para consulta.\n\n',
+}
+
+REVIEWED_SOURCE_OMITTED = {
+    'en': '**Reviewed passage not supplied.** The preferred source could not fit as a complete passage. Procedural recommendations are withheld; inspect the original references below.\n\n',
+    'pt': '**Trecho revisado não fornecido.** A fonte preferida não coube como trecho completo. As recomendações de procedimentos foram suspensas; consulte as referências originais abaixo.\n\n',
+    'es': '**Fragmento revisado no proporcionado.** La fuente preferida no cupo como fragmento completo. Se omiten las recomendaciones de procedimientos; consulte las referencias originales abajo.\n\n',
+}
