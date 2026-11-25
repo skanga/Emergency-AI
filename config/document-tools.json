@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "supported_platforms": {
+    "linux-x86_64": {
+      "version": "4.06",
+      "url": "https://dl.xpdfreader.com/xpdf-tools-linux-4.06.tar.gz",
+      "sha256": "940c137cbd1856e45813da1a25c12e8dd3dc8997b8ea735feb858684603031e3",
+      "size": 16124814,
+      "root": "xpdf-tools-linux-4.06",
+      "binary": "bin64/pdftotext",
+      "pdfinfo": "bin64/pdfinfo",
+      "license": "GPL-2.0-only OR GPL-3.0-only",
+      "license_files": [
+        "README",
+        "COPYING",
+        "COPYING3",
+        "doc/"
+      ],
+      "source_url": "https://dl.xpdfreader.com/xpdf-4.06.tar.gz"
+    }
+  },
+  "notes": "Only Linux x86_64 has been smoke-tested. Other platforms remain explicitly unsupported. Downloads occur only during explicit preparation."
+}
