@@ -73,3 +73,12 @@ class QueryPlannerTests(unittest.TestCase):
         self.assertIn('carbon_monoxide', plan.topics)
         self.assertEqual(set(plan.queries_by_language), {'en', 'pt', 'es'})
         self.assertEqual(plan_query('How does a four stroke engine work?').topics, ())
+
+    def test_consciousness_facts_negation_and_followups(self):
+        for text, expected in [('infant choking and unconscious', 'unresponsive'), ('choking but not unconscious', 'responsive'), ('awake and choking', 'responsive'), ('choking, not responsive', 'unresponsive'), ('infant choking, cannot cry and turning blue', None)]:
+            with self.subTest(text=text):
+                self.assertEqual(plan_query(text).scope['consciousness'], expected)
+        history = [{'role': 'user', 'content': 'My infant is choking and unresponsive'}]
+        self.assertEqual(plan_query('What now?', history=history).scope['consciousness'], 'unresponsive')
+        self.assertEqual(plan_query('He is awake now', history=history).scope['consciousness'], 'responsive')
+        self.assertIsNone(plan_query('New question: repair camera', history=history).scope['consciousness'])

@@ -7,6 +7,8 @@ from . import i18n
 from .kiwix import KiwixClient
 from .knowledge import KnowledgeBase, is_relevant, strip_accents, tokenize
 from .llm import LLMError, detect_llm
+from .query_planner import plan_query
+from . import retrieval
 
 
 class Engine:
@@ -54,42 +56,38 @@ class Engine:
         }
 
     # ---------- retrieval ----------
-    def retrieve(self, question, lang, history=None, use_kiwix=True, kiwix_books=None):
-        query = question
-        if history and len(tokenize(question)) < 4:
-            prev = [h.get("content", "") for h in history if h.get("role") == "user"]
-            if prev:
-                query = prev[-1] + " " + question
-        k = int(self.settings.get("search_results", 5))
-        sources = []
-        for score, ch in self.kb.search(query, lang, k=k):
-            d = ch.to_dict(score=score)
-            sources.append(d)
-        if use_kiwix and kiwix_books != [] and self.kiwix_ok():
-            try:
-                for r in self.kiwix.search(question, lang, limit=int(self.settings.get("kiwix_results", 3)),
-                                           book_names=kiwix_books):
-                    text = self.kiwix.article_text(r["link"])
-                    if not is_relevant(query, text):
-                        continue
-                    sources.append({
-                        "kind": "kiwix", "doc_title": r["book"], "section": r["title"],
-                        "link": r["link"], "text": text, "book_name": r["book_name"],
-                    })
-            except Exception:
-                pass
-        # Keep complete sections. Never present a prefix of an instruction as an answer.
-        budget = int(self.settings.get("context_chars", 7000))
+    def retrieve(self, question, lang, history=None, use_kiwix=True, kiwix_books=None, diagnostics=None):
+        deadline = time.monotonic() + retrieval.REQUEST_SECONDS
+        report = diagnostics if diagnostics is not None else {}
+        report.clear()
+        plan = plan_query(question, lang, history)
+        report.update(topics=list(plan.topics), scope=plan.scope, limited_cross_language=plan.limited_cross_language,
+                      libraries=[], fetches=[], searches=0, fetched=0, candidates=0)
+        local_limit = max(0, int(self.settings.get('search_results', 5)))
+        library_limit = max(0, int(self.settings.get('kiwix_results', 3)))
+        local = retrieval.local_sources(self.kb, plan, lang, local_limit)
+        library = []
+        if not use_kiwix or not self.settings.get('kiwix_enabled', True):
+            report['status'] = 'disabled'
+        elif kiwix_books == []:
+            report['status'] = 'no_selection'
+        else:
+            library = retrieval.library_sources(self.kiwix, plan, kiwix_books, report, deadline,
+                                                self.settings.get('document_index_dir'))
+        sources = retrieval.select_sources(local, library, local_limit, library_limit)
+        budget = int(self.settings.get('context_chars', 7000))
         out = []
-        for s in sources:
-            text = s["text"]
-            omitted = not text or len(text) > budget
-            if omitted:
+        for source in sources:
+            text = source['text']
+            reason = 'empty_content' if not text else ('context_budget' if len(text) > budget else None)
+            if reason:
                 text = i18n.READ_FULL_SOURCE[lang]
             else:
                 budget -= len(text)
-            s = dict(s, text=text, n=len(out) + 1, context_omitted=omitted)
-            out.append(s)
+            out.append(dict(source, text=text, n=len(out) + 1, context_omitted=bool(reason),
+                            context_omitted_reason=reason))
+        report.update(included=sum(not s['context_omitted'] for s in out), selected=len(out),
+                      local_candidates=len(local), library_passages=len(library))
         return out
 
     # ---------- generation ----------
@@ -135,7 +133,7 @@ class Engine:
             included = [s for s in sources if not s.get('context_omitted')]
             if not included:
                 raise LLMError('The question exceeds the available input context budget')
-            included[-1].update(context_omitted=True, text=i18n.READ_FULL_SOURCE[lang])
+            included[-1].update(context_omitted=True, context_omitted_reason='token_budget', text=i18n.READ_FULL_SOURCE[lang])
 
     def extractive_answer(self, lang, sources, model_unavailable=True):
         if not sources:
@@ -151,23 +149,29 @@ class Engine:
         """Event generator: ('sources', [...]), ('token', str), ('done', {...})."""
         lang = lang if lang in i18n.SYSTEM_PROMPT else "en"
         t0 = time.time()
-        sources = self.retrieve(question, lang, history, use_kiwix, kiwix_books)
+        report = {}
+        sources = self.retrieve(question, lang, history, use_kiwix, kiwix_books, diagnostics=report)
         llm = self.llm() if use_llm else None
         model_unavailable = llm is None
         reason = 'ai_disabled' if not use_llm else ('model_unavailable' if llm is None else None)
         sources_supplied = False
         mode = "llm" if llm else "search"
         generation = {}
+        fit_error = None
         if llm:
             try:
                 messages, fitted, generation = self.fit_messages(llm, question, lang, sources, history)
                 sources = fitted
                 sources_supplied = any(not s.get('context_omitted') for s in sources)
             except (LLMError, OSError) as e:
-                yield 'token', i18n.LLM_ERROR[lang].format(err=str(e)[:120])
+                fit_error = i18n.LLM_ERROR[lang].format(err=str(e)[:120])
                 llm, mode = None, 'search'
                 reason = 'generation_failed'
+        report["included"] = sum(not s.get("context_omitted") for s in sources)
+        yield "retrieval", report
         yield "sources", sources
+        if fit_error:
+            yield "token", fit_error
         if llm:
             note = i18n.SOURCES_SUPPLIED_NOTE if sources_supplied else i18n.UNGROUNDED_NOTE
             yield 'token', note[lang]
@@ -196,7 +200,7 @@ class Engine:
             yield "token", i18n.MEDICAL_FOOTER[lang]
         yield "done", {"mode": mode, "seconds": round(time.time() - t0, 1),
                        "llm": llm.describe() if llm else None, "generation": generation,
-                       "sources_supplied": sources_supplied, "reason": reason}
+                       "sources_supplied": sources_supplied, "reason": reason, "retrieval": report}
 
     def answer_text(self, question, lang="en", **kw):
         text, sources, info = [], [], {}

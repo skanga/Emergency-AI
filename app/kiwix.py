@@ -5,7 +5,9 @@ and download article content as context for the AI.
 """
 
 import html
-from concurrent.futures import ThreadPoolExecutor
+from collections import OrderedDict
+import threading
+import time
 import os
 import re
 import urllib.error
@@ -14,7 +16,8 @@ import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 
 from .config import CONFIG_DIR, load_json
-from .net import get_text, is_up
+from .net import get_text, is_up, ResponseTooLarge
+from .passages import extract_passages
 from .knowledge import tokenize
 
 LANG3 = {"pt": "por", "en": "eng", "es": "spa"}
@@ -68,6 +71,11 @@ class KiwixClient:
         self.base_url = base_url.rstrip("/")
         self._books = None
         self._catalog_error = None
+        self._catalog_failure = None
+        self._cache = OrderedDict()
+        self._cache_chars = 0
+        self._cache_lock = threading.Lock()
+        self._catalog_checked = 0
 
     def available(self):
         return is_up(self.base_url + "/catalog/v2/entries?count=1", timeout=1.5)
@@ -104,13 +112,13 @@ class KiwixClient:
         except (ValueError, UnicodeError):
             return None
 
-    def books(self):
+    def books(self, deadline=None, diagnostics=None):
         """List logical selections with archive identity and publication metadata."""
         if self._books is not None:
             return self._books
         books = []
         try:
-            xml = get_text(self.base_url + "/catalog/v2/entries?count=-1", timeout=5)
+            xml = get_text(self.base_url + "/catalog/v2/entries?count=-1", timeout=5, deadline=deadline, allowed_origin=self.base_url)
             root = ET.fromstring(xml)
             if root.tag != "{http://www.w3.org/2005/Atom}feed":
                 raise ET.ParseError("Expected Atom catalog response")
@@ -122,7 +130,7 @@ class KiwixClient:
                 lang = (entry.findtext("a:language", default="", namespaces=ns) or "").strip()
                 if name:
                     issued = entry.findtext("{http://purl.org/dc/terms/}issued", default="").strip()
-                    archive_uuid = entry.findtext("a:id", default="", namespaces=ns).removeprefix("urn:uuid:")
+                    archive_uuid = re.sub(r"^urn:uuid:", "", entry.findtext("a:id", default="", namespaces=ns))
                     links = [link.get("href", "") for link in entry.findall("a:link", ns)
                              if link.get("type", "").split(";")[0].strip() == "text/html"]
                     identities = [self._content_identity(link) for link in links]
@@ -141,10 +149,15 @@ class KiwixClient:
                                   "content_url": identity[1] if identity else None,
                                   "identity_error": bool(links) and identity is None})
         except Exception as exc:
+            self._catalog_failure = failure_status(exc)
             self._catalog_error = str(exc) or type(exc).__name__
+            if diagnostics is not None:
+                diagnostics.append(dict(status='catalog_error', failure_status=failure_status(exc),
+                                        error=str(exc) or type(exc).__name__))
             return []
         self._catalog_error = None
         self._books = books
+        self._catalog_checked = time.monotonic()
         return books
 
     def search(self, query, lang="en", limit=3, book_names=None, diagnostics=None):
@@ -168,55 +181,19 @@ class KiwixClient:
             return []
         want = LANG3.get(lang, lang)
         ordered = [b for b in books if want in b["lang"]] + [b for b in books if want not in b["lang"]]
-        def search_book(book):
-            results = []
-            served_name = book.get("served_name") or book["name"]
-            diagnostic = {"name": book["name"], "served_name": book.get("served_name"),
-                          "archive_uuid": book.get("archive_uuid", ""), "hits": 0}
-            if book.get("identity_error"):
-                diagnostic.update(status="identity_error", error="Invalid catalog content link")
-                return results, diagnostic
-            params = urllib.parse.urlencode({
-                "pattern": query, "books.name": served_name, "format": "xml", "pageLength": 2,
-            })
-            try:
-                xml = get_text(f"{self.base_url}/search?{params}", timeout=6)
-                root = ET.fromstring(xml)
-                if root.tag != "rss":
-                    raise ET.ParseError("Expected RSS search response")
-            except Exception as exc:
-                if isinstance(exc, TimeoutError) or (isinstance(exc, urllib.error.URLError) and isinstance(exc.reason, TimeoutError)):
-                    status = "timeout"
-                elif isinstance(exc, ET.ParseError):
-                    status = "parse_error"
-                else:
-                    status = "http_error"
-                diagnostic.update(status=status, error=str(exc) or type(exc).__name__)
-                if not book.get("served_name"):
-                    diagnostic.update(status="identity_error", failure_status=status)
-                if isinstance(exc, urllib.error.HTTPError):
-                    diagnostic["http_status"] = exc.code
-                return results, diagnostic
-            # Legacy catalogs have no content link. A successful restricted request
-            # validates only the advertised name; cache it on this catalog entry.
-            book["served_name"] = served_name
-            diagnostic["served_name"] = served_name
-            for item in root.iter("item"):
-                title = (item.findtext("title") or "").strip()
-                link = self.local_link((item.findtext("link") or "").strip())
-                desc = html_to_text(html.unescape(item.findtext("description") or ""))
-                if title and link:
-                    results.append({"title": title, "link": link, "snippet": desc,
-                                    "book": book["title"], "book_name": book["name"]})
-            diagnostic.update(status="success" if results else "zero_hits", hits=len(results))
-            return results, diagnostic
-
-        # Cover every selected library with a bounded number of concurrent requests.
-        with ThreadPoolExecutor(max_workers=4) as pool:
-            batches = list(pool.map(search_book, ordered))
-        results = [result for batch, _ in batches for result in batch]
+        from .retrieval import run_jobs
+        deadline = time.monotonic() + 8
+        results = []
+        jobs = [(book, query) for book in ordered[:20]]
+        for (book, _), outcome, error in run_jobs(jobs, lambda job: self.search_book(*job, deadline=deadline), deadline):
+            if error:
+                outcome = ([], dict(name=book['name'], status=failure_status(error), error=str(error)))
+            batch, diagnostic = outcome
+            results.extend(batch)
+            if diagnostics is not None:
+                diagnostics.append(diagnostic)
         if diagnostics is not None:
-            diagnostics.extend(diagnostic for _, diagnostic in batches)
+            diagnostics.extend(dict(name=b['name'], status='not_searched_budget') for b in ordered[20:])
         terms = set(tokenize(query))
         def relevance(result):
             title = set(tokenize(result["title"]))
@@ -225,14 +202,91 @@ class KiwixClient:
         results.sort(key=relevance, reverse=True)
         return results[:limit]
 
-    def article_text(self, link, max_chars=20000):
+    def search_book(self, book, query, deadline=None):
+        """One restricted search; return hits and its explicit diagnostic."""
+        served_name = book.get('served_name') or book['name']
+        diagnostic = dict(name=book['name'], served_name=book.get('served_name'),
+                          archive_uuid=book.get('archive_uuid', ''), query=query, hits=0)
+        if book.get('identity_error'):
+            return [], dict(diagnostic, status='identity_error', error='Invalid catalog content link')
+        params = urllib.parse.urlencode({'pattern': query, 'books.name': served_name,
+                                         'format': 'xml', 'pageLength': 8})
+        try:
+            raw = get_text(f'{self.base_url}/search?{params}', timeout=6, deadline=deadline, allowed_origin=self.base_url)
+            root = ET.fromstring(raw)
+            if root.tag != 'rss':
+                raise ET.ParseError('Expected RSS search response')
+            results = []
+            for rank, item in enumerate(root.iter('item'), 1):
+                if rank > 8:
+                    break
+                title = (item.findtext('title') or '').strip()
+                link = self.local_link((item.findtext('link') or '').strip())
+                if title and link:
+                    results.append(dict(title=title, link=link,
+                                        snippet=html_to_text(html.unescape(item.findtext('description') or '')),
+                                        book=book['title'], book_name=book['name'],
+                                        archive_uuid=book.get('archive_uuid', ''), issued=book.get('issued', ''),
+                                        served_name=served_name, native_rank=rank, queries=[query]))
+            book['served_name'] = served_name
+            return results, dict(diagnostic, served_name=served_name,
+                                 status='success' if results else 'zero_hits', hits=len(results))
+        except Exception as exc:
+            status = failure_status(exc)
+            diagnostic.update(status=status, error=str(exc) or type(exc).__name__)
+            if not book.get('served_name'):
+                diagnostic.update(status='identity_error', failure_status=status)
+            if isinstance(exc, urllib.error.HTTPError):
+                diagnostic['http_status'] = exc.code
+            return [], diagnostic
+
+    def article_html(self, link, timeout=8, max_bytes=8 * 1024 * 1024, deadline=None):
         link = self.local_link(link)
         if not link:
+            raise ValueError('Article link is outside the configured Kiwix service')
+        return get_text(urllib.parse.urljoin(self.base_url + '/', link), timeout=timeout,
+                        max_bytes=max_bytes, deadline=deadline, allowed_origin=self.base_url)
+
+    def article_passages(self, hit, deadline=None):
+        """Versioned, byte-bounded memory cache; complete source sections only."""
+        version = hit.get('archive_uuid') or hit.get('served_name') or hit['book_name']
+        version += ':' + hit.get('issued', '')
+        key = (version, hit['link'], 'passages-v1')
+        with self._cache_lock:
+            cached = self._cache.get(key)
+            if cached is not None:
+                self._cache.move_to_end(key)
+                return cached
+        raw = self.article_html(hit['link'], deadline=deadline)
+        passages = extract_passages(raw, archive=hit['book_name'], version=version, article_url=hit['link'])
+        size = sum(len(p.text) + sum(map(len, p.heading_path)) for p in passages)
+        with self._cache_lock:
+            # Evict old versions of the same article, as well as LRU entries.
+            for old in list(self._cache):
+                if old[1] == key[1] and old != key:
+                    self._cache_chars -= sum(len(p.text) + sum(map(len, p.heading_path)) for p in self._cache.pop(old))
+            if size <= 4 * 1024 * 1024 and key not in self._cache:
+                self._cache[key] = passages
+                self._cache_chars += size
+                while self._cache_chars > 4 * 1024 * 1024 or len(self._cache) > 64:
+                    _, removed = self._cache.popitem(last=False)
+                    self._cache_chars -= sum(len(p.text) + sum(map(len, p.heading_path)) for p in removed)
+        return passages
+
+    def article_text(self, link, max_chars=20000):
+        # Compatibility API. Retrieval uses structural article_passages instead.
+        if not self.local_link(link):
             return ""
-        url = urllib.parse.urljoin(self.base_url + "/", link)
-        try:
-            raw = get_text(url, timeout=8)
-        except Exception:
-            return ""
-        text = html_to_text(raw)
-        return text if len(text) <= max_chars else ""
+        return html_to_text(self.article_html(link))
+
+
+def failure_status(exc):
+    if isinstance(exc, TimeoutError) or (isinstance(exc, urllib.error.URLError) and isinstance(exc.reason, TimeoutError)):
+        return 'timeout'
+    if isinstance(exc, ResponseTooLarge):
+        return 'oversize'
+    if isinstance(exc, (ET.ParseError, UnicodeError)):
+        return 'parse_error'
+    if isinstance(exc, urllib.error.HTTPError):
+        return 'http_error'
+    return 'error'

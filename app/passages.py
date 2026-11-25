@@ -4,6 +4,8 @@ Procedure sections stay whole. Prose may split between blocks, with scope and
 cautions repeated. Character targets are soft: no source instruction is sliced.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 import hashlib
 from html.parser import HTMLParser

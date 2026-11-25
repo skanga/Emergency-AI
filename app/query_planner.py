@@ -1,5 +1,7 @@
 """Deterministic retrieval vocabulary; topics are search hints, never diagnoses."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from functools import lru_cache
 import json
@@ -26,7 +28,7 @@ def _contains(text, phrase):
 
 @lru_cache(maxsize=1)
 def _topics():
-    return json.loads((Path(__file__).resolve().parent.parent / 'config/retrieval-topics.json').read_text())['topics']
+    return json.loads((Path(__file__).resolve().parent.parent / 'config/retrieval-topics.json').read_text(encoding='utf-8'))['topics']
 
 
 @dataclass(frozen=True)
@@ -60,6 +62,19 @@ def _age(text):
     return None
 
 
+def _consciousness(text):
+    """Use only stated responsiveness; breathing difficulty is not unconsciousness."""
+    responsive = ('awake', 'conscious', 'responsive', 'alert', 'acordado', 'acordada', 'consciente', 'responde', 'despierto', 'despierta')
+    unresponsive = ('unconscious', 'unresponsive', 'inconsciente', 'nao responde', 'no responde', 'not conscious', 'not responsive')
+    if any(_contains(text, prefix + ' ' + phrase) for prefix in ('not', 'nao', 'no') for phrase in ('unconscious', 'unresponsive', 'inconsciente')):
+        return 'responsive'
+    if any(_contains(text, phrase) for phrase in unresponsive):
+        return 'unresponsive'
+    if any(_contains(text, phrase) for phrase in responsive):
+        return 'responsive'
+    return None
+
+
 def plan_query(question, request_language='en', history=()):
     """Plan using at most three recent user turns. Current explicit topics and
     topic-change markers reset context; compatible follow-ups inherit user scope.
@@ -71,6 +86,7 @@ def plan_query(question, request_language='en', history=()):
                   if m.get('role') == 'user'][-3:]
     topics, negated, context = [], [], []
     age = None
+    consciousness = None
     for turn in user_turns + [current]:
         turn_topics = _matches(turn)
         denied_topics = set()
@@ -89,6 +105,7 @@ def plan_query(question, request_language='en', history=()):
         nonmedical = equipment and not positive_topics
         if nonmedical or reset or (positive_topics and topics and not set(positive_topics) & set(topics) and 'cpr' not in positive_topics):
             topics, negated, context, age = [], [], [], None
+            consciousness = None
         if nonmedical:
             continue
         for name in positive_topics:
@@ -103,6 +120,7 @@ def plan_query(question, request_language='en', history=()):
                 if name in topics:
                     topics.remove(name)
         age = _age(turn) or age
+        consciousness = _consciousness(turn) or consciousness
         if turn != current:
             context.append(turn)
     prior = ' '.join(context)
@@ -123,4 +141,4 @@ def plan_query(question, request_language='en', history=()):
     else:
         queries[request_language] = (current,) if current else ()
     return QueryPlan(question, request_language, tuple(prior.split()), tuple(topics),
-                     {'age_group': age, 'negated_facts': tuple(negated)}, queries, not bool(topics))
+                     {'age_group': age, 'consciousness': consciousness, 'negated_facts': tuple(negated)}, queries, not bool(topics))

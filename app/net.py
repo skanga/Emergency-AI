@@ -1,8 +1,10 @@
 """Small HTTP utilities (standard library only)."""
 
 import json
+import time
 import urllib.error
 import urllib.request
+import urllib.parse
 
 USER_AGENT = "Emergency-AI/1.0"
 
@@ -14,7 +16,18 @@ def _is_local(url):
     return any(h in url for h in ("://127.0.0.1", "://localhost", "://[::1]", "://0.0.0.0"))
 
 
-def open_url(url, data=None, headers=None, timeout=10, method=None):
+class SameOriginRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def __init__(self, origin):
+        self.origin = urllib.parse.urlsplit(origin)
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        target = urllib.parse.urlsplit(newurl)
+        if (target.scheme, target.netloc) != (self.origin.scheme, self.origin.netloc):
+            raise ValueError('Redirect is outside the configured service')
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def open_url(url, data=None, headers=None, timeout=10, method=None, allowed_origin=None):
     hdrs = {"User-Agent": USER_AGENT}
     if headers:
         hdrs.update(headers)
@@ -22,15 +35,61 @@ def open_url(url, data=None, headers=None, timeout=10, method=None):
         data = json.dumps(data).encode("utf-8")
         hdrs.setdefault("Content-Type", "application/json")
     req = urllib.request.Request(url, data=data, headers=hdrs, method=method)
+    if allowed_origin is not None:
+        handlers = [SameOriginRedirectHandler(allowed_origin)]
+        if _is_local(url):
+            handlers.append(urllib.request.ProxyHandler({}))
+        return urllib.request.build_opener(*handlers).open(req, timeout=timeout)
     if _is_local(url):
         return _LOCAL_OPENER.open(req, timeout=timeout)
     return urllib.request.urlopen(req, timeout=timeout)
 
 
-def get_text(url, timeout=10):
-    with open_url(url, timeout=timeout) as r:
-        charset = r.headers.get_content_charset() or "utf-8"
-        return r.read().decode(charset, errors="replace")
+class ResponseTooLarge(ValueError):
+    """The response exceeds the caller's byte limit."""
+
+
+def _read_response(response, max_bytes, deadline):
+    length = response.headers.get('Content-Length')
+    if length and int(length) > max_bytes:
+        raise ResponseTooLarge(f'Response exceeds {max_bytes} bytes')
+    chunks, total = [], 0
+    while True:
+        if deadline is not None:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError('Request deadline exceeded')
+            # urllib exposes the underlying socket here on HTTP responses.
+            sock = getattr(getattr(getattr(response, 'fp', None), 'raw', None), '_sock', None)
+            if sock is not None:
+                sock.settimeout(remaining)
+        reader = getattr(response, "read1", None) or response.read
+        chunk = reader(min(65536, max_bytes + 1 - total))
+        if not chunk:
+            return b''.join(chunks)
+        total += len(chunk)
+        if total > max_bytes:
+            raise ResponseTooLarge(f'Response exceeds {max_bytes} bytes')
+        chunks.append(chunk)
+
+
+def _get(url, timeout, max_bytes, deadline, allowed_origin):
+    if deadline is not None:
+        timeout = min(timeout, deadline - time.monotonic())
+    if timeout <= 0:
+        raise TimeoutError('Request deadline exceeded')
+    with open_url(url, timeout=timeout, allowed_origin=allowed_origin) as response:
+        return _read_response(response, max_bytes, deadline), response.headers.get_content_charset() or 'utf-8'
+
+
+def get_bytes(url, timeout=10, max_bytes=8 * 1024 * 1024, deadline=None, allowed_origin=None):
+    """Read a bounded response, including servers without Content-Length."""
+    return _get(url, timeout, max_bytes, deadline, allowed_origin)[0]
+
+
+def get_text(url, timeout=10, max_bytes=8 * 1024 * 1024, deadline=None, allowed_origin=None):
+    raw, charset = _get(url, timeout, max_bytes, deadline, allowed_origin)
+    return raw.decode(charset, errors='replace')
 
 
 def get_json(url, timeout=10):

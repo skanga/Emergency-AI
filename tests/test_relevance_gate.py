@@ -1,6 +1,6 @@
 """Conservative source filtering: prefer recall over precision."""
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from app.engine import Engine
 from app.knowledge import KnowledgeBase, is_relevant
@@ -30,14 +30,13 @@ class RelevanceGateTests(unittest.TestCase):
     def test_kiwix_filters_content_before_numbering(self):
         engine = Engine({'kiwix_enabled': True})
         engine.kb.search = Mock(return_value=[])
-        engine.kiwix_ok = Mock(return_value=True)
-        engine.kiwix.search = Mock(return_value=[
-            {'link': '/bad', 'book': 'Library', 'title': 'Python', 'book_name': 'test'},
-            {'link': '/good', 'book': 'Library', 'title': 'Programming', 'book_name': 'test'},
-        ])
-        engine.kiwix.article_text = Mock(side_effect=[
-            'A computer uses 15 W.', 'Python script for Fibonacci numbers.'])
-        sources = engine.retrieve('write a python script to compute the 1st 15 fibonacci numbers', 'en')
+        engine.kiwix._books = [dict(name='test', served_name='test', title='Library', lang='eng')]
+        def fetch(url, **kwargs):
+            if '/search?' in url:
+                return '<rss><item><title>Python</title><link>/bad</link></item><item><title>Programming</title><link>/good</link></item></rss>'
+            return '<p>A computer uses 15 W.</p>' if url.endswith('/bad') else '<p>Python script for Fibonacci numbers.</p>'
+        with patch('app.kiwix.get_text', side_effect=fetch):
+            sources = engine.retrieve('write a python script to compute the 1st 15 fibonacci numbers', 'en')
         self.assertEqual(['/good'], [s['link'] for s in sources])
         self.assertEqual([1], [s['n'] for s in sources])
 

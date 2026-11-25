@@ -33,9 +33,10 @@ class LibraryFilterTests(unittest.TestCase):
         engine.settings = {}
         engine.kb = Mock()
         engine.kb.search.return_value = []
-        engine.kiwix = Mock()
-        engine.kiwix.search.return_value = []
-        with patch.object(engine, 'kiwix_ok', return_value=True):
+        engine.kiwix = self.client
+        with patch('app.kiwix.get_text', return_value='<rss/>') as fetch:
             engine.retrieve('water', 'en', kiwix_books=['medicine'])
-        engine.kb.search.assert_called_once()
-        self.assertEqual(engine.kiwix.search.call_args.kwargs['book_names'], ['medicine'])
+        engine.kb.search.assert_called()
+        self.assertTrue(fetch.call_args_list)
+        self.assertTrue(all(parse_qs(urlsplit(call.args[0]).query)['books.name'] == ['medicine']
+                            for call in fetch.call_args_list))
