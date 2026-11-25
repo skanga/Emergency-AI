@@ -89,6 +89,8 @@ Downloads can take a long time. Keep the installer window open until it finishes
 
 After installation, open the launcher in your Emergency-AI folder. Use the same launcher on future visits; you do not need to install again.
 
+To maintain an existing kit, use `./run.sh --check-updates` and `./run.sh --upgrade` (Windows: `.\run.bat`). Interactive startup also offers available updates and defaults to starting immediately. See [upgrades, backups and rollback](docs/upgrades.md) for Git and standalone installations, models, runtimes, drivers and Kiwix data.
+
 | Computer | Open the app |
 |---|---|
 | **Windows** | Double-click `run.bat`. |

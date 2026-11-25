@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Emergency AI — start on Linux/macOS:  ./run.sh   (options: --lang pt | --lang es)
-# Subcommands: ./run.sh chat | ask "question" | status | prepare
+# Subcommands: chat | ask "question" | status | prepare | --check-updates | --upgrade
 cd "$(dirname "$0")" || exit 1
 
 case "$(uname -s)" in
@@ -27,5 +27,5 @@ if [ -z "$PY" ]; then
   exit 1
 fi
 
-# Python handles first use, recovery, subcommands and the default web interface.
-exec "$PY" emergency.py "$@"
+# Bootstrap locks the installation before importing application code.
+exec "$PY" upgrade_recovery.py --launch "$@"

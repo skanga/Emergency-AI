@@ -32,6 +32,7 @@ class StartCommandTests(unittest.TestCase):
             for name in ("app", "config", "web", "knowledge"):
                 shutil.copytree(source / name, root / name, ignore=shutil.ignore_patterns("__pycache__", "settings.local.json"))
             shutil.copy2(source / "emergency.py", root / "emergency.py")
+            shutil.copy2(source / "upgrade_recovery.py", root / "upgrade_recovery.py")
             settings = root / "config" / "settings.json"
             cfg = json.loads(settings.read_text(encoding="utf-8"))
             cfg.update(llm_backend="none", kiwix_enabled=False)

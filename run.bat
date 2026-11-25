@@ -25,7 +25,7 @@ if not defined PY (
   pause
   exit /b 1
 )
-"%PY%" %PY_ARGS% "%~dp0emergency.py" %*
+"%PY%" %PY_ARGS% "%~dp0upgrade_recovery.py" --launch %*
 set "RESULT=%ERRORLEVEL%"
 if not "%RESULT%"=="0" pause
 exit /b %RESULT%

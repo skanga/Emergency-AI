@@ -1,0 +1,77 @@
+{
+  "installation": "/home/skanga/Emergency",
+  "commit": "ff7055b085851c6543adac2511d0259d2affe488",
+  "owned_source_files": 70,
+  "preserved_config_knowledge_files": 52,
+  "tested_rollback_transaction": "46f6475b4cab4eeaa7b446382bfb4343",
+  "final_transaction": "276368d61ff24727b086349c91a718c0",
+  "final_state": "migrated; application stopped; no pending transactions",
+  "rollback_verification": {
+    "paths_checked": 9621,
+    "changed_paths": []
+  },
+  "final_verification": {
+    "paths_checked": 9621,
+    "changed_paths": [
+      "runtime/installation.json"
+    ]
+  },
+  "smoke_tests": {
+    "migrated": {
+      "ui": true,
+      "status": {
+        "type": "dict",
+        "count": 5
+      },
+      "guides?lang=en": {
+        "type": "list",
+        "count": 15
+      },
+      "search?lang=en&q=water&k=3": {
+        "type": "list",
+        "count": 3
+      }
+    },
+    "restored": {
+      "ui": true,
+      "status": {
+        "type": "dict",
+        "count": 5
+      },
+      "guides?lang=en": {
+        "type": "list",
+        "count": 15
+      },
+      "search?lang=en&q=water&k=3": {
+        "type": "list",
+        "count": 3
+      }
+    },
+    "final": {
+      "ui": true,
+      "status": {
+        "type": "dict",
+        "count": 5
+      },
+      "guides?lang=en": {
+        "type": "list",
+        "count": 15
+      },
+      "search?lang=en&q=water&k=3": {
+        "type": "list",
+        "count": 3
+      }
+    }
+  },
+  "regression": {
+    "run": 582,
+    "skipped": 16,
+    "failures": 0,
+    "errors": 0
+  },
+  "limits": [
+    "Only ownership manifest changed in this real installation; replacement/addition and failed-health rollback exercised in fixtures",
+    "Preserved config/catalogs and knowledge are excluded from future automatic application updates",
+    "UI smoke tests used --no-engines; advice quality was not evaluated"
+  ]
+}

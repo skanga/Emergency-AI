@@ -22,6 +22,10 @@ import argparse
 import threading
 import webbrowser
 
+if __name__ == '__main__' and not globals().get('_UPGRADE_BOOTSTRAP'):
+    from upgrade_recovery import launch
+    sys.exit(launch(sys.argv[1:]))
+
 if sys.version_info < (3, 8):
     sys.exit("Python 3.8+ is required.")
 
@@ -324,6 +328,9 @@ def cmd_prepare(args, settings):
 
 
 def main():
+    from app.upgrade_cli import ALIASES, main as upgrade_main
+    if len(sys.argv) > 1 and sys.argv[1] in (*ALIASES, *ALIASES.values()):
+        return upgrade_main(sys.argv[1:])
     from app.retrieval_cli import diagnose, index_libraries
     settings = load_settings()
     p = argparse.ArgumentParser(description="Emergency AI — offline knowledge and assistance when services go down")
@@ -338,6 +345,7 @@ def main():
                          help="turn off local-network sharing; use this computer only")
     s.add_argument("--port", type=int)
     s.add_argument("--no-browser", action="store_true")
+    s.add_argument("--no-update-check", action="store_true", help="start without an online update check")
 
     sub.add_parser("chat", help="terminal chat")
     a = sub.add_parser("ask", help="single question")
@@ -406,9 +414,23 @@ def main():
     cmd = args.cmd or "start"
     if cmd == "start" and not hasattr(args, "host"):
         args.host, args.port, args.no_browser = None, None, False
-    return {"start": cmd_start, "chat": cmd_chat, "ask": cmd_ask, "search": cmd_search,
+    dispatch = {"start": cmd_start, "chat": cmd_chat, "ask": cmd_ask, "search": cmd_search,
      "status": cmd_status, "prepare": cmd_prepare, "diagnose-retrieval": diagnose,
-     "index-libraries": index_libraries}[cmd](args, settings)
+     "index-libraries": index_libraries}[cmd]
+    from app.config import ROOT
+    from upgrade_recovery import maintenance_lock, pending
+    if cmd in ('start', 'chat', 'ask', 'prepare', 'index-libraries'):
+        try:
+            with maintenance_lock(ROOT, shared=cmd in ('start', 'chat', 'ask'), reuse=True):
+                unfinished = pending(ROOT)
+                if unfinished:
+                    print('Recover interrupted upgrade before starting: ./run.sh --rollback ' + unfinished[0])
+                    return 1
+                return dispatch(args, settings)
+        except RuntimeError as exc:
+            print(str(exc))
+            return 1
+    return dispatch(args, settings)
 
 
 if __name__ == "__main__":

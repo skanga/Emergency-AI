@@ -17,6 +17,7 @@ class LauncherTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="Emergency kit ") as folder:
             root = Path(folder)
             shutil.copy2(ROOT / "run.bat", root / "run.bat")
+            shutil.copy2(ROOT / "upgrade_recovery.py", root / "upgrade_recovery.py")
             (root / "emergency.py").write_text("print('native interpreter selected')\n")
             arm = root / "runtime/python/windows-arm64/python"
             x64 = root / "runtime/python/windows-x86_64/python"
@@ -35,6 +36,7 @@ class LauncherTests(unittest.TestCase):
     def test_launcher_preserves_interpreter_path_arguments_and_exit_status(self):
         with tempfile.TemporaryDirectory(prefix="Emergency kit ") as folder:
             root = Path(folder)
+            shutil.copy2(ROOT / "upgrade_recovery.py", root / "upgrade_recovery.py")
             probe = "import json,sys; print(json.dumps(sys.argv[1:])); sys.exit(7)\n"
             (root / "emergency.py").write_text(probe, encoding="utf-8")
             if os.name == "nt":
