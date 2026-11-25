@@ -7,10 +7,18 @@ import time
 import unittest
 from unittest.mock import patch
 
-from app.document_index import DocumentIndex, parse_manifest, usable_page, run_bounded, extract_pdf, prepare_collection
+from app.document_index import DocumentIndex, parse_manifest, usable_page, run_bounded, extract_pdf, prepare_collection, document_state
 
 
 class DocumentIndexTests(unittest.TestCase):
+    def test_native_library_is_not_misreported_as_requiring_pdf_index(self):
+        with tempfile.TemporaryDirectory() as directory:
+            index = DocumentIndex(directory)
+            native = {'name':'wikipedia_en_medicine','archive_uuid':'1','served_name':'wiki_1'}
+            collection = dict(native, name='zimgit-medicine_en')
+            self.assertEqual(document_state(native,index)['state'], 'not_applicable')
+            self.assertEqual(document_state(collection,index)['state'], 'index_needed')
+
     def test_manifest_is_data_and_paths_stay_inside_archive(self):
         root = '/content/medicine_2024-08/'
         docs = parse_manifest("var DATABASE = [{'ti':'First aid','fp':['Aid (1).pdf']}];", root)
@@ -140,6 +148,20 @@ class DocumentIndexTests(unittest.TestCase):
             with patch('app.document_index.run_bounded', side_effect=[b'Pages: 1\n',b'Readable page\f']), patch('app.document_index.usable_page', side_effect=lambda text: (time.sleep(.06) or True)):
                 with self.assertRaises(TimeoutError):
                     extract_pdf(path,{'title':'Aid','link':'/a.pdf'},'/tmp/pdftotext',timeout=.03)
+
+    def test_failed_refresh_preserves_working_index(self):
+        with tempfile.TemporaryDirectory() as directory:
+            index = DocumentIndex(directory)
+            book = {'name':'medicine','archive_uuid':'1','served_name':'medicine_1','content_url':'/content/medicine_1'}
+            index.replace(book,[{'text':'Original first aid remains available offline.','title':'Aid','page':1,'link':'/content/medicine_1/files/a.pdf#page=1'}],{'pages':1})
+            def fetch(link, **kwargs):
+                if link.endswith('database.js'):
+                    return b"var DATABASE = [{'ti':'Aid','fp':['a.pdf']}];"
+                raise OSError('temporarily unavailable')
+            report = prepare_collection(book,index,'/tmp/pdftotext',fetch)
+            self.assertEqual(len(index.search(['Original first aid'],[book])),1)
+            self.assertEqual(report['state'],'refresh_failed')
+            self.assertTrue(report['retained_previous_index'])
 
 
 if __name__ == '__main__':

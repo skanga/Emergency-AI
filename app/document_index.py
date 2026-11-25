@@ -16,6 +16,21 @@ from urllib.parse import quote, unquote, urlsplit
 INDEX_VERSION = 1
 
 
+class _RetainPreviousIndex(RuntimeError):
+    """A rebuild failed; the active version must remain available."""
+
+
+def document_state(book, index):
+    """Known document formats need preparation; native archives do not."""
+    path = Path(__file__).resolve().parent.parent / 'config/zims.json'
+    configured = json.loads(path.read_text(encoding='utf-8')).get('zims', [])
+    collections = {entry['name'] for entry in configured if entry.get('document_format') == 'nautilus'}
+    state = index.status(book)
+    if book['name'] in collections or state['state'] in ('indexed', 'partially_indexed', 'browse_only'):
+        return state
+    return {'state': 'not_applicable'}
+
+
 def parse_manifest(script, content_root):
     """Accept only the known DATABASE assignment containing literal data."""
     if len(script) > 1024 * 1024:
@@ -160,6 +175,8 @@ def prepare_collection(book, index, extractor, fetch, *, progress=lambda event: 
     script = fetch(root + '/database.js', max_bytes=1024 * 1024, timeout=min(timeout, 15))
     documents = parse_manifest(script.decode('utf-8'), root + '/files/')
     coverage = {'documents': len(documents), 'pages': 0, 'excluded_pages': [], 'failures': [], 'document_reports': {}}
+    previous = index.status(book)
+    keep_previous = previous['state'] in ('indexed', 'partially_indexed', 'browse_only')
 
     def passages():
         for document in documents:
@@ -201,7 +218,13 @@ def prepare_collection(book, index, extractor, fetch, *, progress=lambda event: 
             except (OSError, ValueError, RuntimeError) as exc:
                 coverage['failures'].append({'link': document['link'], 'reason': type(exc).__name__,
                                             'detail': str(exc)[:160]})
-    index.replace(book, passages(), coverage, cancelled=cancelled)
+        if keep_previous and coverage['failures']:
+            raise _RetainPreviousIndex('document_refresh_failed')
+    try:
+        index.replace(book, passages(), coverage, cancelled=cancelled)
+    except _RetainPreviousIndex:
+        return dict(previous, state='refresh_failed', previous_state=previous['state'],
+                    retained_previous_index=True, refresh_failures=coverage['failures'])
     return index.status(book)
 
 

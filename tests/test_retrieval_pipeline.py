@@ -52,6 +52,7 @@ class PipelineTests(unittest.TestCase):
         self.assertTrue(sources)
         self.assertIn('Protect the person', sources[0]['text'])
         self.assertEqual(sources[0]['anchor'], 'aid')
+        self.assertTrue(sources[0]['link'].endswith('#aid'))
         self.assertEqual(sources[0]['archive_uuid'], 'uuid0')
 
     def test_disabled_and_empty_selection_are_explicit(self):

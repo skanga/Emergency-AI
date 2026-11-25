@@ -4,10 +4,10 @@ from pathlib import Path
 import re
 import time
 import unicodedata
-from urllib.parse import unquote, urlsplit
+from urllib.parse import unquote, urlsplit, quote
 
 from .kiwix import failure_status
-from .document_index import DocumentIndex
+from .document_index import DocumentIndex, document_state
 from .knowledge import STOPWORDS, is_relevant
 from .query_planner import normalize, normalize_language
 
@@ -275,7 +275,7 @@ def library_sources(client, plan, selection, diagnostics, deadline, index_root=N
     sources = []
     index = DocumentIndex(index_root or Path(__file__).resolve().parent.parent / 'indexes')
     def search_index(i):
-        return index.status(books[i]), index.search(queries[i], [books[i]], limit=12)
+        return document_state(books[i], index), index.search(queries[i], [books[i]], limit=12)
     for i, outcome, error in run_jobs(range(len(books)), search_index, deadline):
         if error:
             reports[i]['index'] = dict(state='unavailable', reason=failure_status(error))
@@ -306,7 +306,7 @@ def library_sources(client, plan, selection, diagnostics, deadline, index_root=N
             for passage in passages:
                 source = dict(kind='kiwix', id=passage.id, doc_title=hit['book'], title=hit['title'],
                               section=' › '.join(passage.heading_path) or hit['title'], heading_path=list(passage.heading_path),
-                              anchor=passage.anchor, link=hit['link'], article_url=hit['link'], text=passage.text,
+                              anchor=passage.anchor, link=hit['link'].split('#')[0] + ('#' + quote(passage.anchor, safe='') if passage.anchor else ''), article_url=hit['link'], text=passage.text,
                               book_name=hit['book_name'], archive=passage.archive, version=passage.version,
                               archive_uuid=hit.get('archive_uuid', ''), issued=hit.get('issued', ''),
                               native_rank=hit['native_rank'], queries=hit['queries'])
