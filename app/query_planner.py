@@ -45,7 +45,9 @@ class QueryPlan:
     limited_cross_language: bool
 
 
-def _matches(text):
+def matching_topics(text):
+    """Recognize configured topic phrases, independently of search query wording."""
+    text = normalize(text)
     return [name for name, spec in _topics().items()
             if any(all(_contains(text, word) for word in group) for group in spec['triggers'])]
 
@@ -88,7 +90,7 @@ def plan_query(question, request_language='en', history=()):
     age = None
     consciousness = None
     for turn in user_turns + [current]:
-        turn_topics = _matches(turn)
+        turn_topics = matching_topics(turn)
         denied_topics = set()
         for name, spec in _topics().items():
             phrases = [p for group in spec['triggers'] if len(group) == 1 for p in group]

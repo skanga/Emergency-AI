@@ -9,7 +9,7 @@ from urllib.parse import unquote, urlsplit, quote
 from .kiwix import failure_status
 from .document_index import DocumentIndex, document_state
 from .knowledge import STOPWORDS, is_relevant
-from .query_planner import normalize, normalize_language
+from .query_planner import matching_topics, normalize, normalize_language
 
 REQUEST_SECONDS = 8
 MAX_SEARCHES = 20
@@ -79,6 +79,20 @@ def _topic_evidence(text, plan):
     return any(re.search(r'\b' + re.escape(phrase) + r's?\b', text) for phrase in phrases if phrase)
 
 
+def _local_topic_evidence(source, plan):
+    # Local headings need not repeat the short phrases sent to library search.
+    label = normalize(source['section'] + ' ' + source['doc_title'])
+    label_topics = set(matching_topics(label))
+    if label_topics.intersection(plan.topics) or _topic_evidence(label, plan):
+        return True
+    # A guide about a different emergency may mention this one as a symptom.
+    personal = source.get('doc_id', '').startswith('extra/')
+    if label_topics and not personal:
+        return False
+    body = normalize(source['text'])
+    return bool(set(matching_topics(body)).intersection(plan.topics)) or _topic_evidence(body, plan)
+
+
 def _usable_emergency_body(source, plan, label, body):
     if not plan.topics or 'text' not in source:
         return True  # Search hits may have no snippet; fetch before judging evidence.
@@ -91,6 +105,8 @@ def _usable_emergency_body(source, plan, label, body):
     actionable = bool(_ACTION.search(body))
     if any(marker in body for marker in ('translated version', 'translation progress', 'translate this page')) and not actionable:
         return False
+    if source.get('kind') == 'kit':
+        return _local_topic_evidence(source, plan)
     return _topic_evidence(body, plan) or (_topic_evidence(label, plan) and actionable)
 
 
@@ -175,11 +191,6 @@ def local_sources(kb, plan, lang, limit):
     for query in dict.fromkeys(queries):
         for native_score, chunk in kb.search(query, lang, k=max(12, limit * 3)):
             source = chunk.to_dict(score=native_score)
-            if plan.topics:
-                direct = _topic_evidence(normalize(source['section'] + ' ' + source['doc_title']), plan)
-                personal = source.get('doc_id', '').startswith('extra/')
-                if not direct and not (personal and _topic_evidence(normalize(source['text']), plan)):
-                    continue
             score = relevance(source, plan)
             if score > 0:
                 source['retrieval_score'] = score

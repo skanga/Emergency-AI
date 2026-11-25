@@ -10,6 +10,8 @@
 
 ## Implementation record
 
+- Acceptance update: the user explicitly requested fixing the local-guide regression and then merging the incremental improvement. The broader relevance targets remain open follow-up work rather than blocking this authorized merge. Local topic recognition now preserves five real-guide cases that failed under the literal search-phrase gate. Final checks: 395 tests run, 16 skipped, no failures; both Node suites pass; 46 knowledge-file hashes unchanged; live retrieval retains 21/22 original API cases with library context and 3/30 annotated targets. No model generation or server restart is part of this merge.
+
 - Baseline: 289 tests passed, 16 skipped. Implementation remains isolated on `fix/kiwix-retrieval`; the running service and main checkout are unchanged.
 - `edc6705`: reviewed archive identity repair and request-local search outcomes.
 - `474bc91`: scoped multilingual query planning and structural HTML passages.

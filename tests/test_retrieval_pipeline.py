@@ -341,3 +341,40 @@ class EducationalPageTests(unittest.TestCase):
         self.assertGreater(relevance(quiz, plan_query('Show me an anaphylaxis quiz')), 0)
         assessment = dict(title='Anaphylaxis', section='Initial patient assessment', text='Check breathing and call for help.', kind='kiwix')
         self.assertGreater(relevance(assessment, plan_query('anaphylaxis first aid')), 0)
+
+
+class LocalGuideRegressionTests(unittest.TestCase):
+    def test_real_local_guides_survive_library_query_wording(self):
+        engine = Engine({'kiwix_enabled': False})
+        cases = [
+            ('My friend collapsed in extreme heat. He is confused and still sweating.',
+             'Heatstroke and heat exhaustion'),
+            ('We have clear water and plain unscented 6% sodium hypochlorite bleach. How do we disinfect it?',
+             'Step 2 — disinfect'),
+            ('We are running a generator in the garage. Is that safe?',
+             'Car batteries and generators'),
+            ('The refrigerator has lost power. What food should we eat first?',
+             'Order of consumption in a crisis'),
+            ('How do I clean up floodwater safely?', 'Floodwater and rats'),
+        ]
+        for question, section in cases:
+            with self.subTest(section=section):
+                sources = engine.retrieve(question, 'en', use_kiwix=False)
+                included = [s['section'] for s in sources if not s['context_omitted']]
+                self.assertIn(section, included)
+
+    def test_local_topic_evidence_keeps_scope_and_rejects_incidental_mentions(self):
+        from app.knowledge import Chunk
+        from app.query_planner import plan_query
+        from app.retrieval import local_sources
+        kb = Mock()
+        kb.search.return_value = [
+            (20, Chunk('heat', 'en', 'aid', 'First aid', 'Heatstroke', 'heat',
+                       'Seek help for heatstroke. Danger signs include seizures.')),
+            (15, Chunk('baby', 'en', 'aid', 'First aid', 'Infant seizure', 'baby',
+                       'For infant seizure, protect the head and call for help.')),
+            (10, Chunk('plan', 'en', 'extra/plan', 'My care plan', 'Emergency steps', 'steps',
+                       'During a seizure, protect my head and call my caregiver.')),
+        ]
+        found = local_sources(kb, plan_query('An adult is having a seizure'), 'en', 5)
+        self.assertEqual([s['id'] for s in found], ['plan'])

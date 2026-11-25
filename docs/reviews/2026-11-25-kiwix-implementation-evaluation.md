@@ -2,7 +2,18 @@
 
 Date: 2026-11-25. Branch: `fix/kiwix-retrieval`. Worktree: `/tmp/emergency-ai-kiwix-repair`.
 
-**The implementation repairs library retrieval, but the agreed relevance release gates have not passed. The user's running application on port 8090 has not been replaced or restarted.**
+**The broader relevance targets remain unmet. After the initial evaluation, the user authorized merging the incremental improvement once the local-guide regression was fixed. Server restart and clinical reliability approval are separate from this merge.**
+
+## Pre-merge regression repair
+
+A comparison against main exposed a genuine regression despite the earlier passing tests: local-guide eligibility depended on literal library search phrases. For example, `heat stroke` did not recognize the local `Heatstroke and heat exhaustion` heading. Generic headings also hid useful water disinfection, generator, food-storage and flood-cleanup guidance.
+
+Local evidence now uses the existing configured topic vocabulary. Sections with generic headings can establish their topic from their content; a heading identifying a different emergency still prevents an incidental symptom mention from promoting that section. Personal-document handling and age/consciousness checks remain in place. Native library search and library relevance rules were not loosened.
+
+Five real-guide cases failed before the repair and passed afterward. The final suite ran **395 tests, with 16 skipped and no failures**; both Node suites passed. All 46 original knowledge files retain their hashes. The repeated 59-case live retrieval evaluation supplied library context for **21/22** original API cases, had no context-fitting errors or blocked responses, and retained **3/30** annotated target matches. Its p95 retrieval plus prompt fitting was 0.862 seconds. Full local results: `/tmp/emergency-post-local-fix-eval.json`.
+
+The measurements below and the linked compact fixture describe the earlier checkpoint; they remain historical evidence. The merge is an incremental improvement, not a claim that the broader quality or clinical review targets have passed.
+
 
 ## Measured results
 
@@ -63,6 +74,6 @@ The final full suite passed 393 tests with 16 environment/model-dependent tests 
 1. Complete independent target-section and included-passage annotations, distinguishing acceptable alternative references from genuine misses.
 2. Improve and re-evaluate relevance on a fresh held-out set where the evidence shows shortcomings; do not weaken the gate or tune the frozen set merely to obtain more citations.
 3. Meet the agreed retrieval gates, then repeat critical generated answers three times and review their actions, scope, harmful additions and citation support.
-4. Validate remaining offline/platform/coverage scenarios, then perform the controlled rollout and live smoke tests. Until then, keep this branch isolated.
+4. Validate remaining offline/platform/coverage scenarios, then perform the controlled rollout and live smoke tests. These remain quality follow-ups after the user-authorized incremental merge.
 
 Rollback requires no knowledge migration: keep the original code/settings, ignore the new disposable indexes, and retain the installed archives and local knowledge. No source files need deletion or rewriting.
