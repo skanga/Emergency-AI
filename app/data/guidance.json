@@ -240,8 +240,8 @@
       "id": "snakebite-still",
       "topic": "snakebite",
       "reference_title": "WHO: Snakebite envenoming",
-      "reference_url": "https://www.who.int/news-room/questions-and-answers/item/snakebite-envenoming",
-      "reference_section": "What is the appropriate first aid for snakebite?",
+      "reference_url": "https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment",
+      "reference_section": "Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access",
       "reference_checked_at": "2026-11-26",
       "scope": {},
       "prerequisites": [
@@ -252,11 +252,11 @@
       ],
       "additional_references": [],
       "translations": {
-        "en": "For a suspected snakebite, keep the person still and arrange urgent transport to medical care. Do not cut, suck or apply a narrow tourniquet to the bite. Compression bandaging depends on venom type and local guidance; an unknown snake or location does not establish that it is appropriate.",
-        "pt": "Para suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico. Não corte, sugue nem aplique torniquete estreito. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada.",
-        "es": "Ante una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica. No corte, succione ni aplique un torniquete estrecho. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado."
+        "en": "For a suspected snakebite, keep the person and bitten limb still and arrange urgent transport to medical care. Have helpers carry the person on a stretcher to transport rather than making them walk. Do not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging depends on venom type and local guidance; an unknown snake or location does not establish that it is appropriate. Monitor breathing while obtaining help.",
+        "pt": "Para suspeita de picada de cobra, mantenha a pessoa e o membro picado imóveis e providencie transporte urgente para atendimento médico. Peça que ajudantes carreguem a pessoa em uma maca até o transporte, em vez de fazê-la caminhar. Não use torniquete arterial apertado nem remédios tradicionais sem comprovação. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada. Observe a respiração enquanto busca ajuda.",
+        "es": "Ante una posible mordedura de serpiente, mantenga a la persona y el miembro mordido inmóviles y organice traslado urgente a atención médica. Pida que ayudantes lleven a la persona en una camilla hasta el transporte en vez de hacerla caminar. No use un torniquete arterial apretado ni remedios tradicionales sin eficacia demostrada. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado. Vigile la respiración mientras obtiene ayuda."
       },
-      "content_hash": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5"
+      "content_hash": "d2cedefea989c9120d2d83c7bee52c9f548f9226a4b4c7cdf0f41153979c7806"
     },
     {
       "id": "flood-shelter",

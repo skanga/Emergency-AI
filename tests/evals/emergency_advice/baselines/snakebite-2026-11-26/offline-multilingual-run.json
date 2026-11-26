@@ -1,0 +1,659 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "started_at": "2026-11-26T10:07:56.771166+00:00",
+    "url": "http://127.0.0.1:8199",
+    "manifest_sha256": "44c0644adc8964eb7a9a411f417860e9ddb1ccce310583250860aa31f59d9a78",
+    "deployment_identity": "Not attested by API; version/model names are not file hashes",
+    "trials": 2,
+    "timeout": 240,
+    "selected_case_ids": [
+      "snake_pressure_pt",
+      "snake_pressure_es"
+    ],
+    "harness_files_sha256": {
+      "runner.py": "9114a158c40d60b99b8a65957700ebde683419501bec1f774bad0aa2e560203c",
+      "report.py": "f163eb8658fb84d9e4447d9c14fd82b794a2641a567eed4cacfb65ce271c98a1",
+      "suite.py": "3d82c6bbf001e60700479576b9ca21674e624d1d9aad633e5480b164aaa92293"
+    },
+    "status": {
+      "llm": null,
+      "version": "1.0.0",
+      "knowledge": {
+        "en": {
+          "docs": 21,
+          "chunks": 113
+        },
+        "pt": {
+          "docs": 21,
+          "chunks": 113
+        },
+        "es": {
+          "docs": 21,
+          "chunks": 113
+        }
+      },
+      "libraries": []
+    },
+    "harness_commit": "e44f0b0a40a72d9fc9019ea98173dbb84b55d1a0",
+    "harness_dirty": true
+  },
+  "results": [
+    {
+      "id": "snake_pressure_pt",
+      "trial": 1,
+      "request": {
+        "q": "Uma cobra me picou e não sei a espécie. Devo amarrar um torniquete acima da picada?",
+        "lang": "pt",
+        "history": [],
+        "use_kiwix": false
+      },
+      "answer": "\n\n**Orientação alternativa baseada em fontes**\n\nA resposta gerada não está disponível. Estas etapas vêm das referências versionadas abaixo; siga as condições indicadas.\n\nPara suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico [2]. Não corte, sugue nem aplique torniquete estreito [2]. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada [2].\n\n> ⚠️ Orientação de primeiros socorros, não substitui atendimento médico. Havendo socorro disponível, procure-o.",
+      "sources": [
+        {
+          "id": "pt:07-first-aid-medicine:13",
+          "lang": "pt",
+          "doc_id": "07-first-aid-medicine",
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Picada de cobra (Brasil)",
+          "anchor": "picada-de-cobra-brasil",
+          "text": "**Faça:**\n- Afaste-se da cobra; não tente capturá-la (uma foto à distância ajuda na identificação).\n- Mantenha a vítima **calma, deitada e com o membro imóvel**.\n- Retire anéis, pulseiras e calçados (o membro pode inchar).\n- Lave o local com água e sabão.\n- Leve com urgência para um hospital de referência: **o soro antiveneno é o único tratamento eficaz**.\n- Ofereça água se estiver consciente.\n\n**NÃO faça:** torniquete ou garrote, cortes, sucção, queimar, aplicar ervas, querosene, álcool, pó de café ou qualquer substância no local, nem dar bebida alcoólica.\n\n**Escorpião:** compressa morna e analgésico para dor; **crianças menores de 7 anos e idosos** podem ter quadros graves (vômitos repetidos, suor intenso, agitação, falta de ar) — atendimento urgente.\n\n**Aranha-marrom (Loxosceles):** a lesão piora em horas a dias; procure avaliação.\n\n> Fonte: Ministério da Saúde (Brasil) — Acidentes por animais peçonhentos: o que fazer e como evitar. https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+          "kind": "kit",
+          "language": "pt",
+          "score": 27.763,
+          "retrieval_score": 19,
+          "original_text": "**Faça:**\n- Afaste-se da cobra; não tente capturá-la (uma foto à distância ajuda na identificação).\n- Mantenha a vítima **calma, deitada e com o membro imóvel**.\n- Retire anéis, pulseiras e calçados (o membro pode inchar).\n- Lave o local com água e sabão.\n- Leve com urgência para um hospital de referência: **o soro antiveneno é o único tratamento eficaz**.\n- Ofereça água se estiver consciente.\n\n**NÃO faça:** torniquete ou garrote, cortes, sucção, queimar, aplicar ervas, querosene, álcool, pó de café ou qualquer substância no local, nem dar bebida alcoólica.\n\n**Escorpião:** compressa morna e analgésico para dor; **crianças menores de 7 anos e idosos** podem ter quadros graves (vômitos repetidos, suor intenso, agitação, falta de ar) — atendimento urgente.\n\n**Aranha-marrom (Loxosceles):** a lesão piora em horas a dias; procure avaliação.\n\n> Fonte: Ministério da Saúde (Brasil) — Acidentes por animais peçonhentos: o que fazer e como evitar. https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+          "source_version": "0862107d6f49bcbf3a2fd715ce1374f690abf7295d858bbc664496d8d3f39904",
+          "n": 1,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "id": "guidance:snakebite-still:pt:v1",
+          "kind": "guidance",
+          "guidance_unit": "snakebite-still",
+          "guidance_hash": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5",
+          "doc_title": "WHO: Snakebite envenoming",
+          "section": "What is the appropriate first aid for snakebite?",
+          "text": "Para suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico. Não corte, sugue nem aplique torniquete estreito. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada.",
+          "url": "https://www.who.int/news-room/questions-and-answers/item/snakebite-envenoming",
+          "language": "pt",
+          "topic": "snakebite",
+          "scope": {},
+          "reference_checked_at": "2026-11-26",
+          "source_version": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5",
+          "document_hash": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9",
+          "provenance": "Versioned source-backed paraphrase; reference checked, not clinical approval.",
+          "prerequisites": [
+            "suspected snakebite"
+          ],
+          "contraindications": [
+            "compression without appropriate species and regional guidance"
+          ],
+          "additional_references": [],
+          "original_text": "Para suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico. Não corte, sugue nem aplique torniquete estreito. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada.",
+          "n": 2,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null,
+          "fallback_evidence": true,
+          "model_context_omitted": false
+        },
+        {
+          "id": "pt:authority/who-snakebite:0",
+          "lang": "pt",
+          "doc_id": "authority/who-snakebite",
+          "doc_title": "WHO — Snakebite first aid and transport",
+          "section": "Snakebite: keep still and arrange transport; do not walk to care",
+          "anchor": "snakebite-keep-still-and-arrange-transport-do-not-walk-to-care",
+          "text": "For a suspected snakebite, first get away from the immediate danger. Reassure the person, remove tight items around the bitten area before swelling, and then keep the person and bitten limb still. Arrange urgent transport to a health facility. Have helpers carry the person on a stretcher to transport rather than making the person walk; walking can accelerate venom effects.\n\nDo not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging is not a universal treatment: WHO limits it to neurotoxic snakebites without local swelling. Do not infer that an unidentified snake qualifies. Monitor breathing while obtaining help. This is first aid pending urgent care, not home treatment of envenoming.\n\nSource: [World Health Organization](https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment) — Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access. Edition: Treatment webpage checked 2026-11-26; publication date not stated. Scope: General public; selected first-aid and transport advice only. Region: International; pressure-immobilization indications vary by snake and region.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+          "kind": "kit",
+          "language": "en",
+          "score": 1.438,
+          "retrieval_score": 9,
+          "original_text": "For a suspected snakebite, first get away from the immediate danger. Reassure the person, remove tight items around the bitten area before swelling, and then keep the person and bitten limb still. Arrange urgent transport to a health facility. Have helpers carry the person on a stretcher to transport rather than making the person walk; walking can accelerate venom effects.\n\nDo not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging is not a universal treatment: WHO limits it to neurotoxic snakebites without local swelling. Do not infer that an unidentified snake qualifies. Monitor breathing while obtaining help. This is first aid pending urgent care, not home treatment of envenoming.\n\nSource: [World Health Organization](https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment) — Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access. Edition: Treatment webpage checked 2026-11-26; publication date not stated. Scope: General public; selected first-aid and transport advice only. Region: International; pressure-immobilization indications vary by snake and region.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+          "source_version": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c",
+          "n": 3,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ],
+      "done": {
+        "mode": "fallback",
+        "seconds": 0.0,
+        "llm": null,
+        "generation": {},
+        "sources_supplied": false,
+        "reason": "model_unavailable",
+        "fallback": {
+          "status": "composed",
+          "used_source_ids": [
+            "guidance:snakebite-still:pt:v1"
+          ],
+          "fallback_evidence_ids": [],
+          "coverage": "catalog_units_only",
+          "validation": {
+            "status": "passed",
+            "issues": [],
+            "citation_ids": [
+              2
+            ],
+            "claim_support": "not_verified",
+            "action_conditions": "known_patterns_only",
+            "patient_facts": {
+              "consciousness": null,
+              "breathing": null,
+              "swallowing": null,
+              "age_group": null
+            },
+            "claim_checks": {
+              "coverage": "known_patterns_only",
+              "claims": [
+                {
+                  "rule": "snake_tourniquet",
+                  "answer_span": [
+                    121,
+                    176
+                  ],
+                  "positive": false,
+                  "cited_ids": [
+                    "2"
+                  ],
+                  "evidence": [
+                    {
+                      "source_n": 2,
+                      "span": [
+                        116,
+                        166
+                      ],
+                      "text_sha256": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9"
+                    }
+                  ],
+                  "status": "pattern_supported"
+                }
+              ],
+              "other_claims": "unverified"
+            }
+          }
+        }
+      },
+      "outcome": "fallback",
+      "error": null,
+      "error_events": [],
+      "first_token_seconds": 0.04228776699164882,
+      "total_seconds": 0.04235093898023479,
+      "checks": {
+        "invalid_citation_ids": [],
+        "citation_ids": [
+          2
+        ],
+        "semantic_support": "unreviewed"
+      },
+      "raw_sha256": "c8a273d61ae6af94a758e7beaac3bbf7e4f83f1677af6f024e81ae1917f7d7f7"
+    },
+    {
+      "id": "snake_pressure_es",
+      "trial": 1,
+      "request": {
+        "q": "Me mordió una serpiente de especie desconocida. ¿Debo apretar una banda por encima de la mordedura?",
+        "lang": "es",
+        "history": [],
+        "use_kiwix": false
+      },
+      "answer": "\n\n**Orientación alternativa basada en fuentes**\n\nLa respuesta generada no está disponible. Estos pasos proceden de las referencias versionadas que aparecen abajo; respete sus condiciones.\n\nAnte una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica [2]. No corte, succione ni aplique un torniquete estrecho [2]. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado [2].\n\n> ⚠️ Orientación de primeros auxilios; no reemplaza la atención médica. Si hay ayuda disponible, búscala.",
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:13",
+          "lang": "es",
+          "doc_id": "07-first-aid-medicine",
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Mordedura de serpiente (Brasil)",
+          "anchor": "mordedura-de-serpiente-brasil",
+          "text": "**Haga:**\n- Aléjese de la serpiente; no intente capturarla (una foto a distancia ayuda a identificarla).\n- Mantenga a la víctima **tranquila, acostada y con el miembro inmóvil**.\n- Retire anillos, pulseras y calzado (el miembro puede hincharse).\n- Lave el lugar con agua y jabón.\n- Llévela con urgencia a un hospital de referencia: **el suero antiofídico (antiveneno) es el único tratamiento eficaz**.\n- Ofrezca agua si está consciente.\n\n**NO haga:** torniquete o ligadura, cortes, succión, quemar, aplicar hierbas, queroseno, alcohol, café molido ni ninguna sustancia en el lugar, ni dar bebidas alcohólicas.\n\n**Escorpión (alacrán):** compresa tibia y analgésico para el dolor; **los niños menores de 7 años y los adultos mayores** pueden tener cuadros graves (vómitos repetidos, sudor intenso, agitación, falta de aire) — atención urgente.\n\n**Araña reclusa / araña de rincón (Loxosceles):** la lesión empeora en horas o días; busque evaluación.\n\n> Fuente: Ministério da Saúde (Brasil) — Acidentes por animais peçonhentos: o que fazer e como evitar. https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+          "kind": "kit",
+          "language": "es",
+          "score": 27.724,
+          "retrieval_score": 17,
+          "original_text": "**Haga:**\n- Aléjese de la serpiente; no intente capturarla (una foto a distancia ayuda a identificarla).\n- Mantenga a la víctima **tranquila, acostada y con el miembro inmóvil**.\n- Retire anillos, pulseras y calzado (el miembro puede hincharse).\n- Lave el lugar con agua y jabón.\n- Llévela con urgencia a un hospital de referencia: **el suero antiofídico (antiveneno) es el único tratamiento eficaz**.\n- Ofrezca agua si está consciente.\n\n**NO haga:** torniquete o ligadura, cortes, succión, quemar, aplicar hierbas, queroseno, alcohol, café molido ni ninguna sustancia en el lugar, ni dar bebidas alcohólicas.\n\n**Escorpión (alacrán):** compresa tibia y analgésico para el dolor; **los niños menores de 7 años y los adultos mayores** pueden tener cuadros graves (vómitos repetidos, sudor intenso, agitación, falta de aire) — atención urgente.\n\n**Araña reclusa / araña de rincón (Loxosceles):** la lesión empeora en horas o días; busque evaluación.\n\n> Fuente: Ministério da Saúde (Brasil) — Acidentes por animais peçonhentos: o que fazer e como evitar. https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+          "source_version": "230a44c5d8363cfaf5ff24043aba62040c07b318b2071c10eae02422cec61e9e",
+          "n": 1,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "id": "guidance:snakebite-still:es:v1",
+          "kind": "guidance",
+          "guidance_unit": "snakebite-still",
+          "guidance_hash": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5",
+          "doc_title": "WHO: Snakebite envenoming",
+          "section": "What is the appropriate first aid for snakebite?",
+          "text": "Ante una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica. No corte, succione ni aplique un torniquete estrecho. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado.",
+          "url": "https://www.who.int/news-room/questions-and-answers/item/snakebite-envenoming",
+          "language": "es",
+          "topic": "snakebite",
+          "scope": {},
+          "reference_checked_at": "2026-11-26",
+          "source_version": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5",
+          "document_hash": "01814f12033618e0d79fa784b17f06bb60bb87214ecafe808225bd7816826656",
+          "provenance": "Versioned source-backed paraphrase; reference checked, not clinical approval.",
+          "prerequisites": [
+            "suspected snakebite"
+          ],
+          "contraindications": [
+            "compression without appropriate species and regional guidance"
+          ],
+          "additional_references": [],
+          "original_text": "Ante una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica. No corte, succione ni aplique un torniquete estrecho. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado.",
+          "n": 2,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null,
+          "fallback_evidence": true,
+          "model_context_omitted": false
+        },
+        {
+          "id": "es:authority/who-snakebite:0",
+          "lang": "es",
+          "doc_id": "authority/who-snakebite",
+          "doc_title": "WHO — Snakebite first aid and transport",
+          "section": "Snakebite: keep still and arrange transport; do not walk to care",
+          "anchor": "snakebite-keep-still-and-arrange-transport-do-not-walk-to-care",
+          "text": "For a suspected snakebite, first get away from the immediate danger. Reassure the person, remove tight items around the bitten area before swelling, and then keep the person and bitten limb still. Arrange urgent transport to a health facility. Have helpers carry the person on a stretcher to transport rather than making the person walk; walking can accelerate venom effects.\n\nDo not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging is not a universal treatment: WHO limits it to neurotoxic snakebites without local swelling. Do not infer that an unidentified snake qualifies. Monitor breathing while obtaining help. This is first aid pending urgent care, not home treatment of envenoming.\n\nSource: [World Health Organization](https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment) — Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access. Edition: Treatment webpage checked 2026-11-26; publication date not stated. Scope: General public; selected first-aid and transport advice only. Region: International; pressure-immobilization indications vary by snake and region.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+          "kind": "kit",
+          "language": "en",
+          "score": 1.464,
+          "retrieval_score": 9,
+          "original_text": "For a suspected snakebite, first get away from the immediate danger. Reassure the person, remove tight items around the bitten area before swelling, and then keep the person and bitten limb still. Arrange urgent transport to a health facility. Have helpers carry the person on a stretcher to transport rather than making the person walk; walking can accelerate venom effects.\n\nDo not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging is not a universal treatment: WHO limits it to neurotoxic snakebites without local swelling. Do not infer that an unidentified snake qualifies. Monitor breathing while obtaining help. This is first aid pending urgent care, not home treatment of envenoming.\n\nSource: [World Health Organization](https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment) — Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access. Edition: Treatment webpage checked 2026-11-26; publication date not stated. Scope: General public; selected first-aid and transport advice only. Region: International; pressure-immobilization indications vary by snake and region.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+          "source_version": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c",
+          "n": 3,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ],
+      "done": {
+        "mode": "fallback",
+        "seconds": 0.0,
+        "llm": null,
+        "generation": {},
+        "sources_supplied": false,
+        "reason": "model_unavailable",
+        "fallback": {
+          "status": "composed",
+          "used_source_ids": [
+            "guidance:snakebite-still:es:v1"
+          ],
+          "fallback_evidence_ids": [],
+          "coverage": "catalog_units_only",
+          "validation": {
+            "status": "passed",
+            "issues": [],
+            "citation_ids": [
+              2
+            ],
+            "claim_support": "not_verified",
+            "action_conditions": "known_patterns_only",
+            "patient_facts": {
+              "consciousness": null,
+              "breathing": null,
+              "swallowing": null,
+              "age_group": null
+            },
+            "claim_checks": {
+              "coverage": "known_patterns_only",
+              "claims": [
+                {
+                  "rule": "snake_tourniquet",
+                  "answer_span": [
+                    122,
+                    181
+                  ],
+                  "positive": false,
+                  "cited_ids": [
+                    "2"
+                  ],
+                  "evidence": [
+                    {
+                      "source_n": 2,
+                      "span": [
+                        117,
+                        171
+                      ],
+                      "text_sha256": "01814f12033618e0d79fa784b17f06bb60bb87214ecafe808225bd7816826656"
+                    }
+                  ],
+                  "status": "pattern_supported"
+                }
+              ],
+              "other_claims": "unverified"
+            }
+          }
+        }
+      },
+      "outcome": "fallback",
+      "error": null,
+      "error_events": [],
+      "first_token_seconds": 0.04596928699174896,
+      "total_seconds": 0.04605196398915723,
+      "checks": {
+        "invalid_citation_ids": [],
+        "citation_ids": [
+          2
+        ],
+        "semantic_support": "unreviewed"
+      },
+      "raw_sha256": "143b88c4487b26f89b7148803fe99ad78e66a32403d79ed1032f86fd4f34e039"
+    },
+    {
+      "id": "snake_pressure_pt",
+      "trial": 2,
+      "request": {
+        "q": "Uma cobra me picou e não sei a espécie. Devo amarrar um torniquete acima da picada?",
+        "lang": "pt",
+        "history": [],
+        "use_kiwix": false
+      },
+      "answer": "\n\n**Orientação alternativa baseada em fontes**\n\nA resposta gerada não está disponível. Estas etapas vêm das referências versionadas abaixo; siga as condições indicadas.\n\nPara suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico [2]. Não corte, sugue nem aplique torniquete estreito [2]. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada [2].\n\n> ⚠️ Orientação de primeiros socorros, não substitui atendimento médico. Havendo socorro disponível, procure-o.",
+      "sources": [
+        {
+          "id": "pt:07-first-aid-medicine:13",
+          "lang": "pt",
+          "doc_id": "07-first-aid-medicine",
+          "doc_title": "Primeiros socorros e cuidados de saúde",
+          "section": "Picada de cobra (Brasil)",
+          "anchor": "picada-de-cobra-brasil",
+          "text": "**Faça:**\n- Afaste-se da cobra; não tente capturá-la (uma foto à distância ajuda na identificação).\n- Mantenha a vítima **calma, deitada e com o membro imóvel**.\n- Retire anéis, pulseiras e calçados (o membro pode inchar).\n- Lave o local com água e sabão.\n- Leve com urgência para um hospital de referência: **o soro antiveneno é o único tratamento eficaz**.\n- Ofereça água se estiver consciente.\n\n**NÃO faça:** torniquete ou garrote, cortes, sucção, queimar, aplicar ervas, querosene, álcool, pó de café ou qualquer substância no local, nem dar bebida alcoólica.\n\n**Escorpião:** compressa morna e analgésico para dor; **crianças menores de 7 anos e idosos** podem ter quadros graves (vômitos repetidos, suor intenso, agitação, falta de ar) — atendimento urgente.\n\n**Aranha-marrom (Loxosceles):** a lesão piora em horas a dias; procure avaliação.\n\n> Fonte: Ministério da Saúde (Brasil) — Acidentes por animais peçonhentos: o que fazer e como evitar. https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+          "kind": "kit",
+          "language": "pt",
+          "score": 27.763,
+          "retrieval_score": 19,
+          "original_text": "**Faça:**\n- Afaste-se da cobra; não tente capturá-la (uma foto à distância ajuda na identificação).\n- Mantenha a vítima **calma, deitada e com o membro imóvel**.\n- Retire anéis, pulseiras e calçados (o membro pode inchar).\n- Lave o local com água e sabão.\n- Leve com urgência para um hospital de referência: **o soro antiveneno é o único tratamento eficaz**.\n- Ofereça água se estiver consciente.\n\n**NÃO faça:** torniquete ou garrote, cortes, sucção, queimar, aplicar ervas, querosene, álcool, pó de café ou qualquer substância no local, nem dar bebida alcoólica.\n\n**Escorpião:** compressa morna e analgésico para dor; **crianças menores de 7 anos e idosos** podem ter quadros graves (vômitos repetidos, suor intenso, agitação, falta de ar) — atendimento urgente.\n\n**Aranha-marrom (Loxosceles):** a lesão piora em horas a dias; procure avaliação.\n\n> Fonte: Ministério da Saúde (Brasil) — Acidentes por animais peçonhentos: o que fazer e como evitar. https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+          "source_version": "0862107d6f49bcbf3a2fd715ce1374f690abf7295d858bbc664496d8d3f39904",
+          "n": 1,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "id": "guidance:snakebite-still:pt:v1",
+          "kind": "guidance",
+          "guidance_unit": "snakebite-still",
+          "guidance_hash": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5",
+          "doc_title": "WHO: Snakebite envenoming",
+          "section": "What is the appropriate first aid for snakebite?",
+          "text": "Para suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico. Não corte, sugue nem aplique torniquete estreito. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada.",
+          "url": "https://www.who.int/news-room/questions-and-answers/item/snakebite-envenoming",
+          "language": "pt",
+          "topic": "snakebite",
+          "scope": {},
+          "reference_checked_at": "2026-11-26",
+          "source_version": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5",
+          "document_hash": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9",
+          "provenance": "Versioned source-backed paraphrase; reference checked, not clinical approval.",
+          "prerequisites": [
+            "suspected snakebite"
+          ],
+          "contraindications": [
+            "compression without appropriate species and regional guidance"
+          ],
+          "additional_references": [],
+          "original_text": "Para suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico. Não corte, sugue nem aplique torniquete estreito. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada.",
+          "n": 2,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null,
+          "fallback_evidence": true,
+          "model_context_omitted": false
+        },
+        {
+          "id": "pt:authority/who-snakebite:0",
+          "lang": "pt",
+          "doc_id": "authority/who-snakebite",
+          "doc_title": "WHO — Snakebite first aid and transport",
+          "section": "Snakebite: keep still and arrange transport; do not walk to care",
+          "anchor": "snakebite-keep-still-and-arrange-transport-do-not-walk-to-care",
+          "text": "For a suspected snakebite, first get away from the immediate danger. Reassure the person, remove tight items around the bitten area before swelling, and then keep the person and bitten limb still. Arrange urgent transport to a health facility. Have helpers carry the person on a stretcher to transport rather than making the person walk; walking can accelerate venom effects.\n\nDo not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging is not a universal treatment: WHO limits it to neurotoxic snakebites without local swelling. Do not infer that an unidentified snake qualifies. Monitor breathing while obtaining help. This is first aid pending urgent care, not home treatment of envenoming.\n\nSource: [World Health Organization](https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment) — Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access. Edition: Treatment webpage checked 2026-11-26; publication date not stated. Scope: General public; selected first-aid and transport advice only. Region: International; pressure-immobilization indications vary by snake and region.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+          "kind": "kit",
+          "language": "en",
+          "score": 1.438,
+          "retrieval_score": 9,
+          "original_text": "For a suspected snakebite, first get away from the immediate danger. Reassure the person, remove tight items around the bitten area before swelling, and then keep the person and bitten limb still. Arrange urgent transport to a health facility. Have helpers carry the person on a stretcher to transport rather than making the person walk; walking can accelerate venom effects.\n\nDo not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging is not a universal treatment: WHO limits it to neurotoxic snakebites without local swelling. Do not infer that an unidentified snake qualifies. Monitor breathing while obtaining help. This is first aid pending urgent care, not home treatment of envenoming.\n\nSource: [World Health Organization](https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment) — Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access. Edition: Treatment webpage checked 2026-11-26; publication date not stated. Scope: General public; selected first-aid and transport advice only. Region: International; pressure-immobilization indications vary by snake and region.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+          "source_version": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c",
+          "n": 3,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ],
+      "done": {
+        "mode": "fallback",
+        "seconds": 0.0,
+        "llm": null,
+        "generation": {},
+        "sources_supplied": false,
+        "reason": "model_unavailable",
+        "fallback": {
+          "status": "composed",
+          "used_source_ids": [
+            "guidance:snakebite-still:pt:v1"
+          ],
+          "fallback_evidence_ids": [],
+          "coverage": "catalog_units_only",
+          "validation": {
+            "status": "passed",
+            "issues": [],
+            "citation_ids": [
+              2
+            ],
+            "claim_support": "not_verified",
+            "action_conditions": "known_patterns_only",
+            "patient_facts": {
+              "consciousness": null,
+              "breathing": null,
+              "swallowing": null,
+              "age_group": null
+            },
+            "claim_checks": {
+              "coverage": "known_patterns_only",
+              "claims": [
+                {
+                  "rule": "snake_tourniquet",
+                  "answer_span": [
+                    121,
+                    176
+                  ],
+                  "positive": false,
+                  "cited_ids": [
+                    "2"
+                  ],
+                  "evidence": [
+                    {
+                      "source_n": 2,
+                      "span": [
+                        116,
+                        166
+                      ],
+                      "text_sha256": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9"
+                    }
+                  ],
+                  "status": "pattern_supported"
+                }
+              ],
+              "other_claims": "unverified"
+            }
+          }
+        }
+      },
+      "outcome": "fallback",
+      "error": null,
+      "error_events": [],
+      "first_token_seconds": 0.040830041019944474,
+      "total_seconds": 0.04093709902372211,
+      "checks": {
+        "invalid_citation_ids": [],
+        "citation_ids": [
+          2
+        ],
+        "semantic_support": "unreviewed"
+      },
+      "raw_sha256": "264df9baf91b9bc1f92935da200ff99ff7afca8824c03d0c4231ae2dd14c7a62"
+    },
+    {
+      "id": "snake_pressure_es",
+      "trial": 2,
+      "request": {
+        "q": "Me mordió una serpiente de especie desconocida. ¿Debo apretar una banda por encima de la mordedura?",
+        "lang": "es",
+        "history": [],
+        "use_kiwix": false
+      },
+      "answer": "\n\n**Orientación alternativa basada en fuentes**\n\nLa respuesta generada no está disponible. Estos pasos proceden de las referencias versionadas que aparecen abajo; respete sus condiciones.\n\nAnte una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica [2]. No corte, succione ni aplique un torniquete estrecho [2]. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado [2].\n\n> ⚠️ Orientación de primeros auxilios; no reemplaza la atención médica. Si hay ayuda disponible, búscala.",
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:13",
+          "lang": "es",
+          "doc_id": "07-first-aid-medicine",
+          "doc_title": "Primeros auxilios y cuidados de salud",
+          "section": "Mordedura de serpiente (Brasil)",
+          "anchor": "mordedura-de-serpiente-brasil",
+          "text": "**Haga:**\n- Aléjese de la serpiente; no intente capturarla (una foto a distancia ayuda a identificarla).\n- Mantenga a la víctima **tranquila, acostada y con el miembro inmóvil**.\n- Retire anillos, pulseras y calzado (el miembro puede hincharse).\n- Lave el lugar con agua y jabón.\n- Llévela con urgencia a un hospital de referencia: **el suero antiofídico (antiveneno) es el único tratamiento eficaz**.\n- Ofrezca agua si está consciente.\n\n**NO haga:** torniquete o ligadura, cortes, succión, quemar, aplicar hierbas, queroseno, alcohol, café molido ni ninguna sustancia en el lugar, ni dar bebidas alcohólicas.\n\n**Escorpión (alacrán):** compresa tibia y analgésico para el dolor; **los niños menores de 7 años y los adultos mayores** pueden tener cuadros graves (vómitos repetidos, sudor intenso, agitación, falta de aire) — atención urgente.\n\n**Araña reclusa / araña de rincón (Loxosceles):** la lesión empeora en horas o días; busque evaluación.\n\n> Fuente: Ministério da Saúde (Brasil) — Acidentes por animais peçonhentos: o que fazer e como evitar. https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+          "kind": "kit",
+          "language": "es",
+          "score": 27.724,
+          "retrieval_score": 17,
+          "original_text": "**Haga:**\n- Aléjese de la serpiente; no intente capturarla (una foto a distancia ayuda a identificarla).\n- Mantenga a la víctima **tranquila, acostada y con el miembro inmóvil**.\n- Retire anillos, pulseras y calzado (el miembro puede hincharse).\n- Lave el lugar con agua y jabón.\n- Llévela con urgencia a un hospital de referencia: **el suero antiofídico (antiveneno) es el único tratamiento eficaz**.\n- Ofrezca agua si está consciente.\n\n**NO haga:** torniquete o ligadura, cortes, succión, quemar, aplicar hierbas, queroseno, alcohol, café molido ni ninguna sustancia en el lugar, ni dar bebidas alcohólicas.\n\n**Escorpión (alacrán):** compresa tibia y analgésico para el dolor; **los niños menores de 7 años y los adultos mayores** pueden tener cuadros graves (vómitos repetidos, sudor intenso, agitación, falta de aire) — atención urgente.\n\n**Araña reclusa / araña de rincón (Loxosceles):** la lesión empeora en horas o días; busque evaluación.\n\n> Fuente: Ministério da Saúde (Brasil) — Acidentes por animais peçonhentos: o que fazer e como evitar. https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+          "source_version": "230a44c5d8363cfaf5ff24043aba62040c07b318b2071c10eae02422cec61e9e",
+          "n": 1,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null
+        },
+        {
+          "id": "guidance:snakebite-still:es:v1",
+          "kind": "guidance",
+          "guidance_unit": "snakebite-still",
+          "guidance_hash": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5",
+          "doc_title": "WHO: Snakebite envenoming",
+          "section": "What is the appropriate first aid for snakebite?",
+          "text": "Ante una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica. No corte, succione ni aplique un torniquete estrecho. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado.",
+          "url": "https://www.who.int/news-room/questions-and-answers/item/snakebite-envenoming",
+          "language": "es",
+          "topic": "snakebite",
+          "scope": {},
+          "reference_checked_at": "2026-11-26",
+          "source_version": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5",
+          "document_hash": "01814f12033618e0d79fa784b17f06bb60bb87214ecafe808225bd7816826656",
+          "provenance": "Versioned source-backed paraphrase; reference checked, not clinical approval.",
+          "prerequisites": [
+            "suspected snakebite"
+          ],
+          "contraindications": [
+            "compression without appropriate species and regional guidance"
+          ],
+          "additional_references": [],
+          "original_text": "Ante una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica. No corte, succione ni aplique un torniquete estrecho. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado.",
+          "n": 2,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null,
+          "fallback_evidence": true,
+          "model_context_omitted": false
+        },
+        {
+          "id": "es:authority/who-snakebite:0",
+          "lang": "es",
+          "doc_id": "authority/who-snakebite",
+          "doc_title": "WHO — Snakebite first aid and transport",
+          "section": "Snakebite: keep still and arrange transport; do not walk to care",
+          "anchor": "snakebite-keep-still-and-arrange-transport-do-not-walk-to-care",
+          "text": "For a suspected snakebite, first get away from the immediate danger. Reassure the person, remove tight items around the bitten area before swelling, and then keep the person and bitten limb still. Arrange urgent transport to a health facility. Have helpers carry the person on a stretcher to transport rather than making the person walk; walking can accelerate venom effects.\n\nDo not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging is not a universal treatment: WHO limits it to neurotoxic snakebites without local swelling. Do not infer that an unidentified snake qualifies. Monitor breathing while obtaining help. This is first aid pending urgent care, not home treatment of envenoming.\n\nSource: [World Health Organization](https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment) — Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access. Edition: Treatment webpage checked 2026-11-26; publication date not stated. Scope: General public; selected first-aid and transport advice only. Region: International; pressure-immobilization indications vary by snake and region.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+          "kind": "kit",
+          "language": "en",
+          "score": 1.464,
+          "retrieval_score": 9,
+          "original_text": "For a suspected snakebite, first get away from the immediate danger. Reassure the person, remove tight items around the bitten area before swelling, and then keep the person and bitten limb still. Arrange urgent transport to a health facility. Have helpers carry the person on a stretcher to transport rather than making the person walk; walking can accelerate venom effects.\n\nDo not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging is not a universal treatment: WHO limits it to neurotoxic snakebites without local swelling. Do not infer that an unidentified snake qualifies. Monitor breathing while obtaining help. This is first aid pending urgent care, not home treatment of envenoming.\n\nSource: [World Health Organization](https://www.who.int/teams/control-of-neglected-tropical-diseases/snakebite-envenoming/treatment) — Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access. Edition: Treatment webpage checked 2026-11-26; publication date not stated. Scope: General public; selected first-aid and transport advice only. Region: International; pressure-immobilization indications vary by snake and region.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+          "source_version": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c",
+          "n": 3,
+          "conflicts": [],
+          "context_omitted": false,
+          "context_omitted_reason": null
+        }
+      ],
+      "done": {
+        "mode": "fallback",
+        "seconds": 0.0,
+        "llm": null,
+        "generation": {},
+        "sources_supplied": false,
+        "reason": "model_unavailable",
+        "fallback": {
+          "status": "composed",
+          "used_source_ids": [
+            "guidance:snakebite-still:es:v1"
+          ],
+          "fallback_evidence_ids": [],
+          "coverage": "catalog_units_only",
+          "validation": {
+            "status": "passed",
+            "issues": [],
+            "citation_ids": [
+              2
+            ],
+            "claim_support": "not_verified",
+            "action_conditions": "known_patterns_only",
+            "patient_facts": {
+              "consciousness": null,
+              "breathing": null,
+              "swallowing": null,
+              "age_group": null
+            },
+            "claim_checks": {
+              "coverage": "known_patterns_only",
+              "claims": [
+                {
+                  "rule": "snake_tourniquet",
+                  "answer_span": [
+                    122,
+                    181
+                  ],
+                  "positive": false,
+                  "cited_ids": [
+                    "2"
+                  ],
+                  "evidence": [
+                    {
+                      "source_n": 2,
+                      "span": [
+                        117,
+                        171
+                      ],
+                      "text_sha256": "01814f12033618e0d79fa784b17f06bb60bb87214ecafe808225bd7816826656"
+                    }
+                  ],
+                  "status": "pattern_supported"
+                }
+              ],
+              "other_claims": "unverified"
+            }
+          }
+        }
+      },
+      "outcome": "fallback",
+      "error": null,
+      "error_events": [],
+      "first_token_seconds": 0.04642963400692679,
+      "total_seconds": 0.046493581001413986,
+      "checks": {
+        "invalid_citation_ids": [],
+        "citation_ids": [
+          2
+        ],
+        "semantic_support": "unreviewed"
+      },
+      "raw_sha256": "56c6754e8f76f208b2ed04f5d740ca559ce3fd042f1c1296caa75b44f1398ffd"
+    }
+  ]
+}

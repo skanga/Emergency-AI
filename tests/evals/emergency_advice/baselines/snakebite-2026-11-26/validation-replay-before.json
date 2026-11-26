@@ -1,0 +1,160 @@
+[
+  {
+    "id": "scene",
+    "trial": 1,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "handover",
+    "trial": 1,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "water_altitude",
+    "trial": 1,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "evacuation",
+    "trial": 1,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "food_chart",
+    "trial": 1,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "snake_transport",
+    "trial": 1,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "snake_pressure",
+    "trial": 1,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "scene",
+    "trial": 2,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "water_altitude",
+    "trial": 2,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "water_chemical",
+    "trial": 2,
+    "status": "blocked",
+    "issues": [
+      "claim_not_supported_by_cited_passage"
+    ],
+    "claims": [
+      {
+        "rule": "water_chemical",
+        "answer_span": [
+          125,
+          161
+        ],
+        "positive": false,
+        "cited_ids": [],
+        "evidence": [],
+        "status": "blocked"
+      },
+      {
+        "rule": "water_chemical",
+        "answer_span": [
+          165,
+          338
+        ],
+        "positive": false,
+        "cited_ids": [],
+        "evidence": [],
+        "status": "blocked"
+      },
+      {
+        "rule": "water_chemical",
+        "answer_span": [
+          338,
+          412
+        ],
+        "positive": true,
+        "cited_ids": [
+          "1"
+        ],
+        "evidence": [],
+        "status": "blocked"
+      },
+      {
+        "rule": "water_chemical",
+        "answer_span": [
+          530,
+          573
+        ],
+        "positive": false,
+        "cited_ids": [],
+        "evidence": [],
+        "status": "blocked"
+      },
+      {
+        "rule": "water_chemical",
+        "answer_span": [
+          1515,
+          1675
+        ],
+        "positive": true,
+        "cited_ids": [],
+        "evidence": [],
+        "status": "blocked"
+      }
+    ]
+  },
+  {
+    "id": "evacuation",
+    "trial": 2,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "food_chart",
+    "trial": 2,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "snake_transport",
+    "trial": 2,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  },
+  {
+    "id": "snake_pressure",
+    "trial": 2,
+    "status": "passed",
+    "issues": [],
+    "claims": []
+  }
+]

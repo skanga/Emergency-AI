@@ -4,8 +4,8 @@ from .query_planner import normalize, _consciousness
 
 _ABNORMAL = re.compile(r'\b(?:not breathing(?: normally)?|no breathing(?!\s+(?:trouble|difficult(?:y|ies)|problems?)\b)|only gasping|gasping|nao respira\w*(?: normalmente)?|sem respiracao|no respira\w*(?: normalmente)?)\b')
 _NORMAL = re.compile(r'\b(?:breathing normally|normal breathing|respira\w* normalmente)\b')
-_SWALLOW = re.compile(r'\b(?:able to swallow(?: safely)?|can swallow(?: safely)?|consegue engolir|puede tragar)\b')
-_UNSAFE_SWALLOW = re.compile(r'\b(?:cannot swallow|can t swallow|unable to swallow|difficulty swallowing|swollen tongue|throat swelling|nao consegue engolir|dificuldade para engolir|lingua inchada|no puede tragar|dificultad para tragar|lengua hinchada)\b')
+_SWALLOW = re.compile(r'\b(?:able to swallow(?: safely)?|can swallow(?: safely)?|consegue engolir|capaz de engolir|puede tragar|capaz de tragar)\b')
+_UNSAFE_SWALLOW = re.compile(r'\b(?:nao (?:e )?capaz de engolir|no (?:es )?capaz de tragar|cannot swallow|can t swallow|unable to swallow|difficulty swallowing|swollen tongue|throat swelling|nao consegue engolir|dificuldade para engolir|lingua inchada|no puede tragar|dificultad para tragar|lengua hinchada)\b')
 _CONDITIONAL = re.compile(r'\b(?:if|when|only if|se|quando|si|cuando)\b')
 
 
