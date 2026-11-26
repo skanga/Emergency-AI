@@ -1,5 +1,7 @@
 # Standalone migration completion
 
+Historical migration-stage record. The upgrade implementation is now merged and the standalone app has subsequently been upgraded and rollback-tested at `d22579a`; see [the current release validation](2026-11-25-standalone-release-validation.md). Statements below about an older launcher and unmerged work describe the earlier migration stage.
+
 Implemented a separate review/apply workflow for sparse or modified legacy standalone installations. The plan binds the target root, published commit, current manifest, source contents and permissions. Apply re-fetches the pinned source and recomputes the complete plan under the maintenance lock. A changed plan/install is refused. Existing configuration and knowledge remain locally owned; subsequent app upgrades exclude those preserved files. Other local paths are not adopted or deleted. Existing component provenance is retained.
 
 The real `/home/skanga/Emergency` installation now has a verified app baseline at `ff7055b085851c6543adac2511d0259d2affe488`: 70 owned source files and 52 preserved configuration/knowledge files. Comparing against the published export found matching source bytes; archive mode normalization avoided unnecessary group-write permission changes. No source contents needed replacement in this installation. Sparse/mixed replacements and additions were exercised in fixtures.

@@ -1,5 +1,7 @@
 # Cross-platform upgrade implementation and verification
 
+Release status: merged into `main` at `d22579a`. [CI run 45740183518](https://github.com/skanga/Emergency-AI/actions/runs/45740183518) passed all nine jobs for that exact commit. Subsequent [standalone release validation](2026-11-25-standalone-release-validation.md) completed a real application upgrade, offline rollback and reapplication. The snapshot evidence below describes the preceding implementation/testing stage.
+
 The initial audit of `58256a9` found Windows transaction failures, macOS test assumptions and Linux-only external-tool catalogs. The implementation now supports native Windows, macOS and Linux upgrade/recovery paths. All nine final native CI jobs passed; evidence is recorded below.
 
 ## Changes

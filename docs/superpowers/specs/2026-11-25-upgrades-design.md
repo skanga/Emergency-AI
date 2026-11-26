@@ -1,6 +1,8 @@
 # Component upgrades and recovery
 
-Status: approved by user; implemented capabilities and remaining manual boundaries are documented in `docs/upgrades.md`. No installed components were updated during implementation.
+Status: historical approved design; the supported implementation was merged into `main` at `d22579a`. Current capabilities and manual boundaries are documented in [the upgrade guide](../../upgrades.md), including links to completed real-installation and rollback validation.
+
+Implementation differences from the original design below: updates are individual artifact transactions, not atomic dependency groups; incompatible cross-component changes require a manual staged migration. Foreign-platform execution checks remain unsupported, and indexed archive/source-policy migration remains manual. Use the guide for operational instructions rather than treating every design proposal below as delivered behavior.
 
 ## Goal and approach
 

@@ -13,7 +13,19 @@ On Linux/macOS use `./run.sh`; on Windows replace it with `.\run.bat`. Direct Py
 ./run.sh --upgrade --component app
 ./run.sh --upgrade --component model
 ./run.sh --upgrade --component llama
+python3 emergency.py upgrade --component python
+./run.sh --upgrade --component kiwix-tools
+./run.sh --upgrade --component document-tools
 ./run.sh --upgrade --component kiwix-data
+```
+
+The Python-runtime example requires `python3` to be outside the kit; see the Python procedure below before applying it. On Windows, single-line commands avoid shell-specific continuation syntax:
+
+```powershell
+.\run.bat --check-updates
+.\run.bat --upgrade --component app
+.\run.bat --rollback TRANSACTION_ID
+py -3 "C:\Emergency\runtime\upgrades\TRANSACTION_ID\recover.py" --root "C:\Emergency" --rollback TRANSACTION_ID
 ```
 
 An ordinary interactive launch checks at most once per day, with a five-second total discovery deadline. Enter starts immediately. Offline checks and unavailable providers do not prevent startup. Checks contact metadata providers; they do not download model weights or archives. Noninteractive startup and `ask`, `chat`, `search`, and `status` do not check online.
@@ -63,10 +75,27 @@ Non-GitHub remotes and detached/unknown upstreams receive a manual status. Use y
 
 Standalone upgrades update only files owned by the recorded application manifest. Personal guides, local settings, model weights, archives and unrelated files remain in place. Locally edited or deleted bundled guides block automatic replacement instead of being erased. Obsolete owned files are removed only after their existing content matches the baseline and a backup exists.
 
-Older installations do not have `runtime/installation.json`. The first upgrade needs the **actual original source commit**:
+### Routine updates after migration
+
+Once the installation records an app baseline and includes the upgrade launcher, run maintenance from that installation. Stop the app and engines first:
 
 ```sh
-./run.sh --upgrade --component app --baseline ORIGINAL_40_CHARACTER_COMMIT
+cd /path/to/existing-kit
+./run.sh --check-updates
+./run.sh --upgrade --component app
+./run.sh
+```
+
+No `--baseline`, new migration, or first-time setup is needed. If the app is already current, the updater leaves it unchanged. Keep the transaction ID and validate startup, guides, search, model and libraries before accepting the update. See [the completed merged-release installation and rollback validation](reviews/2026-11-25-standalone-release-validation.md) for a tested example.
+
+### Legacy installation without an app baseline
+
+Older installations may lack `runtime/installation.json`, or have component provenance without an `app` baseline. A pristine legacy source tree can establish ownership using the **actual original source commit**:
+
+```sh
+python3 /path/to/new-updater/emergency.py upgrade \
+  --root /path/to/existing-kit --component app \
+  --baseline ORIGINAL_40_CHARACTER_COMMIT
 ```
 
 The updater downloads that immutable baseline and checks its owned files against the installation. A mismatch stops the update. Do not substitute today's commit or assume a modified installation is pristine. Keep your whole-folder backup and reconcile modified files first. The preceding review installation was based on `ff7055b085851c6543adac2511d0259d2affe488`; use that only if it is the version you actually installed.
@@ -76,14 +105,14 @@ The updater downloads that immutable baseline and checks its owned files against
 Use a separately checked-out updater that contains these commands. Choose a reviewed, published 40-character source commit. This procedure normalizes source ownership; it does not pretend that existing local configuration or knowledge matches that commit.
 
 ```sh
-/tmp/emergency-ai-upgrades/run.sh --plan-migration \
-  --root /home/skanga/Emergency \
-  --commit ff7055b085851c6543adac2511d0259d2affe488 \
-  --output /tmp/emergency-migration-plan.json
+python3 /path/to/new-updater/emergency.py --plan-migration \
+  --root /path/to/existing-kit \
+  --commit REVIEWED_40_CHARACTER_COMMIT \
+  --output /path/outside-kit/emergency-migration-plan.json
 
-/tmp/emergency-ai-upgrades/run.sh --apply-migration \
-  /tmp/emergency-migration-plan.json \
-  --root /home/skanga/Emergency --yes
+python3 /path/to/new-updater/emergency.py --apply-migration \
+  /path/outside-kit/emergency-migration-plan.json \
+  --root /path/to/existing-kit --yes
 ```
 
 Review the plan's replacement/addition list before applying it. Omit `--yes` for interactive confirmation. Preview writes a new plan outside the target kit and does not replace installed files. Apply fetches exactly the pinned source again, compares the complete plan against current contents and permissions, and refuses stale plans. Git installations and already-owned application baselines use their normal upgrade procedures instead.
@@ -137,9 +166,11 @@ Existing numbered llama.cpp installations (`bNNNNN`) follow that numbered build 
 Stop the app and engines, then use the external updater for an older installation:
 
 ```sh
-/tmp/emergency-ai-upgrades/run.sh --adopt --root /home/skanga/Emergency \
+python3 /path/to/new-updater/emergency.py --adopt --root /path/to/existing-kit \
   --component kiwix-tools --component document-tools
 ```
+
+For an installation already containing these commands, run `./run.sh --adopt --component kiwix-tools --component document-tools` from its own directory instead.
 
 This downloads reference distributions for verification, checks every installed distribution file and rejects modified/extra files. Only the provenance manifest is changed; no tool, archive or index is replaced. Keep the returned transaction ID for offline rollback with the external updater or retained recovery helper. Later updates recheck recorded installed-file hashes before replacement.
 
@@ -177,6 +208,15 @@ PDF/document collections with indexes require a manual staged migration: preserv
 Start the app, open local guides, verify the selected model and archive editions, and ask representative questions. Record the component identities with the results. Run the existing manual retrieval checks and saved emergency-advice replay when available. The durable versioned advice evaluation remains a separate work item; transaction journals explicitly record **advice_evaluation: not_run**.
 
 Successful downloads, checksums, startup and one-token generation establish operational checks only. They do not establish that emergency answers improved. Keep the previous state until you have compared usefulness, withholding, source applicability, citations and action conditions.
+
+## Completed release validation
+
+The upgrade implementation was merged into `main` at `d22579a`. All nine native CI jobs passed for that exact commit, including the supported native activation/rollback integration jobs. The standalone installation was then upgraded from `ff7055b`, checked, rolled back with exact restoration of 9,621 recorded paths, and upgraded again. Final checks covered guides/search in three languages, all three installed llama backends, Python, Xpdf and all ten ZIM archives. Local knowledge, configuration, model weights and indexes were preserved.
+
+- [Cross-platform verification and remaining platform limits](reviews/2026-11-25-upgrades-cross-platform.md)
+- [Standalone release validation, retained backups and exact recovery command](reviews/2026-11-25-standalone-release-validation.md)
+
+These are historical validation records for a specific release and installation, not a claim that future candidates or every supported host have passed advice-quality evaluation. Xpdf remains the production PDF extractor; experimental extraction/layout validation is not enabled.
 
 
 ## Cross-platform regression checks
