@@ -42,9 +42,15 @@
 
 ## 5. Repeated candidate evaluation and report
 
-- [ ] Launch candidate on isolated loopback with baseline-identical model/data configuration and record exact candidate file hashes.
-- [ ] Run all 32 cases for three trials into `/tmp/advice-quality-candidate`; retain failed runs and any subsequent affected-group reruns separately.
-- [ ] Review every displayed answer and source against unchanged rubrics; report four dimensions separately, including fallback usefulness and unknown drafts.
+- [x] Launch candidate on isolated loopback with baseline-identical model/data configuration and record exact candidate file hashes.
+- [x] Run all 32 cases for three trials into `/tmp/advice-quality-candidate`; retain failed runs and any subsequent affected-group reruns separately.
+- [x] Review every displayed answer and source against unchanged rubrics; report four dimensions separately, including fallback usefulness and unknown drafts.
 - [x] Add distinct development boundary variants for new conditions; do not relabel them as holdouts or rewrite historical rubrics.
-- [ ] Save compact evidence, bound reviews, reproducible comparisons and provenance in Git. Record full-suite results, mutation results and platform limits.
-- [ ] Update remaining-work status accurately. A completed implementation/evaluation can still fail the quality screen; independent clinical adjudication remains external.
+- [x] Save compact evidence, bound reviews, reproducible comparisons and provenance in Git. Record full-suite results, mutation results and platform limits.
+- [x] Update remaining-work status accurately. A completed implementation/evaluation can still fail the quality screen; independent clinical adjudication remains external.
+
+## Completion record
+
+Implementation and the planned repeated evaluation are complete locally on `feature/answer-quality-final`; clinical quality approval is not complete. The [results report](../../reviews/2026-11-26-answer-quality-results.md) distinguishes the baseline, initial/refined full 96-answer runs, affected repeats, failed development runs and final six burn repeats. All 345 captures have exact bound reviews. Failed captures were preserved; no rubric was rewritten to improve a result. Final production code was frozen at `0d458d5`; the subsequent evidence/documentation commit does not alter it.
+
+Final verification: 740 Python tests run, 20 skipped, no failures; JavaScript checks, archive exclusion/inclusion and unchanged knowledge hashes verified. Specification and quality reviews approved the bounded implementation. The full quality screen still fails, and independent clinical/native-language adjudication, new holdout cases and a new complete release screen remain external/follow-up requirements. No push, merge or standalone deployment is part of this completion record.

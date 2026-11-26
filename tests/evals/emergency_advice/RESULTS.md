@@ -1,4 +1,12 @@
-# First versioned answer-quality evaluation — 25 November 2026
+# Answer-quality results
+
+The [26 November follow-up report](../../../docs/reviews/2026-11-26-answer-quality-results.md) records 345 reviewed captures across eight preserved runs. In the full 96-answer comparison, useful answers increased from 37 to 83, major unsafe findings fell from 17 to 3, and major citation findings from 28 to 4. Subsequent targeted corrections passed selected 18-case and six-case repeats, while intermediate development failures remain preserved.
+
+**The whole-suite quality gate has not passed.** Selected passes are not clinical approval or a new full-suite result. [Portable evidence, bound reviews and reproduction commands](baselines/repeated-2026-11-26/README.md) remain in Git and are excluded from installation downloads.
+
+The older result below is retained as a historical record; its deployment and test counts do not describe the new revision.
+
+## Historical first versioned evaluation — 25 November 2026
 
 **The current installation fails this quality screen.** The runner completed all 32 cases, but 18 displayed withholding notices. Among the 14 substantive answers, this agent review identified six with major safety findings and ten with major citation/support findings. Categories overlap. All numeric citation IDs were valid; that did not establish semantic support.
 

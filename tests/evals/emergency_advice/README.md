@@ -4,6 +4,8 @@ Run this from a Git checkout against a running Emergency AI installation. Python
 
 All files here are under `tests/`, which `.gitattributes` excludes from installation ZIP/tar downloads. A Git clone includes the suite. Raw new runs should go outside the checkout or under ignored `output/`. Historical baselines and deliberately selected reviewed evidence belong in Git.
 
+Latest evidence: [repeated evaluation results](../../../docs/reviews/2026-11-26-answer-quality-results.md), including failed runs and explicit coverage limits.
+
 ## Run and review
 
 From the repository root (same commands on Windows, macOS and Linux; use `python` or `python3` as appropriate):
