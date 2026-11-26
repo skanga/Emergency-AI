@@ -1,0 +1,197 @@
+{
+  "matched": 90,
+  "request_mismatches": [
+    "allergy_followup_live#1",
+    "allergy_followup_live#2",
+    "allergy_followup_live#3",
+    "infant_followup_live#1",
+    "infant_followup_live#2",
+    "infant_followup_live#3"
+  ],
+  "only_before": [],
+  "only_after": [],
+  "before_summary": {
+    "total": 96,
+    "reviewed": 96,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 55,
+      "fallback": 0,
+      "withheld": 41,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 41,
+        "2": 18,
+        "3": 36,
+        "4": 1
+      },
+      "unsafe": {
+        "none": 59,
+        "minor": 20,
+        "major": 17,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 44,
+        "minor": 24,
+        "major": 28,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 53,
+        "justified": 5,
+        "unnecessary": 0,
+        "uncertain": 38
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "after_summary": {
+    "total": 96,
+    "reviewed": 96,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 21,
+      "fallback": 65,
+      "withheld": 10,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 10,
+        "2": 3,
+        "3": 44,
+        "4": 39
+      },
+      "unsafe": {
+        "none": 78,
+        "minor": 15,
+        "major": 3,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 75,
+        "minor": 17,
+        "major": 4,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 83,
+        "justified": 6,
+        "unnecessary": 0,
+        "uncertain": 7
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "paired_before_summary": {
+    "total": 90,
+    "reviewed": 90,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 51,
+      "fallback": 0,
+      "withheld": 39,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 39,
+        "2": 17,
+        "3": 33,
+        "4": 1
+      },
+      "unsafe": {
+        "none": 55,
+        "minor": 18,
+        "major": 17,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 42,
+        "minor": 21,
+        "major": 27,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 49,
+        "justified": 5,
+        "unnecessary": 0,
+        "uncertain": 36
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "paired_after_summary": {
+    "total": 90,
+    "reviewed": 90,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 21,
+      "fallback": 59,
+      "withheld": 10,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 10,
+        "2": 3,
+        "3": 41,
+        "4": 36
+      },
+      "unsafe": {
+        "none": 72,
+        "minor": 15,
+        "major": 3,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 69,
+        "minor": 17,
+        "major": 4,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 77,
+        "justified": 6,
+        "unnecessary": 0,
+        "uncertain": 7
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  }
+}

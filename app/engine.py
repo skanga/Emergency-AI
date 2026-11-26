@@ -2,6 +2,7 @@
 
 import threading
 import time
+import re
 
 from . import i18n
 from .answer_validation import PROMPT as VALIDATION_PROMPT, source_for_prompt, validate_answer
@@ -11,6 +12,7 @@ from .llm import LLMError, detect_llm
 from .query_planner import plan_query
 from . import retrieval
 from .source_policy import evaluate_conflicts, source_version
+from .guidance import guidance_sources, fallback_answer
 
 
 class Engine:
@@ -93,7 +95,8 @@ class Engine:
             unique.setdefault(source['id'], source)
         local = [s for s in unique.values() if s['kind'] == 'kit']
         library = [s for s in unique.values() if s['kind'] != 'kit']
-        candidates = local + library
+        guidance = guidance_sources(plan, lang)
+        candidates = local + guidance + library
         try:
             conflicts = evaluate_conflicts(candidates, plan.topics, plan.scope)
         except (ValueError, OSError) as exc:
@@ -111,6 +114,10 @@ class Engine:
         sources = retrieval.select_sources([s for s in local if s['id'] not in superseded],
                                            [s for s in library if s['id'] not in superseded],
                                            local_limit, library_limit)
+        # Preserve the first applicable local guide, then add complete scoped
+        # guidance. This is context ordering, not source-authority precedence.
+        first_local = sources[:1] if sources and sources[0]['kind'] == 'kit' else []
+        sources = first_local + [s for s in guidance if s['id'] not in superseded] + sources[len(first_local):]
         # Reviewed choices and both sides of a disagreement remain inspectable
         # even when their retrieval rank falls outside the presentation caps.
         referenced = {sid for c in conflicts for sid in c['source_ids']}
@@ -135,7 +142,7 @@ class Engine:
                             conflicts=[c for c in conflicts if source['id'] in c['source_ids']],
                             context_omitted=bool(reason), context_omitted_reason=reason))
         report.update(included=sum(not s['context_omitted'] for s in out), selected=len(out),
-                      local_candidates=len(local), library_passages=len(library))
+                      local_candidates=len(local), library_passages=len(library), guidance_candidates=len(guidance))
         return out
 
     # ---------- generation ----------
@@ -149,7 +156,8 @@ class Engine:
         for s in sources:
             if s.get("context_omitted"):
                 continue
-            label = i18n.KIT_LABEL[lang] if s["kind"] == "kit" else i18n.KIWIX_LABEL[lang]
+            label = (i18n.GUIDANCE_LABEL[lang] if s['kind'] == 'guidance' else
+                     i18n.KIT_LABEL[lang] if s["kind"] == "kit" else i18n.KIWIX_LABEL[lang])
             lines.append(f"[S{s['n']}] {label}: {s['doc_title']} — {s['section']}\n{source_for_prompt(s['text'])}")
         ctx = "\n\n".join(lines) if lines else "(—)"
         user = f"{i18n.SOURCES_HEADER[lang]}:\n{ctx}\n\n{i18n.QUESTION_HEADER[lang]}: {question}"
@@ -199,6 +207,31 @@ class Engine:
             parts.append(f"### [{s['n']}] {s['doc_title']} › {s['section']}\n\n{text}\n")
         return "\n".join(parts)
 
+    @staticmethod
+    def _fallback(sources, lang, conflicts, question, history):
+        """Revalidate a catalog composition independently of any generated draft."""
+        text, meta = fallback_answer(sources, lang, conflicts)
+        if not text:
+            return '', sources, meta
+        used = set(meta['used_source_ids'])
+        restored = []
+        for source in sources:
+            source = dict(source)
+            if source['id'] in used:
+                source['fallback_evidence'] = True
+                source['model_context_omitted'] = bool(source.get('context_omitted'))
+                if source.get('context_omitted'):
+                    source.update(text=source['original_text'], context_omitted=False,
+                                  context_omitted_reason=None)
+            restored.append(source)
+        rendered, validation = validate_answer(re.sub(r'\[(\d+)\]', r'[S\1]', text),
+                                               restored, question, lang, history)
+        meta['validation'] = validation
+        if not rendered:
+            meta.update(status='blocked', used_source_ids=[], fallback_evidence_ids=[])
+            return '', sources, meta
+        return i18n.GUIDANCE_FALLBACK[lang] + rendered, restored, meta
+
     def answer(self, question, lang="en", history=None, use_kiwix=True, use_llm=True, kiwix_books=None):
         """Event generator: ('sources', [...]), ('token', str), ('done', {...})."""
         lang = lang if lang in i18n.SYSTEM_PROMPT else "en"
@@ -213,6 +246,8 @@ class Engine:
         sources_supplied = False
         mode = "llm" if llm else "search"
         generation = {}
+        fallback = {}
+        need_fallback = False
         fit_error = None
         if llm:
             try:
@@ -276,26 +311,42 @@ class Engine:
                                   validation={'status':'blocked', 'issues':['answer_size_limit'], 'claim_support':'not_verified'})
                 mode, reason = 'search', 'answer_validation_failed'
                 yield 'token', i18n.ANSWER_WITHHELD[lang]
+                need_fallback = True
             elif failed or generation.get('incomplete') or not ''.join(chunks).strip():
                 generation['validation'] = {'status':'not_run', 'issues':['generation_incomplete'],
                                              'claim_support':'not_verified'}
-                yield "token", self.extractive_answer(lang, sources, model_unavailable=False)
                 mode, reason = 'search', 'generation_failed'
+                need_fallback = True
             else:
                 rendered, validation = validate_answer(''.join(chunks), sources, question, lang, history)
                 generation['validation'] = validation
                 if validation['status'] == 'blocked':
                     mode, reason = 'search', 'answer_validation_failed'
                     yield 'token', i18n.ANSWER_WITHHELD[lang]
+                    need_fallback = True
                 else:
                     yield 'token', rendered
+        elif use_llm:
+            need_fallback = True
         elif not blocked and not reviewed_omitted:
             yield "token", self.extractive_answer(lang, sources, model_unavailable=model_unavailable)
+        if need_fallback:
+            help_text, fallback_sources, fallback = self._fallback(sources, lang, conflicts, question, history)
+            if help_text:
+                sources = fallback_sources
+                mode = 'fallback'
+                # Original generation/retrieval metadata still describes only
+                # model input. These sources are explicitly fallback evidence.
+                yield 'sources', sources
+                yield 'token', help_text
+            elif reason in ('model_unavailable', 'generation_failed'):
+                yield 'token', self.extractive_answer(lang, sources, model_unavailable=model_unavailable)
         if self.is_medical(question):
             yield "token", i18n.MEDICAL_FOOTER[lang]
         yield "done", {"mode": mode, "seconds": round(time.time() - t0, 1),
                        "llm": llm.describe() if llm else None, "generation": generation,
-                       "sources_supplied": sources_supplied, "reason": reason, "retrieval": report}
+                       "sources_supplied": sources_supplied, "reason": reason, "retrieval": report,
+                       "fallback": fallback}
 
     def answer_text(self, question, lang="en", **kw):
         text, sources, info = [], [], {}

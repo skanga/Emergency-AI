@@ -44,6 +44,26 @@ class AdviceEvaluationTests(unittest.TestCase):
         self.assertEqual(result['outcome'], 'withheld')
         self.assertEqual(suite.summarize([result], {})['gate'], 'incomplete')
 
+    def test_complete_fallback_is_separate_from_failed_generation(self):
+        raw = self.capture(mode='fallback', reason='generation_failed',
+                           generation={'incomplete':True, 'included_source_ids':[]},
+                           fallback={'status':'composed', 'used_source_ids':['a']})
+        raw['events'][0]['data'][0]['fallback_evidence'] = True
+        result = suite.normalize(raw)
+        self.assertEqual(result['outcome'], 'fallback')
+        self.assertEqual(result['checks']['invalid_citation_ids'], [])
+        self.assertTrue(result['done']['generation']['incomplete'])
+        self.assertEqual(suite.summarize([result], {})['gate'], 'incomplete')
+        self.assertEqual(suite.summarize([result], {})['outcomes']['fallback'], 1)
+
+    def test_fallback_does_not_rescue_transport_errors_or_unlisted_evidence(self):
+        raw = self.capture(mode='fallback', generation={'included_source_ids':[]},
+                           fallback={'status':'composed', 'used_source_ids':['other']})
+        raw['events'][0]['data'][0]['fallback_evidence'] = True
+        self.assertEqual(suite.normalize(raw)['checks']['invalid_citation_ids'], [1])
+        raw['error'] = 'connection reset'
+        self.assertEqual(suite.normalize(raw)['outcome'], 'error')
+
     def test_zero_reviews_and_zero_cases_cannot_pass(self):
         self.assertEqual(suite.summarize([], {})['gate'], 'incomplete')
         self.assertEqual(suite.summarize([suite.normalize(self.capture())], {})['reviewed'], 0)
@@ -80,6 +100,9 @@ class AdviceEvaluationTests(unittest.TestCase):
             fixture = p / 'tests/evals/emergency_advice/cases.json'
             fixture.parent.mkdir(parents=True); fixture.write_text('[]')
             (p / 'emergency.py').write_text('pass')
+            catalog = p / 'app/data/guidance.json'
+            catalog.parent.mkdir(parents=True)
+            catalog.write_text('{}')
             subprocess.run(['git', 'init', '-q', tmp], check=True)
             subprocess.run(['git', '-C', tmp, 'add', '.'], check=True)
             tree = subprocess.check_output(['git', '-C', tmp, 'write-tree'], text=True).strip()
@@ -90,6 +113,7 @@ class AdviceEvaluationTests(unittest.TestCase):
                 else:
                     with zipfile.ZipFile(io.BytesIO(data)) as archive: names = archive.namelist()
                 self.assertIn('emergency.py', names)
+                self.assertIn('app/data/guidance.json', names)
                 self.assertFalse(any(n.startswith('tests') for n in names))
 
 class RunnerTests(unittest.TestCase):
@@ -198,11 +222,28 @@ class RunnerTests(unittest.TestCase):
                 self.assertTrue(r['answer'])
 
 class RunIntegrationTests(unittest.TestCase):
+    def test_case_filter_keeps_manifest_and_includes_conversation_parent(self):
+        from tests.evals.emergency_advice import runner
+        manifest = {'cases': [
+            {'id': 'unrelated', 'group': 'historical'},
+            {'id': 'parent', 'group': 'live'},
+            {'id': 'follow', 'group': 'live', 'followup_of': 'parent'}]}
+        before = suite.digest(manifest)
+        selected = runner.select_cases(manifest, 'all', ['follow', 'follow'])
+        self.assertEqual([c['id'] for c in selected], ['parent', 'follow'])
+        self.assertEqual(suite.digest(manifest), before)
+        self.assertEqual(runner.select_cases(manifest, 'live', []), manifest['cases'][1:])
+        with self.assertRaisesRegex(ValueError, 'Unknown case'):
+            runner.select_cases(manifest, 'all', ['typo'])
+        with self.assertRaisesRegex(ValueError, 'selected group'):
+            runner.select_cases(manifest, 'historical', ['follow'])
+
     def test_repeats_have_independent_live_histories_and_durable_files(self):
         from types import SimpleNamespace
         from unittest.mock import patch
         from tests.evals.emergency_advice import runner
         manifest = {'cases': [
+            {'id': 'unselected', 'group': 'historical', 'request': {'q': 'skip', 'history': []}},
             {'id': 'parent', 'group': 'live', 'request': {'q': 'first', 'history': []}},
             {'id': 'follow', 'group': 'live', 'followup_of': 'parent',
              'request': {'q': 'next', 'history': []}}]}
@@ -216,13 +257,16 @@ class RunIntegrationTests(unittest.TestCase):
             opener.return_value.open.return_value = io.BytesIO(b'{}')
             out = Path(tmp) / 'run'
             args = SimpleNamespace(url='http://localhost', output=out, root=None,
-                                   group='all', trials=2, timeout=10)
+                                   group='all', case=['follow'], trials=2, timeout=10)
             self.assertEqual(runner.run(args, manifest), 0)
             self.assertEqual(captured[1]['history'][-1]['content'], 'answer 1')
             self.assertEqual(captured[3]['history'][-1]['content'], 'answer 3')
             self.assertEqual(captured[2]['history'], [])
             self.assertEqual(len(runner.read(out / 'run.json')['results']), 4)
             self.assertTrue((out / 'raw/follow-2.json').exists())
+            self.assertFalse((out / 'raw/unselected-1.json').exists())
+            self.assertEqual(runner.read(out / 'manifest.json'), manifest)
+            self.assertEqual(runner.read(out / 'metadata.json')['selected_case_ids'], ['parent', 'follow'])
 
     def test_uncertain_reviews_prevent_pass_and_partial_reviews_are_not_counted(self):
         result = suite.normalize(AdviceEvaluationTests().capture())

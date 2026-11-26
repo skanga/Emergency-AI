@@ -6,6 +6,35 @@ from app.query_planner import plan_query
 
 
 class QueryPlannerTests(unittest.TestCase):
+    def test_compression_question_routes_without_assuming_arrest(self):
+        for question, lang in (
+                ('He is awake and breathing normally. Should I start chest compressions?', 'en'),
+                ('Ele está acordado. Devo iniciar compressões torácicas?', 'pt'),
+                ('Está despierto. ¿Inicio compresiones torácicas?', 'es')):
+            with self.subTest(lang=lang):
+                plan = plan_query(question, lang)
+                self.assertIn('cpr', plan.topics)
+                self.assertEqual(plan.scope['consciousness'], 'responsive')
+
+    def test_explicit_infant_age_boundary_is_not_one_year_old(self):
+        from app.query_planner import _age, normalize
+        for phrase in ('baby under 1 year', 'bebê menor de 1 ano',
+                       'bebé menor de 1 año', 'infant younger than 1 year'):
+            with self.subTest(phrase=phrase):
+                self.assertEqual(_age(normalize(phrase)), 'infant')
+        for phrase in ('1 year old', '1 ano', '1 año', 'child under 5 years',
+                       'not under 1 year', 'não menor de 1 ano', 'no menor de 1 año'):
+            with self.subTest(phrase=phrase):
+                self.assertEqual(_age(normalize(phrase)), 'child')
+
+    def test_later_infant_boundary_does_not_override_patient_age(self):
+        for question, expected in (
+                ('My child is 2 years old, not a baby under 1 year.', 'child'),
+                ('He is 30 years old. Does the advice for babies under 1 year apply?', 'adult'),
+                ('Meu filho tem 2 anos, não é um bebê menor de 1 ano.', 'child')):
+            with self.subTest(question=question):
+                self.assertEqual(plan_query(question).scope['age_group'], expected)
+
     def test_original_cases_have_bounded_multilingual_topics(self):
         cases = json.loads(Path('tests/fixtures/retrieval/cases.json').read_text())
         expected = ['anaphylaxis', 'anaphylaxis', 'bleeding', 'burn', 'carbon_monoxide', 'cpr', 'dehydration', 'diabetes', 'flood', 'food_safety', 'fire', 'heatstroke', 'choking', 'cpr', 'poison', 'carbon_monoxide', 'seizure', 'snakebite', 'cpr', 'stroke', 'water_disinfection', 'water_chemical', 'electrical']
@@ -85,6 +114,43 @@ class QueryPlannerTests(unittest.TestCase):
 
 
 class PlannerRelevanceRegressions(unittest.TestCase):
+    def test_development_routing_misses(self):
+        cases = json.loads(Path('tests/evals/emergency_advice/development-cases.json').read_text())['cases']
+        expected = {'fire_extinguisher': 'fire', 'hypo_unsafe_swallow': 'diabetes', 'burn_es': 'burn'}
+        for case in cases:
+            if case['id'] in expected:
+                with self.subTest(case=case['id']):
+                    request = case['request']
+                    self.assertIn(expected[case['id']], plan_query(request['q'], request['lang']).topics)
+
+    def test_nearby_fire_glucose_and_personal_burn_phrases(self):
+        for question, lang, topic in (
+            ('Oil is burning in the frying pan.', 'en', 'fire'),
+            ('O óleo está queimando na frigideira.', 'pt', 'fire'),
+            ('El aceite está ardiendo en la sartén.', 'es', 'fire'),
+            ('My blood glucose is low and I cannot swallow.', 'en', 'diabetes'),
+            ('Minha glicose está baixa e não consigo engolir.', 'pt', 'diabetes'),
+            ('Mi glucosa está baja y no puedo tragar.', 'es', 'diabetes'),
+            ('I burned my arm and my clothing is stuck to the skin.', 'en', 'burn'),
+            ('Queimei o braço e a roupa está grudada na pele.', 'pt', 'burn'),
+            ('Me quemé la mano y la ropa está pegada a la piel.', 'es', 'burn')):
+            with self.subTest(question=question):
+                self.assertIn(topic, plan_query(question, lang).topics)
+
+    def test_routing_extensions_do_not_match_recipes_or_pan_washing(self):
+        for question, lang in (
+            ('A low glucose recipe for cake.', 'en'),
+            ('Receita com pouca glicose para bolo.', 'pt'),
+            ('Receta con poca glucosa para pastel.', 'es'),
+            ('How do I wash cooking oil from a pan?', 'en'),
+            ('Como lavar óleo de uma frigideira?', 'pt'),
+            ('¿Cómo lavar aceite de una sartén?', 'es'),
+            ('I burned the toast.', 'en'),
+            ('Queimei o pão.', 'pt'),
+            ('Quemé el pan.', 'es')):
+            with self.subTest(question=question):
+                self.assertEqual(plan_query(question, lang).topics, ())
+
     def test_observed_multilingual_paraphrases(self):
         cases = json.loads(Path('tests/manual/retrieval_manifest.json').read_text())['cases']
         expected = ['cpr'] * 3 + ['choking'] * 3 + ['anaphylaxis'] * 3 + ['stroke'] * 3 + ['carbon_monoxide'] * 3 + ['water_chemical'] * 3 + ['burn', 'heatstroke', 'seizure', 'choking', 'anaphylaxis', 'fire']

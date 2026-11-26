@@ -92,7 +92,14 @@ def has_topic_evidence(text, topics, question='', direct_title=''):
 def _age(text):
     for word, number in {'eight': '8', 'oito': '8', 'ocho': '8', 'six': '6', 'seis': '6', 'ten': '10', 'dez': '10', 'diez': '10', 'two': '2', 'dois': '2', 'dos': '2'}.items():
         text = re.sub(r'\b' + word + r'\b', number, text)
+    # An upper age boundary is not an exact first birthday. Keep the infant
+    # protocol scope for the explicit under-one-year wording in source passages.
     numeric = re.search(r'\b(\d+)\s+(month|months|mes|meses|year|years|ano|anos)\b', text)
+    upper_bound = re.search(r'\b(?:under|younger than|less than|menor de|menos de) '
+                            r'(?:1|one|um|un) (?:year|ano)\b', text)
+    if (upper_bound and (not numeric or upper_bound.start() < numeric.start())
+            and not re.search(r'\b(?:not|nao|no) $', text[:upper_bound.start()])):
+        return 'infant'
     if numeric:
         amount = int(numeric[1])
         months = amount if numeric[2] in {'month', 'months', 'mes', 'meses'} else amount * 12

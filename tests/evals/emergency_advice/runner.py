@@ -95,7 +95,29 @@ def portable_status(status):
                           for b in status.get('kiwix', {}).get('books', [])]}
 
 
+def select_cases(manifest, group='all', case_ids=()):
+    """Select without changing rubric bindings; include live-history ancestors."""
+    by_id = {case['id']: case for case in manifest['cases']}
+    requested = set(case_ids or ())
+    unknown = requested - set(by_id)
+    if unknown:
+        raise ValueError('Unknown case IDs: ' + ', '.join(sorted(unknown)))
+    eligible = {ident for ident, case in by_id.items()
+                if group == 'all' or case['group'] == group}
+    if requested - eligible:
+        raise ValueError('Case IDs are outside the selected group')
+    selected = requested or eligible
+    pending = list(selected)
+    while pending:
+        parent = by_id[pending.pop()].get('followup_of')
+        if parent and parent not in selected:
+            selected.add(parent)
+            pending.append(parent)
+    return [case for case in manifest['cases'] if case['id'] in selected]
+
+
 def run(args, manifest):
+    selected = select_cases(manifest, args.group, getattr(args, 'case', ()))
     url = urlsplit(args.url)
     if url.scheme not in ('http', 'https') or not url.hostname or url.username or url.password:
         raise ValueError('Use an HTTP(S) app URL without credentials')
@@ -104,6 +126,7 @@ def run(args, manifest):
     metadata = {'started_at': now(), 'url': args.url, 'manifest_sha256': suite.digest(manifest),
                 'deployment_identity': 'Not attested by API; version/model names are not file hashes',
                 'trials': args.trials, 'timeout': args.timeout,
+                'selected_case_ids': [case['id'] for case in selected],
                 'harness_files_sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
                                          for p in HERE.glob('*.py')}}
     try:
@@ -131,9 +154,6 @@ def run(args, manifest):
     write(out / 'manifest.json', manifest)
     write(out / 'metadata.json', metadata)
     results = []
-    selected = manifest['cases']
-    if args.group != 'all':
-        selected = [c for c in selected if c['group'] == args.group]
     for trial in range(1, args.trials + 1):
         previous = {}
         for case in selected:
@@ -197,6 +217,8 @@ def main(argv=None):
     live.add_argument('--root', help='Optional read-only installation provenance; never modifies app')
     live.add_argument('--trials', type=int, default=1)
     live.add_argument('--timeout', type=float, default=240)
+    live.add_argument('--case', action='append', default=[],
+                      help='Case ID to run; repeat for multiple cases. Includes live conversation parents.')
     live.add_argument('--group', choices=['historical', 'boundary', 'live', 'all'], default='all')
     imp = commands.add_parser('import')
     imp.add_argument('--directory', required=True); imp.add_argument('--output', required=True)

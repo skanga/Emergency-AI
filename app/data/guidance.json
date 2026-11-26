@@ -1,0 +1,642 @@
+{
+  "version": 1,
+  "units": [
+    {
+      "id": "hypoglycemia-oral",
+      "topic": "diabetes",
+      "reference_title": "CDC: Treatment of Low Blood Sugar",
+      "reference_url": "https://www.cdc.gov/diabetes/treatment/treatment-low-blood-sugar-hypoglycemia.html",
+      "reference_section": "The 15-15 rule",
+      "reference_checked_at": "2026-11-26",
+      "scope": {
+        "age_group": "adult",
+        "consciousness": "responsive"
+      },
+      "prerequisites": [
+        "low blood sugar",
+        "fully awake",
+        "safe swallowing"
+      ],
+      "contraindications": [
+        "unresponsive",
+        "unsafe swallowing",
+        "child dose not established"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If an adult has low blood sugar, is fully awake and can swallow safely, give 15 grams of fast-acting carbohydrate, such as glucose tablets according to their label. Recheck after 15 minutes; repeat if still below 70 mg/dL. Once recovered, eat a snack or meal with carbohydrate and protein.",
+        "pt": "Se um adulto tem hipoglicemia, está totalmente acordado e consegue engolir com segurança, dê 15 gramas de carboidrato de ação rápida, como comprimidos de glicose conforme o rótulo. Verifique após 15 minutos; repita se ainda estiver abaixo de 70 mg/dL. Após melhorar, coma um lanche ou refeição com carboidrato e proteína.",
+        "es": "Si un adulto tiene hipoglucemia, está completamente despierto y puede tragar con seguridad, dé 15 gramos de carbohidratos de acción rápida, como tabletas de glucosa según su etiqueta. Compruebe después de 15 minutos; repita si sigue por debajo de 70 mg/dL. Al recuperarse, coma algo con carbohidratos y proteínas."
+      },
+      "content_hash": "aa162c9d794923946c17ca4486aab9eb464caecfb289a79fc59d11f857148623"
+    },
+    {
+      "id": "hypoglycemia-unresponsive",
+      "topic": "diabetes",
+      "reference_title": "NHS: Low blood sugar",
+      "reference_url": "https://www.nhs.uk/conditions/low-blood-sugar-hypoglycaemia/",
+      "reference_section": "How to treat severe low blood sugar",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected low blood sugar",
+        "unresponsive"
+      ],
+      "contraindications": [
+        "oral intake"
+      ],
+      "additional_references": [
+        {
+          "title": "St John Ambulance: CPR and normal breathing",
+          "url": "https://www.sja.org.uk/first-aid-advice/cpr/",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If low blood sugar causes unconsciousness, do not give anything by mouth. If unresponsive or unable to swallow safely, seek emergency help. If unresponsive and breathing normally, place them on their side in the recovery position. If unconscious with severe low blood sugar, use available glucagon only if you know how. Stay with them and monitor breathing.",
+        "pt": "Se a hipoglicemia causar inconsciência, não dê nada pela boca. Se estiver inconsciente ou não conseguir engolir com segurança, peça socorro de emergência. Se estiver inconsciente e respirar normalmente, coloque a pessoa de lado na posição de recuperação. Se estiver inconsciente com hipoglicemia grave, use glucagon disponível somente se souber como. Fique com ela e observe a respiração.",
+        "es": "Si la hipoglucemia causa pérdida de conciencia, no dé nada por la boca. Si está inconsciente o no puede tragar con seguridad, pida ayuda de emergencia. Si está inconsciente y respira normalmente, colóquela de lado en posición de recuperación. Si está inconsciente con hipoglucemia grave, use glucagón disponible solo si sabe cómo. Permanezca con ella y vigile la respiración."
+      },
+      "content_hash": "dc97aa48911a1a2ba8319448c052cb72099162d9a79213d6ab06af4022650983"
+    },
+    {
+      "id": "cpr-boundary",
+      "topic": "cpr",
+      "reference_title": "St John Ambulance: How to do CPR",
+      "reference_url": "https://www.sja.org.uk/first-aid-advice/cpr/",
+      "reference_section": "CPR first aid",
+      "reference_checked_at": "2026-11-26",
+      "scope": {
+        "age_group": "adult"
+      },
+      "prerequisites": [
+        "assess responsiveness and breathing"
+      ],
+      "contraindications": [
+        "compressions in responsive normally breathing person"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If someone is awake and breathing normally, do not start CPR. If an adult becomes unresponsive and is not breathing normally, call emergency services, start CPR and ask a helper to bring an AED. Occasional gasps are not normal breathing. Follow the dispatcher and AED instructions.",
+        "pt": "Se a pessoa está acordada e respira normalmente, não inicie RCP. Se um adulto ficar inconsciente e não respirar normalmente, chame a emergência, inicie RCP e peça a alguém um DEA. Suspiros ocasionais não são respiração normal. Siga as instruções do atendente e do DEA.",
+        "es": "Si la persona está despierta y respira normalmente, no inicie RCP. Si un adulto queda inconsciente y no respira normalmente, llame a emergencias, inicie RCP y pida a alguien un DEA. Los jadeos ocasionales no son respiración normal. Siga las instrucciones del operador y del DEA."
+      },
+      "content_hash": "bbe139e8bd1d8963c93946e2ef0e7db9d42f800f56881b85ef601f847f66c0ec"
+    },
+    {
+      "id": "bleeding-pressure",
+      "topic": "bleeding",
+      "reference_title": "American Red Cross: Life-threatening external bleeding",
+      "reference_url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/bleeding-life-threatening-external",
+      "reference_section": "How to stop bleeding",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "external bleeding"
+      ],
+      "contraindications": [
+        "tourniquet outside limb or without training"
+      ],
+      "additional_references": [
+        {
+          "title": "UHBW NHS: Peripheral Venous Cannulation Policy, introduction (2023 archived policy)",
+          "url": "https://www.uhbw.nhs.uk/assets/1/24-638_peripheral_venous_cannulae_policy_and_procedure_aug_23_redacted.pdf",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "For severe external bleeding, call emergency services. Press firmly and continuously on the wound with a dressing or clean cloth. Maintain pressure until bleeding stops or help takes over. For life-threatening bleeding from an arm or leg, use a tourniquet if available and you are trained. Stay with the person. If you are untrained, do not insert an IV; leave invasive vein access to trained practitioners.",
+        "pt": "Para sangramento externo intenso, chame a emergência. Pressione a ferida com firmeza e continuamente com gaze ou pano limpo. Mantenha a pressão até parar ou chegar ajuda. Para hemorragia com risco de vida num braço ou perna, use torniquete se disponível e se tiver treinamento. Fique com a pessoa. Se não tiver treinamento, não insira um acesso IV; deixe o acesso invasivo à veia para profissionais treinados.",
+        "es": "Para sangrado externo intenso, llame a emergencias. Presione la herida firmemente y sin interrupción con una gasa o paño limpio. Mantenga la presión hasta que pare o llegue ayuda. Para hemorragia mortal de un brazo o pierna, use un torniquete si está disponible y tiene formación. Permanezca con la persona. Si no tiene formación, no inserte una vía IV; deje el acceso invasivo a la vena a profesionales capacitados."
+      },
+      "content_hash": "e20e398f69932a79c5523ddc6c56eea2bdf9ad59ded1c638f1ad98a3fb6fb57f"
+    },
+    {
+      "id": "water-product",
+      "topic": "water_disinfection",
+      "reference_title": "EPA: Emergency disinfection of drinking water",
+      "reference_url": "https://www.epa.gov/ground-water-and-drinking-water/emergency-disinfection-drinking-water",
+      "reference_section": "Disinfect water using household bleach",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "water disinfection"
+      ],
+      "contraindications": [
+        "unknown bleach concentration",
+        "unsuitable bleach"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "For drinking water, do not use scented bleach, color-safe bleach or products with added cleaners. Use sealed bottled water when available. Bleach treatment requires a suitable product and known concentration; do not guess a dose from an unknown label.",
+        "pt": "Para água potável, não use alvejante perfumado, para roupas coloridas ou com produtos de limpeza adicionados. Use água engarrafada lacrada quando disponível. O tratamento exige produto adequado e concentração conhecida; não adivinhe a dose com rótulo desconhecido.",
+        "es": "Para agua potable, no use lejía perfumada, para ropa de color ni con limpiadores añadidos. Use agua embotellada sellada cuando esté disponible. El tratamiento exige un producto adecuado y concentración conocida; no adivine la dosis con una etiqueta desconocida."
+      },
+      "content_hash": "6b14bbb3f23c14057cce9037fcb457082f54d106f369c583e2c6b1f25c6f37f4"
+    },
+    {
+      "id": "water-chemical",
+      "topic": "water_chemical",
+      "reference_title": "CDC: How to make water safe in an emergency",
+      "reference_url": "https://www.cdc.gov/water-emergency/about/",
+      "reference_section": "Water with fuel or toxic chemicals in it",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected chemical contamination"
+      ],
+      "contraindications": [
+        "microbial disinfection as chemical decontamination"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If water may contain fuel or toxic chemicals, do not drink it. Boiling or adding disinfectant cannot make water containing fuel or toxic chemicals safe. Obtain bottled water or another safe supply and contact local health authorities for advice.",
+        "pt": "Se a água pode conter combustível ou produtos químicos tóxicos, não a beba. Ferver ou adicionar desinfetante não torna segura a água com combustível ou produtos químicos tóxicos. Obtenha água engarrafada ou outra fonte segura e consulte as autoridades locais de saúde.",
+        "es": "Si el agua puede contener combustible o sustancias químicas tóxicas, no la beba. Hervir o añadir desinfectante no vuelve segura el agua con combustible o sustancias químicas tóxicas. Consiga agua embotellada u otra fuente segura y consulte a las autoridades sanitarias locales."
+      },
+      "content_hash": "4c2ce6782f0015e71e85b3a28b2e1b211d0b2d8d6029605049ba326a524aa1f5"
+    },
+    {
+      "id": "burn-cooling",
+      "topic": "burn",
+      "reference_title": "NHS: Burns and scalds",
+      "reference_url": "https://www.nhs.uk/conditions/burns-and-scalds/",
+      "reference_section": "What to do if you have a burn or scald",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "thermal burn"
+      ],
+      "contraindications": [
+        "pulling off stuck clothing"
+      ],
+      "additional_references": [
+        {
+          "title": "St John Ambulance: How to treat burns and scalds",
+          "url": "https://shop.sja.org.uk/blogs/workplace-first-aid/how-to-treat-burns-and-scalds",
+          "section": "How to treat a burn or scald; common misconceptions"
+        }
+      ],
+      "translations": {
+        "en": "For a thermal burn, cool the area under cool running water for 20 minutes while keeping the rest of the person warm. Remove nearby clothing and jewelry only if not stuck to the skin. Do not apply ice, butter or oils, or burst blisters. After cooling, lay clean cling film loosely over the burn; do not wrap it around a limb or put it on the face. Seek emergency care for large, deep burns or burns on the face or genitals; seek medical advice if unsure.",
+        "pt": "Para queimadura térmica, resfrie a área com água corrente fresca por 20 minutos, mantendo o resto do corpo aquecido. Retire roupas e joias próximas somente se não estiverem grudadas na pele. Não aplique gelo, manteiga nem óleos, nem estoure bolhas. Após resfriar, coloque filme plástico limpo e solto sobre a queimadura; não enrole ao redor do membro nem coloque no rosto. Procure emergência para queimaduras grandes, profundas, no rosto ou genitais; peça orientação médica se tiver dúvidas.",
+        "es": "Para una quemadura térmica, enfríe la zona con agua corriente fresca durante 20 minutos, manteniendo el resto del cuerpo caliente. Retire ropa y joyas cercanas solo si no están pegadas a la piel. No aplique hielo, mantequilla ni aceites, ni reviente ampollas. Después de enfriar, coloque film plástico limpio y suelto sobre la quemadura; no envuelva la extremidad ni lo coloque en la cara. Busque urgencias para quemaduras grandes, profundas, en la cara o genitales; consulte si tiene dudas."
+      },
+      "content_hash": "e6e8ede50d0ae5789156eb22d7e81584396f4ed56e849c08e27e0531ab461879"
+    },
+    {
+      "id": "allergy-action-plan",
+      "topic": "anaphylaxis",
+      "reference_title": "FARE: Recognizing and treating reaction symptoms",
+      "reference_url": "https://www.foodallergy.org/resources/recognizing-and-treating-reaction-symptoms",
+      "reference_section": "Personalized emergency care plan; monitoring for changes",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "possible allergen exposure without symptoms"
+      ],
+      "contraindications": [
+        "assuming anaphylaxis from exposure alone",
+        "overriding prescribed emergency plan"
+      ],
+      "additional_references": [
+        {
+          "title": "FARE: Food Allergy and Anaphylaxis Emergency Care Plan, August 2025",
+          "url": "https://www.foodallergy.org/sites/default/files/2025-08/ECP-FAAP_Plan_English_8_13_25.pdf",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If there has been allergen exposure but no symptoms, follow the person’s prescribed allergy emergency plan; medication instructions are individual. Stay with them and watch for changes. New breathing difficulty, throat swelling or faintness requires emergency action rather than waiting.",
+        "pt": "Se houve contato com alérgeno, mas não há sintomas, siga o plano de emergência prescrito para a alergia; as instruções de medicação são individuais. Fique com a pessoa e observe mudanças. Nova dificuldade respiratória, inchaço na garganta ou desmaio exige ação de emergência, sem esperar.",
+        "es": "Si hubo exposición a un alérgeno pero no hay síntomas, siga el plan de emergencia prescrito para la alergia; las indicaciones de medicación son individuales. Permanezca con la persona y vigile cambios. Nueva dificultad respiratoria, hinchazón de garganta o desmayo exige actuar como emergencia, sin esperar."
+      },
+      "content_hash": "b1db6e8e179f574a32b408a3703edd5c8325818e6af5d35211f415b6c6612240"
+    },
+    {
+      "id": "anaphylaxis-injector",
+      "topic": "anaphylaxis",
+      "reference_title": "NHS: Anaphylaxis",
+      "reference_url": "https://www.nhs.uk/conditions/anaphylaxis/",
+      "reference_section": "What to do if you have anaphylaxis",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected anaphylaxis",
+        "available injector"
+      ],
+      "contraindications": [
+        "device timing inferred from unspecified model"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If anaphylaxis is suspected, use an available adrenaline auto-injector following that device’s instructions and call emergency services. If anaphylaxis is suspected, lie down; if breathing is difficult, raise the shoulders or sit up slowly. If anaphylaxis is suspected, do not stand or walk. If anaphylaxis symptoms persist 5 minutes after the first injection, use a second auto-injector if available.",
+        "pt": "Se houver suspeita de anafilaxia, use um autoinjetor de adrenalina disponível conforme as instruções desse dispositivo e chame a emergência. Se houver suspeita de anafilaxia, deite; se respirar for difícil, eleve os ombros ou sente lentamente. Se houver suspeita de anafilaxia, não fique em pé nem caminhe. Se os sintomas de anafilaxia persistirem 5 minutos após a primeira injeção, use um segundo autoinjetor se disponível.",
+        "es": "Si sospecha anafilaxia, use un autoinyector de adrenalina disponible según las instrucciones de ese dispositivo y llame a emergencias. Si sospecha anafilaxia, acuéstese; si cuesta respirar, eleve los hombros o siéntese lentamente. Si sospecha anafilaxia, no se ponga de pie ni camine. Si los síntomas de anafilaxia persisten 5 minutos después de la primera inyección, use otro autoinyector si está disponible."
+      },
+      "content_hash": "d74ba6bd970b8a101c6774769b86600d7c5569ebeaf4f0bac249498f5e6f2398"
+    },
+    {
+      "id": "snakebite-still",
+      "topic": "snakebite",
+      "reference_title": "WHO: Snakebite envenoming",
+      "reference_url": "https://www.who.int/news-room/questions-and-answers/item/snakebite-envenoming",
+      "reference_section": "What is the appropriate first aid for snakebite?",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected snakebite"
+      ],
+      "contraindications": [
+        "compression without appropriate species and regional guidance"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "For a suspected snakebite, keep the person still and arrange urgent transport to medical care. Do not cut, suck or apply a narrow tourniquet to the bite. Compression bandaging depends on venom type and local guidance; an unknown snake or location does not establish that it is appropriate.",
+        "pt": "Para suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico. Não corte, sugue nem aplique torniquete estreito. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada.",
+        "es": "Ante una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica. No corte, succione ni aplique un torniquete estrecho. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado."
+      },
+      "content_hash": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5"
+    },
+    {
+      "id": "flood-shelter",
+      "topic": "flood",
+      "reference_title": "National Weather Service: During a flood",
+      "reference_url": "https://www.weather.gov/safety/flood-during",
+      "reference_section": "Avoid flood waters",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "flood exposure"
+      ],
+      "contraindications": [
+        "entering moving or electrified water"
+      ],
+      "additional_references": [
+        {
+          "title": "National Weather Service Pittsburgh: Floods",
+          "url": "https://www.weather.gov/pbz/floods",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If a vehicle is trapped in fast-moving floodwater, stay inside unless water rises inside; then seek refuge on its roof and call rescuers. In a building, move to a higher level, but not into an enclosed attic; go onto the roof only if necessary. Do not walk or drive through floodwater. Avoid submerged electrical equipment.",
+        "pt": "Se um veículo ficar preso em água corrente de enchente, permaneça dentro, a menos que a água comece a subir dentro; nesse caso, procure abrigo no teto e chame o resgate. Em um prédio, vá para um andar mais alto, mas não entre em um sótão fechado; vá ao telhado somente se necessário. Não caminhe nem dirija pela enchente. Evite equipamentos elétricos submersos.",
+        "es": "Si un vehículo queda atrapado en agua de inundación que corre rápidamente, permanezca dentro salvo si el agua sube dentro; en ese caso, refúgiese en el techo y llame a rescate. En un edificio, vaya a un nivel más alto, pero no entre en un ático cerrado; suba al tejado solo si es necesario. No camine ni conduzca por la inundación. Evite equipos eléctricos sumergidos."
+      },
+      "content_hash": "90f210824b353a099348a44e0536790f2aa79d722e0f22f5c0f637b639593986"
+    },
+    {
+      "id": "heat-cooling",
+      "topic": "heatstroke",
+      "reference_title": "CDC NIOSH: Heat-related illnesses",
+      "reference_url": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+      "reference_section": "Heat stroke: First aid",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected heat illness"
+      ],
+      "contraindications": [
+        "unprotected airway during immersion"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If heat exposure causes confusion, collapse or very hot skin, call emergency services and begin cooling immediately. Move to shade or a cool area, remove outer clothing, wet the skin with cool water and fan it. Stay with the person and monitor them while help is coming.",
+        "pt": "Se o calor causar confusão, colapso ou pele muito quente, chame a emergência e comece a resfriar imediatamente. Leve à sombra ou local fresco, retire roupas externas, molhe a pele com água fresca e abane. Fique com a pessoa e observe seu estado enquanto a ajuda chega.",
+        "es": "Si el calor causa confusión, colapso o piel muy caliente, llame a emergencias y empiece a enfriar inmediatamente. Lleve a la sombra o a un lugar fresco, retire ropa exterior, moje la piel con agua fresca y abanique. Permanezca con la persona y vigile su estado mientras llega ayuda."
+      },
+      "content_hash": "60a938c1921b80a8d47333a93438aa3578b67866e793cf3c8c014faad8279d0f"
+    },
+    {
+      "id": "cooking-fire",
+      "topic": "fire",
+      "reference_title": "CPSC: Recipe for safer cooking",
+      "reference_url": "https://www.cpsc.gov/safety-education/safety-guides/home-fire/recipe-safer-cooking",
+      "reference_section": "To put out a cooking fire in your kitchen",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "small contained cooking pan fire",
+        "safe approach",
+        "fitting metal lid"
+      ],
+      "contraindications": [
+        "water",
+        "moving burning pan",
+        "approaching spreading fire"
+      ],
+      "additional_references": [
+        {
+          "title": "USFA: Cooking fire safety",
+          "url": "https://www.usfa.fema.gov/prevention/home-fires/prevent-fires/cooking/",
+          "checked_at": "2026-11-26"
+        },
+        {
+          "title": "USFA: Cook Safely flyer",
+          "url": "https://www.usfa.fema.gov/downloads/fief/handouts/fief_cooking_safety_flyer_custom.pdf",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "For a small contained pan fire, only if safe, slide a fitting metal lid over the pan, turn off the heat and leave covered until cool. Never add water or carry the burning pan. If unsafe to approach or the fire spreads, leave and call firefighters from safety.",
+        "pt": "Para fogo pequeno contido na panela, somente se for seguro, deslize uma tampa metálica adequada sobre ela, desligue o fogo e mantenha coberta até esfriar. Nunca adicione água nem carregue a panela em chamas. Se for inseguro aproximar-se ou o fogo se espalhar, saia e chame os bombeiros de local seguro.",
+        "es": "Para fuego pequeño contenido en una sartén, solo si es seguro, deslice una tapa metálica adecuada encima, apague el calor y mantenga cubierta hasta enfriar. Nunca añada agua ni lleve la sartén en llamas. Si acercarse es inseguro o el fuego se extiende, salga y llame a bomberos desde un lugar seguro."
+      },
+      "content_hash": "7aab7593e54176cf02ed8daa8fb1738b14b1ce32b2451c96539056714383c732"
+    },
+    {
+      "id": "adult-cpr-compressions",
+      "topic": "cpr",
+      "reference_title": "American Red Cross: Adult CPR steps",
+      "reference_url": "https://www.redcross.org/take-a-class/cpr/performing-cpr/cpr-steps",
+      "reference_section": "Giving CPR; adult scope",
+      "reference_checked_at": "2026-11-26",
+      "scope": {
+        "age_group": "adult",
+        "consciousness": "unresponsive"
+      },
+      "prerequisites": [
+        "adult",
+        "unresponsive",
+        "not breathing normally"
+      ],
+      "contraindications": [
+        "responsive",
+        "normal breathing",
+        "child or infant technique"
+      ],
+      "additional_references": [
+        {
+          "title": "AHA 2025 Adult Basic Life Support",
+          "url": "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-basic-life-support",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If an adult is unresponsive and not breathing normally, call emergency services on speakerphone and begin CPR. Place them on their back on a firm, flat surface. With one hand’s heel in the center of the chest and the other on top, compress 5–6 cm at 100–120 compressions per minute, allowing full chest recoil.",
+        "pt": "Se um adulto estiver inconsciente e não respirar normalmente, chame a emergência no viva-voz e inicie RCP. Coloque-o de costas numa superfície firme e plana. Apoie a base de uma mão no centro do peito e a outra por cima. Comprima 5–6 cm a 100–120 compressões por minuto, deixando o peito retornar completamente.",
+        "es": "Si un adulto está inconsciente y no respira normalmente, llame a emergencias con altavoz e inicie RCP. Acuéstelo boca arriba sobre una superficie firme y plana. Coloque la base de una mano en el centro del pecho y la otra encima. Comprima 5–6 cm a 100–120 compresiones por minuto, dejando que el pecho vuelva completamente."
+      },
+      "content_hash": "93b299815b4093e2c1a2cfa5af2c6581229d52cd8cd845bcd04dfc4e4aca9321"
+    },
+    {
+      "id": "adult-cpr-continuation",
+      "topic": "cpr",
+      "reference_title": "American Red Cross: Adult cardiac arrest",
+      "reference_url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/adult-cardiac-arrest",
+      "reference_section": "How long should I do compressions?; breathing technique",
+      "reference_checked_at": "2026-11-26",
+      "scope": {
+        "age_group": "adult",
+        "consciousness": "unresponsive"
+      },
+      "prerequisites": [
+        "adult",
+        "unresponsive",
+        "not breathing normally"
+      ],
+      "contraindications": [
+        "responsive",
+        "normal breathing"
+      ],
+      "additional_references": [
+        {
+          "title": "AHA 2025 Adult Basic Life Support",
+          "url": "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-basic-life-support",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "For an unresponsive adult not breathing normally, if trained and willing, give 2 breaths after each 30 compressions; otherwise continue compressions. Follow AED prompts when available. Continue until normal breathing returns, a responder takes over, you are too exhausted, or the scene becomes unsafe. Do not stop just because emergency help has arrived without taking over.",
+        "pt": "Para um adulto inconsciente que não respira normalmente, se tiver treinamento e disposição, dê 2 ventilações após cada 30 compressões; caso contrário, continue as compressões. Siga as instruções do DEA disponível. Continue até voltar a respirar normalmente, alguém assumir, você ficar exausto ou o local ficar inseguro. A simples chegada do socorro não significa parar.",
+        "es": "Para un adulto inconsciente que no respira normalmente, si tiene formación y disposición, dé 2 ventilaciones tras cada 30 compresiones; de lo contrario, continúe las compresiones. Siga las indicaciones del DEA disponible. Continúe hasta que respire normalmente, alguien lo releve, se agote o el lugar sea inseguro. La mera llegada de ayuda no significa parar."
+      },
+      "content_hash": "5c628e9f105d6929a417b7935dc576da5d8d68377e1871c4cfa4204d5ba695f2"
+    },
+    {
+      "id": "infant-choking-responsive",
+      "topic": "choking",
+      "reference_title": "AHA/AAP 2025: Pediatric Basic Life Support",
+      "reference_url": "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/pediatric-basic-life-support",
+      "reference_section": "Relief of severe foreign body airway obstruction in infants",
+      "reference_checked_at": "2026-11-26",
+      "scope": {
+        "age_group": "infant",
+        "consciousness": "responsive"
+      },
+      "prerequisites": [
+        "infant under one year",
+        "responsive",
+        "cannot cough cry or breathe"
+      ],
+      "contraindications": [
+        "effective coughing",
+        "unresponsive",
+        "abdominal thrusts",
+        "blind finger sweeps"
+      ],
+      "additional_references": [
+        {
+          "title": "American Red Cross: Infant choking",
+          "url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/infant-choking",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If a baby under 1 year is responsive but cannot cough, cry or breathe, call for emergency help. Support the head and jaw, face down on your forearm, head lower than chest; give 5 back blows between the shoulder blades. Turn face up, still head lower; give 5 chest thrusts on the breastbone with the heel of one hand. Stop when normal breathing, forceful coughing or crying returns; repeat otherwise until the object clears or the baby becomes unresponsive. Do not use abdominal thrusts or blind finger sweeps.",
+        "pt": "Se um bebê menor de 1 ano responde, mas não consegue tossir, chorar ou respirar, peça socorro de emergência. Apoie cabeça e mandíbula, de bruços no antebraço, cabeça abaixo do peito; dê 5 golpes nas costas entre as escápulas. Vire de barriga para cima, mantendo a cabeça abaixo; dê 5 impulsos no esterno com a base de uma mão. Pare se respirar normalmente, tossir com força ou chorar; caso contrário, repita até desobstruir ou ficar inconsciente. Não use impulsos abdominais nem varredura às cegas com os dedos.",
+        "es": "Si un bebé menor de 1 año responde pero no puede toser, llorar o respirar, pida ayuda de emergencia. Apoye cabeza y mandíbula, boca abajo sobre su antebrazo, cabeza más baja que el pecho; dé 5 golpes entre los omóplatos. Gírelo boca arriba, cabeza aún más baja; dé 5 impulsos en el esternón con la base de una mano. Pare si respira normalmente, tose con fuerza o llora; de lo contrario, repita hasta desobstruir o quedar inconsciente. No use impulsos abdominales ni barridos a ciegas con los dedos."
+      },
+      "content_hash": "ef6a7895d1af6041897e1a21dae09be901613b229093e70b400f4912d071ca4d"
+    },
+    {
+      "id": "infant-choking-unresponsive",
+      "topic": "choking",
+      "reference_title": "American Red Cross: Infant cardiac arrest",
+      "reference_url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/infant-cardiac-arrest",
+      "reference_section": "Infant CPR after choking; single rescuer",
+      "reference_checked_at": "2026-11-26",
+      "scope": {
+        "age_group": "infant"
+      },
+      "prerequisites": [
+        "infant under one year",
+        "unresponsive after choking",
+        "not breathing normally",
+        "single rescuer CPR"
+      ],
+      "contraindications": [
+        "normal breathing",
+        "blind finger sweeps"
+      ],
+      "additional_references": [
+        {
+          "title": "AHA/AAP 2025 Pediatric Basic Life Support",
+          "url": "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/pediatric-basic-life-support",
+          "checked_at": "2026-11-26"
+        },
+        {
+          "title": "NHS: infant rescue breath technique",
+          "url": "https://www.nhs.uk/baby/first-aid-and-safety/first-aid/how-to-resuscitate-a-child/",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If a choking baby under 1 year becomes unresponsive and is not breathing normally, stop choking maneuvers, call emergency services on speakerphone and start infant CPR on a firm, flat surface. For a single rescuer, encircle the chest with both hands, thumbs on the breastbone’s center; give 30 compressions about 4 cm deep at 100–120 per minute, allowing recoil. Before 2 gentle breaths, remove only a visible object. Keep the head neutral; seal your mouth over the baby’s mouth and nose, blowing for 1 second per breath to raise the chest. With a single rescuer, repeat 30:2 and follow dispatcher/AED instructions until normal breathing returns or help takes over.",
+        "pt": "Se um bebê engasgado menor de 1 ano ficar inconsciente e não respirar normalmente, pare as manobras de desengasgo, chame a emergência no viva-voz e inicie RCP infantil numa superfície firme e plana. Para um único socorrista, envolva o peito com as mãos, polegares no centro do esterno; faça 30 compressões de cerca de 4 cm a 100–120 por minuto, permitindo retorno. Antes de 2 ventilações suaves, retire somente objeto visível. Mantenha a cabeça neutra; vede boca e nariz do bebê com sua boca e sopre por 1 segundo para elevar o peito. Com um único socorrista, repita 30:2 e siga o atendente/DEA até respirar normalmente ou o socorro assumir.",
+        "es": "Si un bebé atragantado menor de 1 año queda inconsciente y no respira normalmente, suspenda las maniobras de desobstrucción, llame a emergencias con altavoz e inicie RCP infantil sobre superficie firme y plana. Para un solo rescatista, rodee el pecho con las manos, pulgares en el centro del esternón; haga 30 compresiones de unos 4 cm a 100–120 por minuto, permitiendo recuperación. Antes de 2 ventilaciones suaves, retire solo un objeto visible. Mantenga la cabeza neutra; selle boca y nariz del bebé con su boca y sople durante 1 segundo para elevar el pecho. Con un solo rescatista, repita 30:2 y siga al operador/DEA hasta respirar normalmente o llegar el relevo."
+      },
+      "content_hash": "924a22b75b3a1d4c21e622697b5bcb97d12f50ab4975984c77d058f13b36167d"
+    },
+    {
+      "id": "bleeding-tourniquet",
+      "topic": "bleeding",
+      "reference_title": "American Red Cross: How to apply a tourniquet",
+      "reference_url": "https://www.redcross.org/take-a-class/resources/articles/how-to-apply-a-tourniquet",
+      "reference_section": "How to apply; windlass rod tourniquet",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "life-threatening limb bleeding",
+        "pressure not controlling bleeding",
+        "trained",
+        "commercial tourniquet available"
+      ],
+      "contraindications": [
+        "joint placement",
+        "loosening tourniquet",
+        "torso application"
+      ],
+      "additional_references": [
+        {
+          "title": "USU National Center for Disaster Medicine: Stop the Bleed",
+          "url": "https://stopthebleed.usuhs.edu/index.html",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If life-threatening arm or leg bleeding continues despite firm pressure, and you are trained with a commercial tourniquet available, place it 5–7.5 cm above the wound toward the heart, not over a joint. Tighten according to its instructions until bleeding stops, then secure it. Do not loosen or remove it. Keep emergency help coming; maintain pressure if no tourniquet is available.",
+        "pt": "Se hemorragia com risco de vida num braço ou perna continuar apesar de pressão firme, e você tiver treinamento e torniquete comercial disponível, coloque-o 5–7,5 cm acima da ferida, em direção ao coração, nunca sobre articulação. Aperte conforme as instruções até parar o sangramento e fixe. Não afrouxe nem retire. Mantenha o pedido de socorro; continue a pressão se não houver torniquete.",
+        "es": "Si una hemorragia mortal de brazo o pierna continúa pese a presión firme, y tiene formación y un torniquete comercial disponible, colóquelo 5–7,5 cm por encima de la herida hacia el corazón, nunca sobre una articulación. Apriete según sus instrucciones hasta detener el sangrado y fíjelo. No lo afloje ni retire. Mantenga la ayuda solicitada; continúe presionando si no hay torniquete."
+      },
+      "content_hash": "4f71b69203832e9a935f0c9b5dc93f51fb7e1529d55f5e325302ef146e568721"
+    },
+    {
+      "id": "stroke-response",
+      "topic": "stroke",
+      "reference_title": "CDC: Signs and symptoms of stroke",
+      "reference_url": "https://www.cdc.gov/stroke/signs-symptoms/index.html",
+      "reference_section": "B.E. F.A.S.T.; transient symptoms",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected stroke"
+      ],
+      "contraindications": [
+        "waiting for improvement"
+      ],
+      "additional_references": [
+        {
+          "title": "American Red Cross: Stroke",
+          "url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/stroke",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If sudden facial droop, arm weakness or abnormal speech suggests a stroke, call emergency services for an ambulance now. Do not wait for improvement, even if symptoms disappear. Record the time symptoms started, or when the person was last known well. Stay with them and tell responders what changed.",
+        "pt": "Se assimetria facial súbita, fraqueza no braço ou fala alterada sugerir AVC, chame uma ambulância agora. Não espere melhorar, mesmo se os sintomas desaparecerem. Anote a hora do início ou quando a pessoa foi vista bem pela última vez. Fique com ela e relate as alterações ao socorro.",
+        "es": "Si caída facial repentina, debilidad del brazo o habla alterada sugiere un ictus, llame a una ambulancia ahora. No espere mejoría, aunque los síntomas desaparezcan. Anote cuándo comenzaron o cuándo se vio bien a la persona por última vez. Permanezca con ella y cuente los cambios al equipo de emergencias."
+      },
+      "content_hash": "466056ca70a9441b635b5c02f84690dbbff1b7b41263d50f3f84e2849a7c330f"
+    },
+    {
+      "id": "poison-swallowed",
+      "topic": "poison",
+      "reference_title": "Illinois Poison Center: First aid",
+      "reference_url": "https://www.illinoispoisoncenter.org/health-safety/medications-and-first-aid/first-aid/",
+      "reference_section": "Poison in the mouth; emergency advice",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected swallowed household chemical"
+      ],
+      "contraindications": [
+        "induced vomiting",
+        "chemical neutralization",
+        "unconditional oral fluids"
+      ],
+      "additional_references": [
+        {
+          "title": "National Capital Poison Center: Immediate assistance",
+          "url": "https://www.poison.org/need-immediate-assistance",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If a household chemical was swallowed, call a poison center immediately with the product container, amount and time. Do not induce vomiting or try to neutralize it with vinegar. Ask the poison expert about fluids; advice depends on the product and being awake, without seizures, and able to swallow safely. If the person collapses, has a seizure, cannot be awakened or has trouble breathing, call emergency services immediately.",
+        "pt": "Se alguém engoliu produto químico doméstico, ligue imediatamente para um centro de intoxicações com a embalagem, quantidade e horário. Não provoque vômito nem tente neutralizar com vinagre. Consulte o especialista sobre líquidos; a orientação depende do produto e de estar acordado, sem convulsões e conseguir engolir com segurança. Se houver colapso, convulsão, dificuldade para acordar ou respirar, chame a emergência imediatamente.",
+        "es": "Si alguien tragó un producto químico doméstico, llame inmediatamente a toxicología con el envase, cantidad y hora. No provoque vómitos ni intente neutralizarlo con vinagre. Consulte al especialista sobre líquidos; la orientación depende del producto y de estar despierto, sin convulsiones y poder tragar con seguridad. Si colapsa, convulsiona, no despierta o tiene dificultad respiratoria, llame inmediatamente a emergencias."
+      },
+      "content_hash": "a0788b03b0607a4cc8ea216d3e35700bc6105b79eaae55d35b4d52bfdda463ca"
+    },
+    {
+      "id": "carbon-monoxide-escape",
+      "topic": "carbon_monoxide",
+      "reference_title": "OSHA: Using portable generators safely",
+      "reference_url": "https://www.osha.gov/sites/default/files/publications/OSHA3286.pdf",
+      "reference_section": "Carbon monoxide poisoning",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected combustion gas exposure"
+      ],
+      "contraindications": [
+        "re-entry into unsafe atmosphere",
+        "garage generator ventilation exception"
+      ],
+      "additional_references": [
+        {
+          "title": "CDC: Carbon monoxide poisoning basics",
+          "url": "https://www.cdc.gov/carbon-monoxide/about/index.html",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If a generator or fuel-burning appliance may be causing headache or nausea, everyone should leave for fresh air immediately and call emergency services from outside. A garage is unsafe for generator use even with open doors or fans. Do not re-enter to turn equipment off or rescue someone; tell trained rescuers. Stay out until professionals declare it safe.",
+        "pt": "Se um gerador ou aparelho a combustível pode estar causando dor de cabeça ou náusea, todos devem sair imediatamente para o ar livre e chamar a emergência de fora. A garagem é insegura para geradores mesmo com portas abertas ou ventiladores. Não volte para desligar equipamento nem resgatar alguém; avise socorristas treinados. Aguarde liberação profissional.",
+        "es": "Si un generador o aparato de combustión puede causar dolor de cabeza o náuseas, todos deben salir inmediatamente al aire libre y llamar a emergencias desde fuera. Un garaje es inseguro para generadores incluso con puertas abiertas o ventiladores. No vuelva a apagar equipos ni rescatar a alguien; avise a rescatistas capacitados. Espere autorización profesional."
+      },
+      "content_hash": "92d522e91ab39c8159163d1641659f17774ee269bc93e956220c9fc9d7c2c713"
+    },
+    {
+      "id": "food-outage",
+      "topic": "food_safety",
+      "reference_title": "CDC: Keep food safe after an emergency",
+      "reference_url": "https://www.cdc.gov/food-safety/foods/keep-food-safe-after-emergency.html",
+      "reference_section": "After a power outage",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "refrigerator power outage",
+        "perishable food"
+      ],
+      "contraindications": [
+        "using taste or smell to establish safety"
+      ],
+      "additional_references": [
+        {
+          "title": "FDA: Power outages and food safety",
+          "url": "https://www.fda.gov/food/food-safety-during-emergencies/power-outages-key-tips-consumers-about-food-safety",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "After 4 hours without refrigerator power and without another cold source, discard perishables such as meat, milk and leftovers unless reliable temperature monitoring confirms they stayed at 40°F (4°C) or below. Never taste food to test safety; appearance and smell cannot establish safety. Use safe shelf-stable foods instead. Keep refrigerator doors closed during an outage.",
+        "pt": "Após 4 horas sem energia na geladeira nem outra fonte de frio, descarte perecíveis como carne, leite e sobras, salvo se monitoramento confiável confirmar que ficaram a 4°C (40°F) ou menos. Nunca prove alimentos para testar segurança; aparência e cheiro não comprovam segurança. Use alimentos seguros que dispensem refrigeração. Mantenha a geladeira fechada durante a falta de energia.",
+        "es": "Tras 4 horas sin electricidad en el refrigerador ni otra fuente de frío, deseche perecederos como carne, leche y sobras, salvo que un control fiable confirme que estuvieron a 4°C (40°F) o menos. Nunca pruebe alimentos para evaluar seguridad; aspecto y olor no la demuestran. Use alimentos seguros que no necesiten refrigeración. Mantenga cerrado el refrigerador durante el corte."
+      },
+      "content_hash": "4297671629578a55d4fd79463b6246e53dbfb3113a45a3d453511a5538b95d32"
+    }
+  ]
+}

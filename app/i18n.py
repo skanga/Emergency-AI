@@ -167,3 +167,9 @@ ANSWER_WITHHELD = {
     'pt': '**Resposta gerada retida.** Falhou uma verificação de citação ou das condições de uma ação. Consulte as referências originais abaixo e procure ajuda qualificada. Estas verificações não garantem a exatidão médica nem verificam todas as afirmações.\n\n',
     'es': '**Respuesta generada retenida.** Falló una comprobación de citas o de las condiciones de una acción. Consulte las referencias originales a continuación y busque ayuda cualificada. Estas comprobaciones no garantizan la exactitud médica ni verifican todas las afirmaciones.\n\n',
 }
+GUIDANCE_LABEL = {'en':'Source-backed guidance', 'pt':'Orientação baseada em fontes', 'es':'Orientación basada en fuentes'}
+GUIDANCE_FALLBACK = {
+    'en':'\n\n**Source-backed fallback guidance**\n\nThe generated answer is unavailable. These steps come from the versioned references shown below; follow their stated conditions.\n\n',
+    'pt':'\n\n**Orientação alternativa baseada em fontes**\n\nA resposta gerada não está disponível. Estas etapas vêm das referências versionadas abaixo; siga as condições indicadas.\n\n',
+    'es':'\n\n**Orientación alternativa basada en fuentes**\n\nLa respuesta generada no está disponible. Estos pasos proceden de las referencias versionadas que aparecen abajo; respete sus condiciones.\n\n',
+}

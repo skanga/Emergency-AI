@@ -114,7 +114,9 @@ class PipelineTests(unittest.TestCase):
         self.assertLess(kinds.index('retrieval'), kinds.index('token'))
         report = next(value for kind, value in events if kind == 'retrieval')
         self.assertEqual(events[-1][1]['retrieval'], report)
-        self.assertEqual(report['included'], 0)
+        sources = next(value for kind, value in events if kind == 'sources')
+        self.assertEqual(report['included'], sum(not s.get('context_omitted') for s in sources))
+        self.assertTrue(all(s['kind'] == 'guidance' for s in sources))
 
 class TransportAndCacheTests(unittest.TestCase):
     def test_missing_content_length_is_still_bounded(self):
@@ -204,7 +206,8 @@ class BudgetFailureTests(unittest.TestCase):
             raise ResponseTooLarge('too big')
         report = {}
         with patch('app.kiwix.get_text', side_effect=fetch):
-            self.assertEqual(engine.retrieve('burn first aid', 'en', diagnostics=report), [])
+            sources = engine.retrieve('burn first aid', 'en', diagnostics=report)
+            self.assertTrue(all(s['kind'] == 'guidance' for s in sources))
         self.assertEqual(report['status'], 'failed')
         self.assertEqual(report['fetches'][0]['status'], 'oversize')
 
@@ -339,7 +342,10 @@ class EvidenceApplicabilityTests(unittest.TestCase):
         report = {}
         retrieval.library_sources(client, plan_query('burn'), None, report, time.monotonic()+.03)
         self.assertEqual(report['fetched'], len(fetched))
-        self.assertEqual(report['not_fetched_budget'], 4)
+        # Under inference load the deadline can expire before all four workers
+        # start. Check accounting, not a 30 ms scheduler timing assumption.
+        self.assertLessEqual(len(fetched), 4)
+        self.assertEqual(report['not_fetched_budget'], 8 - len(fetched))
         time.sleep(.12)
 
     def test_incidental_emergency_mentions_do_not_promote_other_local_topics(self):
