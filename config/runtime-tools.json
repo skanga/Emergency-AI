@@ -10,6 +10,49 @@
       "sha256": "b0ae98dd344aa0469a15ab42feff6d5aafb79541a82fb4e2647c74b073123815",
       "reviewed_at": "2026-11-25",
       "notes": "Project-reviewed SHA-256 of the official HTTPS artifact; publisher MD5 was cross-checked but is not used for automatic verification. This is not a publisher signature. Only this exact platform/artifact has been reviewed."
+    },
+    "linux-arm64": {
+      "version": "3.8.2",
+      "asset": "kiwix-tools_linux-aarch64-3.8.2.tar.gz",
+      "root": "kiwix-tools_linux-aarch64-3.8.2",
+      "url": "https://download.kiwix.org/release/kiwix-tools/kiwix-tools_linux-aarch64-3.8.2.tar.gz",
+      "size": 20507463,
+      "sha256": "a9898fc5363437327350db669bbc03dcc7ecfd498dae727d7184bebe77019514",
+      "reviewed_at": "2026-11-25",
+      "notes": "Project-reviewed SHA-256 of the official HTTPS artifact; archive layout inspected. Native execution requires same-host health checks. Not a publisher signature. Upstream binary archive contains no license files; see upstream GPL-3.0 source distribution."
+    },
+    "macos-arm64": {
+      "version": "3.8.2",
+      "asset": "kiwix-tools_macos-arm64-3.8.2.tar.gz",
+      "root": "kiwix-tools_macos-arm64-3.8.2",
+      "url": "https://download.kiwix.org/release/kiwix-tools/kiwix-tools_macos-arm64-3.8.2.tar.gz",
+      "size": 10283222,
+      "sha256": "5c64d43176627e558a117146b02ea36b7da2b0cd3a332cbff075cde05d9585f9",
+      "reviewed_at": "2026-11-25",
+      "notes": "Project-reviewed SHA-256 of the official HTTPS artifact; archive layout inspected. Native execution requires same-host health checks. Not a publisher signature. Upstream binary archive contains no license files; see upstream GPL-3.0 source distribution."
+    },
+    "macos-x86_64": {
+      "version": "3.8.2",
+      "asset": "kiwix-tools_macos-x86_64-3.8.2.tar.gz",
+      "root": "kiwix-tools_macos-x86_64-3.8.2",
+      "url": "https://download.kiwix.org/release/kiwix-tools/kiwix-tools_macos-x86_64-3.8.2.tar.gz",
+      "size": 10817537,
+      "sha256": "ae341280e97ad5902e7a4282a24340eac7d7061c267661c0ef2a88a34547f247",
+      "reviewed_at": "2026-11-25",
+      "notes": "Project-reviewed SHA-256 of the official HTTPS artifact; archive layout inspected. Native execution requires same-host health checks. Not a publisher signature. Upstream binary archive contains no license files; see upstream GPL-3.0 source distribution."
+    },
+    "windows-x86_64": {
+      "version": "3.8.1",
+      "asset": "kiwix-tools_win-x86_64-3.8.1.zip",
+      "root": null,
+      "url": "https://download.kiwix.org/release/kiwix-tools/kiwix-tools_win-x86_64-3.8.1.zip",
+      "size": 18301924,
+      "sha256": "fcd01ed2b93e9a68632c7863c83b9f66bf64406a66357be1df7b8b75596f3e45",
+      "reviewed_at": "2026-11-25",
+      "notes": "Project-reviewed SHA-256 of the official HTTPS artifact; archive layout inspected. Native execution requires same-host health checks. Not a publisher signature. Upstream binary archive contains no license files; see upstream GPL-3.0 source distribution."
     }
+  },
+  "unsupported_platforms": {
+    "windows-arm64": "No reviewed native Windows ARM64 archive; manual installation required."
   }
 }

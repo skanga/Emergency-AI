@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "notes": "Test-only release pins, fetched from official GitHub tag APIs on 2026-11-26. Native tests verify these artifacts, not upstream newest. Metadata is an exact subset; sizes and SHA-256 digests are publisher-provided. Refresh by fetching both tagged releases and retaining exact platform/backend and CPython 3.12 install_only assets.",
+  "llama": {
+    "tag_name": "b12751",
+    "draft": false,
+    "prerelease": true,
+    "source_url": "https://api.github.com/repos/ggml-org/llama.cpp/releases/tags/b12751",
+    "assets": [
+      {
+        "name": "llama-b12751-bin-ubuntu-x64.tar.gz",
+        "browser_download_url": "https://github.com/ggml-org/llama.cpp/releases/download/b12751/llama-b12751-bin-ubuntu-x64.tar.gz",
+        "size": 23405425,
+        "digest": "sha256:d0f565208f8b28b1129e95d723a05e58a6ec97c87f7ca933df8023fa60a274ea"
+      },
+      {
+        "name": "llama-b12751-bin-ubuntu-arm64.tar.gz",
+        "browser_download_url": "https://github.com/ggml-org/llama.cpp/releases/download/b12751/llama-b12751-bin-ubuntu-arm64.tar.gz",
+        "size": 18957598,
+        "digest": "sha256:b4fa436c8d97a9124df5630a9edba92cdbbe5767e382ea689ffaf4f3610bf187"
+      },
+      {
+        "name": "llama-b12751-bin-macos-x64.tar.gz",
+        "browser_download_url": "https://github.com/ggml-org/llama.cpp/releases/download/b12751/llama-b12751-bin-macos-x64.tar.gz",
+        "size": 12568191,
+        "digest": "sha256:80985ebbe0ac3029afb45b9442d1c9aa3cd8ac08b3b22b15f234e5360772377b"
+      },
+      {
+        "name": "llama-b12751-bin-macos-arm64.tar.gz",
+        "browser_download_url": "https://github.com/ggml-org/llama.cpp/releases/download/b12751/llama-b12751-bin-macos-arm64.tar.gz",
+        "size": 16840406,
+        "digest": "sha256:d6b2790ee9a8f528016976d8f23c0fcbd6310dd739538d0c00088805ef52a490"
+      },
+      {
+        "name": "llama-b12751-bin-win-cpu-x64.zip",
+        "browser_download_url": "https://github.com/ggml-org/llama.cpp/releases/download/b12751/llama-b12751-bin-win-cpu-x64.zip",
+        "size": 25238820,
+        "digest": "sha256:09c916f56fb8ba4758fcfb6ce4e88eb628180c8214342556d1dab27cef730b85"
+      }
+    ]
+  },
+  "python": {
+    "tag_name": "20261124",
+    "draft": false,
+    "prerelease": false,
+    "source_url": "https://api.github.com/repos/astral-sh/python-build-standalone/releases/tags/20261124",
+    "assets": [
+      {
+        "name": "cpython-3.12.16+20261124-x86_64-unknown-linux-gnu-install_only.tar.gz",
+        "browser_download_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261124/cpython-3.12.16%2B20261124-x86_64-unknown-linux-gnu-install_only.tar.gz",
+        "size": 68209387,
+        "digest": "sha256:6774c7f49ee21c1723f7ac91961a5bf9f3ee3ae6e4d82ff58bd358958b546461"
+      },
+      {
+        "name": "cpython-3.12.16+20261124-aarch64-unknown-linux-gnu-install_only.tar.gz",
+        "browser_download_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261124/cpython-3.12.16%2B20261124-aarch64-unknown-linux-gnu-install_only.tar.gz",
+        "size": 53286223,
+        "digest": "sha256:2e6b3576f96d5b8861e4c265ea6db3d19eb24027bbd6c22f044544989444b20b"
+      },
+      {
+        "name": "cpython-3.12.16+20261124-x86_64-apple-darwin-install_only.tar.gz",
+        "browser_download_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261124/cpython-3.12.16%2B20261124-x86_64-apple-darwin-install_only.tar.gz",
+        "size": 25113881,
+        "digest": "sha256:ccce24cfd3f56f62561d2c9480fcc567ca3a9bac68450cd73e11aeb631befa1f"
+      },
+      {
+        "name": "cpython-3.12.16+20261124-aarch64-apple-darwin-install_only.tar.gz",
+        "browser_download_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261124/cpython-3.12.16%2B20261124-aarch64-apple-darwin-install_only.tar.gz",
+        "size": 25399370,
+        "digest": "sha256:431b99a9c2cdd37ad9b06e425be0e520d2dbce0552abe454257abef592fe3634"
+      },
+      {
+        "name": "cpython-3.12.16+20261124-x86_64-pc-windows-msvc-install_only.tar.gz",
+        "browser_download_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261124/cpython-3.12.16%2B20261124-x86_64-pc-windows-msvc-install_only.tar.gz",
+        "size": 47497711,
+        "digest": "sha256:8152ff5b6c6c044ddbbaa3531dda59cb9ce5bd6cb670d4c9ac2e3ab91afa8778"
+      }
+    ]
+  }
+}

@@ -1,10 +1,13 @@
 import hashlib
 import json
+import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 from app import upgrade_assets
+from app.config import exe
 
 
 class AssetTests(unittest.TestCase):
@@ -118,11 +121,11 @@ class AssetTests(unittest.TestCase):
         relative='runtime/llama.cpp/'+platform_key()
         folder=self.root/relative
         folder.mkdir(parents=True)
-        (folder/'llama-server').write_bytes(b'old engine')
+        (folder/exe('llama-server')).write_bytes(b'old engine')
         (folder/'release.json').write_text('{"tag":"b1","asset":"old.tar.gz"}')
         payload=io.BytesIO()
         with tarfile.open(fileobj=payload,mode='w:gz') as archive:
-            for name in ('llama-server','llama-cli','LICENSE'):
+            for name in (exe('llama-server'),exe('llama-cli'),'LICENSE'):
                 info=tarfile.TarInfo('package/'+name)
                 info.size=3
                 info.mode=0o755
@@ -131,12 +134,12 @@ class AssetTests(unittest.TestCase):
         record={'component':'llama','status':'available','installed':{'path':relative,'tag':'b1'},'candidate':{'path':relative,'tag':'b2','asset':'new.tar.gz','platform':platform_key(),'url':'https://example.com/new.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
         with patch('app.prepare.download',side_effect=self.download), patch('app.upgrade_assets.subprocess.run'):
             transaction=upgrade_assets.upgrade(self.root,record)
-        self.assertEqual((folder/'llama-server').read_bytes(),b'new')
+        self.assertEqual((folder/exe('llama-server')).read_bytes(),b'new')
         self.assertEqual((folder/'LICENSE').read_bytes(),b'new')
         self.assertEqual(json.loads((folder/'release.json').read_text())['tag'],'b2')
         from upgrade_recovery import rollback
         rollback(self.root,transaction)
-        self.assertEqual((folder/'llama-server').read_bytes(),b'old engine')
+        self.assertEqual((folder/exe('llama-server')).read_bytes(),b'old engine')
 
     def test_guide_only_runtime_has_no_active_model(self):
         (self.root/'models/old.gguf').unlink()
@@ -151,12 +154,17 @@ class AssetTests(unittest.TestCase):
         (folder/'python/bin').mkdir(parents=True)
         (folder/'python/bin/python3.12').write_bytes(b'old')
         (folder/'python/bin/python3').symlink_to('python3.12')
+        if os.name=='nt':
+            (folder/'python/python.exe').write_bytes(b'old')
         payload=io.BytesIO()
         with tarfile.open(fileobj=payload,mode='w:gz') as archive:
             info=tarfile.TarInfo('python/bin/python3.12');info.size=3;info.mode=0o755
             archive.addfile(info,io.BytesIO(b'new'))
             link=tarfile.TarInfo('python/bin/python3');link.type=tarfile.SYMTYPE;link.linkname='python3.12'
             archive.addfile(link)
+            if os.name=='nt':
+                info=tarfile.TarInfo('python/python.exe');info.size=3
+                archive.addfile(info,io.BytesIO(b'new'))
         self.payload=payload.getvalue()
         record={'component':'python','status':'available','installed':{'path':relative,'asset':'cpython-3.12.1+old'},'candidate':{'path':relative,'asset':'cpython-3.12.9+new','platform':platform_key(),'url':'https://example.com/python.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
         with patch('app.prepare.download',side_effect=self.download), patch('app.upgrade_assets.subprocess.run'):
@@ -182,13 +190,14 @@ class AssetTests(unittest.TestCase):
     def test_python_health_checks_app_with_target_interpreter(self):
         folder=self.root/'runtime/python/test'
         (folder/'python/bin').mkdir(parents=True)
-        (folder/'python/bin/python3').write_bytes(b'python')
+        executable=folder/('python/python.exe' if os.name=='nt' else 'python/bin/python3')
+        executable.write_bytes(b'python')
         (self.root/'emergency.py').write_text('pass')
         with patch('app.upgrade_assets.subprocess.run') as run:
             upgrade_assets.verify_python(folder,{'asset':'cpython-3.12.16+20261124'},self.root)
         self.assertEqual(run.call_count,2)
         command=run.call_args.args[0]
-        self.assertEqual(command[0],str(folder/'python/bin/python3'))
+        self.assertEqual(command[0],str(executable))
         self.assertIn('_UPGRADE_BOOTSTRAP',command[4])
         self.assertEqual(command[-1],str(self.root))
 
@@ -197,7 +206,8 @@ class AssetTests(unittest.TestCase):
         folder=self.root/relative
         folder.mkdir(parents=True)
         record={'component':'python','status':'available','installed':{'path':relative},'candidate':{'path':relative}}
-        with patch('app.upgrade_assets.sys.executable',str(folder/'python/bin/python3')),patch('app.prepare.download') as fetch:
+        executable=folder/('python/python.exe' if os.name=='nt' else 'python/bin/python3')
+        with patch('app.upgrade_assets.sys.executable',str(executable)),patch('app.prepare.download') as fetch:
             with self.assertRaisesRegex(ValueError,'separate system Python'):
                 upgrade_assets.upgrade(self.root,record)
         fetch.assert_not_called()
@@ -242,7 +252,7 @@ class AssetTests(unittest.TestCase):
         (folder/'library.c').write_text('int answer(void) {return 0;}')
         (folder/'main.c').write_text('extern int answer(void); int main(void) {return answer();}')
         subprocess.run(['cc','-shared','-fPIC',str(folder/'library.c'),'-o',str(folder/'libprobe.so')],check=True)
-        subprocess.run(['cc',str(folder/'main.c'),'-L'+str(folder),'-lprobe','-o',str(folder/'llama-server')],check=True)
+        subprocess.run(['cc',str(folder/'main.c'),'-L'+str(folder),'-lprobe','-o',str(folder/exe('llama-server'))],check=True)
         upgrade_assets.verify_runtime(folder)
 
     def test_model_check_selects_configured_cuda_runtime(self):
@@ -250,12 +260,15 @@ class AssetTests(unittest.TestCase):
         (self.root/'config').mkdir()
         (self.root/'config/settings.local.json').write_text('{"llm_acceleration":"cuda"}')
         folder=self.root/'runtime/llama.cpp'/(platform_key()+'-cuda');folder.mkdir(parents=True)
-        (folder/'llama-cli').write_bytes(b'fake')
-        (folder/'llama-server').write_bytes(b'fake')
+        (folder/exe('llama-cli')).write_bytes(b'fake')
+        (folder/exe('llama-server')).write_bytes(b'fake')
         with patch('app.launcher.gpu_devices',return_value=([('CUDA0','GPU')],'')),patch('app.upgrade_assets.subprocess.run') as run:
             upgrade_assets.verify_model(self.root,self.root/'models/old.gguf')
-        self.assertEqual(run.call_args.args[0][0],str(folder/'llama-cli'))
-        self.assertIn(str(folder),run.call_args.kwargs['env'].get('LD_LIBRARY_PATH',''))
+        self.assertEqual(run.call_args.args[0][0],str(folder/exe('llama-cli')))
+        self.assertIn('--n-gpu-layers',run.call_args.args[0])
+        if os.name!='nt':
+            variable='DYLD_LIBRARY_PATH' if sys.platform=='darwin' else 'LD_LIBRARY_PATH'
+            self.assertIn(str(folder),run.call_args.kwargs['env'][variable])
 
     def test_zim_read_requires_managed_kiwix(self):
         with self.assertRaisesRegex(ValueError,'kiwix-serve'):
@@ -264,7 +277,7 @@ class AssetTests(unittest.TestCase):
     def test_zim_check_reads_main_entry_and_stops_service(self):
         from app.config import platform_key
         folder=self.root/'runtime/kiwix-tools'/platform_key();folder.mkdir(parents=True)
-        (folder/'kiwix-serve').write_bytes(b'fake')
+        (folder/exe('kiwix-serve')).write_bytes(b'fake')
         with patch('app.upgrade_assets.socket.socket') as sock,patch('app.upgrade_assets.subprocess.Popen') as spawn,patch('app.kiwix.KiwixClient.books',return_value=[{'content_url':'/content/book/'}]),patch('app.net.get_text',return_value='<html>Article body</html>') as read:
             sock.return_value.__enter__.return_value.getsockname.return_value=('127.0.0.1',12345)
             spawn.return_value.poll.return_value=None

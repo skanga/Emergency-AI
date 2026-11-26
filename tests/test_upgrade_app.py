@@ -1,7 +1,10 @@
 import importlib.util
 import json
+import os
 from pathlib import Path
+import shlex
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -11,7 +14,7 @@ class AppUpgradeTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
-        self.base = Path(self.tmp.name)
+        self.base = Path(self.tmp.name).resolve()
         self.root = self.base / 'kit'
         self.root.mkdir()
         self.fresh = self.base / 'fresh'
@@ -96,6 +99,72 @@ class AppUpgradeTests(unittest.TestCase):
         rollback(self.root, tx)
         self.assertEqual(self.git('rev-parse', 'HEAD'), old)
         self.assertEqual((self.root / 'a.py').read_text(), 'a=1')
+
+    def crlf_fixture(self):
+        self.git_fixture()
+        self.git('config', 'core.autocrlf', 'true')
+        (self.root / 'a.py').write_bytes(b'a=1\r\nb=1\r\n')
+        self.git('commit', '-am', 'before CRLF')
+        old = self.git('rev-parse', 'HEAD')
+        (self.root / 'a.py').write_bytes(b'a=2\r\nb=2\r\n')
+        self.git('commit', '-am', 'after CRLF')
+        new = self.git('rev-parse', 'HEAD')
+        self.git('reset', '--keep', old)
+        self.assertEqual((self.root / 'a.py').read_bytes(), b'a=1\r\nb=1\r\n')
+        return old, new
+
+    def test_git_crlf_checkout_and_offline_rollback_preserve_exact_bytes(self):
+        old, new = self.crlf_fixture()
+        tx = self.api().apply_git(self.root, new, verify=lambda: None)
+        self.assertEqual((self.root / 'a.py').read_bytes(), b'a=2\r\nb=2\r\n')
+        from upgrade_recovery import rollback
+        rollback(self.root, tx)
+        self.assertEqual((self.root / 'a.py').read_bytes(), b'a=1\r\nb=1\r\n')
+        self.assertEqual(self.git('rev-parse', 'HEAD'), old)
+        self.assertEqual(self.git('status', '--porcelain', '--untracked-files=no'), '')
+
+    def test_git_crlf_failed_health_recovers_exact_bytes(self):
+        old, new = self.crlf_fixture()
+        def fail():
+            raise RuntimeError('health failed')
+        with self.assertRaisesRegex(RuntimeError, 'health failed'):
+            self.api().apply_git(self.root, new, verify=fail)
+        self.assertEqual((self.root / 'a.py').read_bytes(), b'a=1\r\nb=1\r\n')
+        self.assertEqual(self.git('rev-parse', 'HEAD'), old)
+
+    def test_git_crlf_rollback_refuses_later_line_ending_edit(self):
+        old, new = self.crlf_fixture()
+        tx = self.api().apply_git(self.root, new, verify=lambda: None)
+        (self.root / 'a.py').write_bytes(b'a=2\nb=2\n')
+        from upgrade_recovery import rollback
+        with self.assertRaisesRegex(ValueError, 'changed'):
+            rollback(self.root, tx)
+        self.assertEqual((self.root / 'a.py').read_bytes(), b'a=2\nb=2\n')
+        self.assertEqual(self.git('rev-parse', 'HEAD'), new)
+
+    def test_git_filtered_checkout_rolls_back_exact_bytes(self):
+        self.git_fixture()
+        # Git invokes filters through its shell on Windows as well as POSIX.
+        python = shlex.quote(Path(sys.executable).as_posix())
+        for kind, before, after in [('clean', 'FILTERED', 'RAW'), ('smudge', 'RAW', 'FILTERED')]:
+            script = f'import sys; sys.stdout.buffer.write(sys.stdin.buffer.read().replace(b"{before}", b"{after}"))'
+            self.git('config', f'filter.example.{kind}', python + ' -c ' + shlex.quote(script))
+        self.write(self.root, '.gitattributes', '*.py filter=example\n')
+        (self.root / 'a.py').write_bytes(b'a=1\n# FILTERED\n')
+        self.git('add', '.')
+        self.git('commit', '-m', 'filtered before')
+        old = self.git('rev-parse', 'HEAD')
+        (self.root / 'a.py').write_bytes(b'a=2\n# FILTERED\n')
+        self.git('commit', '-am', 'filtered after')
+        new = self.git('rev-parse', 'HEAD')
+        self.git('reset', '--keep', old)
+        before = (self.root / 'a.py').read_bytes()
+        tx = self.api().apply_git(self.root, new, verify=lambda: None)
+        self.assertIn(b'# FILTERED', (self.root / 'a.py').read_bytes())
+        from upgrade_recovery import rollback
+        rollback(self.root, tx)
+        self.assertEqual((self.root / 'a.py').read_bytes(), before)
+        self.assertEqual(self.git('rev-parse', 'HEAD'), old)
 
     def test_git_dirty_tree_is_not_stashed_or_reset(self):
         api = self.api()
@@ -189,6 +258,7 @@ class AppUpgradeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Protected'):
             api.apply_git(self.root, candidate, verify=lambda: None)
 
+    @unittest.skipIf(os.name == 'nt', 'Windows does not support POSIX executable mode changes')
     def test_git_mode_only_change_rolls_back_cleanly(self):
         api = self.api()
         self.git_fixture()

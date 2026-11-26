@@ -20,7 +20,7 @@ def tool_status(root, platform=None):
     if not artifact:
         return {'state': 'unsupported_platform', 'platform': platform}
     base = Path(root) / artifact['root']
-    required = [artifact['binary'], artifact['pdfinfo'], 'README', 'COPYING', 'COPYING3', 'doc/pdftotext.1']
+    required = [artifact['binary'], artifact['pdfinfo'], 'README', 'COPYING', 'COPYING3', artifact.get('documentation', 'doc/pdftotext.1')]
     if not all((base / name).is_file() for name in required):
         return {'state': 'extractor_missing', 'platform': platform, 'version': artifact['version']}
     return {'state': 'available', 'platform': platform, 'version': artifact['version'],

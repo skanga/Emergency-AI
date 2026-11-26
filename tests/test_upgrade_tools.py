@@ -7,21 +7,24 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+from app.config import exe, platform_key
+from app.prepare import KIWIX_ASSETS
+
 
 class ToolTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name)
-        self.relative='runtime/kiwix-tools/linux-x86_64'
+        self.relative='runtime/kiwix-tools/'+platform_key()
         self.folder=self.root/self.relative/'release'
         self.folder.mkdir(parents=True)
-        (self.folder/'kiwix-serve').write_bytes(b'known binary')
+        (self.folder/exe('kiwix-serve')).write_bytes(b'known binary')
         payload=io.BytesIO()
         with tarfile.open(fileobj=payload,mode='w:gz') as archive:
-            entry=tarfile.TarInfo('release/kiwix-serve');entry.size=12
+            entry=tarfile.TarInfo('release/'+exe('kiwix-serve'));entry.size=12
             archive.addfile(entry,io.BytesIO(b'known binary'))
         self.payload=payload.getvalue()
-        self.entry={'version':'1.0','root':'release','asset':'release.tar.gz','url':'https://download.kiwix.org/release/kiwix-tools/release.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest(),'platform':'linux-x86_64','verification':'project-pinned-sha256'}
+        self.entry={'version':'1.0','root':'release','asset':'release.tar.gz','url':'https://download.kiwix.org/release/kiwix-tools/release.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest(),'platform':platform_key(),'verification':'project-pinned-sha256'}
 
     def api(self):
         from app import upgrade_tools
@@ -31,19 +34,19 @@ class ToolTests(unittest.TestCase):
 
     def test_adopt_verifies_installed_tool_bytes_and_records_owned_files(self):
         api=self.api()
-        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value='linux-x86_64'),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool') as health:
+        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool') as health:
             record=api.adopt_tool(self.root,'kiwix-tools')
         self.assertEqual(record['path'],self.relative)
         self.assertEqual(record['verification'],'project-pinned-sha256')
-        self.assertIn(self.relative+'/release/kiwix-serve',record['files'])
+        self.assertIn(self.relative+'/release/'+exe('kiwix-serve'),record['files'])
         health.assert_called_once()
         api.verify_installed(self.root,record)
-        (self.folder/'kiwix-serve').write_bytes(b'changed')
+        (self.folder/exe('kiwix-serve')).write_bytes(b'changed')
         with self.assertRaises(ValueError):api.verify_installed(self.root,record)
 
     def test_unknown_or_extra_installed_files_block_adoption(self):
         api=self.api();(self.folder/'custom').write_bytes(b'personal')
-        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value='linux-x86_64'),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool') as health:
+        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool') as health:
             with self.assertRaisesRegex(ValueError,'differ'):api.adopt_tool(self.root,'kiwix-tools')
         health.assert_not_called()
 
@@ -73,7 +76,7 @@ class ToolTests(unittest.TestCase):
                         kwargs['stderr'].flush();process.poll.return_value=1
                     else:process.poll.return_value=None
                     return process
-                with patch('app.launcher._is_wsl',return_value=wsl),patch('app.upgrade_assets._binary',return_value=self.folder/'kiwix-serve'),patch('app.upgrade_assets.subprocess.Popen',side_effect=spawn),patch('app.upgrade_assets.socket.socket') as socket,patch('app.kiwix.KiwixClient.books',return_value=[{'content_url':'/content/test'}]),patch('app.net.get_text',return_value='content'):
+                with patch('app.launcher._is_wsl',return_value=wsl),patch('app.upgrade_assets._binary',return_value=self.folder/exe('kiwix-serve')),patch('app.upgrade_assets.subprocess.Popen',side_effect=spawn),patch('app.upgrade_assets.socket.socket') as socket,patch('app.kiwix.KiwixClient.books',return_value=[{'content_url':'/content/test'}]),patch('app.net.get_text',return_value='content'):
                     socket.return_value.__enter__.return_value.getsockname.return_value=('127.0.0.1',12345)
                     if wsl:verify_zim(self.root,archive)
                     else:
@@ -94,14 +97,15 @@ class ToolTests(unittest.TestCase):
 
     def test_discovery_requires_adoption_and_refuses_unreviewed_release(self):
         from app import updates
-        api=self.api(); self.entry['asset']='kiwix-tools_linux-x86_64-1.0.tar.gz'
-        row={'component':'kiwix-tools','installed':{'path':self.relative,'platform':'linux-x86_64'},'candidate':None}
-        with patch.object(api,'catalog',return_value=self.entry),patch.object(updates,'_text',return_value='<a href="kiwix-tools_linux-x86_64-1.0.tar.gz">x</a>'):
+        api=self.api(); asset_prefix='kiwix-tools_'+KIWIX_ASSETS[platform_key()][0]
+        self.entry['asset']=asset_prefix+'-1.0.tar.gz'
+        row={'component':'kiwix-tools','installed':{'path':self.relative,'platform':platform_key()},'candidate':None}
+        with patch.object(api,'catalog',return_value=self.entry),patch.object(updates,'_text',return_value='<a href="'+asset_prefix+'-1.0.tar.gz">x</a>'):
             result=updates._tool(row,{},10,self.root)
             self.assertEqual(result['status'],'unknown')
             row['installed'].update(asset=self.entry['asset'],sha256=self.entry['sha256'],files={'known':'hash'})
             self.assertEqual(updates._tool(row,{},10,self.root)['status'],'current')
-        with patch.object(api,'catalog',return_value=self.entry),patch.object(updates,'_text',return_value='<a href="kiwix-tools_linux-x86_64-2.0.tar.gz">x</a>'):
+        with patch.object(api,'catalog',return_value=self.entry),patch.object(updates,'_text',return_value='<a href="'+asset_prefix+'-2.0.tar.gz">x</a>'):
             self.assertEqual(updates._tool(row,{},10,self.root)['status'],'manual')
 
     def test_document_indexes_preserved_for_current_tool_but_gate_new_version(self):
@@ -129,12 +133,12 @@ class ToolTests(unittest.TestCase):
         from app import upgrade_assets
         from upgrade_recovery import rollback
         api=self.api()
-        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value='linux-x86_64'),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool'):
+        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool'):
             installed=api.adopt_tool(self.root,'kiwix-tools')
         manifest=self.root/'runtime/installation.json';manifest.write_text(json.dumps({'components':{'kiwix-tools':installed}}))
         payload=io.BytesIO()
         with tarfile.open(fileobj=payload,mode='w:gz') as archive:
-            item=tarfile.TarInfo('release2/kiwix-serve');item.size=10
+            item=tarfile.TarInfo('release2/'+exe('kiwix-serve'));item.size=10
             archive.addfile(item,io.BytesIO(b'new binary'))
         self.payload=payload.getvalue()
         candidate=dict(self.entry,version='2.0',root='release2',asset='release2.tar.gz',size=len(self.payload),sha256=hashlib.sha256(self.payload).hexdigest())
@@ -142,7 +146,7 @@ class ToolTests(unittest.TestCase):
             transaction=upgrade_assets.upgrade(self.root,{'component':'kiwix-tools','status':'available','installed':installed,'candidate':candidate})
         updated=json.loads(manifest.read_text())['components']['kiwix-tools']
         api.verify_installed(self.root,updated)
-        self.assertEqual((self.root/self.relative/'kiwix-serve').read_bytes(),b'new binary')
+        self.assertEqual((self.root/self.relative/exe('kiwix-serve')).read_bytes(),b'new binary')
         rollback(self.root,transaction)
         api.verify_installed(self.root,installed)
         self.assertEqual(json.loads(manifest.read_text())['components']['kiwix-tools'],installed)

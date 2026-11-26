@@ -109,12 +109,7 @@ def run(root, args):
                     print('No changes made.')
                     return 0
             transaction = apply_plan(root, fresh, plan)
-            import os
-            import shlex
-            import subprocess
-            recovery = [sys.executable, str(Path(root)/'runtime/upgrades'/transaction/'recover.py'),
-                        '--root', str(Path(root).resolve()), '--rollback', transaction]
-            command = subprocess.list2cmdline(recovery) if os.name == 'nt' else shlex.join(recovery)
-            print('Migration applied. Offline rollback: ' + command)
+            from .upgrade_cli import recovery_command
+            print('Migration applied. Offline rollback: ' + recovery_command(root, transaction))
             print('Restart with the target installation launcher. Preserved config/knowledge may differ from the recorded source commit.')
             return 0

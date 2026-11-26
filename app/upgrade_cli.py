@@ -7,7 +7,7 @@ import sys
 import time
 
 from .updates import check
-from upgrade_recovery import atomic_json, ensure_stopped, maintenance_lock, pending, rollback, safe_path
+from upgrade_recovery import atomic_json, ensure_stopped, maintenance_lock, pending, recovery_command, rollback, safe_path
 
 COMPONENTS = ('app', 'model', 'llama', 'python', 'kiwix-tools', 'document-tools', 'kiwix-data', 'drivers')
 ALIASES = {'--upgrade': 'upgrade', '--check-updates': 'check-updates', '--rollback': 'rollback', '--adopt': 'adopt', '--plan-migration': 'plan-migration', '--apply-migration': 'apply-migration'}
@@ -94,7 +94,7 @@ def perform(root, report, components, yes=False, baseline=None):
         ensure_stopped(root)
         for row in rows:
             transaction = apply_record(root, row, baseline)
-            print('%s updated. Rollback: ./run.sh --rollback %s' % (row['component'], transaction))
+            print('%s updated. Rollback: %s' % (row['component'], recovery_command(root, transaction)))
             # Do not run old imported modules against a newly replaced application.
             if row['component'] in ('app', 'python') and row is not rows[-1]:
                 print('Restart the upgrade command to recheck remaining components using the new application.')

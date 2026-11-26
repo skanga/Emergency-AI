@@ -4,23 +4,38 @@ permissions:
   contents: read
 jobs:
   test:
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: ['3.11', '3.14']
+        include:
+          - os: ubuntu-24.04-arm
+            python: '3.11'
+          - os: macos-15-intel
+            python: '3.11'
+          - os: windows-11-arm
+            python: '3.14'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - run: python -B -m unittest discover -s tests
         env:
           PYTHONUTF8: '1'
           PYTHONDONTWRITEBYTECODE: '1'
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
+      - name: Native component activation and rollback
+        if: matrix.python == '3.11'
+        run: python -B -m unittest tests.test_native_tool_upgrades tests.test_native_runtime_upgrades -v
+        env:
+          EMERGENCY_NATIVE_TOOL_TESTS: '1'
+          PYTHONUTF8: '1'
+          PYTHONDONTWRITEBYTECODE: '1'
       - run: node --check web/app.js
       - run: node tests/test_stream_completion.js

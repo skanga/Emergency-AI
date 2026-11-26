@@ -66,17 +66,45 @@ class PipelineTests(unittest.TestCase):
             engine.kb.search.assert_called()
 
     def test_slow_worker_does_not_hold_request_past_deadline(self):
+        import threading
         engine = self.engine(12)
         diagnostics = {}
+        worker_started = threading.Event()
+        release_workers = threading.Event()
+        request_returned = threading.Event()
+        workers = []
+        errors = []
+
         def slow(*args, **kwargs):
-            time.sleep(.25)
+            workers.append(threading.current_thread())
+            worker_started.set()
+            release_workers.wait()
             return '<rss/>'
+
+        def retrieve():
+            try:
+                engine.retrieve('burn', 'en', diagnostics=diagnostics)
+            except BaseException as error:
+                errors.append(error)
+            finally:
+                request_returned.set()
+
         with patch('app.retrieval.REQUEST_SECONDS', .04), patch('app.kiwix.get_text', side_effect=slow):
-            start = time.monotonic()
-            engine.retrieve('burn', 'en', diagnostics=diagnostics)
-            self.assertLess(time.monotonic() - start, .18)
-        self.assertTrue(any(d['status'] == 'timeout' for d in diagnostics['libraries']))
-        time.sleep(.26)
+            caller = threading.Thread(target=retrieve, daemon=True)
+            caller.start()
+            try:
+                self.assertTrue(worker_started.wait(5), 'Retrieval did not start its worker')
+                # The wait is a deadlock guard, not a scheduler-sensitive latency target.
+                self.assertTrue(request_returned.wait(5), 'Deadline waited for a blocked worker')
+                self.assertFalse(release_workers.is_set())
+                self.assertEqual(errors, [])
+                self.assertTrue(any(d['status'] == 'timeout' for d in diagnostics['libraries']))
+            finally:
+                release_workers.set()
+                caller.join(5)
+                for worker in set(workers):
+                    worker.join(5)
+            self.assertFalse(caller.is_alive())
 
     def test_retrieval_event_and_done_are_request_owned(self):
         engine = self.engine()

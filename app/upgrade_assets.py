@@ -384,14 +384,14 @@ def document_indexes_present(root):
 
 
 def verify_document(folder,candidate):
-    required=[candidate['binary'],candidate['pdfinfo'],'README','COPYING','COPYING3','doc/pdftotext.1']
+    required=[candidate['binary'],candidate['pdfinfo'],'README','COPYING','COPYING3',candidate.get('documentation','doc/pdftotext.1')]
     for name in required:
         if not _path(Path(folder),name).is_file():
             raise ValueError('Document tools distribution is incomplete: '+name)
     for name in (candidate['binary'],candidate['pdfinfo']):
         result=subprocess.run([str(_path(Path(folder),name)),'-v'],stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False,timeout=30)
         output=(result.stdout+result.stderr).decode('utf-8',errors='replace')
-        expected=Path(name).name+' version '+candidate['version']
+        expected=Path(name).stem+' version '+candidate['version']
         if result.returncode not in (0,99) or not re.search(re.escape(expected)+r'(?:\s|$)',output):
             raise ValueError('Document tool version check failed: '+name)
 

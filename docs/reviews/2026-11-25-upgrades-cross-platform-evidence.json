@@ -1,0 +1,103 @@
+{
+  "run_url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296",
+  "tested_snapshot": "b73674f4191b8745f08bbd7ff5c1183b24c901a9",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "test (windows-latest, 3.14)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597439871",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:08:58.0652200Z Ran 617 tests in 67.412s",
+        "2026-11-26T00:08:58.0654981Z OK (skipped=9)"
+      ],
+      "native_components": "skipped"
+    },
+    {
+      "name": "test (macos-latest, 3.14)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597439914",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:09:06.7174310Z Ran 617 tests in 81.568s",
+        "2026-11-26T00:09:06.7202370Z OK (skipped=21)"
+      ],
+      "native_components": "skipped"
+    },
+    {
+      "name": "test (macos-latest, 3.11)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597439934",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:09:00.9379480Z Ran 617 tests in 76.244s",
+        "2026-11-26T00:09:00.9379750Z OK (skipped=21)",
+        "2026-11-26T00:09:20.6716270Z Ran 5 tests in 18.629s"
+      ],
+      "native_components": "success"
+    },
+    {
+      "name": "test (macos-15-intel, 3.11)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597439990",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:09:26.7465400Z Ran 617 tests in 97.435s",
+        "2026-11-26T00:09:26.7466680Z OK (skipped=21)",
+        "2026-11-26T00:10:01.0901550Z Ran 5 tests in 33.984s"
+      ],
+      "native_components": "success"
+    },
+    {
+      "name": "test (ubuntu-24.04-arm, 3.11)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597440000",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:08:12.8320732Z Ran 617 tests in 29.697s",
+        "2026-11-26T00:08:12.8321243Z OK (skipped=20)",
+        "2026-11-26T00:08:31.4790104Z Ran 5 tests in 18.461s",
+        "2026-11-26T00:08:31.4790406Z OK (skipped=1)"
+      ],
+      "native_components": "success"
+    },
+    {
+      "name": "test (windows-latest, 3.11)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597440011",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:09:22.6350034Z Ran 617 tests in 90.258s",
+        "2026-11-26T00:09:22.6350633Z OK (skipped=9)",
+        "2026-11-26T00:10:27.6242753Z Ran 5 tests in 64.310s"
+      ],
+      "native_components": "success"
+    },
+    {
+      "name": "test (windows-11-arm, 3.14)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597440017",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:09:46.6889951Z Ran 617 tests in 106.831s",
+        "2026-11-26T00:09:46.6890183Z OK (skipped=9)"
+      ],
+      "native_components": "skipped"
+    },
+    {
+      "name": "test (ubuntu-latest, 3.11)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597440055",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:08:11.8190030Z Ran 617 tests in 30.892s",
+        "2026-11-26T00:08:11.8190580Z OK (skipped=20)",
+        "2026-11-26T00:08:39.5667834Z Ran 5 tests in 27.538s"
+      ],
+      "native_components": "success"
+    },
+    {
+      "name": "test (ubuntu-latest, 3.14)",
+      "url": "https://github.com/skanga/Emergency-AI/actions/runs/45726456296/job/139597440133",
+      "conclusion": "success",
+      "summaries": [
+        "2026-11-26T00:08:18.9570854Z Ran 617 tests in 28.390s",
+        "2026-11-26T00:08:18.9571382Z OK (skipped=20)"
+      ],
+      "native_components": "skipped"
+    }
+  ]
+}

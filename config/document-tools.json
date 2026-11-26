@@ -17,7 +17,68 @@
         "doc/"
       ],
       "source_url": "https://dl.xpdfreader.com/xpdf-4.06.tar.gz"
+    },
+    "windows-x86_64": {
+      "version": "4.06",
+      "url": "https://dl.xpdfreader.com/xpdf-tools-win-4.06.zip",
+      "sha256": "2b6ca45da794e7854a6468fd6c8063fde62701f001ce03fa4f603eab7e15a0b6",
+      "size": 12826385,
+      "root": "xpdf-tools-win-4.06",
+      "binary": "bin64/pdftotext.exe",
+      "pdfinfo": "bin64/pdfinfo.exe",
+      "license": "GPL-2.0-only OR GPL-3.0-only",
+      "license_files": [
+        "README",
+        "COPYING",
+        "COPYING3",
+        "doc/"
+      ],
+      "source_url": "https://dl.xpdfreader.com/xpdf-4.06.tar.gz",
+      "documentation": "doc/pdftotext.txt",
+      "reviewed_at": "2026-11-25"
+    },
+    "macos-arm64": {
+      "version": "4.06",
+      "url": "https://dl.xpdfreader.com/xpdf-tools-mac-4.06.tar.gz",
+      "sha256": "c0a2992348c0407356cec39f2f4b2e73705fb77edc852a4e9196e222712451a8",
+      "size": 15452690,
+      "root": "xpdf-tools-mac-4.06",
+      "binary": "binARM/pdftotext",
+      "pdfinfo": "binARM/pdfinfo",
+      "license": "GPL-2.0-only OR GPL-3.0-only",
+      "license_files": [
+        "README",
+        "COPYING",
+        "COPYING3",
+        "doc/"
+      ],
+      "source_url": "https://dl.xpdfreader.com/xpdf-4.06.tar.gz",
+      "documentation": "doc/pdftotext.1",
+      "reviewed_at": "2026-11-25"
+    },
+    "macos-x86_64": {
+      "version": "4.06",
+      "url": "https://dl.xpdfreader.com/xpdf-tools-mac-4.06.tar.gz",
+      "sha256": "c0a2992348c0407356cec39f2f4b2e73705fb77edc852a4e9196e222712451a8",
+      "size": 15452690,
+      "root": "xpdf-tools-mac-4.06",
+      "binary": "bin64/pdftotext",
+      "pdfinfo": "bin64/pdfinfo",
+      "license": "GPL-2.0-only OR GPL-3.0-only",
+      "license_files": [
+        "README",
+        "COPYING",
+        "COPYING3",
+        "doc/"
+      ],
+      "source_url": "https://dl.xpdfreader.com/xpdf-4.06.tar.gz",
+      "documentation": "doc/pdftotext.1",
+      "reviewed_at": "2026-11-25"
     }
   },
-  "notes": "Only Linux x86_64 has been smoke-tested. Other platforms remain explicitly unsupported. Downloads occur only during explicit preparation."
+  "notes": "Official HTTPS artifact bytes, architecture directories and license files reviewed. Only Linux x86_64 has been locally smoke-tested; other native execution requires same-host health checks. Downloads occur only during explicit preparation.",
+  "unsupported_platforms": {
+    "linux-arm64": "No reviewed native Linux ARM64 Xpdf archive; manual installation required.",
+    "windows-arm64": "No reviewed native Windows ARM64 Xpdf archive; manual installation required."
+  }
 }

@@ -2,6 +2,8 @@ import contextlib
 import importlib.util
 import io
 import json
+import os
+import shlex
 from pathlib import Path
 import tempfile
 import unittest
@@ -71,6 +73,18 @@ class UpgradeCliTests(unittest.TestCase):
         self.assertEqual(apply.call_count, 1)
         self.assertEqual(apply.call_args.args[1]['component'], 'app')
 
+    def test_upgrade_prints_native_retained_recovery_command_with_explicit_root(self):
+        api = self.api()
+        root = self.root / 'old kit'
+        root.mkdir()
+        out = io.StringIO()
+        with patch.object(api, 'apply_record', return_value='test-transaction'), patch.object(api, 'ensure_stopped'), contextlib.redirect_stdout(out):
+            api.perform(root, self.report(), ['app'], yes=True)
+        args = [sys.executable, str(root.resolve() / 'runtime/upgrades/test-transaction/recover.py'),
+                '--root', str(root.resolve()), '--rollback', 'test-transaction']
+        command = subprocess.list2cmdline(args) if os.name == 'nt' else shlex.join(args)
+        self.assertIn('Rollback: ' + command, out.getvalue())
+
     def test_upgrade_scopes_discovery_to_selected_component(self):
         api=self.api()
         report=self.report('current')
@@ -131,7 +145,7 @@ class UpgradeCliTests(unittest.TestCase):
         target.mkdir()
         with patch.object(api, 'check', return_value=self.report()) as check, contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(api.main(['--check-updates', '--root', str(target)], root=self.root), 0)
-        self.assertEqual(check.call_args.args[0], target)
+        self.assertEqual(check.call_args.args[0], target.resolve())
 
     def test_custom_archive_does_not_block_available_managed_archive(self):
         api = self.api()

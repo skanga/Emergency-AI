@@ -1,4 +1,5 @@
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -10,7 +11,7 @@ class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.base = Path(self.temp.name)
+        self.base = Path(self.temp.name).resolve()
         self.root = self.base/'kit'; self.root.mkdir()
         self.fresh = self.base/'fresh'; self.fresh.mkdir()
         self.write(self.root, 'app/code.py', 'value = 1')
@@ -74,6 +75,7 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual((self.root/'app/code.py').read_text(),'value = 5')
         self.assertEqual((self.root/'knowledge/guide.txt').read_text(),'edited again')
 
+    @unittest.skipIf(os.name == 'nt', 'Windows does not support POSIX group permissions')
     def test_source_archive_does_not_introduce_group_write_permissions(self):
         import io
         import tarfile
@@ -92,6 +94,7 @@ class MigrationTests(unittest.TestCase):
         import shlex
         import shutil
         import subprocess
+        import sys
         from types import SimpleNamespace
         from unittest.mock import patch
         api=self.api(); plan=api.build_plan(self.root,self.fresh,self.commit)
@@ -104,8 +107,13 @@ class MigrationTests(unittest.TestCase):
         with patch('app.upgrade_app.stage_source',side_effect=stage), patch('app.upgrade_app.health'), patch('upgrade_recovery.ensure_stopped'), contextlib.redirect_stdout(out):
             self.assertEqual(api.run(self.root,args),0)
         command=next(line.split('Offline rollback: ',1)[1] for line in out.getvalue().splitlines() if 'Offline rollback: ' in line)
-        words=shlex.split(command)
-        self.assertEqual(words[words.index('--root')+1],str(self.root))
+        transaction = next(path.name for path in (self.root/'runtime/upgrades').iterdir() if path.is_dir())
+        words = [sys.executable, str(self.root.resolve()/'runtime/upgrades'/transaction/'recover.py'),
+                 '--root', str(self.root.resolve()), '--rollback', transaction]
+        if os.name == 'nt':
+            self.assertEqual(command, subprocess.list2cmdline(words))
+        else:
+            self.assertEqual(shlex.split(command), words)
         self.assertTrue(Path(words[1]).is_file())
         # Port probes need sockets, so exercise the same retained helper's rollback function here.
         import runpy

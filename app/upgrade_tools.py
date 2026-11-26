@@ -60,12 +60,12 @@ def adopt_tool(root, component):
     entry=catalog(component,platform_key())
     relative=('runtime/kiwix-tools/'+platform_key() if component=='kiwix-tools' else 'runtime/document-tools/'+entry['root'])
     installed=_path(root,relative)
-    nested=_path(installed,entry['root']) if component=='kiwix-tools' else installed
+    nested=_path(installed,entry['root']) if component=='kiwix-tools' and entry.get('root') else installed
     content=nested if nested.is_dir() else installed
     with tempfile.TemporaryDirectory(prefix='verify-tool-') as temp:
         stage=Path(temp);fresh=stage/'source'
         _extract(_download(entry,stage),fresh)
-        expected=_files(_path(fresh,entry['root']))
+        expected=_files(_path(fresh,entry['root']) if entry.get('root') else fresh)
         actual=_files(content)
         if content==installed:actual.pop('installation.json',None)
         if not expected or actual!=expected:

@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import os
 import pathlib
 import tempfile
 import unittest
@@ -10,7 +11,7 @@ class TransactionTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
-        self.root = pathlib.Path(self.tmp.name)
+        self.root = pathlib.Path(self.tmp.name).resolve()
         self.spec = importlib.util.find_spec('upgrade_recovery')
 
     def api(self):
@@ -154,6 +155,101 @@ class TransactionTests(unittest.TestCase):
             api.rollback(self.root, tx.id)
         self.assertEqual((self.root / 'a').read_text(), 'new')
 
+    def test_shared_readers_exclude_maintenance_in_another_process(self):
+        import subprocess
+        import sys
+        api = self.api()
+        code = (
+            'import sys; from upgrade_recovery import maintenance_lock\n'
+            'with maintenance_lock(sys.argv[1], shared=sys.argv[2] == "shared"):\n'
+            '    print("acquired")\n'
+        )
+        with api.maintenance_lock(self.root, shared=True):
+            reader = subprocess.run([sys.executable, '-c', code, str(self.root), 'shared'],
+                                    capture_output=True, text=True, timeout=10)
+            writer = subprocess.run([sys.executable, '-c', code, str(self.root), 'exclusive'],
+                                    capture_output=True, text=True, timeout=10)
+        self.assertEqual(reader.returncode, 0, reader.stderr)
+        self.assertNotEqual(writer.returncode, 0)
+        self.assertIn('Another maintenance', writer.stderr)
+        with api.maintenance_lock(self.root):
+            pass
+
+    def test_activation_flushes_a_writable_file(self):
+        api = self.api()
+        source = self.write('source', 'payload')
+        original = api.os.fsync
+        def flush(fd):
+            # Writing zero bytes is harmless but fails on a read-only descriptor.
+            os.write(fd, b'')
+            return original(fd)
+        with patch.object(api, '_sync_dir'), patch.object(api.os, 'fsync', side_effect=flush):
+            api._activate(source, self.root / 'destination')
+        self.assertEqual((self.root / 'destination').read_text(), 'payload')
+
+    def test_interrupted_windows_readonly_transition_is_recoverable(self):
+        from types import SimpleNamespace
+        api = self.api()
+        target = self.write('tool', 'old')
+        target.chmod(0o444)
+        fresh = self.write('staged/tool', 'new')
+        tx = api.Transaction(self.root, 'app')
+        original = api._replace_or_remove
+        def power_loss(destination, source=None):
+            if destination == target:
+                destination.chmod(0o666)
+                raise KeyboardInterrupt()
+            return original(destination, source)
+        windows_os = SimpleNamespace(**dict(vars(os), name='nt'))
+        with patch.object(api, 'os', windows_os):
+            with patch.object(api, '_replace_or_remove', side_effect=power_loss):
+                with self.assertRaises(KeyboardInterrupt):
+                    tx.apply({'tool': fresh})
+            api.rollback(self.root, tx.id)
+        self.assertEqual(target.read_text(), 'old')
+        self.assertFalse(target.stat().st_mode & 0o200)
+
+    def test_failed_windows_replace_restores_readonly_attribute(self):
+        from types import SimpleNamespace
+        api = self.api()
+        target = self.write('tool', 'old')
+        target.chmod(0o444)
+        source = self.write('source', 'new')
+        windows_os = SimpleNamespace(**dict(vars(os), name='nt'))
+        with patch.object(api, 'os', windows_os), patch.object(windows_os, 'replace', side_effect=PermissionError('in use')):
+            with self.assertRaises(PermissionError):
+                api._replace_or_remove(target, source)
+        self.assertEqual(target.read_text(), 'old')
+        self.assertFalse(target.stat().st_mode & 0o200)
+
+    def test_committed_readonly_upgrade_rejects_later_attribute_edit(self):
+        from types import SimpleNamespace
+        api = self.api()
+        target = self.write('tool', 'old')
+        fresh = self.write('staged/tool', 'new')
+        fresh.chmod(0o444)
+        tx = api.Transaction(self.root, 'app')
+        tx.apply({'tool': fresh})
+        target.chmod(0o666)
+        with patch.object(api, 'os', SimpleNamespace(**dict(vars(os), name='nt'))):
+            with self.assertRaisesRegex(ValueError, 'changed'):
+                api.rollback(self.root, tx.id)
+        self.assertEqual(target.read_text(), 'new')
+
+    def test_read_only_file_upgrade_and_rollback(self):
+        api = self.api()
+        target = self.write('tool', 'old')
+        fresh = self.write('staged/tool', 'new')
+        target.chmod(0o444)
+        fresh.chmod(0o444)
+        tx = api.Transaction(self.root, 'app')
+        tx.apply({'tool': fresh})
+        self.assertEqual(target.read_text(), 'new')
+        api.rollback(self.root, tx.id)
+        self.assertEqual(target.read_text(), 'old')
+        self.assertFalse(target.stat().st_mode & 0o200)
+
+    @unittest.skipIf(os.name == "nt", "POSIX execute permission bits")
     def test_mode_only_upgrade_and_rollback(self):
         api = self.api()
         target = self.write('tool', 'same bytes')
@@ -166,6 +262,7 @@ class TransactionTests(unittest.TestCase):
         api.rollback(self.root, tx.id)
         self.assertEqual(target.stat().st_mode & 0o777, 0o644)
 
+    @unittest.skipIf(os.name == "nt", "POSIX execute permission bits")
     def test_rollback_preserves_later_permission_changes(self):
         api = self.api()
         target = self.write('tool', 'old')

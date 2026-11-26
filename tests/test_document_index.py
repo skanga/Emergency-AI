@@ -1,4 +1,5 @@
 import json
+from contextlib import closing
 from pathlib import Path
 import tempfile
 import sys
@@ -121,7 +122,7 @@ class DocumentIndexTests(unittest.TestCase):
             book = {'name':'medicine','archive_uuid':'1','served_name':'medicine_1'}
             self.assertEqual(index.status({'name':'medicine','served_name':'medicine_1'})['state'], 'identity_invalid')
             index.replace(book, [], {})
-            with sqlite3.connect(index._path(book)) as db:
+            with closing(sqlite3.connect(index._path(book))) as db, db:
                 db.execute('UPDATE metadata SET value=? WHERE key=?', ('[]','coverage'))
             self.assertEqual(index.status(book)['reason'], 'index_invalid')
             note = Path(directory) / 'personal-notes.md'

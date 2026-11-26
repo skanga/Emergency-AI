@@ -54,13 +54,20 @@ def file_mode(path):
     return stat.S_IMODE(Path(path).lstat().st_mode) if path is not None and (Path(path).exists() or Path(path).is_symlink()) else None
 
 
-def matches_file(path, record, phase, git_mode=False, preserve_file_links=False):
+def matches_file(path, record, phase, git_mode=False, preserve_file_links=False,
+                 allow_readonly_transition=False):
     if digest(path, preserve_file_links=preserve_file_links) != record[phase]:
         return False
     key = phase + '_mode'
     if key not in record:
         return True  # Recovery also accepts journals written before modes were recorded.
     actual, expected = file_mode(path), record[key]
+    if (allow_readonly_transition and os.name == 'nt'
+            and actual is not None and expected is not None and not expected & 0o222
+            and actual & ~0o222 == expected):
+        # A crash can occur between clearing Windows' read-only attribute and
+        # replacing the file. Only interrupted recovery accepts this exact hash.
+        return True
     if git_mode and actual is not None and expected is not None:
         return bool(actual & 0o111) == bool(expected & 0o111)
     return actual == expected
@@ -95,7 +102,7 @@ def _activate(source, target, preserve_file_links=False):
     target = Path(target)
     if source is None:
         if target.exists() or target.is_symlink():
-            target.unlink()
+            _replace_or_remove(target)
             _sync_dir(target.parent)
         return
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -106,14 +113,63 @@ def _activate(source, target, preserve_file_links=False):
             os.unlink(temp)
             os.symlink(os.readlink(source), temp)
         else:
-            shutil.copy2(source, temp)
-            with open(temp, 'rb') as stream:
+            with open(source, 'rb') as incoming, open(temp, 'wb') as stream:
+                shutil.copyfileobj(incoming, stream)
+                stream.flush()
                 os.fsync(stream.fileno())
-        os.replace(temp, target)
+            shutil.copystat(source, temp)
+        _replace_or_remove(target, temp)
         _sync_dir(target.parent)
     finally:
         if os.path.lexists(temp):
-            os.unlink(temp)
+            _replace_or_remove(Path(temp))
+
+
+def _replace_or_remove(target, source=None):
+    # Windows refuses replacement/deletion of read-only files. Restore the
+    # original attribute if replacement fails (for example, an open executable).
+    mode = file_mode(target)
+    readonly = os.name == 'nt' and mode is not None and not mode & stat.S_IWRITE
+    if readonly:
+        target.chmod(mode | stat.S_IWRITE)
+    try:
+        if source is None:
+            target.unlink()
+        else:
+            os.replace(source, target)
+    except OSError:
+        if readonly:
+            target.chmod(mode)
+        raise
+
+
+def _windows_lock(stream, shared=False, unlock=False):
+    # CRT locking does not provide true shared reader locks. LockFileEx does.
+    import ctypes
+    from ctypes import wintypes
+    import msvcrt
+
+    class Overlapped(ctypes.Structure):
+        _fields_ = [('Internal', ctypes.c_size_t), ('InternalHigh', ctypes.c_size_t),
+                    ('Offset', wintypes.DWORD), ('OffsetHigh', wintypes.DWORD),
+                    ('hEvent', wintypes.HANDLE)]
+
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    handle = wintypes.HANDLE(msvcrt.get_osfhandle(stream.fileno()))
+    position = Overlapped()
+    if unlock:
+        function = kernel.UnlockFileEx
+        function.argtypes = [wintypes.HANDLE, wintypes.DWORD, wintypes.DWORD,
+                             wintypes.DWORD, ctypes.POINTER(Overlapped)]
+        args = (handle, 0, 1, 0, ctypes.byref(position))
+    else:
+        function = kernel.LockFileEx
+        function.argtypes = [wintypes.HANDLE, wintypes.DWORD, wintypes.DWORD,
+                             wintypes.DWORD, wintypes.DWORD, ctypes.POINTER(Overlapped)]
+        args = (handle, 1 | (0 if shared else 2), 0, 1, 0, ctypes.byref(position))
+    function.restype = wintypes.BOOL
+    if not function(*args):
+        raise ctypes.WinError(ctypes.get_last_error())
 
 
 @contextmanager
@@ -133,8 +189,7 @@ def maintenance_lock(root, shared=False, reuse=False):
         stream.seek(0)
         try:
             if os.name == 'nt':
-                import msvcrt
-                msvcrt.locking(stream.fileno(), msvcrt.LK_NBRLCK if shared else msvcrt.LK_NBLCK, 1)
+                _windows_lock(stream, shared=shared)
             else:
                 import fcntl
                 fcntl.flock(stream.fileno(), (fcntl.LOCK_SH if shared else fcntl.LOCK_EX) | fcntl.LOCK_NB)
@@ -146,8 +201,7 @@ def maintenance_lock(root, shared=False, reuse=False):
         finally:
             _HELD_LOCKS.pop(key, None)
             if os.name == 'nt':
-                stream.seek(0)
-                msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
+                _windows_lock(stream, unlock=True)
             else:
                 fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
 
@@ -256,7 +310,9 @@ def rollback(root, transaction_id):
     # Preflight every path before restoring any. Both states are legitimate after a crash.
     for record in data['files']:
         current = path_for(root, record['path'])
-        if not any(matches(current, record, phase) for phase in ('before', 'after')):
+        interrupted = data['state'] != 'committed'
+        if not any(matches(current, record, phase, allow_readonly_transition=interrupted)
+                   for phase in ('before', 'after')):
             raise ValueError('File changed since upgrade: ' + record['path'])
         if not matches(path_for(folder / 'before', record['path']), record, 'before'):
             raise ValueError('Corrupt or missing backup: ' + record['path'])
@@ -322,7 +378,9 @@ def _rollback_git(root, folder, data):
             for record in data['files']:
                 current = safe_path(root, record['path'])
                 allowed = ('after',) if data['state'] == 'committed' else ('before', 'after')
-                if not any(matches_file(current, record, phase, git_mode=True) for phase in allowed):
+                if not any(matches_file(current, record, phase, git_mode=True,
+                                        allow_readonly_transition=data['state'] != 'committed')
+                           for phase in allowed):
                     raise ValueError('File changed or untracked collision since upgrade: ' + record['path'])
                 if not matches_file(safe_path(folder / 'before', record['path']), record, 'before'):
                     raise ValueError('Corrupt Git file backup: ' + record['path'])
@@ -345,6 +403,15 @@ def _rollback_git(root, folder, data):
         if owns_lock:
             lock.unlink()
     return data['id']
+
+
+def recovery_command(root, transaction):
+    import shlex
+    import subprocess
+    root = Path(root).resolve()
+    recovery = [sys.executable, str(root / 'runtime/upgrades' / transaction / 'recover.py'),
+                '--root', str(root), '--rollback', transaction]
+    return subprocess.list2cmdline(recovery) if os.name == 'nt' else shlex.join(recovery)
 
 
 def ensure_stopped(root):
@@ -391,7 +458,9 @@ def launch(argv, root=None):
     command = next((c for c in argv if c in commands), 'start')
     maintenance = command in ('--apply-migration', 'apply-migration', '--upgrade', 'upgrade', '--adopt', 'adopt', 'prepare', 'index-libraries')
     ordinary_start = command == 'start' and not any(c in argv for c in ('--help', '-h'))
-    if ordinary_start and '--no-update-check' not in argv and sys.stdin.isatty():
+    # Windows NUL can report isatty(); match startup's visible-terminal check.
+    if (ordinary_start and '--no-update-check' not in argv
+            and sys.stdin.isatty() and sys.stdout.isatty()):
         try:
             with maintenance_lock(root):
                 if pending(root):
@@ -400,12 +469,17 @@ def launch(argv, root=None):
                 startup(root, _settings(root))
         except (OSError, ValueError, RuntimeError) as exc:
             print('Pre-start update check skipped: ' + str(exc))
-        os.execv(sys.executable, [sys.executable, str(root / 'emergency.py'), *argv, '--no-update-check'])
+        arguments = [sys.executable, str(root / 'emergency.py'), *argv, '--no-update-check']
+        if sys.platform == 'win32':
+            # The Windows CRT exec API joins arguments without quoting them.
+            import subprocess
+            arguments = [subprocess.list2cmdline([arg]) for arg in arguments]
+        os.execv(sys.executable, arguments)
     try:
         with maintenance_lock(root, shared=not maintenance):
             unfinished = pending(root)
             if unfinished:
-                print('Recover interrupted upgrade: ./run.sh --rollback ' + unfinished[0])
+                print('Recover interrupted upgrade: ' + recovery_command(root, unfinished[0]))
                 return 1
             sys.argv = [str(root / 'emergency.py')] + argv
             try:

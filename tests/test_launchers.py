@@ -1,6 +1,7 @@
 """Run the actual launch scripts from a folder containing spaces."""
 
 import os
+import platform
 from pathlib import Path
 import shutil
 import subprocess
@@ -40,7 +41,11 @@ class LauncherTests(unittest.TestCase):
             probe = "import json,sys; print(json.dumps(sys.argv[1:])); sys.exit(7)\n"
             (root / "emergency.py").write_text(probe, encoding="utf-8")
             if os.name == "nt":
-                portable = root / "runtime/python/windows-x86_64/python"
+                arm_host = (platform.machine().lower() in ("arm64", "aarch64")
+                            or any(os.environ.get(key, "").upper() == "ARM64"
+                                   for key in ("PROCESSOR_ARCHITECTURE", "PROCESSOR_ARCHITEW6432")))
+                native, foreign = ("arm64", "x86_64") if arm_host else ("x86_64", "arm64")
+                portable = root / ("runtime/python/windows-" + native + "/python")
                 portable.mkdir(parents=True)
                 # Exercise the real executable at a spaced path, with its stdlib
                 # supplied by the test interpreter's installation.
@@ -49,11 +54,9 @@ class LauncherTests(unittest.TestCase):
                 env = dict(os.environ, PYTHONHOME=sys.base_prefix)
                 # A universal kit may contain both architectures. The other
                 # executable must not override the native interpreter.
-                other = root / "runtime/python/windows-arm64/python"
+                other = root / ("runtime/python/windows-" + foreign + "/python")
                 other.mkdir(parents=True)
-                (other / "python.exe").write_bytes(b"not an x64 executable")
-                env["PROCESSOR_ARCHITECTURE"] = "AMD64"
-                env.pop("PROCESSOR_ARCHITEW6432", None)
+                (other / "python.exe").write_bytes(b"not a native executable")
                 scripts = ("run.bat",)
             else:
                 env = os.environ.copy()
