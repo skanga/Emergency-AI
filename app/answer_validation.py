@@ -11,7 +11,7 @@ from .query_planner import normalize, plan_query, _consciousness
 _CITATION = re.compile(r'\[S([1-9][0-9]*)\]')
 _REFERENCE = re.compile(r'\[(?:[Ss][^\]\n]*|\^?\d[^\]\n]*)\]')
 _FOOTNOTE = re.compile(r'\[(\d+(?:\s*[,–-]\s*\d+)*)\]')
-_ABNORMAL = re.compile(r'\b(?:not breathing(?: normally)?|no breathing|only gasping|gasping|nao respira\w*(?: normalmente)?|sem respiracao|no respira\w*(?: normalmente)?)\b')
+_ABNORMAL = re.compile(r'\b(?:not breathing(?: normally)?|no breathing(?!\s+(?:trouble|difficult(?:y|ies)|problems?)\b)|only gasping|gasping|nao respira\w*(?: normalmente)?|sem respiracao|no respira\w*(?: normalmente)?)\b')
 _NORMAL = re.compile(r'\b(?:breathing normally|normal breathing|respira\w* normalmente)\b')
 _SWALLOW = re.compile(r'\b(?:able to swallow(?: safely)?|can swallow(?: safely)?|consegue engolir|puede tragar)\b')
 _UNSAFE_SWALLOW = re.compile(r'\b(?:cannot swallow|can t swallow|unable to swallow|difficulty swallowing|swollen tongue|throat swelling|nao consegue engolir|dificuldade para engolir|lingua inchada|no puede tragar|dificultad para tragar|lengua hinchada)\b')

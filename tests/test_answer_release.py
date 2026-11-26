@@ -100,6 +100,29 @@ class AnswerReleaseTests(unittest.TestCase):
         self.assert_blocked(good, question='What next?', history=[{'role':'user','content':'Carbon monoxide exposure'}, {'role':'assistant','content':'He is unconscious and not breathing normally'}])
         self.assert_blocked(good, question='He is breathing normally now', history=[{'role':'user','content':'He is unconscious and not breathing normally'}])
 
+    def test_denied_breathing_symptoms_do_not_establish_cpr_prerequisites(self):
+        from app.answer_validation import validate_answer
+        questions = (
+            'My child touched peanuts but has no swelling, no breathing trouble and no faintness. She is talking normally.',
+            'He is unresponsive with no breathing difficulty.',
+            'He is unresponsive with no breathing problems.',
+        )
+        for question in questions:
+            with self.subTest(question=question):
+                rendered, report = validate_answer('Start CPR [S1].', [source()], question)
+                self.assertIsNone(report['patient_facts']['breathing'])
+                self.assertEqual(rendered, '')
+                self.assertIn('cpr_prerequisites_missing', report['issues'])
+
+    def test_absent_breathing_remains_a_cpr_prerequisite(self):
+        from app.answer_validation import validate_answer
+        for observation in ('no breathing', 'not breathing', 'not breathing normally', 'only gasping'):
+            with self.subTest(observation=observation):
+                rendered, report = validate_answer('Start CPR [S1].', [source()],
+                                                   'He is unresponsive with ' + observation)
+                self.assertEqual(report['patient_facts']['breathing'], 'abnormal')
+                self.assertEqual(rendered, 'Start CPR [1].')
+
     def test_followup_and_topic_reset(self):
         _, _, info = self.run_answer('Start CPR [S1].', question='What next?', history=[{'role':'user','content':'My father is unresponsive and not breathing'}])
         self.assertEqual(info['mode'], 'llm')

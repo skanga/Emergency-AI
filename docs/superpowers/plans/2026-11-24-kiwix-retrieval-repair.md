@@ -1,6 +1,20 @@
 # Kiwix Retrieval Repair Implementation Plan
 
-> **For agentic workers:** Use superpowers:executing-plans to implement this plan task by task. Checkboxes track completion. Implementation is in progress on branch `fix/kiwix-retrieval` in `/tmp/emergency-ai-kiwix-repair`. The running service has not been changed.
+> **For agentic workers:** Use superpowers:executing-plans to implement this plan task by task. The original implementation record below is historical; use the current follow-up status before interpreting its branch, deployment, and test counts.
+
+## Current follow-up status (2026-11-25)
+
+Retrieval repair, applicability checks, answer release validation, upgrades, and the repeatable answer-quality eval are merged. The broader quality gates are still open. Completed implementation plans were removed; their review evidence remains under `docs/reviews`.
+
+The [answer-quality results](../../../tests/evals/emergency_advice/RESULTS.md) record 32 completed cases, 18 withheld answers, six major unsafe-instruction findings, and ten major citation-support findings (categories overlap). Numeric citation identity checks passing does not establish claim support. The eval commit `c26fe89` subsequently passed all nine native CI jobs; this does not establish clinical quality.
+
+- In progress on `fix/advice-conditions-followup`: patient-fact negation regression. The captured allergy prompt's “no breathing trouble” incorrectly became abnormal breathing. Added negative symptom cases and genuine absent-breathing counterparts; corrected the phrase match without inferring normal breathing from absence of a symptom.
+- Open: independently supported fallback actions when an answer is withheld, preserving the existing rejection of invalid generated drafts.
+- Open: missing action conditions and unsupported procedural details identified by the eval, including burn clothing, snake compression, medication swallowing conditions, injector timing, and flood entrapment.
+- Open: citation support, relevance and source coverage; valid source identifiers alone are insufficient.
+- Open: repeat generated-answer trials after fixes, independent clinical adjudication, annotated passage precision, and the outstanding cold/warm/offline operating matrix.
+
+This follow-up has not been deployed to the standalone installation. Existing local knowledge and archives remain unchanged.
 
 **Goal:** Make selected offline libraries contribute relevant, attributable, complete passages to emergency answers, and make unavailable or unsuccessful retrieval visible.
 
