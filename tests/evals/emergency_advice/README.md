@@ -71,3 +71,7 @@ python -B -m unittest tests.test_advice_evaluation -v
 ```
 
 Imports require all 22 exact historical request bodies and keep answer/source/terminal data plus raw-file SHA-256. Portable baselines omit bulky duplicated retrieval diagnostics; original raw captures remain at their original locations. Never interpret absent historical provenance as a verified commit. Unit tests run in ordinary CI without a model or network, including ZIP/tar packaging checks. Full model runs are explicit.
+
+## Authority-source development probes
+
+Use `--manifest tests/evals/emergency_advice/authority-cases.json` for the eight first-batch source probes. These disable Kiwix to isolate local reference additions. The manifest must also be supplied for templates and reports. [Recorded results](../../../docs/reviews/2026-11-26-authority-first-batch.md) retain failures and the selected chemical-water follow-up; they do not establish a whole-suite pass.
