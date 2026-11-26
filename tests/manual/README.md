@@ -66,3 +66,7 @@ Target-section matching is narrower than a complete human relevance judgment. Th
 ## Relevance follow-up validation
 
 Run `python3 -B tests/manual/relevance_validation.py --output /tmp/relevance-validation.json` for the 24-case EN/PT/ES follow-up set. It uses production retrieval and read-only token fitting, without generation. Report topic/intent checks separately from passage applicability and clinical accuracy. The older 59-case manifest remains unchanged and is now observed regression data. See [the follow-up report](../../docs/reviews/2026-11-25-relevance-followup.md).
+
+## Answer quality
+
+The [emergency-advice eval](../evals/emergency_advice/README.md) runs actual questions against a running installation and supports evidence-based review of usefulness, unsafe instructions, semantic citation support, and unnecessary withholding. It is separate from retrieval scoring. The suite and its historical baselines stay in Git and are excluded from installation archives.
