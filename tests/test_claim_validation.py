@@ -23,6 +23,14 @@ class ClaimValidationTests(unittest.TestCase):
             self.assertTrue(rendered, report)
         return report
 
+    def test_cooking_fire_routing_enables_guards_for_captured_answer(self):
+        path = Path(__file__).parent / 'evals/emergency_advice/baselines/repeated-2026-11-26/final-development.json'
+        case = next(c for c in json.loads(path.read_text(encoding='utf-8'))['results']
+                    if c['id'] == 'fire_extinguisher')
+        request = case['request']
+        answer = re.sub(r'\[(\d+)\]', r'[S\1]', case['answer'])
+        self.check(answer, case['sources'], request['q'], 'extinguisher_conditions_missing')
+
     def test_captured_final_action_failures(self):
         path = Path(__file__).parent / 'fixtures/retrieval/final-action-failures.json'
         for case in json.loads(path.read_text(encoding='utf-8')):

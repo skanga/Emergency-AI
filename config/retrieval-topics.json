@@ -386,6 +386,39 @@
             "ampollas",
             "quemo"
           ]
+        ],
+        [
+          [
+            "burned",
+            "burnt"
+          ],
+          [
+            "arm",
+            "hand",
+            "skin"
+          ]
+        ],
+        [
+          [
+            "queimei",
+            "queimou"
+          ],
+          [
+            "braço",
+            "mão",
+            "pele"
+          ]
+        ],
+        [
+          [
+            "quemé",
+            "quemó"
+          ],
+          [
+            "brazo",
+            "mano",
+            "piel"
+          ]
         ]
       ],
       "source_terms": [
@@ -553,6 +586,18 @@
         ],
         [
           "glucosa baja"
+        ],
+        [
+          "my glucose is low"
+        ],
+        [
+          "blood glucose is low"
+        ],
+        [
+          "minha glicose está baixa"
+        ],
+        [
+          "mi glucosa está baja"
         ]
       ],
       "queries": {
@@ -797,7 +842,8 @@
           ],
           [
             "fire",
-            "flames"
+            "flames",
+            "burning"
           ]
         ],
         [
@@ -807,7 +853,8 @@
           ],
           [
             "fogo",
-            "chamas"
+            "chamas",
+            "queimando"
           ]
         ],
         [
@@ -817,7 +864,8 @@
           ],
           [
             "fuego",
-            "llamas"
+            "llamas",
+            "ardiendo"
           ]
         ]
       ],

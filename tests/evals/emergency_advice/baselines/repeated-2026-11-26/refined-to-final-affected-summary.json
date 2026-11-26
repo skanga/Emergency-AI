@@ -1,0 +1,269 @@
+{
+  "matched": 18,
+  "request_mismatches": [],
+  "only_before": [
+    "allergy_followup#1",
+    "allergy_followup#2",
+    "allergy_followup#3",
+    "allergy_followup_live#1",
+    "allergy_followup_live#2",
+    "allergy_followup_live#3",
+    "allergy_negated#1",
+    "allergy_negated#2",
+    "allergy_negated#3",
+    "anaphylaxis#1",
+    "anaphylaxis#2",
+    "anaphylaxis#3",
+    "anaphylaxis_live#1",
+    "anaphylaxis_live#2",
+    "anaphylaxis_live#3",
+    "bleach_unknown#1",
+    "bleach_unknown#2",
+    "bleach_unknown#3",
+    "burn#1",
+    "burn#2",
+    "burn#3",
+    "cpr_not_indicated#1",
+    "cpr_not_indicated#2",
+    "cpr_not_indicated#3",
+    "dehydration#1",
+    "dehydration#2",
+    "dehydration#3",
+    "diabetes#1",
+    "diabetes#2",
+    "diabetes#3",
+    "flood#1",
+    "flood#2",
+    "flood#3",
+    "food#1",
+    "food#2",
+    "food#3",
+    "grease_fire#1",
+    "grease_fire#2",
+    "grease_fire#3",
+    "heatstroke#1",
+    "heatstroke#2",
+    "heatstroke#3",
+    "hypo_alert#1",
+    "hypo_alert#2",
+    "hypo_alert#3",
+    "infant_choking#1",
+    "infant_choking#2",
+    "infant_choking#3",
+    "infant_choking_live#1",
+    "infant_choking_live#2",
+    "infant_choking_live#3",
+    "infant_followup#1",
+    "infant_followup#2",
+    "infant_followup#3",
+    "infant_followup_live#1",
+    "infant_followup_live#2",
+    "infant_followup_live#3",
+    "poison#1",
+    "poison#2",
+    "poison#3",
+    "seizure#1",
+    "seizure#2",
+    "seizure#3",
+    "snake#1",
+    "snake#2",
+    "snake#3",
+    "stroke#1",
+    "stroke#2",
+    "stroke#3",
+    "water_bleach#1",
+    "water_bleach#2",
+    "water_bleach#3",
+    "water_bottled#1",
+    "water_bottled#2",
+    "water_bottled#3",
+    "water_chemical#1",
+    "water_chemical#2",
+    "water_chemical#3"
+  ],
+  "only_after": [],
+  "before_summary": {
+    "total": 96,
+    "reviewed": 96,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 21,
+      "fallback": 65,
+      "withheld": 10,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 10,
+        "2": 3,
+        "3": 44,
+        "4": 39
+      },
+      "unsafe": {
+        "none": 78,
+        "minor": 15,
+        "major": 3,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 75,
+        "minor": 17,
+        "major": 4,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 83,
+        "justified": 6,
+        "unnecessary": 0,
+        "uncertain": 7
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "after_summary": {
+    "total": 18,
+    "reviewed": 18,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 5,
+      "fallback": 13,
+      "withheld": 0,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 5,
+        "4": 13
+      },
+      "unsafe": {
+        "none": 13,
+        "minor": 5,
+        "major": 0,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 15,
+        "minor": 3,
+        "major": 0,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 15,
+        "justified": 3,
+        "unnecessary": 0,
+        "uncertain": 0
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "pass",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "paired_before_summary": {
+    "total": 18,
+    "reviewed": 18,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 9,
+      "fallback": 9,
+      "withheld": 0,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 0,
+        "2": 3,
+        "3": 7,
+        "4": 8
+      },
+      "unsafe": {
+        "none": 10,
+        "minor": 5,
+        "major": 3,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 9,
+        "minor": 6,
+        "major": 3,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 15,
+        "justified": 3,
+        "unnecessary": 0,
+        "uncertain": 0
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "paired_after_summary": {
+    "total": 18,
+    "reviewed": 18,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 5,
+      "fallback": 13,
+      "withheld": 0,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 5,
+        "4": 13
+      },
+      "unsafe": {
+        "none": 13,
+        "minor": 5,
+        "major": 0,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 15,
+        "minor": 3,
+        "major": 0,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 15,
+        "justified": 3,
+        "unnecessary": 0,
+        "uncertain": 0
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "pass",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  }
+}

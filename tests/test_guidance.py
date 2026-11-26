@@ -169,6 +169,29 @@ class GuidanceTests(unittest.TestCase):
             text, _, meta = Engine._fallback(sources, lang, [], question, [])
             self.assertTrue(text, meta)
 
+    def test_development_routing_misses_survive_runtime_fallback(self):
+        from app.engine import Engine
+        cases = json.loads((Path(__file__).parent / 'evals/emergency_advice/development-cases.json').read_text())['cases']
+        expected = {'fire_extinguisher': 'cooking-fire',
+                    'hypo_unsafe_swallow': 'hypoglycemia-unresponsive', 'burn_es': 'burn-cooling'}
+        for case in cases:
+            if case['id'] not in expected:
+                continue
+            request = case['request']
+            with self.subTest(case=case['id']):
+                sources = [dict(source, n=i+1) for i, source in enumerate(
+                    self.sources(request['q'], request['lang']))]
+                units = {source['guidance_unit'] for source in sources}
+                self.assertIn(expected[case['id']], units)
+                if case['id'] == 'hypo_unsafe_swallow':
+                    self.assertNotIn('hypoglycemia-oral', units)
+                text, _, meta = Engine._fallback(sources, request['lang'], [], request['q'], [])
+                self.assertTrue(text, meta)
+                self.assertEqual(meta['status'], 'composed', meta)
+                if case['id'] == 'hypo_unsafe_swallow':
+                    self.assertIn('unable to swallow safely, seek emergency help', text)
+                    self.assertNotIn('15 grams', text)
+
     def test_actionable_steps_and_complete_conditions(self):
         from app.guidance import load_catalog
         units = {u['id']:u for u in load_catalog()}
