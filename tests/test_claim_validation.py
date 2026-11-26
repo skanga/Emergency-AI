@@ -23,6 +23,50 @@ class ClaimValidationTests(unittest.TestCase):
             self.assertTrue(rendered, report)
         return report
 
+    def test_captured_burn_action_failures(self):
+        path = Path(__file__).parent / 'fixtures/retrieval/burn-action-failures.json'
+        for case in json.loads(path.read_text(encoding='utf-8')):
+            with self.subTest(case=case['id']):
+                self.check(re.sub(r'\[(\d+)\]', r'[S\1]', case['answer']),
+                           case['sources'], case['request']['q'], case['issue'], 'es')
+
+    def test_burn_separation_cannot_weaken_stuck_condition(self):
+        for lang, question, template, stuck, qualifier, prohibition in (
+            ('en', 'A burn on my arm', 'Separate clothing only if not {}',
+             'stuck', 'firmly', 'Do not try to separate clothing stuck to the skin'),
+            ('pt', 'Queimadura no braço', 'Separe a roupa somente se não estiver {}',
+             'grudada', 'firmemente', 'Não tente separar roupa grudada na pele'),
+            ('es', 'Quemadura en el brazo', 'Intenta separar suavemente la ropa solo si no está {}',
+             'pegada', 'firmemente', 'Nunca intentes quitar la ropa pegada a la piel')):
+            good = template.format(stuck)
+            with self.subTest(lang=lang):
+                for qualified in (qualifier + ' ' + stuck, stuck + ' ' + qualifier):
+                    bad = template.format(qualified)
+                    self.check(bad + ' [S1].', good, question, 'burn_clothing_condition_missing', lang)
+                    self.check(good + ' [S1].', bad, question,
+                               'claim_not_supported_by_cited_passage', lang)
+                self.check(good + ' [S1].', good, question, lang=lang)
+                report = self.check(prohibition + ' [S1].', prohibition, question, lang=lang)
+                self.assertFalse(report['claim_checks']['claims'][0]['positive'])
+
+    def test_burn_jewelry_cannot_be_left_until_swelling(self):
+        for lang, question, bad, good, stuck, prohibition in (
+            ('en', 'A burn on my arm', 'Keep jewelry on until the area swells',
+             'Remove jewelry before the area swells', 'Leave stuck jewelry in place',
+             'Do not leave jewelry on until swelling develops'),
+            ('pt', 'Queimadura no braço', 'Mantenha as joias até a área inchar',
+             'Retire as joias antes de a área inchar', 'Deixe joias grudadas no lugar',
+             'Não deixe as joias até a área inchar'),
+            ('es', 'Quemadura en el brazo', 'Mantén las joyas y anillos hasta que la zona se hinche',
+             'Retire las joyas antes de que la zona se hinche', 'Deje las joyas pegadas en su lugar',
+             'No deje las joyas hasta que la zona se hinche')):
+            with self.subTest(lang=lang):
+                self.check(bad + ' [S1].', good, question, 'burn_jewelry_delay_unsafe', lang)
+                self.check(stuck + ' [S1].', bad, question,
+                           'claim_not_supported_by_cited_passage', lang)
+                for valid in (good, stuck, prohibition):
+                    self.check(valid + ' [S1].', valid, question, lang=lang)
+
     def test_cooking_fire_routing_enables_guards_for_captured_answer(self):
         path = Path(__file__).parent / 'evals/emergency_advice/baselines/repeated-2026-11-26/final-development.json'
         case = next(c for c in json.loads(path.read_text(encoding='utf-8'))['results']

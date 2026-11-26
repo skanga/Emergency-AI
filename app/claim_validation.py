@@ -11,7 +11,8 @@ from .query_planner import normalize, _consciousness, _age
 from .patient_facts import _breathing, _facts, _UNSAFE_SWALLOW
 
 _CITE = re.compile(r'\[S([1-9][0-9]*)\]')
-_NEGATIVE = re.compile(r'\b(?:do not|don t|never|avoid|must not|should not|cannot|can t|nao|nunca|evite|no|evitar)\s+(?:(?:attempt to|try to|tente|intente)\s+)?$')
+_NEGATIVE = re.compile(r'\b(?:do not|don t|never|avoid|must not|should not|cannot|can t|nao|nunca|evite|no|evitar)\s+(?:(?:attempt to|try to|tente|intente|intentes|intenten)\s+)?$')
+_FIRMLY = r'\b(?:firmly|tightly|strongly|firmemente|fortemente|fuertemente)\b'
 _STUCK = r'\b(?:stuck|adher\w*|grudad\w*|pegad\w*)\b'
 _EXCEPT = r'\b(?:except|unless|leave|only if not|do not|don t|not remove|but not|nao|no|exceto|salvo|deixe|deje)\b'
 _UNRESPONSIVE = r'\b(?:unresponsive|unconscious|inconsciente|nao responde|no responde)\b'
@@ -38,7 +39,8 @@ RULES = (
     Rule('generator_reentry', r'\b(?:re enter|(?:return|go back|volte|voltar|retorne|regrese|volver)(?= (?:to|inside|into|a|ao|al|para|adentro|dentro)\b))\b', ('carbon_monoxide',)),
     Rule('generator_indoor', r'\b(?:use[ds]?|using|run|operate|utilize|usar|utilice|use|opere)\b.{0,110}\b(?:indoors|inside|garage\w*|garagem|garaje|interior|dentro)\b', ('carbon_monoxide',)),
     Rule('food_sensory', r'\b(?:judge|assess|re evaluate|evaluate|determine|rely|avalie|julgue|avalie novamente|confie|evalue|juzgue|confie)\b.{0,80}\b(?:appearance|smell|taste|aparencia|cheiro|sabor|aspecto|olor)\b|\b(?:eat|coma|consuma)\b.{0,35}\b(?:if|se|si)\b.{0,35}\b(?:smell\w*|cheiro|olor)\b', ('food_safety',)),
-    Rule('burn_clothing', r'\b(?:remove|take off|retire|remova|quite)\b.{0,65}\b(?:clothing|clothes|roupa\w*|ropa\w*)\b', ('burn',)),
+    Rule('burn_clothing', r'\b(?:remove|take off|separate|peel off|pull off|retire|retira|retirar|remova|remover|quite|quita|quitar|tire|tirar|separe|separar)\b.{0,65}\b(?:clothing|clothes|roupa\w*|ropa\w*)\b', ('burn',)),
+    Rule('burn_jewelry_delay', r'\b(?:keep|leave|mantenha|deixe|manten|mantenga|deje|deja)\b.{0,50}\b(?:jewelry|jewellery|rings?|joias?|aneis|joyas?|anillos?)\b', ('burn',)),
     Rule('burn_cooling', r'\b(?:cool|run|hold|resfrie|arrefeca|enfrie|enfriar)\b.{0,90}\b(?:water|agua)\b', ('burn',)),
     Rule('immersion', r'\b(?:immerse|immersion|submerge|mergulh\w*|imersao|sumerj\w*|inmersion|sumerg\w*)\b', ('heatstroke',)),
     Rule('snake_compression', r'\b(?:apply|use|wrap|aplique|use|coloque|aplica)\b.{0,45}\b(?:compression|pressure|compress\w*|pressao|presion)\b.{0,35}\b(?:bandage|bandaging|bandagem|vendagem|vendaje|venda)\b', ('snakebite',)),
@@ -143,7 +145,11 @@ def _condition_issue(name, text, question, positive=True):
         return 'food_sensory_safety_unsupported'
     if not positive:
         return None
-    if name == 'burn_clothing' and (not _has(_EXCEPT + r'(?:(?!\b(?:but|mas|pero|and|e|y)\b).){0,65}' + _STUCK, text)
+    if name == 'burn_jewelry_delay' and _has(
+            r'\b(?:until|ate|hasta que)\b.{0,45}\b(?:swell\w*|incha\w*|hinch\w*)\b', text):
+        return 'burn_jewelry_delay_unsafe'
+    if name == 'burn_clothing' and (_has(_FIRMLY + r'\s+' + _STUCK + '|' + _STUCK + r'\s+' + _FIRMLY, text)
+            or not _has(_EXCEPT + r'(?:(?!\b(?:but|mas|pero|and|e|y)\b).){0,65}' + _STUCK, text)
             or _has(r'\b(?:except|exceto|salvo)\b.{0,40}\b(?:not|nao|no)\s+' + _STUCK, text)):
         return 'burn_clothing_condition_missing'
     if name == 'immersion' and not (
