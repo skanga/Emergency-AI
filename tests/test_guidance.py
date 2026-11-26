@@ -41,6 +41,16 @@ class GuidanceTests(unittest.TestCase):
                     self.assertEqual(meta['status'], 'composed')
                     self.assertNotIn('verified', meta)
 
+    def test_burn_fallback_covers_protection_warmth_and_ice(self):
+        for lang, required in (
+                ('en', ('ice', 'rest of the person warm', 'loosely', 'not wrap', 'face')),
+                ('pt', ('gelo', 'resto do corpo aquecido', 'solto', 'não enrole', 'rosto')),
+                ('es', ('hielo', 'resto del cuerpo caliente', 'suelto', 'no envuelva', 'cara'))):
+            with self.subTest(lang=lang):
+                source = self.sources('Thermal burn on my arm. Should I use ice or butter?', lang)[0]
+                for phrase in required:
+                    self.assertIn(phrase, source['text'])
+
     def test_history_and_topic_reset(self):
         history = [{'role':'user','content':'low blood sugar unconscious'},
                    {'role':'assistant','content':'Now awake and swallowing'}]

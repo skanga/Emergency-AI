@@ -170,13 +170,19 @@
       "contraindications": [
         "pulling off stuck clothing"
       ],
-      "additional_references": [],
+      "additional_references": [
+        {
+          "title": "St John Ambulance: How to treat burns and scalds",
+          "url": "https://shop.sja.org.uk/blogs/workplace-first-aid/how-to-treat-burns-and-scalds",
+          "section": "How to treat a burn or scald; common misconceptions"
+        }
+      ],
       "translations": {
-        "en": "For a thermal burn, cool the area under cool running water for 20 minutes. Remove nearby clothing and jewelry only if not stuck to the skin. Do not apply butter or oils. Seek emergency care for large, deep burns or burns on the face or genitals.",
-        "pt": "Para queimadura térmica, resfrie a área com água corrente fresca por 20 minutos. Retire roupas e joias próximas somente se não estiverem grudadas na pele. Não aplique manteiga nem óleos. Procure emergência para queimaduras grandes, profundas, no rosto ou genitais.",
-        "es": "Para una quemadura térmica, enfríe la zona con agua corriente fresca durante 20 minutos. Retire ropa y joyas cercanas solo si no están pegadas a la piel. No aplique mantequilla ni aceites. Busque urgencias para quemaduras grandes, profundas, en la cara o genitales."
+        "en": "For a thermal burn, cool the area under cool running water for 20 minutes while keeping the rest of the person warm. Remove nearby clothing and jewelry only if not stuck to the skin. Do not apply ice, butter or oils, or burst blisters. After cooling, lay clean cling film loosely over the burn; do not wrap it around a limb or put it on the face. Seek emergency care for large, deep burns or burns on the face or genitals; seek medical advice if unsure.",
+        "pt": "Para queimadura térmica, resfrie a área com água corrente fresca por 20 minutos, mantendo o resto do corpo aquecido. Retire roupas e joias próximas somente se não estiverem grudadas na pele. Não aplique gelo, manteiga nem óleos, nem estoure bolhas. Após resfriar, coloque filme plástico limpo e solto sobre a queimadura; não enrole ao redor do membro nem coloque no rosto. Procure emergência para queimaduras grandes, profundas, no rosto ou genitais; peça orientação médica se tiver dúvidas.",
+        "es": "Para una quemadura térmica, enfríe la zona con agua corriente fresca durante 20 minutos, manteniendo el resto del cuerpo caliente. Retire ropa y joyas cercanas solo si no están pegadas a la piel. No aplique hielo, mantequilla ni aceites, ni reviente ampollas. Después de enfriar, coloque film plástico limpio y suelto sobre la quemadura; no envuelva la extremidad ni lo coloque en la cara. Busque urgencias para quemaduras grandes, profundas, en la cara o genitales; consulte si tiene dudas."
       },
-      "content_hash": "010e7ade25d5806f626490709c108a7c6f208331be9b928b1f6e53c86c144831"
+      "content_hash": "e6e8ede50d0ae5789156eb22d7e81584396f4ed56e849c08e27e0531ab461879"
     },
     {
       "id": "allergy-action-plan",
