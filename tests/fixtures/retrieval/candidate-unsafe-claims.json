@@ -1,0 +1,239 @@
+[
+  {
+    "id": "co",
+    "trial": 2,
+    "request": {
+      "q": "We are using a gasoline generator in the garage with the door open during an outage. Everyone has headaches and nausea. Is it safe if I add a fan?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    },
+    "answer": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\n**NO. This is NOT safe.** Adding a fan will not make it safe and may increase the risk of death.\n\n### Immediate Actions Required\n1.  **Evacuate Immediately:** Move everyone out of the garage to fresh air outside right now [2].\n2.  **Stop the Generator:** Turn off the gasoline generator immediately [1].\n3.  **Ventilate:** Open all doors and windows in the garage, but do not re-enter until you are sure the gas has cleared.\n\n### Why This Is Dangerous\n*   **Symptoms Match Poisoning:** Headaches and nausea are classic symptoms of carbon monoxide (CO) poisoning [1][3]. CO is a colorless, odorless gas produced by incomplete burning that kills people in their sleep or while they sleep [1].\n*   **Garages Are Not Safe Indoors:** Even with the door \"open,\" a garage often lacks sufficient airflow to dilute high concentrations of CO quickly. Using a generator inside a garage (even with an open door) is explicitly warned against due to the risk of carbon monoxide [5][6].\n*   **Fans Do Not Remove Gas:** A fan only circulates air; it does not remove the toxic gas or replace it with fresh air fast enough to prevent poisoning. The gas can still accumulate in the enclosed space and enter your home through cracks, windows, or if you return inside [1][6].\n*   **Severity:** CO prevents blood from carrying oxygen, leading to confusion, loss of consciousness, seizures, arrhythmias, or death [2][3].\n\n### Medical Warning\n*   **Seek Help:** If anyone has lost consciousness, is confused, vomiting, or experiencing chest pain, call emergency services immediately. Those who are unconscious may require CPR on site [2].\n*   **Do Not Wait:** Do not wait to see if symptoms improve. The biological threshold for toxicity is typically observed at levels in excess of 15% carboxyhemoglobin, which can be fatal [3].\n*   **Treatment Note:** If medical help is unavailable and the person is breathing but conscious, administering 100% oxygen via a non-rebreather mask can shorten the time for CO to leave the body, but this does not replace immediate removal from the source [2].\n\n**Summary:** The generator must be moved outdoors (more than 6 m from doors/windows) and never used indoors or in attached garages without professional ventilation systems designed for this purpose [1][6].",
+    "sources": [
+      {
+        "id": "en:02-fire:7",
+        "lang": "en",
+        "doc_id": "02-fire",
+        "doc_title": "Fire: how to light one with simple things",
+        "section": "Safety",
+        "anchor": "safety",
+        "text": "- Clear a 3 m circle around it, free of dry leaves. Keep water or soil nearby.\n- Never make a fire under low branches, on peat or roots (fire can spread underground).\n- **Carbon monoxide:** never use a brazier, camp stove, generator or barbecue indoors. The gas has no smell and kills people in their sleep. Symptoms: headache, dizziness, nausea, drowsiness. Ventilate and get outside.\n- Put it out completely: water, stir, more water, until you can touch the ashes with the back of your hand.\n\n> Sources: US Army ATP 3-50.21 *Survival* (2018), chapter on fire; CDC — Carbon Monoxide Poisoning Prevention. https://www.cdc.gov/carbon-monoxide/",
+        "kind": "kit",
+        "score": 13.651,
+        "retrieval_score": 9,
+        "original_text": "- Clear a 3 m circle around it, free of dry leaves. Keep water or soil nearby.\n- Never make a fire under low branches, on peat or roots (fire can spread underground).\n- **Carbon monoxide:** never use a brazier, camp stove, generator or barbecue indoors. The gas has no smell and kills people in their sleep. Symptoms: headache, dizziness, nausea, drowsiness. Ventilate and get outside.\n- Put it out completely: water, stir, more water, until you can touch the ashes with the back of your hand.\n\n> Sources: US Army ATP 3-50.21 *Survival* (2018), chapter on fire; CDC — Carbon Monoxide Poisoning Prevention. https://www.cdc.gov/carbon-monoxide/",
+        "source_version": "b0d2466b7e221979990377198a471a0f3fb1258854ad70c36e587cf09eb6af55",
+        "n": 1,
+        "conflicts": [],
+        "context_omitted": false,
+        "context_omitted_reason": null
+      },
+      {
+        "kind": "kiwix",
+        "id": "cae2aaa84c5e9e4a4f350caf",
+        "doc_title": "WikiMed Medical Encyclopedia",
+        "title": "Carbon monoxide poisoning",
+        "section": "Treatment",
+        "heading_path": [
+          "Treatment"
+        ],
+        "anchor": "Treatment",
+        "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+        "article_url": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+        "text": "Time to remove 50% carboxyhemoglobin[118]\nOxygen pressure О2 | Time\n21% oxygen at normal atmospheric pressure (fresh air) | 5 hours 20 min\n100% oxygen at normal atmospheric pressure (non-rebreather oxygen mask) | 1 hours 20 min\n100% hyperbaric oxygen (3 atmospheres absolute) | 23 min\n\nInitial treatment for carbon monoxide poisoning is to immediately remove the person from the exposure without endangering further people. Those who are unconscious may require CPR on site.[50] Administering oxygen via non-rebreather mask shortens the half-life of carbon monoxide from 320 minutes, when breathing normal air, to only 80 minutes.[34] Oxygen hastens the dissociation of carbon monoxide from carboxyhemoglobin, thus turning it back into hemoglobin.[17][119] Due to the possible severe effects in the baby, pregnant women are treated with oxygen for longer periods of time than non-pregnant people.[120]",
+        "book_name": "wikipedia_en_medicine",
+        "archive": "wikipedia_en_medicine",
+        "version": "f0902c7c-81ad-0490-6f91-fecc14810992:2026-10-10T00:00:00Z",
+        "archive_uuid": "f0902c7c-81ad-0490-6f91-fecc14810992",
+        "issued": "2026-10-10T00:00:00Z",
+        "native_rank": 1,
+        "queries": [
+          "carbon monoxide poisoning"
+        ],
+        "retrieval_score": 100,
+        "original_text": "Time to remove 50% carboxyhemoglobin[118]\nOxygen pressure О2 | Time\n21% oxygen at normal atmospheric pressure (fresh air) | 5 hours 20 min\n100% oxygen at normal atmospheric pressure (non-rebreather oxygen mask) | 1 hours 20 min\n100% hyperbaric oxygen (3 atmospheres absolute) | 23 min\n\nInitial treatment for carbon monoxide poisoning is to immediately remove the person from the exposure without endangering further people. Those who are unconscious may require CPR on site.[50] Administering oxygen via non-rebreather mask shortens the half-life of carbon monoxide from 320 minutes, when breathing normal air, to only 80 minutes.[34] Oxygen hastens the dissociation of carbon monoxide from carboxyhemoglobin, thus turning it back into hemoglobin.[17][119] Due to the possible severe effects in the baby, pregnant women are treated with oxygen for longer periods of time than non-pregnant people.[120]",
+        "source_version": "f0902c7c-81ad-0490-6f91-fecc14810992",
+        "n": 2,
+        "conflicts": [],
+        "context_omitted": false,
+        "context_omitted_reason": null
+      },
+      {
+        "kind": "kiwix",
+        "id": "e2304d5c0b271611d0a1b585",
+        "doc_title": "WikiMed Medical Encyclopedia",
+        "title": "Carbon monoxide poisoning",
+        "section": "Carbon monoxide poisoning",
+        "heading_path": [],
+        "anchor": "",
+        "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+        "article_url": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+        "text": "Carbon monoxide poisoning\n\nCarbon monoxide poisoning\nOther names | Carbon monoxide intoxication, carbon monoxide toxicity, carbon monoxide overdose\nCarbon monoxide\nSpecialty | Toxicology, emergency medicine\nSymptoms | Headache, dizziness, weakness, vomiting, chest pain, confusion[1]\nComplications | Loss of consciousness, arrhythmias, seizures[1][2]\nCauses | Breathing in carbon monoxide[3]\nDiagnostic method | Carboxyhemoglobin level:\n3% (nonsmokers)\n10% (smokers)[2]\nDifferential diagnosis | Cyanide toxicity, alcoholic ketoacidosis, aspirin poisoning, upper respiratory tract infection[2][4]\nPrevention | Carbon monoxide detectors, venting of gas appliances, maintenance of exhaust systems[1]\nTreatment | Supportive care, 100% oxygen, hyperbaric oxygen therapy[2]\nPrognosis | Risk of death: 1–31%[2]\nFrequency | >20,000 emergency visits for non-fire related cases per year (US)[1]\nDeaths | >400 non-fire related a year (US)[1]\n\nCarbon monoxide poisoning typically occurs from breathing in carbon monoxide (CO) at excessive levels.[3] Symptoms are often described as \"flu-like\" and commonly include headache, dizziness, weakness, vomiting, chest pain, and confusion.[1] Large exposures can result in loss of consciousness, arrhythmias, seizures, or death.[1][2] The classically described \"cherry red skin\" rarely occurs.[2] Long-term complications may include chronic fatigue, trouble with memory, and movement problems.[5] According to the Threshold Limit Value – Time Weighted Average, humans tolerate 25 mL of CO/m3 for 8 hours/day per 40 hour work week.[6]\n\nCO is a colorless and odorless gas which is initially non-irritating.[5] It is produced during incomplete burning of organic matter.[5] This can occur in cooking equipment, motor vehicles, or heaters which use carbon-based fuels.[1] Carbon monoxide primarily causes adverse effects by combining with hemoglobin to form carboxyhemoglobin (symbol COHb or HbCO), which prevents the blood from carrying oxygen and expelling carbon dioxide as carbaminohemoglobin.[5] Additionally, many other hemoproteins such as myoglobin, Cytochrome P450, and mitochondrial cytochrome oxidase are affected, along with other metallic and non-metallic cellular targets.[2][7]\n\nDiagnosis is typically based on a HbCO level of more than 3% among nonsmokers and more than 10% among smokers.[2] The biological threshold for carboxyhemoglobin tolerance is typically accepted to be 15% COHb, meaning toxicity is consistently observed at levels in excess of this concentration.[8] The FDA has previously set a threshold of 14% COHb in certain clinical trials evaluating the therapeutic potential of carbon monoxide.[9] In general, 30% COHb is considered severe carbon monoxide poisoning.[10] The highest reported non-fatal carboxyhemoglobin level was 73% COHb.[10]\n\nEfforts to prevent poisoning include carbon monoxide detectors, proper venting of gas appliances, keeping chimneys clean, and keeping exhaust systems of vehicles in good repair.[1] Treatment of poisoning generally consists of giving 100% oxygen along with supportive care.[2][5] This procedure is often carried out until symptoms are absent and the HbCO level is less than 3%/10%.[2]\n\nCarbon monoxide poisoning is relatively common, resulting in more than 20,000 emergency room visits a year in the United States.[1][11] It is the most common type of fatal poisoning in many countries.[12] In the United States, non-fire related cases result in more than 400 deaths a year.[1] Poisonings occur more often in the winter, particularly from the use of portable generators during power outages.[2][13] The toxic effects of CO have been known since ancient history.[14][10] The discovery that hemoglobin is affected by CO emerged with an investigation by James Watt and Thomas Beddoes into the therapeutic potential of hydrocarbonate in 1793, and later confirmed by Claude Bernard between 1846 and 1857.[10]",
+        "book_name": "wikipedia_en_medicine",
+        "archive": "wikipedia_en_medicine",
+        "version": "f0902c7c-81ad-0490-6f91-fecc14810992:2026-10-10T00:00:00Z",
+        "archive_uuid": "f0902c7c-81ad-0490-6f91-fecc14810992",
+        "issued": "2026-10-10T00:00:00Z",
+        "native_rank": 1,
+        "queries": [
+          "carbon monoxide poisoning"
+        ],
+        "retrieval_score": 76,
+        "original_text": "Carbon monoxide poisoning\n\nCarbon monoxide poisoning\nOther names | Carbon monoxide intoxication, carbon monoxide toxicity, carbon monoxide overdose\nCarbon monoxide\nSpecialty | Toxicology, emergency medicine\nSymptoms | Headache, dizziness, weakness, vomiting, chest pain, confusion[1]\nComplications | Loss of consciousness, arrhythmias, seizures[1][2]\nCauses | Breathing in carbon monoxide[3]\nDiagnostic method | Carboxyhemoglobin level:\n3% (nonsmokers)\n10% (smokers)[2]\nDifferential diagnosis | Cyanide toxicity, alcoholic ketoacidosis, aspirin poisoning, upper respiratory tract infection[2][4]\nPrevention | Carbon monoxide detectors, venting of gas appliances, maintenance of exhaust systems[1]\nTreatment | Supportive care, 100% oxygen, hyperbaric oxygen therapy[2]\nPrognosis | Risk of death: 1–31%[2]\nFrequency | >20,000 emergency visits for non-fire related cases per year (US)[1]\nDeaths | >400 non-fire related a year (US)[1]\n\nCarbon monoxide poisoning typically occurs from breathing in carbon monoxide (CO) at excessive levels.[3] Symptoms are often described as \"flu-like\" and commonly include headache, dizziness, weakness, vomiting, chest pain, and confusion.[1] Large exposures can result in loss of consciousness, arrhythmias, seizures, or death.[1][2] The classically described \"cherry red skin\" rarely occurs.[2] Long-term complications may include chronic fatigue, trouble with memory, and movement problems.[5] According to the Threshold Limit Value – Time Weighted Average, humans tolerate 25 mL of CO/m3 for 8 hours/day per 40 hour work week.[6]\n\nCO is a colorless and odorless gas which is initially non-irritating.[5] It is produced during incomplete burning of organic matter.[5] This can occur in cooking equipment, motor vehicles, or heaters which use carbon-based fuels.[1] Carbon monoxide primarily causes adverse effects by combining with hemoglobin to form carboxyhemoglobin (symbol COHb or HbCO), which prevents the blood from carrying oxygen and expelling carbon dioxide as carbaminohemoglobin.[5] Additionally, many other hemoproteins such as myoglobin, Cytochrome P450, and mitochondrial cytochrome oxidase are affected, along with other metallic and non-metallic cellular targets.[2][7]\n\nDiagnosis is typically based on a HbCO level of more than 3% among nonsmokers and more than 10% among smokers.[2] The biological threshold for carboxyhemoglobin tolerance is typically accepted to be 15% COHb, meaning toxicity is consistently observed at levels in excess of this concentration.[8] The FDA has previously set a threshold of 14% COHb in certain clinical trials evaluating the therapeutic potential of carbon monoxide.[9] In general, 30% COHb is considered severe carbon monoxide poisoning.[10] The highest reported non-fatal carboxyhemoglobin level was 73% COHb.[10]\n\nEfforts to prevent poisoning include carbon monoxide detectors, proper venting of gas appliances, keeping chimneys clean, and keeping exhaust systems of vehicles in good repair.[1] Treatment of poisoning generally consists of giving 100% oxygen along with supportive care.[2][5] This procedure is often carried out until symptoms are absent and the HbCO level is less than 3%/10%.[2]\n\nCarbon monoxide poisoning is relatively common, resulting in more than 20,000 emergency room visits a year in the United States.[1][11] It is the most common type of fatal poisoning in many countries.[12] In the United States, non-fire related cases result in more than 400 deaths a year.[1] Poisonings occur more often in the winter, particularly from the use of portable generators during power outages.[2][13] The toxic effects of CO have been known since ancient history.[14][10] The discovery that hemoglobin is affected by CO emerged with an investigation by James Watt and Thomas Beddoes into the therapeutic potential of hydrocarbonate in 1793, and later confirmed by Claude Bernard between 1846 and 1857.[10]",
+        "source_version": "f0902c7c-81ad-0490-6f91-fecc14810992",
+        "n": 3,
+        "conflicts": [],
+        "context_omitted": false,
+        "context_omitted_reason": null
+      },
+      {
+        "kind": "kiwix",
+        "id": "fa2a43a3e2c48d8c1422653d",
+        "doc_title": "WikiMed Medical Encyclopedia",
+        "title": "Carbon monoxide poisoning",
+        "section": "Treatment › Hyperbaric oxygen",
+        "heading_path": [
+          "Treatment",
+          "Hyperbaric oxygen"
+        ],
+        "anchor": "Hyperbaric_oxygen",
+        "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+        "article_url": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+        "text": "Open the full source below. This section is unavailable or too long to include safely as a complete passage.",
+        "book_name": "wikipedia_en_medicine",
+        "archive": "wikipedia_en_medicine",
+        "version": "f0902c7c-81ad-0490-6f91-fecc14810992:2026-10-10T00:00:00Z",
+        "archive_uuid": "f0902c7c-81ad-0490-6f91-fecc14810992",
+        "issued": "2026-10-10T00:00:00Z",
+        "native_rank": 1,
+        "queries": [
+          "carbon monoxide poisoning"
+        ],
+        "retrieval_score": 65,
+        "original_text": "A woman within a hyperbaric oxygen chamber\n\nHyperbaric oxygen is also used in the treatment of carbon monoxide poisoning, as it may hasten dissociation of CO from carboxyhemoglobin[17] and cytochrome oxidase[121] to a greater extent than normal oxygen. Hyperbaric oxygen at three times atmospheric pressure reduces the half life of carbon monoxide to 23 minutes, compared to 80 minutes for oxygen at regular atmospheric pressure.[17] It may also enhance oxygen transport to the tissues by plasma, partially bypassing the normal transfer through hemoglobin.[119] However, it is controversial whether hyperbaric oxygen actually offers any extra benefits over normal high flow oxygen, in terms of increased survival or improved long-term outcomes.[122][123][124][125][126][127] There have been randomized controlled trials in which the two treatment options have been compared;[128][129][130][131][132][133] of the six performed, four found hyperbaric oxygen improved outcome and two found no benefit for hyperbaric oxygen.[122] Some of these trials have been criticized for apparent flaws in their implementation.[134][135][136][137] A review of all the literature concluded that the role of hyperbaric oxygen is unclear and the available evidence neither confirms nor denies a medically meaningful benefit. The authors suggested a large, well designed, externally audited, multicentre trial to compare normal oxygen with hyperbaric oxygen.[122] While hyperbaric oxygen therapy is used for severe poisonings, the benefit over standard oxygen delivery is unclear.[2][123]",
+        "source_version": "f0902c7c-81ad-0490-6f91-fecc14810992",
+        "n": 4,
+        "conflicts": [],
+        "context_omitted": true,
+        "context_omitted_reason": "context_budget"
+      },
+      {
+        "id": "en:03-shelter:6",
+        "lang": "en",
+        "doc_id": "03-shelter",
+        "doc_title": "Shelter and body temperature",
+        "section": "Safe heating",
+        "anchor": "safe-heating",
+        "text": "- Stones heated in the fire (do not use wet river stones: they can explode) wrapped in cloth warm the bed.\n- A hot water bottle inside the sleeping bag.\n- Never use fire, charcoal or a camp stove inside a tent or closed room without ventilation: risk of **carbon monoxide**.\n\n> Sources: US Army ATP 3-50.21 *Survival* (2018), chapter on shelters; Wilderness Medical Society — Clinical Practice Guidelines for the Out-of-Hospital Evaluation and Treatment of Accidental Hypothermia (2019).",
+        "kind": "kit",
+        "score": 6.16,
+        "retrieval_score": 7,
+        "original_text": "- Stones heated in the fire (do not use wet river stones: they can explode) wrapped in cloth warm the bed.\n- A hot water bottle inside the sleeping bag.\n- Never use fire, charcoal or a camp stove inside a tent or closed room without ventilation: risk of **carbon monoxide**.\n\n> Sources: US Army ATP 3-50.21 *Survival* (2018), chapter on shelters; Wilderness Medical Society — Clinical Practice Guidelines for the Out-of-Hospital Evaluation and Treatment of Accidental Hypothermia (2019).",
+        "source_version": "66473b27efcf96a42efc4dc9fbf4f1cce981e5b2c9a0ab028ecdc1265407d281",
+        "n": 5,
+        "conflicts": [],
+        "context_omitted": false,
+        "context_omitted_reason": null
+      },
+      {
+        "id": "en:10-energy-light:3",
+        "lang": "en",
+        "doc_id": "10-energy-light",
+        "doc_title": "Energy, light and electricity off the grid",
+        "section": "Car batteries and generators",
+        "anchor": "car-batteries-and-generators",
+        "text": "- A car battery can power 12 V bulbs, a radio and car USB chargers. Recharge it by running the engine (uses fuel).\n- **Combustion generator:** always **outdoors**, more than 6 m from doors and windows. Carbon monoxide kills. Store fuel in proper cans; gasoline goes bad in 3–6 months without stabilizer (diesel lasts longer).\n- Never plug the generator into a household outlet without a transfer switch: the power flows back into the grid and can kill line workers.",
+        "kind": "kit",
+        "score": 6.091,
+        "retrieval_score": 6,
+        "original_text": "- A car battery can power 12 V bulbs, a radio and car USB chargers. Recharge it by running the engine (uses fuel).\n- **Combustion generator:** always **outdoors**, more than 6 m from doors and windows. Carbon monoxide kills. Store fuel in proper cans; gasoline goes bad in 3–6 months without stabilizer (diesel lasts longer).\n- Never plug the generator into a household outlet without a transfer switch: the power flows back into the grid and can kill line workers.",
+        "source_version": "8322cfd0473d15e1734dc717e5092147b71bbb3488194f59183d4a70d1440cdf",
+        "n": 6,
+        "conflicts": [],
+        "context_omitted": false,
+        "context_omitted_reason": null
+      },
+      {
+        "id": "en:10-energy-light:5",
+        "lang": "en",
+        "doc_id": "10-energy-light",
+        "doc_title": "Energy, light and electricity off the grid",
+        "section": "Devices and data",
+        "anchor": "devices-and-data",
+        "text": "- Keep this kit (Emergency AI + Kiwix databases) on a **USB flash drive and an external hard drive**, and a copy on a low-power laptop.\n- A laptop running the local AI uses ~30–60 W while answering; a small computer (mini PC, Raspberry Pi 5) uses ~5–15 W.\n- Protect electronics from moisture (silica gel, airtight bags) and from power surges.\n\n> Sources: CDC — Generator safety and carbon monoxide (https://www.cdc.gov/carbon-monoxide/); CRESESB/CEPEL — Manual de Engenharia para Sistemas Fotovoltaicos (Engineering Manual for Photovoltaic Systems) (2014); Liter of Light (litrodeluz).",
+        "kind": "kit",
+        "score": 7.868,
+        "retrieval_score": 4,
+        "original_text": "- Keep this kit (Emergency AI + Kiwix databases) on a **USB flash drive and an external hard drive**, and a copy on a low-power laptop.\n- A laptop running the local AI uses ~30–60 W while answering; a small computer (mini PC, Raspberry Pi 5) uses ~5–15 W.\n- Protect electronics from moisture (silica gel, airtight bags) and from power surges.\n\n> Sources: CDC — Generator safety and carbon monoxide (https://www.cdc.gov/carbon-monoxide/); CRESESB/CEPEL — Manual de Engenharia para Sistemas Fotovoltaicos (Engineering Manual for Photovoltaic Systems) (2014); Liter of Light (litrodeluz).",
+        "source_version": "6eca3dfc84597bcbf618b649b31bfe014496a3a23a4f71b92c6bd1f739b66053",
+        "n": 7,
+        "conflicts": [],
+        "context_omitted": false,
+        "context_omitted_reason": null
+      }
+    ],
+    "capture_sha256": "11dc1e9a821f2ae127734ec6af59bf51c0d3c9859a31d536424ff137c687b999"
+  },
+  {
+    "id": "food",
+    "trial": 2,
+    "request": {
+      "q": "The power has been out for 10 hours. The refrigerator stayed closed. Can we eat the chicken and milk if they smell normal?",
+      "lang": "en",
+      "history": [],
+      "use_kiwix": true
+    },
+    "answer": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\n**Do not eat the chicken or the milk.** Even if they smell normal, the food is unsafe after 10 hours without power.\n\n### Why?\n*   **Refrigerator Limit:** A refrigerator kept closed generally maintains safety for only **2–4 hours** before it starts warming up into the \"danger zone\" where bacteria grow rapidly [1].\n*   **Chicken (High Risk):** Poultry is highly perishable and dangerous if stored in the danger zone for extended periods. Bacteria can produce toxins that are not destroyed by cooking or detectable by smell.\n*   **Milk (High Risk):** Milk spoils quickly once temperatures rise above 40 °F (4.4 °C). After 10 hours, it has almost certainly exceeded safe storage limits.\n\n### Action Steps:\n1.  **Discard:** Throw away the chicken and milk immediately. Do not taste them to check for spoilage, as some bacterial toxins are odorless but deadly [2].\n2.  **Check Other Foods:**\n    *   **Fridge items:** Generally safe if kept closed (within the 4-hour window), but since it has been 10 hours, re-evaluate based on appearance and smell before consumption. If unsure, discard.\n    *   **Freezer:** Safe if full and door closed (holds ~48 hours).\n    *   **Canned/Dry goods:** Safe to eat if cans are not swollen or damaged.\n\n### General Safety Principles\n*   **The 2-Hour Rule:** Perishable food should be refrigerated within 2 hours (1 hour if ambient temperature is above 90 °F/32.2 °C) [2]. This situation violates that rule significantly.\n*   **Temperature Check:** Use an appliance thermometer. The fridge must stay at 40 °F (4.4 °C) or below, and the freezer at 0 °F (−17.7 °C) or below to prevent bacterial growth [2].\n*   **Smell is Not Enough:** Relying on smell alone is insufficient because pathogens may not alter the scent of food until it is already hazardous [2].\n\n**Warning:** Consuming spoiled protein-rich foods like chicken can lead to severe food poisoning (vomiting, diarrhea, fever). When in doubt during a crisis, **throw it out**.",
+    "sources": [
+      {
+        "id": "en:04-food:2",
+        "lang": "en",
+        "doc_id": "04-food",
+        "doc_title": "Food: stockpiling, preparation and preservation",
+        "section": "Order of consumption in a crisis",
+        "anchor": "order-of-consumption-in-a-crisis",
+        "text": "1. Food from the fridge (after 2–4 hours without power it starts warming up; keep the door closed).\n2. Freezer (full and closed it holds for about 48 hours; half full, about 24 hours).\n3. Fresh fruit and vegetables.\n4. Dry stock and canned goods.\n\n> Source: USDA — Food Safety During Power Outage. https://www.foodsafety.gov/food-safety-charts/food-safety-during-power-outage",
+        "kind": "kit",
+        "score": 13.72,
+        "retrieval_score": 12,
+        "original_text": "1. Food from the fridge (after 2–4 hours without power it starts warming up; keep the door closed).\n2. Freezer (full and closed it holds for about 48 hours; half full, about 24 hours).\n3. Fresh fruit and vegetables.\n4. Dry stock and canned goods.\n\n> Source: USDA — Food Safety During Power Outage. https://www.foodsafety.gov/food-safety-charts/food-safety-during-power-outage",
+        "source_version": "cf71de8f8856f706d66e4e497de72000d983c29f28752e37f2e32ae17addb937",
+        "n": 1,
+        "conflicts": [],
+        "context_omitted": false,
+        "context_omitted_reason": null
+      },
+      {
+        "kind": "kiwix",
+        "id": "0cb2753df8521ecf7fdbee3b",
+        "doc_title": "WikiMed Medical Encyclopedia",
+        "title": "Food safety",
+        "section": "Safe food handling procedures (from market to consumer)",
+        "heading_path": [
+          "Safe food handling procedures (from market to consumer)"
+        ],
+        "anchor": "Safe_food_handling_procedures_(from_market_to_consumer)",
+        "link": "/content/wikipedia_en_medicine_maxi_2026-10/Food_safety#Safe_food_handling_procedures_%28from_market_to_consumer%29",
+        "article_url": "/content/wikipedia_en_medicine_maxi_2026-10/Food_safety",
+        "text": "The five key principles of food hygiene, according to the World Health Organization (WHO), are:[27]\n\n1. Prevent contaminating food with pathogens spreading from people, pets, and pests.\n2. Separate raw and cooked foods to prevent contaminating the cooked foods.\n3. Cook foods for the appropriate length of time and at the appropriate temperature to kill pathogens.\n4. Store food at the proper temperature.\n5. Use safe water and safe raw materials.\n\nProper storage, sanitary tools and work spaces, heating and cooling properly and to adequate temperatures, and avoiding contact with other uncooked foods can greatly reduce the chances of contamination. Tightly sealed water and air proof containers are good measures to limit the chances of both physical and biological contamination during storage. Using clean, sanitary surfaces and tools, free of debris, chemicals, standing liquids, and other food types (different from the kind currently being prepared, i.e. mixing vegetables/meats or beef/poultry) can help reduce the chance of all forms of contamination. However, even if all precautions have been taken and the food has been safely prepared and stored, bacteria can still form over time during storage. Food should be consumed within one to seven (1–7) days while it has been stored in a cold environment, or one to twelve (1–12) months if it was in a frozen environment (if it was frozen immediately after preparation).[28][29] The length of time before a food becomes unsafe to eat depends on the type of food it is, the surrounding environment, and the method with which it is kept out of the danger zone.[30]\n\n- Always refrigerate perishable food within 2 hours—1 hour when the temperature is above 90 °F (32.2 °C).\n- Check the temperature of your refrigerator and freezer with an appliance thermometer. The refrigerator should be at 40 °F (4.4 °C) or below and the freezer at 0 °F (−17.7 °C) or below.[31]\n\nISO 22000 is a standard developed by the International Organization for Standardization dealing with food safety. This is a general derivative of ISO 9000. The ISO 22000 international standard specifies the requirements for a food safety management system that involves interactive communication, system management, prerequisite programs, and hazard analysis and critical control points principles. ISO 22000 was first published in 2005. It is the culmination of all previous attempts from many sources and areas of food safety concern to provide an end product that is safe as possible from pathogens and other contaminants. Every 5 years standards are reviewed to determine whether a revision is necessary, to ensure that the standards remain as relevant and useful to businesses as possible.[32]\n\nAlthough consumers often claim to understand the importance of hand washing during food preparation, observational studies consistently show that this practice is frequently neglected, particularly after handling raw meat. Inadequate hand washing contributes significantly to the risk of cross-contamination in domestic kitchens, as pathogens from raw foods can be easily transferred to ready-to-eat items.[33]",
+        "book_name": "wikipedia_en_medicine",
+        "archive": "wikipedia_en_medicine",
+        "version": "f0902c7c-81ad-0490-6f91-fecc14810992:2026-10-10T00:00:00Z",
+        "archive_uuid": "f0902c7c-81ad-0490-6f91-fecc14810992",
+        "issued": "2026-10-10T00:00:00Z",
+        "native_rank": 1,
+        "queries": [
+          "food safety"
+        ],
+        "retrieval_score": 78,
+        "original_text": "The five key principles of food hygiene, according to the World Health Organization (WHO), are:[27]\n\n1. Prevent contaminating food with pathogens spreading from people, pets, and pests.\n2. Separate raw and cooked foods to prevent contaminating the cooked foods.\n3. Cook foods for the appropriate length of time and at the appropriate temperature to kill pathogens.\n4. Store food at the proper temperature.\n5. Use safe water and safe raw materials.\n\nProper storage, sanitary tools and work spaces, heating and cooling properly and to adequate temperatures, and avoiding contact with other uncooked foods can greatly reduce the chances of contamination. Tightly sealed water and air proof containers are good measures to limit the chances of both physical and biological contamination during storage. Using clean, sanitary surfaces and tools, free of debris, chemicals, standing liquids, and other food types (different from the kind currently being prepared, i.e. mixing vegetables/meats or beef/poultry) can help reduce the chance of all forms of contamination. However, even if all precautions have been taken and the food has been safely prepared and stored, bacteria can still form over time during storage. Food should be consumed within one to seven (1–7) days while it has been stored in a cold environment, or one to twelve (1–12) months if it was in a frozen environment (if it was frozen immediately after preparation).[28][29] The length of time before a food becomes unsafe to eat depends on the type of food it is, the surrounding environment, and the method with which it is kept out of the danger zone.[30]\n\n- Always refrigerate perishable food within 2 hours—1 hour when the temperature is above 90 °F (32.2 °C).\n- Check the temperature of your refrigerator and freezer with an appliance thermometer. The refrigerator should be at 40 °F (4.4 °C) or below and the freezer at 0 °F (−17.7 °C) or below.[31]\n\nISO 22000 is a standard developed by the International Organization for Standardization dealing with food safety. This is a general derivative of ISO 9000. The ISO 22000 international standard specifies the requirements for a food safety management system that involves interactive communication, system management, prerequisite programs, and hazard analysis and critical control points principles. ISO 22000 was first published in 2005. It is the culmination of all previous attempts from many sources and areas of food safety concern to provide an end product that is safe as possible from pathogens and other contaminants. Every 5 years standards are reviewed to determine whether a revision is necessary, to ensure that the standards remain as relevant and useful to businesses as possible.[32]\n\nAlthough consumers often claim to understand the importance of hand washing during food preparation, observational studies consistently show that this practice is frequently neglected, particularly after handling raw meat. Inadequate hand washing contributes significantly to the risk of cross-contamination in domestic kitchens, as pathogens from raw foods can be easily transferred to ready-to-eat items.[33]",
+        "source_version": "f0902c7c-81ad-0490-6f91-fecc14810992",
+        "n": 2,
+        "conflicts": [],
+        "context_omitted": false,
+        "context_omitted_reason": null
+      }
+    ],
+    "capture_sha256": "b605032afe177dc574cb44dee845f39a9f638efa89cbf21409d9aee001e7499d"
+  }
+]

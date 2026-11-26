@@ -4,7 +4,7 @@ The approved design retains paraphrases and adds bounded checks and source-backe
 
 ## Displayed behavior
 
-Twelve versioned guidance units, with English/Portuguese/Spanish variants, enter evidence selection before conflict handling and context fitting. Source provenance is separate from local guides and Kiwix. Reviewed precedence still controls conflicts; catalog presence does not grant authority. A directly applicable local guide retains its place before supplemental guidance.
+Twenty-two versioned guidance units, with English/Portuguese/Spanish variants, enter evidence selection before conflict handling and context fitting. Source provenance is separate from local guides and Kiwix. Reviewed precedence still controls conflicts; catalog presence does not grant authority. A directly applicable local guide retains its place before supplemental guidance.
 
 Rejected drafts remain buffered and undisplayed. Generation failure, unavailable models and validation failure can yield a deterministic composition of applicable complete guidance units. The composition is independently validated. Original failure reasons and generation metadata remain intact; fallback has separate metadata. Explicit search-only mode remains evidence browsing. When no eligible catalog guidance exists, the existing source-excerpt/limitation behavior remains; it is not labeled as validated advice.
 
@@ -14,7 +14,7 @@ Known swallowing restrictions exclude oral guidance before composition. Nonoral 
 
 ## Bounded checks
 
-Recognized action families cover CPR, oral treatment/adjuncts, thermal-burn clothing/cooling, heat immersion, snake compression, injector use/timing, flood waiting, cooking-fire covering/extinguishers and chemical-water disinfection claims. Checks retain relevant patient conditions, regional/device scope, polarity, equipment and quantities. Known action families must be supported by their own cited source statements; a disease definition or unrelated topical passage cannot establish procedural support.
+Recognized action families cover CPR, oral treatment/adjuncts, thermal-burn clothing/cooling, heat immersion, snake compression, injector use/timing, flood waiting, cooking-fire covering/extinguishers chemical-water disinfection claims, indoor-generator use and sensory judgments of food safety. Checks retain relevant patient conditions, regional/device scope, polarity, equipment and quantities. Known action families must be supported by their own cited source statements; a disease definition or unrelated topical passage cannot establish procedural support.
 
 Source checks retain decimal values, distinguish initial/repeated doses and repeat restrictions, and keep device-specific timing clauses separate. Source conditions are checked as well as generated conditions. Diagnostics identify rule, offsets and source hashes without storing rejected drafts. Overall `claim_support` remains `not_verified`; `pattern_supported` applies only to a bounded recognized claim, not the whole answer.
 
@@ -36,3 +36,15 @@ Two-stage reviews covered specification compliance and code quality. Findings we
 ## Live comparison
 
 The baseline uses isolated code at `aff2ec4` on port 8190. The candidate is launched separately after its code is frozen. Both reuse the existing local model/Kiwix services with the same settings and knowledge. Baseline generation runs first, then candidate generation, avoiding concurrent inference; execution-order and sampling limitations remain. Existing 32-case rubrics are unchanged. Twelve additional development boundaries are stored separately and are not represented as a holdout.
+
+## Refinement driven by the first frozen candidate
+
+Candidate `0d2e1fa` remained frozen while the second worktree addressed its observed omissions. The catalog adds practical adult CPR, age-specific infant choking/CPR, trained tourniquet use, stroke, swallowed poison, carbon monoxide, prescribed allergy plans and outage food safety. All procedural conditions remain in displayed text. The infant 30:2 instructions explicitly identify a single rescuer; the AHA 2025 primary reference supports the selected technique. Reference differences and remaining translation/clinical review limits are recorded in the guidance-source review.
+
+Two generated trial-two failures became permanent replay fixtures: a ventilation exception to the indoor-generator prohibition and sensory judgments of food safety after an outage. Bounded guards reject these patterns, including translated variants, while allowing unconditional prohibitions. The references were checked against CDC generator safety and CDC/FDA emergency food safety; they do not establish complete semantic coverage of either domain.
+
+The command line now displays publisher URLs for guidance sources and labels fallback mode without requiring local-guide path fields. CPR search aliases recognize chest compressions in all three languages. Explicit under-one-year boundaries retain infant scope without overriding an earlier numeric patient age. All fixes have failing-first regression tests.
+
+The first candidate's failed captures remain part of the evaluation record. The refinement is prepared for a separate freeze and run against the same 32 cases for three trials, followed by the twelve distinct development boundaries. No historical rubric is rewritten to improve the score.
+
+Refinement verification: full Python suite ran 717 tests with 20 skips and no failures. After the final generator exception adjustment, 61 claim/catalog tests passed. Both JavaScript tests and syntax checking passed. Independent specification and code-quality reviews approved the bounded changes. The quality reviewer independently reran 80 focused tests and verified all 22 catalog hashes/66 translations. A process-local mutation removing the new hazard conditions caused regression failures and was restored.

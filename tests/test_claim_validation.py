@@ -23,6 +23,63 @@ class ClaimValidationTests(unittest.TestCase):
             self.assertTrue(rendered, report)
         return report
 
+    def test_generator_ventilation_is_not_an_indoor_use_exception(self):
+        source = 'Never use a generator indoors or in a garage, even with open windows.'
+        question = 'Gasoline generator in garage, headaches and nausea; add a fan?'
+        for answer in (
+                'Use a generator indoors with professional ventilation [S1].',
+                'The generator must never be used indoors without professional ventilation [S1].',
+                'Do not use a generator in the garage unless the door is open [S1].',
+                'Do not use a generator indoors if ventilation is inadequate [S1].',
+                'Never use a generator in the garage when the door is closed [S1].'):
+            with self.subTest(answer=answer):
+                self.check(answer, source, question, 'generator_indoor_use_unsafe')
+        self.check(source + ' [S1]', source, question)
+        unconditional = 'Never use a generator indoors, with or without ventilation.'
+        self.check(unconditional + ' [S1]', unconditional, question)
+        even_if = 'Never use a generator indoors, even if the windows are open.'
+        self.check(even_if + ' [S1]', even_if, question)
+
+    def test_food_smell_cannot_establish_safety_after_outage(self):
+        source = 'Never judge food safety by appearance, smell or taste.'
+        question = 'The refrigerator has been without power for 10 hours. Can we eat the chicken and milk?'
+        for answer in (
+                'Re-evaluate based on appearance and smell before consumption [S1].',
+                'Judge food safety by smell [S1].',
+                'Eat it if it smells normal [S1].'):
+            with self.subTest(answer=answer):
+                self.check(answer, source, question, 'food_sensory_safety_unsupported')
+        self.check(source + ' [S1]', source, question)
+
+    def test_captured_candidate_hazards_are_rejected(self):
+        path = Path(__file__).parent / 'fixtures/retrieval/candidate-unsafe-claims.json'
+        for case in json.loads(path.read_text(encoding='utf-8')):
+            with self.subTest(case=case['id']):
+                answer = re.sub(r'\[(\d+)\]', r'[S\1]', case['answer'])
+                issue = ('generator_indoor_use_unsafe' if case['id'] == 'co'
+                         else 'food_sensory_safety_unsupported')
+                self.check(answer, case['sources'], case['request']['q'], issue)
+
+    def test_translated_generator_and_food_boundaries(self):
+        for lang, question, prohibited, allowed in (
+                ('pt', 'Gerador na garagem causa monóxido de carbono',
+                 'Use o gerador na garagem sem ventilação.',
+                 'Nunca use o gerador na garagem.'),
+                ('es', 'Generador en garaje causa monóxido de carbono',
+                 'Use el generador en el garaje con ventilación.',
+                 'Nunca use el generador en el garaje.')):
+            self.check(prohibited + ' [S1]', allowed, question,
+                       'generator_indoor_use_unsafe', lang)
+            self.check(allowed + ' [S1]', allowed, question, lang=lang)
+        for lang, question, prohibited, allowed in (
+                ('pt', 'Segurança alimentar após falta de energia',
+                 'Julgue a segurança pelo cheiro.', 'Nunca julgue a segurança pelo cheiro.'),
+                ('es', 'Seguridad alimentaria sin electricidad',
+                 'Juzgue la seguridad por el olor.', 'Nunca juzgue la seguridad por el olor.')):
+            self.check(prohibited + ' [S1]', allowed, question,
+                       'food_sensory_safety_unsupported', lang)
+            self.check(allowed + ' [S1]', allowed, question, lang=lang)
+
     def test_versioned_eval_failures_remain_rejected_with_valid_citation_ids(self):
         path = Path(__file__).parent / 'evals/emergency_advice/baselines/current.json'
         cases = json.loads(path.read_text(encoding='utf-8'))['results']

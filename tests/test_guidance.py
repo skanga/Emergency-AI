@@ -101,9 +101,125 @@ class GuidanceTests(unittest.TestCase):
                     source = dict(_source(unit, lang), n=1)
                     answer, _ = self.g.fallback_answer([source], lang, [])
                     _, meta = validate_answer(answer.replace('[1]', '[S1]'),
-                                              [source], {'diabetes': 'hypoglycemia', 'fire': 'cooking fire',
-                                                         'flood': 'flood car'}.get(unit['topic'], unit['topic']), lang)
+                                              [source], {
+                                                  'diabetes': 'hypoglycemia', 'fire': 'cooking fire',
+                                                  'flood': 'flood car', 'water_chemical': 'well water smells of gasoline',
+                                                  'water_disinfection': 'bleach drinking water',
+                                                  'carbon_monoxide': 'generator in garage headache',
+                                                  'food_safety': 'power outage refrigerator milk',
+                                                  'choking': '8-month-old choking',
+                                              }.get(unit['topic'], unit['topic']), lang)
                     self.assertEqual(meta['status'], 'passed', meta['issues'])
+
+    def test_refined_actionable_units_in_each_language(self):
+        expected = {
+            'adult unresponsive only gasping CPR': ('adult-cpr-compressions', 'adult-cpr-continuation'),
+            '8-month-old choking awake cannot breathe': ('infant-choking-responsive', 'infant-choking-unresponsive'),
+            'stroke drooping face slurred speech': ('stroke-response',),
+            'child swallowed drain cleaner': ('poison-swallowed',),
+            'generator in garage headache nausea': ('carbon-monoxide-escape',),
+            'severe bleeding from leg despite pressure': ('bleeding-tourniquet',),
+        }
+        for question, ids in expected.items():
+            for lang in ('en', 'pt', 'es'):
+                with self.subTest(question=question, lang=lang):
+                    found = {s['guidance_unit'] for s in self.sources(question, lang)}
+                    self.assertTrue(set(ids) <= found, found)
+
+    def test_infant_and_adult_procedures_remain_separate(self):
+        unresponsive = self.sources('8-month-old choking unconscious not breathing')
+        ids = {s['guidance_unit'] for s in unresponsive}
+        self.assertIn('infant-choking-unresponsive', ids)
+        self.assertNotIn('infant-choking-responsive', ids)
+        self.assertNotIn('adult-cpr-compressions', ids)
+        self.assertNotIn('adult-cpr-continuation', ids)
+        for question in ('adult choking', 'newborn not breathing', '8-month-old awake breathing normally CPR'):
+            self.assertNotIn('adult-cpr-compressions',
+                             {s['guidance_unit'] for s in self.sources(question)})
+
+    def test_captured_questions_survive_runtime_fallback(self):
+        from app.engine import Engine
+        cases = json.loads((Path(__file__).parent / 'evals/emergency_advice/cases.json').read_text())['cases']
+        target_ids = {'cpr', 'infant_choking', 'bleeding', 'stroke', 'poison', 'co',
+                      'water_chemical', 'chemical_water', 'cpr_not_indicated', 'bleeding_lay_iv', 'allergy_negated', 'food'}
+        for case in cases:
+            if case['id'] not in target_ids:
+                continue
+            request = case['request']
+            for lang in ('en', 'pt', 'es'):
+                with self.subTest(case=case['id'], lang=lang):
+                    sources = [dict(source, n=i+1) for i,source in enumerate(
+                        self.sources(request['q'], lang, request['history']))]
+                    text, _, meta = Engine._fallback(sources, lang, [], request['q'], request['history'])
+                    self.assertTrue(text, meta)
+                    self.assertEqual(meta['status'], 'composed', meta)
+        question = 'Our well water smells of gasoline after the flood. Can boiling or bleach make it safe?'
+        for lang in ('en', 'pt', 'es'):
+            sources = [dict(source, n=i+1) for i,source in enumerate(self.sources(question, lang))]
+            text, _, meta = Engine._fallback(sources, lang, [], question, [])
+            self.assertTrue(text, meta)
+
+    def test_actionable_steps_and_complete_conditions(self):
+        from app.guidance import load_catalog
+        units = {u['id']:u for u in load_catalog()}
+        conditions = {
+            'adult-cpr-compressions': ('100', '120', '5', '6', 'center', 'firm'),
+            'adult-cpr-continuation': ('30', '2', 'trained', 'exhausted'),
+            'infant-choking-responsive': ('5', 'lower', 'back blows', 'chest thrusts'),
+            'infant-choking-unresponsive': ('30', '2', '4 cm', 'visible'),
+            'bleeding-tourniquet': ('5', '7.5', 'joint', 'stops', 'not loosen'),
+            'stroke-response': ('time', 'not wait'),
+            'poison-swallowed': ('vomiting', 'vinegar', 'product'),
+            'carbon-monoxide-escape': ('fresh air', 'garage', 'not re-enter'),
+        }
+        for unit_id, required in conditions.items():
+            self.assertIn(unit_id, units)
+            text = units[unit_id]['translations']['en']
+            for phrase in required:
+                self.assertIn(phrase, text)
+
+    def test_anaphylaxis_posture_has_its_own_condition(self):
+        from app.guidance import load_catalog
+        unit = next(u for u in load_catalog() if u['id']=='anaphylaxis-injector')
+        for lang, phrase in (('en','If anaphylaxis is suspected, lie down'),
+                             ('pt','Se houver suspeita de anafilaxia, deite'),
+                             ('es','Si sospecha anafilaxia, acuéstese')):
+            self.assertIn(phrase, unit['translations'][lang])
+
+    def test_asymptomatic_allergy_keeps_prescribed_plan(self):
+        sources = self.sources('No swelling or breathing trouble after peanuts. Should I use epinephrine?')
+        self.assertIn('allergy-action-plan', {s['guidance_unit'] for s in sources})
+
+    def test_infant_unresponsive_transition_survives_runtime(self):
+        from app.engine import Engine
+        history = [{'role':'user','content':'My 8-month-old is choking and cannot cry.'}]
+        for lang, question in (('en','Now unconscious and not breathing. CPR?'),
+                               ('pt','Agora inconsciente e não respira. RCP?'),
+                               ('es','Ahora inconsciente y no respira. RCP?')):
+            with self.subTest(lang=lang):
+                sources = [dict(source, n=i+1) for i,source in enumerate(self.sources(question, lang, history))]
+                text, _, meta = Engine._fallback(sources, lang, [], question, history)
+                self.assertTrue(text, meta)
+                self.assertNotIn('5–6 cm', text)
+                self.assertNotIn('5 back blows', text)
+                self.assertIn('4 cm', text)
+
+    def test_food_outage_and_lay_iv_have_actionable_boundaries(self):
+        for lang, discard, refusal in (('en','4 hours','do not insert an IV'),
+                                       ('pt','4 horas','não insira um acesso IV'),
+                                       ('es','4 horas','no inserte una vía IV')):
+            food = self.sources('power outage refrigerator milk', lang)
+            self.assertTrue(food)
+            self.assertIn(discard, ' '.join(s['text'] for s in food))
+            bleeding = self.sources('severe bleeding no medical training IV kit', lang)
+            self.assertIn(refusal, ' '.join(s['text'] for s in bleeding))
+
+    def test_infant_ratio_retains_single_rescuer_condition(self):
+        from app.guidance import load_catalog
+        unit = next(u for u in load_catalog() if u['id']=='infant-choking-unresponsive')
+        for lang, phrase in (('en','For a single rescuer'), ('pt','Para um único socorrista'),
+                             ('es','Para un solo rescatista')):
+            self.assertIn(phrase, unit['translations'][lang])
 
     def test_catalog_integrity_fails_closed(self):
         data = json.loads(self.g.CATALOG_PATH.read_text())

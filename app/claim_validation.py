@@ -32,6 +32,8 @@ class Rule:
 # Object-specific verbs keep an unrelated "give" from turning a prohibition
 # elsewhere in the sentence into a positive instruction.
 RULES = (
+    Rule('generator_indoor', r'\b(?:use[ds]?|using|run|operate|utilize|usar|utilice|use|opere)\b.{0,110}\b(?:indoors|inside|garage\w*|garagem|garaje|interior|dentro)\b', ('carbon_monoxide',)),
+    Rule('food_sensory', r'\b(?:judge|assess|re evaluate|evaluate|determine|rely|avalie|julgue|avalie novamente|confie|evalue|juzgue|confie)\b.{0,80}\b(?:appearance|smell|taste|aparencia|cheiro|sabor|aspecto|olor)\b|\b(?:eat|coma|consuma)\b.{0,35}\b(?:if|se|si)\b.{0,35}\b(?:smell\w*|cheiro|olor)\b', ('food_safety',)),
     Rule('burn_clothing', r'\b(?:remove|take off|retire|remova|quite)\b.{0,65}\b(?:clothing|clothes|roupa\w*|ropa\w*)\b', ('burn',)),
     Rule('burn_cooling', r'\b(?:cool|run|hold|resfrie|arrefeca|enfrie|enfriar)\b.{0,90}\b(?:water|agua)\b', ('burn',)),
     Rule('immersion', r'\b(?:immerse|immersion|submerge|mergulh\w*|imersao|sumerj\w*|inmersion|sumerg\w*)\b', ('heatstroke',)),
@@ -61,6 +63,8 @@ def _units(text):
 
 
 def _polarity(rule, text, match):
+    if rule.name == 'generator_indoor':
+        return not bool(re.search(r'\b(?:never|not|nao|no|nunca)(?: be| ser)? $', text[:match.start()]))
     if rule.name == 'water_chemical':
         # Preserve punctuation boundaries for this rule. An unrelated negative
         # instruction (such as 'do not worry') is not a disinfection claim.
@@ -87,6 +91,14 @@ def _negative_prerequisite(text):
 
 
 def _condition_issue(name, text, question, positive=True):
+    if name == 'generator_indoor':
+        # 'With or without ventilation' keeps the ban unconditional.
+        exception_text = re.sub(r'\b(?:with or without|com ou sem|con o sin)\b', '', text)
+        exception_text = re.sub(r'\b(?:even if|mesmo se|incluso si)\b', '', exception_text)
+        if positive or _has(r'\b(?:unless|without|except|if|when|a menos que|sem|sin|exceto|salvo|se|si|quando|cuando)\b', exception_text):
+            return 'generator_indoor_use_unsafe'
+    if name == 'food_sensory' and positive:
+        return 'food_sensory_safety_unsupported'
     if not positive:
         return None
     if name == 'burn_clothing' and (not _has(_EXCEPT + r'(?:(?!\b(?:but|mas|pero|and|e|y)\b).){0,65}' + _STUCK, text)
@@ -274,6 +286,8 @@ def _scope_for_unit(units, index, name):
 
 
 def _matches(rule, text, evidence=False):
+    if rule.name == 'generator_indoor' and not _has(r'\b(?:generator\w*|gerador\w*|generador\w*)\b', text):
+        return []
     if rule.name == 'oral_adjunct' and not _has(r'\b(?:antihistamine\w*|antihistaminico\w*)\b', text):
         return []
     if evidence and rule.name == 'water_chemical' and not _has(r'\b(?:fuel|gasoline|petrol|toxic chemicals?|chemical contaminants?|combustivel|gasolina|quimic\w*|combustible)\b', text):

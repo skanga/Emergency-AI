@@ -11,9 +11,9 @@
 ## 1. Baseline and regression evidence
 
 - [x] Run `python3 -m unittest discover -s tests` in the clean worktree; retain count and failures.
-- [ ] Launch baseline `aff2ec4` on an isolated loopback port against the existing model and Kiwix services, recording paths, settings hashes and source identities. Do not restart the installed application.
-- [ ] Run `python3 tests/evals/emergency_advice/runner.py run --url http://127.0.0.1:8190 --output /tmp/advice-quality-baseline --trials 3`; retain all 96 outcomes without retries or overwrites.
-- [ ] Review each answer and cited passage using the existing rubric and exact review bindings. Preserve compact evidence under `tests/evals/emergency_advice/`.
+- [x] Launch baseline `aff2ec4` on an isolated loopback port against the existing model and Kiwix services, recording paths, settings hashes and source identities. Do not restart the installed application.
+- [x] Run `python3 tests/evals/emergency_advice/runner.py run --url http://127.0.0.1:8190 --output /tmp/advice-quality-baseline --trials 3`; retain all 96 outcomes without retries or overwrites.
+- [x] Review each answer and cited passage using the existing rubric and exact review bindings. Preserve compact evidence under `tests/evals/emergency_advice/`.
 
 ## 2. Guidance catalog (`app/guidance.py`, `app/data/guidance.json`, `tests/test_guidance.py`)
 
@@ -45,6 +45,6 @@
 - [ ] Launch candidate on isolated loopback with baseline-identical model/data configuration and record exact candidate file hashes.
 - [ ] Run all 32 cases for three trials into `/tmp/advice-quality-candidate`; retain failed runs and any subsequent affected-group reruns separately.
 - [ ] Review every displayed answer and source against unchanged rubrics; report four dimensions separately, including fallback usefulness and unknown drafts.
-- [ ] Add distinct development boundary variants for new conditions; do not relabel them as holdouts or rewrite historical rubrics.
+- [x] Add distinct development boundary variants for new conditions; do not relabel them as holdouts or rewrite historical rubrics.
 - [ ] Save compact evidence, bound reviews, reproducible comparisons and provenance in Git. Record full-suite results, mutation results and platform limits.
 - [ ] Update remaining-work status accurately. A completed implementation/evaluation can still fail the quality screen; independent clinical adjudication remains external.

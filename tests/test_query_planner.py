@@ -6,6 +6,35 @@ from app.query_planner import plan_query
 
 
 class QueryPlannerTests(unittest.TestCase):
+    def test_compression_question_routes_without_assuming_arrest(self):
+        for question, lang in (
+                ('He is awake and breathing normally. Should I start chest compressions?', 'en'),
+                ('Ele está acordado. Devo iniciar compressões torácicas?', 'pt'),
+                ('Está despierto. ¿Inicio compresiones torácicas?', 'es')):
+            with self.subTest(lang=lang):
+                plan = plan_query(question, lang)
+                self.assertIn('cpr', plan.topics)
+                self.assertEqual(plan.scope['consciousness'], 'responsive')
+
+    def test_explicit_infant_age_boundary_is_not_one_year_old(self):
+        from app.query_planner import _age, normalize
+        for phrase in ('baby under 1 year', 'bebê menor de 1 ano',
+                       'bebé menor de 1 año', 'infant younger than 1 year'):
+            with self.subTest(phrase=phrase):
+                self.assertEqual(_age(normalize(phrase)), 'infant')
+        for phrase in ('1 year old', '1 ano', '1 año', 'child under 5 years',
+                       'not under 1 year', 'não menor de 1 ano', 'no menor de 1 año'):
+            with self.subTest(phrase=phrase):
+                self.assertEqual(_age(normalize(phrase)), 'child')
+
+    def test_later_infant_boundary_does_not_override_patient_age(self):
+        for question, expected in (
+                ('My child is 2 years old, not a baby under 1 year.', 'child'),
+                ('He is 30 years old. Does the advice for babies under 1 year apply?', 'adult'),
+                ('Meu filho tem 2 anos, não é um bebê menor de 1 ano.', 'child')):
+            with self.subTest(question=question):
+                self.assertEqual(plan_query(question).scope['age_group'], expected)
+
     def test_original_cases_have_bounded_multilingual_topics(self):
         cases = json.loads(Path('tests/fixtures/retrieval/cases.json').read_text())
         expected = ['anaphylaxis', 'anaphylaxis', 'bleeding', 'burn', 'carbon_monoxide', 'cpr', 'dehydration', 'diabetes', 'flood', 'food_safety', 'fire', 'heatstroke', 'choking', 'cpr', 'poison', 'carbon_monoxide', 'seizure', 'snakebite', 'cpr', 'stroke', 'water_disinfection', 'water_chemical', 'electrical']

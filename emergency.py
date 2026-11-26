@@ -51,13 +51,13 @@ BANNER = r"""
 MSG = {
     "pt": {"open": "Abra no navegador:", "lan": "Outros aparelhos da rede podem acessar:", "stop": "Pressione Ctrl+C para encerrar.",
            "bye": "Encerrando…", "you": "Você", "ai": "IA", "exit": "(digite 'sair' para encerrar)", "src": "Fontes",
-           "mode_llm": "modelo", "mode_search": "busca (sem IA generativa)", "starting": "Iniciando…"},
+           "mode_llm": "modelo", "mode_search": "busca (sem IA generativa)", "mode_fallback": "orientação alternativa baseada em fontes", "starting": "Iniciando…"},
     "en": {"open": "Open in your browser:", "lan": "Other devices on the network can use:", "stop": "Press Ctrl+C to stop.",
            "bye": "Shutting down…", "you": "You", "ai": "AI", "exit": "(type 'exit' to quit)", "src": "Sources",
-           "mode_llm": "model", "mode_search": "search (no generative AI)", "starting": "Starting…"},
+           "mode_llm": "model", "mode_search": "search (no generative AI)", "mode_fallback": "source-backed fallback", "starting": "Starting…"},
     "es": {"open": "Abre en el navegador:", "lan": "Otros dispositivos de la red pueden acceder:", "stop": "Pulsa Ctrl+C para salir.",
            "bye": "Cerrando…", "you": "Tú", "ai": "IA", "exit": "(escribe 'salir' para terminar)", "src": "Fuentes",
-           "mode_llm": "modelo", "mode_search": "búsqueda (sin IA generativa)", "starting": "Iniciando…"},
+           "mode_llm": "modelo", "mode_search": "búsqueda (sin IA generativa)", "mode_fallback": "orientación alternativa basada en fuentes", "starting": "Iniciando…"},
 }
 
 
@@ -209,14 +209,14 @@ def _print_answer(engine, question, lang, history):
             suffix = {'en':' — not used', 'pt':' — não usadas', 'es':' — no usadas'}[lang] if omitted else ''
             print(f"\n\n{m['src']}{suffix}:")
             for s in group:
-                where = s.get("link") or f"knowledge/{s['lang']}/{s['doc_id']}.md#{s['anchor']}"
+                where = s.get("link") or s.get("url") or f"knowledge/{s['lang']}/{s['doc_id']}.md#{s['anchor']}"
                 reason = state_label(s.get('context_omitted_reason', 'context_budget'), lang) if omitted else ''
                 snapshot = (' · ' + {'en':'Snapshot','pt':'Arquivo','es':'Archivo'}[lang] + ': ' + s['issued'][:10]) if s.get('issued') else ''
                 print(f"  [{s['n']}] {s['doc_title']} › {s['section']}{snapshot}  ({where}) {reason}")
     if retrieval:
         from app.retrieval_cli import summary_text
         print(summary_text(retrieval, sources, lang))
-    mode = m["mode_llm"] if info.get("mode") == "llm" else m["mode_search"]
+    mode = m.get("mode_" + str(info.get("mode")), m["mode_search"])
     print(f"  — {mode}, {info.get('seconds', 0)}s\n")
     return "".join(text)
 
