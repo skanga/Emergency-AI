@@ -1,0 +1,118 @@
+{
+  "base_commit": "310238eda948ebc43cdff4e02f31a4b4125fbcfd",
+  "branch": "feature/authority-library",
+  "working_tree_changes": true,
+  "initial_source_sha256": {
+    "app/knowledge.py": "ba7a5efbc1e56294c1dc4e65e4705775fab8f2cec765d0a797625a3cae732a1a",
+    "app/authority_documents.py": "1afcb47e04c6bd2b073aafc42c2f6dd56218dd0b2b368011d2c19959a4d4fead",
+    "config/authority-documents.json": "f9249b9dc29f296734c042907b1eb112eb683570575a96df45761dfb63227b5c",
+    "config/retrieval-topics.json": "54a8ce9e49186e666213c1de55ca2f83050773b0f114c07426bec5cd189a3cee",
+    "tests/evals/emergency_advice/authority-cases.json": "ec5413c0cf3acd9d7e6ab1f99d517d2c7202846f10020c4b6a19bd0129d8854c",
+    "knowledge/authorities/food-outage.md": "f31611f65207e26c4443b824cddbc3693ff77036f6b83eefb445dcfcacc8f915",
+    "knowledge/authorities/who-cfar.md": "70e8df98e66ff2291cbcca97fe5b17333f3a7dcab9248d25706ff0cbc65da711",
+    "knowledge/authorities/ifrc-2025.md": "9ac6d8354a2a52ef81f342adb1821db6add0785fa8117ba6f8fb1c1486600354",
+    "knowledge/authorities/cdc-water.md": "019eec1e78f77bb0bc7c3f62b75676caafc0d7f8408d65a2068ec5f87f0f8663",
+    "knowledge/authorities/who-snakebite.md": "5c42d7ee7fcf7e234a84e17c2b7f732cd716e0fe4557a0fc7271cb311a68a17c",
+    "knowledge/authorities/fema-ready.md": "8c45a72bdf290f6cba181d314a3675228a5bfd04853af02b97edb46e77ea5261"
+  },
+  "followup_source_sha256": {
+    "app/knowledge.py": "ba7a5efbc1e56294c1dc4e65e4705775fab8f2cec765d0a797625a3cae732a1a",
+    "app/authority_documents.py": "1afcb47e04c6bd2b073aafc42c2f6dd56218dd0b2b368011d2c19959a4d4fead",
+    "config/authority-documents.json": "f9249b9dc29f296734c042907b1eb112eb683570575a96df45761dfb63227b5c",
+    "config/retrieval-topics.json": "1fe6273d86feac30a7295393eecc90c73bc921252a20acef078861b38e620c47",
+    "tests/evals/emergency_advice/authority-cases.json": "ec5413c0cf3acd9d7e6ab1f99d517d2c7202846f10020c4b6a19bd0129d8854c",
+    "knowledge/authorities/food-outage.md": "f31611f65207e26c4443b824cddbc3693ff77036f6b83eefb445dcfcacc8f915",
+    "knowledge/authorities/who-cfar.md": "70e8df98e66ff2291cbcca97fe5b17333f3a7dcab9248d25706ff0cbc65da711",
+    "knowledge/authorities/ifrc-2025.md": "9ac6d8354a2a52ef81f342adb1821db6add0785fa8117ba6f8fb1c1486600354",
+    "knowledge/authorities/cdc-water.md": "019eec1e78f77bb0bc7c3f62b75676caafc0d7f8408d65a2068ec5f87f0f8663",
+    "knowledge/authorities/who-snakebite.md": "5c42d7ee7fcf7e234a84e17c2b7f732cd716e0fe4557a0fc7271cb311a68a17c",
+    "knowledge/authorities/fema-ready.md": "8c45a72bdf290f6cba181d314a3675228a5bfd04853af02b97edb46e77ea5261"
+  },
+  "model": {
+    "settings": {
+      "language": "en",
+      "web_host": "0.0.0.0",
+      "web_port": 8090,
+      "open_browser": true,
+      "check_updates_on_start": true,
+      "llm_backend": "llamacpp",
+      "llm_acceleration": "auto",
+      "llm_url": "http://127.0.0.1:8091/v1",
+      "ollama_url": "http://127.0.0.1:11434",
+      "ollama_model": "qwen2.5:3b",
+      "llm_port": 8091,
+      "llm_context": 8192,
+      "llm_threads": 0,
+      "llm_max_tokens": 2048,
+      "llm_temperature": 0.2,
+      "llm_context_margin": 256,
+      "llm_backend_settings": {},
+      "llm_model_settings": {},
+      "kiwix_url": "http://127.0.0.1:8092",
+      "kiwix_port": 8092,
+      "kiwix_enabled": false,
+      "kiwix_results": 3,
+      "search_results": 5,
+      "context_chars": 7000
+    },
+    "backend": {
+      "backend": "llama.cpp",
+      "model": "Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+      "url": "http://127.0.0.1:8091/v1"
+    },
+    "effective_options": {
+      "max_tokens": 2048,
+      "context": 8192,
+      "temperature": 0.7,
+      "thinking": false,
+      "context_margin": 256,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repeat_penalty": 1.0
+    }
+  },
+  "runtime_services_changed": false,
+  "kiwix_used": false,
+  "review": "Primary agent full-answer and supplied-passage review; no clinician or native-language certification",
+  "captures": {
+    "initial": 16,
+    "chemical_followup": 3,
+    "generic_backend_incomplete": 1
+  },
+  "interrupted_attempts": [
+    "candidate: runner failed on null Kiwix status before answer requests",
+    "candidate-02: process interrupted before a capture completed",
+    "candidate-managed: detached process did not survive launch; no capture directory",
+    "managed-live: generic OpenAI backend enabled reasoning; one completed incomplete capture preserved; interrupted during next request"
+  ],
+  "downloads": {
+    "verified_pdf_ids": [
+      "ifrc-2025",
+      "who-cfar",
+      "fema-ready"
+    ],
+    "blocked_raw_http_403": [
+      "cdc-water",
+      "food-outage"
+    ],
+    "mutable_html": [
+      "who-snakebite"
+    ],
+    "who_snakebite_audit_snapshot": {
+      "bytes": 111206,
+      "sha256": "4c0dcdf5d3f386967f278b234ca06dbddfffb0641be5e6f46a0634470ed6ba5b",
+      "bundled": false
+    }
+  },
+  "original_knowledge_markdown_files_unchanged": 45,
+  "verification": {
+    "python_tests_run": 748,
+    "skipped": 20,
+    "failures": 0,
+    "platform": "Linux x86_64",
+    "original_knowledge_markdown_unchanged": 45,
+    "native_ci_run": false
+  }
+}

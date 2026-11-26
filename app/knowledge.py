@@ -151,6 +151,7 @@ class Chunk:
             "anchor": self.anchor,
             "text": text,
             "kind": "kit",
+            "language": "en" if self.doc_id.startswith("authority/") else self.lang,
         }
         if score is not None:
             d["score"] = round(score, 3)
@@ -213,6 +214,7 @@ class KnowledgeBase:
     # ---------- loading ----------
     def load(self):
         extra = self._load_extra()
+        authorities = self._load_extra(os.path.join(self.root, "authorities"), "authority/")
         for lang in LANGS:
             folder = os.path.join(self.root, lang)
             files = sorted(f for f in os.listdir(folder) if f.endswith(".md")) if os.path.isdir(folder) else []
@@ -221,7 +223,7 @@ class KnowledgeBase:
                 with open(os.path.join(folder, fname), "r", encoding="utf-8") as f:
                     md = f.read()
                 self._add_doc(lang, doc_id, md)
-            for doc_id, md in extra:
+            for doc_id, md in authorities + extra:
                 self._add_doc(lang, doc_id, md, extra=True)
             chunks = self.chunks[lang]
             for ch in chunks:
@@ -230,8 +232,8 @@ class KnowledgeBase:
             if chunks:
                 self.avgdl[lang] = sum(c.length for c in chunks) / len(chunks)
 
-    def _load_extra(self):
-        folder = os.path.join(self.root, "extra")
+    def _load_extra(self, folder=None, prefix="extra/"):
+        folder = folder or os.path.join(self.root, "extra")
         out = []
         if not os.path.isdir(folder):
             return out
@@ -246,7 +248,7 @@ class KnowledgeBase:
                 except OSError:
                     continue
                 rel = os.path.relpath(path, folder).replace(os.sep, "/")
-                doc_id = "extra/" + rel.rsplit(".", 1)[0]
+                doc_id = prefix + rel.rsplit(".", 1)[0]
                 if fname.lower().endswith(".txt") or not text.lstrip().startswith("# "):
                     text = f"# {os.path.splitext(fname)[0]}\n\n" + text
                 out.append((doc_id, text))

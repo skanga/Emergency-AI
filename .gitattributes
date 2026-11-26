@@ -1,6 +1,8 @@
 *.sh text eol=lf
 *.command text eol=lf
 *.bat text eol=crlf
+# Authority catalog hashes bind the exact summary bytes on every platform.
+knowledge/authorities/*.md text eol=lf
 
 # Keep development assets in Git, but omit them from source downloads.
 docs/video/ export-ignore

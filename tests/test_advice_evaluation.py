@@ -12,6 +12,11 @@ from tests.evals.emergency_advice import suite
 
 
 class AdviceEvaluationTests(unittest.TestCase):
+    def test_status_without_kiwix_is_valid_for_local_only_evaluation(self):
+        from tests.evals.emergency_advice.runner import portable_status
+        self.assertEqual(portable_status({'kiwix': None})['libraries'], [])
+        self.assertEqual(portable_status({})['libraries'], [])
+
     def capture(self, answer='Call for help [1].', **done):
         return {'id': 'example', 'request': {'q': 'Help', 'history': []}, 'answer': answer,
                 'events': [{'event': 'sources', 'data': [{'n': 1, 'id': 'a', 'text': 'Call for help.'}]},

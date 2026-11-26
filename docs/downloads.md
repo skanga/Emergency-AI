@@ -156,3 +156,7 @@ Tool downloads use the existing verified-download workflow and occur only with e
 Preparation limits are 256 MiB input per PDF, 2,000 pages per PDF, 120 seconds for each document's fetch/extraction/processing path, and 64 MiB captured extraction output. The Python preparation API accepts explicit limit overrides; the emergency answer path does not. The SQLite index requires FTS5. Unsupported SQLite builds report that capability instead of attempting a runtime install.
 
 Manifests are parsed as data without executing JavaScript. Paths must stay within the selected archive. The index records document hashes, archive versions and page references. Unchanged documents reuse extracted pages; replacement indexes activate atomically. Expect temporary disk space for the archive, extracted tools, a downloaded PDF and the replacement index. The pinned Linux tool archive is approximately 15.4 MiB; index size depends on readable text coverage.
+
+## Authority references
+
+Six scoped authority summaries ship with the app. Full IFRC, WHO CFAR and FEMA PDFs are optional verified downloads for offline reading. See [authority references](authority-library.md) for coverage, commands, publisher terms and extraction limits.

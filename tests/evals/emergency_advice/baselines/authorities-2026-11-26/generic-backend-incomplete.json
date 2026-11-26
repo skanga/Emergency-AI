@@ -1,0 +1,83 @@
+{
+  "id": "scene",
+  "trial": 1,
+  "request": {
+    "q": "A person is hurt at an accident scene, but exposed electrical wires make it unsafe. Should I go in to help?",
+    "lang": "en",
+    "history": [],
+    "use_kiwix": false
+  },
+  "answer": "**Local passages supplied.** They may not support every part of this answer; citations are not independently verified.\n\n\n\n> **Incomplete answer:** generation reached its token limit. Read the linked sources for complete instructions.\n\n**Source passages**: a complete AI answer is unavailable. Showing the relevant passages instead:\n\n### [1] IFRC — Scene safety before first aid › Unsafe accident scene: hazards and getting help\n\nBefore approaching an accident or starting first aid, check for hazards to yourself, the injured person and bystanders. Look for a safe place from which to help. Do not enter an unsafe scene. If danger cannot be controlled, stay away and request the appropriate emergency service; support the person from a safe distance when possible.\n\nCall for help as soon as you think it is needed. If you can safely provide care while calling, use speakerphone. Ask another person to help when available. Keep watching for changing hazards. Explain what you are doing and respect the person's privacy.\n\nSource: [International Federation of Red Cross and Red Crescent Societies](https://www.ifrc.org/sites/default/files/2026-03/IFRC%20International%20First%20Aid,%20Resuscitation%20and%20Education%20Guidelines%202025.pdf) — General approach, printed pages 114–116 (PDF pages 115–117). Edition: 2025 guidelines; posted March 2026. Scope: First-aid educators; selected public scene-safety summary. Region: International; local emergency services vary.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.\n",
+  "sources": [
+    {
+      "id": "en:authority/ifrc-2025:0",
+      "lang": "en",
+      "doc_id": "authority/ifrc-2025",
+      "doc_title": "IFRC — Scene safety before first aid",
+      "section": "Unsafe accident scene: hazards and getting help",
+      "anchor": "unsafe-accident-scene-hazards-and-getting-help",
+      "text": "Before approaching an accident or starting first aid, check for hazards to yourself, the injured person and bystanders. Look for a safe place from which to help. Do not enter an unsafe scene. If danger cannot be controlled, stay away and request the appropriate emergency service; support the person from a safe distance when possible.\n\nCall for help as soon as you think it is needed. If you can safely provide care while calling, use speakerphone. Ask another person to help when available. Keep watching for changing hazards. Explain what you are doing and respect the person's privacy.\n\nSource: [International Federation of Red Cross and Red Crescent Societies](https://www.ifrc.org/sites/default/files/2026-03/IFRC%20International%20First%20Aid,%20Resuscitation%20and%20Education%20Guidelines%202025.pdf) — General approach, printed pages 114–116 (PDF pages 115–117). Edition: 2025 guidelines; posted March 2026. Scope: First-aid educators; selected public scene-safety summary. Region: International; local emergency services vary.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+      "kind": "kit",
+      "language": "en",
+      "score": 38.526,
+      "retrieval_score": 33,
+      "original_text": "Before approaching an accident or starting first aid, check for hazards to yourself, the injured person and bystanders. Look for a safe place from which to help. Do not enter an unsafe scene. If danger cannot be controlled, stay away and request the appropriate emergency service; support the person from a safe distance when possible.\n\nCall for help as soon as you think it is needed. If you can safely provide care while calling, use speakerphone. Ask another person to help when available. Keep watching for changing hazards. Explain what you are doing and respect the person's privacy.\n\nSource: [International Federation of Red Cross and Red Crescent Societies](https://www.ifrc.org/sites/default/files/2026-03/IFRC%20International%20First%20Aid,%20Resuscitation%20and%20Education%20Guidelines%202025.pdf) — General approach, printed pages 114–116 (PDF pages 115–117). Edition: 2025 guidelines; posted March 2026. Scope: First-aid educators; selected public scene-safety summary. Region: International; local emergency services vary.\n\nEnglish editorial summary by Emergency AI, checked 2026-11-26; not a publisher translation, complete manual or clinical certification. Attribution does not imply publisher endorsement.",
+      "source_version": "853215ef57b5061574c1bd206684c6cfca22a4734c7b1dd3d4c1cc9b2a61a72f",
+      "n": 1,
+      "conflicts": [],
+      "context_omitted": false,
+      "context_omitted_reason": null
+    }
+  ],
+  "done": {
+    "mode": "search",
+    "seconds": 50.6,
+    "llm": {
+      "backend": "llama.cpp",
+      "model": "Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+      "url": "http://127.0.0.1:8091/v1"
+    },
+    "generation": {
+      "input_tokens": 3938,
+      "history_omitted": false,
+      "included_source_ids": [
+        "en:authority/ifrc-2025:0"
+      ],
+      "sources_omitted": [],
+      "finish_reason": "length",
+      "incomplete": true,
+      "reasoning_present": true,
+      "max_tokens": 2048,
+      "context": 8192,
+      "context_margin": 256,
+      "validation": {
+        "status": "not_run",
+        "issues": [
+          "generation_incomplete"
+        ],
+        "claim_support": "not_verified"
+      }
+    },
+    "sources_supplied": true,
+    "reason": "generation_failed",
+    "fallback": {
+      "status": "unavailable",
+      "used_source_ids": [],
+      "fallback_evidence_ids": [],
+      "coverage": "catalog_units_only"
+    }
+  },
+  "outcome": "incomplete",
+  "error": null,
+  "error_events": [],
+  "first_token_seconds": 0.06726633600192145,
+  "total_seconds": 50.61233044299297,
+  "checks": {
+    "invalid_citation_ids": [],
+    "citation_ids": [
+      1
+    ],
+    "semantic_support": "unreviewed"
+  },
+  "raw_sha256": null
+}

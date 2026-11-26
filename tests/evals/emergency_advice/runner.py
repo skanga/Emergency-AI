@@ -92,7 +92,7 @@ def portable_status(status):
     return {'llm': status.get('llm'), 'version': status.get('version'),
             'knowledge': status.get('knowledge'),
             'libraries': [{k: b.get(k) for k in ('name', 'served_name', 'archive_uuid', 'issued')}
-                          for b in status.get('kiwix', {}).get('books', [])]}
+                          for b in (status.get('kiwix') or {}).get('books', [])]}
 
 
 def select_cases(manifest, group='all', case_ids=()):
