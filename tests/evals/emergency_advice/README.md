@@ -49,6 +49,10 @@ Reports produce Markdown and JSON, refuse overwrites, and expose unreviewed cove
 
 Automated checks currently recognize bracketed numeric citations including `[1, 2]`; semantic support always requires review. First-token timing often measures the disclaimer, not helpful advice. Comparisons pair exact case/trial/request matches and list mismatches/unmatched cases. Whole-run distributions may have different case coverage; consult exact pairs before drawing conclusions. One trial does not establish statistical or causal improvement.
 
+Completed source-backed fallback answers have a separate `fallback` outcome. Original generation failure/incompleteness remains in `done.generation`; a completed fallback is not an incomplete displayed answer. Only explicitly displayed fallback evidence listed in `done.fallback.used_source_ids` can supply citations outside the model's input. Transport errors still fail. Fallback status never grants a usefulness, safety or citation-support pass: all four dimensions still require a bound review.
+
+Additional implementation-informed cases live in `development-cases.json`; the historical manifest and its review bindings remain unchanged. Run these separately with `--manifest tests/evals/emergency_advice/development-cases.json` before `run`, and use the same manifest for `template` and `report`. They are development boundaries, not an independently adjudicated holdout.
+
 ## Historical import and tests
 
 ```sh

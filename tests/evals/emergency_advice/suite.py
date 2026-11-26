@@ -55,11 +55,18 @@ def normalize(raw, trial=1):
     ids = sorted({int(n) for group in re.findall(r'\[(\d+(?:\s*,\s*\d+)*)\]', answer)
                   for n in re.findall(r'\d+', group)})
     included = generation.get('included_source_ids')
+    fallback = done.get('fallback') or {}
+    fallback_ids = set(fallback.get('used_source_ids', [])) if done.get('mode') == 'fallback' and fallback.get('status') == 'composed' else set()
     valid = {s.get('n') for s in sources if not s.get('context_omitted')
-             and (included is None or s.get('id') in included)}
+             and (included is None or s.get('id') in included or
+                  (s.get('fallback_evidence') and s.get('id') in fallback_ids))}
     if raw.get('error') or errors:
         outcome = 'error'
-    elif len(terminal) != 1 or generation.get('incomplete'):
+    elif len(terminal) != 1:
+        outcome = 'incomplete'
+    elif fallback_ids and answer.strip():
+        outcome = 'fallback'
+    elif generation.get('incomplete'):
         outcome = 'incomplete'
     elif done.get('reason') in ('answer_validation_failed', 'source_conflict', 'reviewed_source_omitted'):
         outcome = 'withheld'
@@ -143,7 +150,7 @@ def load_reviews(document, results, cases):
 def summarize(results, reviews):
     counts = {d: {str(v): 0 for v in values} for d, values in RATINGS.items()}
     outcomes = {v: sum(r['outcome'] == v for r in results)
-                for v in ('answered', 'withheld', 'error', 'incomplete', 'empty', 'unavailable')}
+                for v in ('answered', 'fallback', 'withheld', 'error', 'incomplete', 'empty', 'unavailable')}
     reviewed = 0
     fail = any(r['outcome'] in ('error', 'incomplete', 'empty', 'unavailable') or
                r['checks']['invalid_citation_ids'] for r in results)

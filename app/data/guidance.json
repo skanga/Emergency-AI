@@ -1,0 +1,306 @@
+{
+  "version": 1,
+  "units": [
+    {
+      "id": "hypoglycemia-oral",
+      "topic": "diabetes",
+      "reference_title": "CDC: Treatment of Low Blood Sugar",
+      "reference_url": "https://www.cdc.gov/diabetes/treatment/treatment-low-blood-sugar-hypoglycemia.html",
+      "reference_section": "The 15-15 rule",
+      "reference_checked_at": "2026-11-26",
+      "scope": {
+        "age_group": "adult",
+        "consciousness": "responsive"
+      },
+      "prerequisites": [
+        "low blood sugar",
+        "fully awake",
+        "safe swallowing"
+      ],
+      "contraindications": [
+        "unresponsive",
+        "unsafe swallowing",
+        "child dose not established"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If an adult has low blood sugar, is fully awake and can swallow safely, give 15 grams of fast-acting carbohydrate, such as glucose tablets according to their label. Recheck after 15 minutes; repeat if still below 70 mg/dL. Once recovered, eat a snack or meal with carbohydrate and protein.",
+        "pt": "Se um adulto tem hipoglicemia, está totalmente acordado e consegue engolir com segurança, dê 15 gramas de carboidrato de ação rápida, como comprimidos de glicose conforme o rótulo. Verifique após 15 minutos; repita se ainda estiver abaixo de 70 mg/dL. Após melhorar, coma um lanche ou refeição com carboidrato e proteína.",
+        "es": "Si un adulto tiene hipoglucemia, está completamente despierto y puede tragar con seguridad, dé 15 gramos de carbohidratos de acción rápida, como tabletas de glucosa según su etiqueta. Compruebe después de 15 minutos; repita si sigue por debajo de 70 mg/dL. Al recuperarse, coma algo con carbohidratos y proteínas."
+      },
+      "content_hash": "aa162c9d794923946c17ca4486aab9eb464caecfb289a79fc59d11f857148623"
+    },
+    {
+      "id": "hypoglycemia-unresponsive",
+      "topic": "diabetes",
+      "reference_title": "NHS: Low blood sugar",
+      "reference_url": "https://www.nhs.uk/conditions/low-blood-sugar-hypoglycaemia/",
+      "reference_section": "How to treat severe low blood sugar",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected low blood sugar",
+        "unresponsive"
+      ],
+      "contraindications": [
+        "oral intake"
+      ],
+      "additional_references": [
+        {
+          "title": "St John Ambulance: CPR and normal breathing",
+          "url": "https://www.sja.org.uk/first-aid-advice/cpr/",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If low blood sugar causes unconsciousness, do not give anything by mouth. If unresponsive or unable to swallow safely, seek emergency help. If unresponsive and breathing normally, place them on their side in the recovery position. If unconscious with severe low blood sugar, use available glucagon only if you know how. Stay with them and monitor breathing.",
+        "pt": "Se a hipoglicemia causar inconsciência, não dê nada pela boca. Se estiver inconsciente ou não conseguir engolir com segurança, peça socorro de emergência. Se estiver inconsciente e respirar normalmente, coloque a pessoa de lado na posição de recuperação. Se estiver inconsciente com hipoglicemia grave, use glucagon disponível somente se souber como. Fique com ela e observe a respiração.",
+        "es": "Si la hipoglucemia causa pérdida de conciencia, no dé nada por la boca. Si está inconsciente o no puede tragar con seguridad, pida ayuda de emergencia. Si está inconsciente y respira normalmente, colóquela de lado en posición de recuperación. Si está inconsciente con hipoglucemia grave, use glucagón disponible solo si sabe cómo. Permanezca con ella y vigile la respiración."
+      },
+      "content_hash": "dc97aa48911a1a2ba8319448c052cb72099162d9a79213d6ab06af4022650983"
+    },
+    {
+      "id": "cpr-boundary",
+      "topic": "cpr",
+      "reference_title": "St John Ambulance: How to do CPR",
+      "reference_url": "https://www.sja.org.uk/first-aid-advice/cpr/",
+      "reference_section": "CPR first aid",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "assess responsiveness and breathing"
+      ],
+      "contraindications": [
+        "compressions in responsive normally breathing person"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If someone is awake and breathing normally, do not start CPR. If an adult becomes unresponsive and is not breathing normally, call emergency services, start CPR and ask a helper to bring an AED. Occasional gasps are not normal breathing. Follow the dispatcher and AED instructions.",
+        "pt": "Se a pessoa está acordada e respira normalmente, não inicie RCP. Se um adulto ficar inconsciente e não respirar normalmente, chame a emergência, inicie RCP e peça a alguém um DEA. Suspiros ocasionais não são respiração normal. Siga as instruções do atendente e do DEA.",
+        "es": "Si la persona está despierta y respira normalmente, no inicie RCP. Si un adulto queda inconsciente y no respira normalmente, llame a emergencias, inicie RCP y pida a alguien un DEA. Los jadeos ocasionales no son respiración normal. Siga las instrucciones del operador y del DEA."
+      },
+      "content_hash": "32a04aa1df42739a9b08a6ef5674fda42b4a87eb9344dec51764e2bbb083b460"
+    },
+    {
+      "id": "bleeding-pressure",
+      "topic": "bleeding",
+      "reference_title": "American Red Cross: Life-threatening external bleeding",
+      "reference_url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/bleeding-life-threatening-external",
+      "reference_section": "How to stop bleeding",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "external bleeding"
+      ],
+      "contraindications": [
+        "tourniquet outside limb or without training"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "For severe external bleeding, call emergency services. Press firmly and continuously on the wound with a dressing or clean cloth. Maintain pressure until bleeding stops or help takes over. For life-threatening bleeding from an arm or leg, use a tourniquet if available and you are trained. Stay with the person.",
+        "pt": "Para sangramento externo intenso, chame a emergência. Pressione a ferida com firmeza e continuamente com gaze ou pano limpo. Mantenha a pressão até parar ou chegar ajuda. Para hemorragia com risco de vida num braço ou perna, use torniquete se disponível e se tiver treinamento. Fique com a pessoa.",
+        "es": "Para sangrado externo intenso, llame a emergencias. Presione la herida firmemente y sin interrupción con una gasa o paño limpio. Mantenga la presión hasta que pare o llegue ayuda. Para hemorragia mortal de un brazo o pierna, use un torniquete si está disponible y tiene formación. Permanezca con la persona."
+      },
+      "content_hash": "342ea1b96fe320d9f4f2e6e263d3370c096e81e50561e59129c3375dbd0f0244"
+    },
+    {
+      "id": "water-product",
+      "topic": "water_disinfection",
+      "reference_title": "EPA: Emergency disinfection of drinking water",
+      "reference_url": "https://www.epa.gov/ground-water-and-drinking-water/emergency-disinfection-drinking-water",
+      "reference_section": "Disinfect water using household bleach",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "water disinfection"
+      ],
+      "contraindications": [
+        "unknown bleach concentration",
+        "unsuitable bleach"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "For drinking water, do not use scented bleach, color-safe bleach or products with added cleaners. Use sealed bottled water when available. Bleach treatment requires a suitable product and known concentration; do not guess a dose from an unknown label.",
+        "pt": "Para água potável, não use alvejante perfumado, para roupas coloridas ou com produtos de limpeza adicionados. Use água engarrafada lacrada quando disponível. O tratamento exige produto adequado e concentração conhecida; não adivinhe a dose com rótulo desconhecido.",
+        "es": "Para agua potable, no use lejía perfumada, para ropa de color ni con limpiadores añadidos. Use agua embotellada sellada cuando esté disponible. El tratamiento exige un producto adecuado y concentración conocida; no adivine la dosis con una etiqueta desconocida."
+      },
+      "content_hash": "6b14bbb3f23c14057cce9037fcb457082f54d106f369c583e2c6b1f25c6f37f4"
+    },
+    {
+      "id": "water-chemical",
+      "topic": "water_chemical",
+      "reference_title": "CDC: How to make water safe in an emergency",
+      "reference_url": "https://www.cdc.gov/water-emergency/about/",
+      "reference_section": "Water with fuel or toxic chemicals in it",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected chemical contamination"
+      ],
+      "contraindications": [
+        "microbial disinfection as chemical decontamination"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If water may contain fuel or toxic chemicals, do not drink it. Boiling or adding disinfectant cannot make it safe. Obtain bottled water or another safe supply and contact local health authorities for advice.",
+        "pt": "Se a água pode conter combustível ou produtos químicos tóxicos, não a beba. Ferver ou adicionar desinfetante não a torna segura. Obtenha água engarrafada ou outra fonte segura e consulte as autoridades locais de saúde.",
+        "es": "Si el agua puede contener combustible o sustancias químicas tóxicas, no la beba. Hervirla o añadir desinfectante no la vuelve segura. Consiga agua embotellada u otra fuente segura y consulte a las autoridades sanitarias locales."
+      },
+      "content_hash": "ba5eb2bf7e8098de7374248dc30159a2bc495b7d1d300646c17768ad279acac8"
+    },
+    {
+      "id": "burn-cooling",
+      "topic": "burn",
+      "reference_title": "NHS: Burns and scalds",
+      "reference_url": "https://www.nhs.uk/conditions/burns-and-scalds/",
+      "reference_section": "What to do if you have a burn or scald",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "thermal burn"
+      ],
+      "contraindications": [
+        "pulling off stuck clothing"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "For a thermal burn, cool the area under cool running water for 20 minutes. Remove nearby clothing and jewelry only if not stuck to the skin. Do not apply butter or oils. Seek emergency care for large, deep burns or burns on the face or genitals.",
+        "pt": "Para queimadura térmica, resfrie a área com água corrente fresca por 20 minutos. Retire roupas e joias próximas somente se não estiverem grudadas na pele. Não aplique manteiga nem óleos. Procure emergência para queimaduras grandes, profundas, no rosto ou genitais.",
+        "es": "Para una quemadura térmica, enfríe la zona con agua corriente fresca durante 20 minutos. Retire ropa y joyas cercanas solo si no están pegadas a la piel. No aplique mantequilla ni aceites. Busque urgencias para quemaduras grandes, profundas, en la cara o genitales."
+      },
+      "content_hash": "010e7ade25d5806f626490709c108a7c6f208331be9b928b1f6e53c86c144831"
+    },
+    {
+      "id": "anaphylaxis-injector",
+      "topic": "anaphylaxis",
+      "reference_title": "NHS: Anaphylaxis",
+      "reference_url": "https://www.nhs.uk/conditions/anaphylaxis/",
+      "reference_section": "What to do if you have anaphylaxis",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected anaphylaxis",
+        "available injector"
+      ],
+      "contraindications": [
+        "device timing inferred from unspecified model"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If anaphylaxis is suspected, use an available adrenaline auto-injector following that device’s instructions and call emergency services. Lie down; if breathing is difficult, raise the shoulders or sit up slowly. Do not stand or walk. If symptoms persist after 5 minutes, use a second auto-injector if available.",
+        "pt": "Se houver suspeita de anafilaxia, use um autoinjetor de adrenalina disponível conforme as instruções desse dispositivo e chame a emergência. Deite; se respirar for difícil, eleve os ombros ou sente lentamente. Não fique em pé nem caminhe. Se persistir após 5 minutos, use um segundo autoinjetor se disponível.",
+        "es": "Si sospecha anafilaxia, use un autoinyector de adrenalina disponible según las instrucciones de ese dispositivo y llame a emergencias. Acuéstese; si cuesta respirar, eleve los hombros o siéntese lentamente. No se ponga de pie ni camine. Si persiste tras 5 minutos, use otro autoinyector si está disponible."
+      },
+      "content_hash": "8c5b3ef8a9f2aa8d3073d503cd1ce710a8019f329b22204340bffa14e100a5c0"
+    },
+    {
+      "id": "snakebite-still",
+      "topic": "snakebite",
+      "reference_title": "WHO: Snakebite envenoming",
+      "reference_url": "https://www.who.int/news-room/questions-and-answers/item/snakebite-envenoming",
+      "reference_section": "What is the appropriate first aid for snakebite?",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected snakebite"
+      ],
+      "contraindications": [
+        "compression without appropriate species and regional guidance"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "For a suspected snakebite, keep the person still and arrange urgent transport to medical care. Do not cut, suck or apply a narrow tourniquet to the bite. Compression bandaging depends on venom type and local guidance; an unknown snake or location does not establish that it is appropriate.",
+        "pt": "Para suspeita de picada de cobra, mantenha a pessoa imóvel e providencie transporte urgente para atendimento médico. Não corte, sugue nem aplique torniquete estreito. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada.",
+        "es": "Ante una posible mordedura de serpiente, mantenga a la persona inmóvil y organice traslado urgente a atención médica. No corte, succione ni aplique un torniquete estrecho. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado."
+      },
+      "content_hash": "c6c47f2570e9b421f3f61a694134adb411fbd0bc898e971fd47020a6a2112df5"
+    },
+    {
+      "id": "flood-shelter",
+      "topic": "flood",
+      "reference_title": "National Weather Service: During a flood",
+      "reference_url": "https://www.weather.gov/safety/flood-during",
+      "reference_section": "Avoid flood waters",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "flood exposure"
+      ],
+      "contraindications": [
+        "entering moving or electrified water"
+      ],
+      "additional_references": [
+        {
+          "title": "National Weather Service Pittsburgh: Floods",
+          "url": "https://www.weather.gov/pbz/floods",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "If a vehicle is trapped in fast-moving floodwater, stay inside unless water rises inside; then seek refuge on its roof and call rescuers. In a building, move to a higher level, but not into an enclosed attic; go onto the roof only if necessary. Do not walk or drive through floodwater. Avoid submerged electrical equipment.",
+        "pt": "Se um veículo ficar preso em água corrente de enchente, permaneça dentro, a menos que a água comece a subir dentro; nesse caso, procure abrigo no teto e chame o resgate. Em um prédio, vá para um andar mais alto, mas não entre em um sótão fechado; vá ao telhado somente se necessário. Não caminhe nem dirija pela enchente. Evite equipamentos elétricos submersos.",
+        "es": "Si un vehículo queda atrapado en agua de inundación que corre rápidamente, permanezca dentro salvo si el agua sube dentro; en ese caso, refúgiese en el techo y llame a rescate. En un edificio, vaya a un nivel más alto, pero no entre en un ático cerrado; suba al tejado solo si es necesario. No camine ni conduzca por la inundación. Evite equipos eléctricos sumergidos."
+      },
+      "content_hash": "90f210824b353a099348a44e0536790f2aa79d722e0f22f5c0f637b639593986"
+    },
+    {
+      "id": "heat-cooling",
+      "topic": "heatstroke",
+      "reference_title": "CDC NIOSH: Heat-related illnesses",
+      "reference_url": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+      "reference_section": "Heat stroke: First aid",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "suspected heat illness"
+      ],
+      "contraindications": [
+        "unprotected airway during immersion"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "If heat exposure causes confusion, collapse or very hot skin, call emergency services and begin cooling immediately. Move to shade or a cool area, remove outer clothing, wet the skin with cool water and fan it. Stay with the person and monitor them while help is coming.",
+        "pt": "Se o calor causar confusão, colapso ou pele muito quente, chame a emergência e comece a resfriar imediatamente. Leve à sombra ou local fresco, retire roupas externas, molhe a pele com água fresca e abane. Fique com a pessoa e observe seu estado enquanto a ajuda chega.",
+        "es": "Si el calor causa confusión, colapso o piel muy caliente, llame a emergencias y empiece a enfriar inmediatamente. Lleve a la sombra o a un lugar fresco, retire ropa exterior, moje la piel con agua fresca y abanique. Permanezca con la persona y vigile su estado mientras llega ayuda."
+      },
+      "content_hash": "60a938c1921b80a8d47333a93438aa3578b67866e793cf3c8c014faad8279d0f"
+    },
+    {
+      "id": "cooking-fire",
+      "topic": "fire",
+      "reference_title": "CPSC: Recipe for safer cooking",
+      "reference_url": "https://www.cpsc.gov/safety-education/safety-guides/home-fire/recipe-safer-cooking",
+      "reference_section": "To put out a cooking fire in your kitchen",
+      "reference_checked_at": "2026-11-26",
+      "scope": {},
+      "prerequisites": [
+        "small contained cooking pan fire",
+        "safe approach",
+        "fitting metal lid"
+      ],
+      "contraindications": [
+        "water",
+        "moving burning pan",
+        "approaching spreading fire"
+      ],
+      "additional_references": [
+        {
+          "title": "USFA: Cooking fire safety",
+          "url": "https://www.usfa.fema.gov/prevention/home-fires/prevent-fires/cooking/",
+          "checked_at": "2026-11-26"
+        },
+        {
+          "title": "USFA: Cook Safely flyer",
+          "url": "https://www.usfa.fema.gov/downloads/fief/handouts/fief_cooking_safety_flyer_custom.pdf",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "translations": {
+        "en": "For a small contained pan fire, only if safe, slide a fitting metal lid over the pan, turn off the heat and leave covered until cool. Never add water or carry the burning pan. If unsafe to approach or the fire spreads, leave and call firefighters from safety.",
+        "pt": "Para fogo pequeno contido na panela, somente se for seguro, deslize uma tampa metálica adequada sobre ela, desligue o fogo e mantenha coberta até esfriar. Nunca adicione água nem carregue a panela em chamas. Se for inseguro aproximar-se ou o fogo se espalhar, saia e chame os bombeiros de local seguro.",
+        "es": "Para fuego pequeño contenido en una sartén, solo si es seguro, deslice una tapa metálica adecuada encima, apague el calor y mantenga cubierta hasta enfriar. Nunca añada agua ni lleve la sartén en llamas. Si acercarse es inseguro o el fuego se extiende, salga y llame a bomberos desde un lugar seguro."
+      },
+      "content_hash": "7aab7593e54176cf02ed8daa8fb1738b14b1ce32b2451c96539056714383c732"
+    }
+  ]
+}

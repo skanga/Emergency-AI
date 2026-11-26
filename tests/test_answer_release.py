@@ -6,7 +6,11 @@ from app.engine import Engine
 from app.llm import LLMError
 
 
-def source(n=1, text='If unresponsive and not breathing normally, start CPR.', **kw):
+def source(n=1, text=('If unresponsive and not breathing normally, start CPR. '
+                      'If awake and able to swallow safely, give oral glucose or juice. '
+                      'If awake and able to swallow safely, give sugar. '
+                      'Do not give anything by mouth. Do not give food or drink. '
+                      'Do not give food, drink, or tablets. Do not attempt to give juice or honey.'), **kw):
     return dict(n=n, id=f'passage-{n}', kind='kiwix', doc_title='Guide', section='First aid', text=text, **kw)
 
 

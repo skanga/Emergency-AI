@@ -8,18 +8,20 @@ async function check(completed, sourcesSupplied = true) {
   const message = {querySelector: () => bubble, scrollIntoView() {}};
   let reads = 0;
   const retrievalEvents = [];
-  const stream = 'event: retrieval\ndata: {"conflicts":[{"resolution":"unresolved"}]}\n\n' + 'event: token\ndata: "Partial answer"\n\n' +
+  const displayOrder = [];
+  const stream = 'event: retrieval\ndata: {"conflicts":[{"resolution":"unresolved"}]}\n\n' + 'event: sources\ndata: [{"n":1,"kind":"guidance","fallback_evidence":true}]\n\n' + 'event: token\ndata: "Partial answer"\n\n' +
     (completed ? 'event: done\ndata: ' + JSON.stringify({mode: 'llm', seconds: 1, sources_supplied: sourcesSupplied}) + '\n\n' : '');
   const context = vm.createContext({busy: false, lang: 'en', chatHistory: [], librarySelection: null,
     $: s => s === '#welcome' ? null : (nodes[s] ??= {checked: false}),
-    modelSwitching: () => false, addMsg: () => message, esc: s => s, t: s => s, md: s => s,
-    renderSources() {}, renderRetrieval(container, report) { retrievalEvents.push(report); }, renderModels() {}, document: {createElement: () => ({})}, TextDecoder, Date,
+    modelSwitching: () => false, addMsg: () => message, esc: s => s, t: s => s, md: s => {displayOrder.push('token'); return s;},
+    renderSources() {displayOrder.push('sources');}, renderRetrieval(container, report) { retrievalEvents.push(report); }, renderModels() {}, document: {createElement: () => ({})}, TextDecoder, Date,
     fetch: async () => ({ok: true, body: {getReader: () => ({read: async () => reads++ ?
       {done: true} : {done: false, value: Buffer.from(stream)}})}})});
   vm.runInContext(source.slice(source.indexOf('  async function ask(question)'),
     source.indexOf('  // ---------------- sidebar search')), context);
   await context.ask('Question');
   assert.equal(context.chatHistory.length, 2);
+  assert(displayOrder.indexOf('sources') < displayOrder.indexOf('token'));
   assert.equal(retrievalEvents[0].conflicts[0].resolution, 'unresolved');
   assert(context.chatHistory[1].content.includes('Partial answer'));
   assert.equal(out.innerHTML.includes('Interrupted response'), !completed);

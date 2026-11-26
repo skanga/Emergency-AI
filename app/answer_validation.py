@@ -6,16 +6,13 @@ claim support is deliberately reported as unverified.
 import re
 
 from .applicability import inapplicability_reason
+from .claim_validation import check_claims
+from .patient_facts import _breathing, _facts, _ABNORMAL, _SWALLOW, _UNSAFE_SWALLOW, _CONDITIONAL
 from .query_planner import normalize, plan_query, _consciousness
 
 _CITATION = re.compile(r'\[S([1-9][0-9]*)\]')
 _REFERENCE = re.compile(r'\[(?:[Ss][^\]\n]*|\^?\d[^\]\n]*)\]')
 _FOOTNOTE = re.compile(r'\[(\d+(?:\s*[,–-]\s*\d+)*)\]')
-_ABNORMAL = re.compile(r'\b(?:not breathing(?: normally)?|no breathing(?!\s+(?:trouble|difficult(?:y|ies)|problems?)\b)|only gasping|gasping|nao respira\w*(?: normalmente)?|sem respiracao|no respira\w*(?: normalmente)?)\b')
-_NORMAL = re.compile(r'\b(?:breathing normally|normal breathing|respira\w* normalmente)\b')
-_SWALLOW = re.compile(r'\b(?:able to swallow(?: safely)?|can swallow(?: safely)?|consegue engolir|puede tragar)\b')
-_UNSAFE_SWALLOW = re.compile(r'\b(?:cannot swallow|can t swallow|unable to swallow|difficulty swallowing|swollen tongue|throat swelling|nao consegue engolir|dificuldade para engolir|lingua inchada|no puede tragar|dificultad para tragar|lengua hinchada)\b')
-_CONDITIONAL = re.compile(r'\b(?:if|when|only if|se|quando|si|cuando)\b')
 _CPR = re.compile(r'\b(?:cpr|rcp|cardiopulmonary resuscitation|chest compressions|compressoes toracicas|compresiones toracicas)\b')
 _ACTION = re.compile(r'\b(?:start|begin|perform|give|do(?= cpr)|initiate|continue|administer|offer|take|drink|feed|inicie|iniciar|faca|realize|comece|dar|tome|beba|ofereca|administre|comience|inicia|haga|realizar|dele)\b')
 _ORAL = re.compile(r'\b(?:oral|by mouth|tablet\w*|pill\w*|antihistamine\w*|antihistaminico\w*|comprimido\w*|pastilla\w*|por boca|pela boca|glucose|glicose|glucosa|sugar|acucar|azucar|honey|mel|miel|juice|suco|zumo|jugo|food|drink|alimento\w*|bebida\w*)\b')
@@ -26,33 +23,6 @@ def source_for_prompt(text):
     """Original source footnotes are not application evidence identifiers."""
     text = _FOOTNOTE.sub(lambda m: '(source note ' + m[1] + ')', text)
     return _CITATION.sub(lambda m: '(source marker S' + m[1] + ')', text)
-
-
-def _breathing(text):
-    if any(not (m[0] in ('gasping', 'only gasping') and re.search(r'\b(?:not|no|nao)\s*$', text[:m.start()])) for m in _ABNORMAL.finditer(text)):
-        return 'abnormal'
-    if _NORMAL.search(text):
-        return 'normal'
-    return None
-
-
-def _facts(plan):
-    facts = {'consciousness': None, 'breathing': None, 'swallowing': None,
-             'age_group': plan.scope.get('age_group')}
-    # Planner context contains only compatible prior user turns, never assistant
-    # assertions. Current explicit facts override those inherited facts.
-    for text in (*plan.context_turns, plan.question):
-        for sentence in re.split(r'[.!?\n]+', text):
-            t = normalize(sentence)
-            if _CONDITIONAL.search(t):
-                continue  # A hypothetical condition is not a patient observation.
-            facts['consciousness'] = _consciousness(t) or facts['consciousness']
-            facts['breathing'] = _breathing(t) or facts['breathing']
-            if _UNSAFE_SWALLOW.search(t):
-                facts['swallowing'] = 'unsafe'
-            elif _SWALLOW.search(t):
-                facts['swallowing'] = 'safe'
-    return facts
 
 
 def _negative_action(text, match):
@@ -151,9 +121,12 @@ def validate_answer(answer, sources, question, lang='en', history=None):
         issues.append('invalid_citation_format')
     action_issues, facts = _action_issues(answer, plan)
     issues.extend(action_issues)
+    claim_issues, claim_checks = check_claims(answer, sources, plan)
+    issues.extend(claim_issues)
     result = {'status':'blocked' if issues else 'passed', 'issues':list(dict.fromkeys(issues)),
               'citation_ids':sorted(set(cited)), 'claim_support':'not_verified',
-              'action_conditions':'known_patterns_only', 'patient_facts':facts}
+              'action_conditions':'known_patterns_only', 'patient_facts':facts,
+              'claim_checks':claim_checks}
     # Nothing from the model is released if any part fails validation.
     rendered = '' if issues else _CITATION.sub(lambda m: '[' + m[1] + ']' if citation_text[m.start():m.end()] == m[0] else m[0], answer)
     return rendered, result

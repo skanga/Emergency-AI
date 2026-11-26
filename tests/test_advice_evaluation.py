@@ -44,6 +44,26 @@ class AdviceEvaluationTests(unittest.TestCase):
         self.assertEqual(result['outcome'], 'withheld')
         self.assertEqual(suite.summarize([result], {})['gate'], 'incomplete')
 
+    def test_complete_fallback_is_separate_from_failed_generation(self):
+        raw = self.capture(mode='fallback', reason='generation_failed',
+                           generation={'incomplete':True, 'included_source_ids':[]},
+                           fallback={'status':'composed', 'used_source_ids':['a']})
+        raw['events'][0]['data'][0]['fallback_evidence'] = True
+        result = suite.normalize(raw)
+        self.assertEqual(result['outcome'], 'fallback')
+        self.assertEqual(result['checks']['invalid_citation_ids'], [])
+        self.assertTrue(result['done']['generation']['incomplete'])
+        self.assertEqual(suite.summarize([result], {})['gate'], 'incomplete')
+        self.assertEqual(suite.summarize([result], {})['outcomes']['fallback'], 1)
+
+    def test_fallback_does_not_rescue_transport_errors_or_unlisted_evidence(self):
+        raw = self.capture(mode='fallback', generation={'included_source_ids':[]},
+                           fallback={'status':'composed', 'used_source_ids':['other']})
+        raw['events'][0]['data'][0]['fallback_evidence'] = True
+        self.assertEqual(suite.normalize(raw)['checks']['invalid_citation_ids'], [1])
+        raw['error'] = 'connection reset'
+        self.assertEqual(suite.normalize(raw)['outcome'], 'error')
+
     def test_zero_reviews_and_zero_cases_cannot_pass(self):
         self.assertEqual(suite.summarize([], {})['gate'], 'incomplete')
         self.assertEqual(suite.summarize([suite.normalize(self.capture())], {})['reviewed'], 0)
@@ -80,6 +100,9 @@ class AdviceEvaluationTests(unittest.TestCase):
             fixture = p / 'tests/evals/emergency_advice/cases.json'
             fixture.parent.mkdir(parents=True); fixture.write_text('[]')
             (p / 'emergency.py').write_text('pass')
+            catalog = p / 'app/data/guidance.json'
+            catalog.parent.mkdir(parents=True)
+            catalog.write_text('{}')
             subprocess.run(['git', 'init', '-q', tmp], check=True)
             subprocess.run(['git', '-C', tmp, 'add', '.'], check=True)
             tree = subprocess.check_output(['git', '-C', tmp, 'write-tree'], text=True).strip()
@@ -90,6 +113,7 @@ class AdviceEvaluationTests(unittest.TestCase):
                 else:
                     with zipfile.ZipFile(io.BytesIO(data)) as archive: names = archive.namelist()
                 self.assertIn('emergency.py', names)
+                self.assertIn('app/data/guidance.json', names)
                 self.assertFalse(any(n.startswith('tests') for n in names))
 
 class RunnerTests(unittest.TestCase):

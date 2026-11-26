@@ -529,6 +529,7 @@
   }
 
   function renderSources(container, sources) {
+    container.querySelector?.('.sources')?.remove();
     if (!sources || !sources.length) return;
     const box = document.createElement("div");
     box.className = "sources";
@@ -536,6 +537,14 @@
       let label = esc(s.doc_title) + " › " + esc(s.section);
       if (s.issued) label += " · " + ({en:"Snapshot",pt:"Arquivo",es:"Archivo"}[lang]) + ": " + esc(s.issued.slice(0, 10));
       if (s.context_omitted) label += " · " + esc(retrievalLabel(s.context_omitted_reason || s.omission_reason || "context_budget"));
+      if (s.kind === "guidance") {
+        const tag = s.fallback_evidence
+          ? {en:"Fallback evidence",pt:"Fonte da orientação alternativa",es:"Fuente de orientación alternativa"}[lang]
+          : {en:"Source-backed guidance",pt:"Orientação baseada em fontes",es:"Orientación basada en fuentes"}[lang];
+        const publisher = /^https:\/\//i.test(s.url || "")
+          ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.doc_title)}</a>` : "";
+        return `<details class="src" id="src-${s.n}"><summary>[${s.n}] ${label} · ${tag}</summary><p>${esc(s.original_text || s.text)}</p>${publisher}</details>`;
+      }
       if (s.kind === "kiwix") {
         return `<a class="src" id="src-${s.n}" href="/kiwix${esc(s.link)}" target="_blank" rel="noopener"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kiwix")}</span></a>`;
       }
@@ -584,7 +593,7 @@
           if (!ev || dataLine === undefined) continue;
           const data = JSON.parse(dataLine);
           if (ev === "retrieval") { retrieval = data; renderRetrieval(body, retrieval); }
-          else if (ev === "sources") { sources = data; if (retrieval) renderRetrieval(body, retrieval, sources); }
+          else if (ev === "sources") { sources = data; renderSources(body, sources); if (retrieval) renderRetrieval(body, retrieval, sources); }
           else if (ev === "token") {
             if (!started) { started = true; text = ""; }
             text += data;
@@ -612,7 +621,10 @@
         ? (info.sources_supplied !== true ? "modeUngrounded" : "modeLlm")
         : (info.reason === "ai_disabled" ? "modeDisabled"
           : info.reason === "generation_failed" ? "modeFailed" : "modeSearch");
-      meta.textContent = (completed ? t(modeKey) + " · " : "") + secs + "s";
+      const modeLabel = info.mode === "fallback"
+        ? {en:"Source-backed fallback",pt:"Orientação alternativa baseada em fontes",es:"Orientación alternativa basada en fuentes"}[lang]
+        : t(modeKey);
+      meta.textContent = (completed ? modeLabel + " · " : "") + secs + "s";
       body.appendChild(meta);
       chatHistory.push({ role: "user", content: question }, { role: "assistant", content: text });
       chatHistory = chatHistory.slice(-8);
