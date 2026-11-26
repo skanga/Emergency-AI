@@ -15,6 +15,14 @@ python -B tests/evals/emergency_advice/runner.py template --run output/advice/ru
 
 Choose `--group historical` for the 22 original prompts, `--group live` for fresh conversations, `--group boundary` for six condition/withholding cases, or the default `all` for 32 cases. Increase `--trials 3` to expose sampling variation. Each trial starts new conversations. Historical follow-ups replay the original assistant text exactly; live follow-ups use the current trial's displayed answer. Those are different experiments and are never silently paired.
 
+To repeat affected cases without editing the suite, use repeatable `--case` IDs:
+
+```sh
+python -B tests/evals/emergency_advice/runner.py run --url http://127.0.0.1:8090 --output output/advice/affected-001 --trials 3 --case bleeding --case bleeding_lay_iv --case co --case portuguese
+```
+
+The runner keeps the full manifest and rubric hashes, records `selected_case_ids`, and automatically includes a selected live follow-up's conversation parents. Unknown IDs or IDs outside an explicitly selected group fail before any requests. Reports show the subset denominator; an affected-case repeat does not establish that the whole suite passes. Use a new output directory and retain the original failed run.
+
 An optional `--root /path/to/installation` records the installation-manifest hash and declared commit read-only. It does **not** attest that the server runs from that directory. API version/model names also do not prove deployment identity. Record environment changes in your review report. The runner records its Git revision and dirty state. Status metadata includes archive UUIDs/editions but is not a full file-integrity audit.
 
 A new output directory is required. Completed cases and raw captures are saved incrementally; interruption does not erase them. To repeat an interrupted run, choose a new directory. No automatic retries obscure failures. `run` exits 2 for transport/incomplete/empty/unavailable answers; withholding is a captured outcome, not a harness failure. A successful run does not imply passing answer quality.

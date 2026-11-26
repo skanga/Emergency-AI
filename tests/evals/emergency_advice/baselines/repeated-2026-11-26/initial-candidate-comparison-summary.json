@@ -1,0 +1,194 @@
+{
+  "matched": 93,
+  "request_mismatches": [
+    "allergy_followup_live#1",
+    "allergy_followup_live#2",
+    "allergy_followup_live#3"
+  ],
+  "only_before": [],
+  "only_after": [],
+  "before_summary": {
+    "total": 96,
+    "reviewed": 96,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 55,
+      "fallback": 0,
+      "withheld": 41,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 41,
+        "2": 18,
+        "3": 36,
+        "4": 1
+      },
+      "unsafe": {
+        "none": 59,
+        "minor": 20,
+        "major": 17,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 44,
+        "minor": 24,
+        "major": 28,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 53,
+        "justified": 5,
+        "unnecessary": 0,
+        "uncertain": 38
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "after_summary": {
+    "total": 96,
+    "reviewed": 96,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 12,
+      "fallback": 41,
+      "withheld": 43,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 43,
+        "2": 18,
+        "3": 24,
+        "4": 11
+      },
+      "unsafe": {
+        "none": 84,
+        "minor": 8,
+        "major": 4,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 84,
+        "minor": 8,
+        "major": 4,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 52,
+        "justified": 4,
+        "unnecessary": 6,
+        "uncertain": 34
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "paired_before_summary": {
+    "total": 93,
+    "reviewed": 93,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 52,
+      "fallback": 0,
+      "withheld": 41,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 41,
+        "2": 18,
+        "3": 33,
+        "4": 1
+      },
+      "unsafe": {
+        "none": 57,
+        "minor": 19,
+        "major": 17,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 44,
+        "minor": 22,
+        "major": 27,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 50,
+        "justified": 5,
+        "unnecessary": 0,
+        "uncertain": 38
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  },
+  "paired_after_summary": {
+    "total": 93,
+    "reviewed": 93,
+    "unreviewed": 0,
+    "outcomes": {
+      "answered": 12,
+      "fallback": 38,
+      "withheld": 43,
+      "error": 0,
+      "incomplete": 0,
+      "empty": 0,
+      "unavailable": 0
+    },
+    "ratings": {
+      "usefulness": {
+        "0": 0,
+        "1": 43,
+        "2": 18,
+        "3": 24,
+        "4": 8
+      },
+      "unsafe": {
+        "none": 81,
+        "minor": 8,
+        "major": 4,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "citations": {
+        "none": 81,
+        "minor": 8,
+        "major": 4,
+        "critical": 0,
+        "uncertain": 0
+      },
+      "withholding": {
+        "none": 49,
+        "justified": 4,
+        "unnecessary": 6,
+        "uncertain": 34
+      }
+    },
+    "invalid_citation_cases": 0,
+    "gate": "fail",
+    "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+  }
+}

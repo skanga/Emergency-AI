@@ -32,6 +32,10 @@ class Rule:
 # Object-specific verbs keep an unrelated "give" from turning a prohibition
 # elsewhere in the sentence into a positive instruction.
 RULES = (
+    Rule('cpr_continuation', r'\b(?:continue|keep going)\b.{0,45}\b(?:until|ate|hasta que)\b', ('cpr',)),
+    Rule('embedded_object', r'\b(?:remove|pull out|retire|remova|quite|extraiga)\b.{0,45}\b(?:embedded objects?|foreign objects?|objetos? (?:encravad\w*|incrustad\w*|cravad\w*|empalad\w*))\b', ('bleeding',)),
+    Rule('generator_shutdown', r'\b(?:turn off|shut off|switch off|desligue|desligar|apague|apagar)\b.{0,35}\b(?:generator\w*|gerador\w*|generador\w*|equipment|equipamento|equipo)\b', ('carbon_monoxide',)),
+    Rule('generator_reentry', r'\b(?:re enter|(?:return|go back|volte|voltar|retorne|regrese|volver)(?= (?:to|inside|into|a|ao|al|para|adentro|dentro)\b))\b', ('carbon_monoxide',)),
     Rule('generator_indoor', r'\b(?:use[ds]?|using|run|operate|utilize|usar|utilice|use|opere)\b.{0,110}\b(?:indoors|inside|garage\w*|garagem|garaje|interior|dentro)\b', ('carbon_monoxide',)),
     Rule('food_sensory', r'\b(?:judge|assess|re evaluate|evaluate|determine|rely|avalie|julgue|avalie novamente|confie|evalue|juzgue|confie)\b.{0,80}\b(?:appearance|smell|taste|aparencia|cheiro|sabor|aspecto|olor)\b|\b(?:eat|coma|consuma)\b.{0,35}\b(?:if|se|si)\b.{0,35}\b(?:smell\w*|cheiro|olor)\b', ('food_safety',)),
     Rule('burn_clothing', r'\b(?:remove|take off|retire|remova|quite)\b.{0,65}\b(?:clothing|clothes|roupa\w*|ropa\w*)\b', ('burn',)),
@@ -63,6 +67,9 @@ def _units(text):
 
 
 def _polarity(rule, text, match):
+    if rule.name == 'generator_shutdown' and _has(
+            r'\b(?:do not|never|nao|no|nunca) (?:return|go back|volte|voltar|retorne|regrese|volver) (?:to|para) $', text[:match.start()]):
+        return False
     if rule.name == 'generator_indoor':
         return not bool(re.search(r'\b(?:never|not|nao|no|nunca)(?: be| ser)? $', text[:match.start()]))
     if rule.name == 'water_chemical':
@@ -97,6 +104,41 @@ def _condition_issue(name, text, question, positive=True):
         exception_text = re.sub(r'\b(?:even if|mesmo se|incluso si)\b', '', exception_text)
         if positive or _has(r'\b(?:unless|without|except|if|when|a menos que|sem|sin|exceto|salvo|se|si|quando|cuando)\b', exception_text):
             return 'generator_indoor_use_unsafe'
+    if name == 'cpr_continuation' and positive:
+        # A valid stopping branch cannot authorize a different arrival branch.
+        for branch in text.split(';'):
+            for arrival in re.finditer(r'\b(?:arrives?|chegar|chegue|llegue|lleguen)\b', branch):
+                if not _has(
+                        r'^ (?:and (?:begins? care|takes? over)|e (?:assuma|assumir)|y (?:se haga cargo|comience la atencion))\b',
+                        branch[arrival.end():]):
+                    return 'cpr_arrival_stop_unsafe'
+    if name == 'embedded_object':
+        # The prohibition cannot be weakened by an invented removal exception.
+        suffix = re.split(r'\b(?:embedded objects?|foreign objects?|objetos? (?:encravad\w*|incrustad\w*|cravad\w*|empalad\w*))\b', text, maxsplit=1)[-1]
+        suffix = re.sub(r'\b(?:even if|mesmo se|incluso si)\b', '', suffix)
+        if positive or _has(r'\b(?:unless|except|if|when|a menos que|exceto|salvo|se|si|quando|cuando)\b', suffix):
+            return 'embedded_object_removal_unsafe'
+    if name == 'generator_shutdown' and positive:
+        # No local shutdown procedure is established during suspected exposure.
+        return 'generator_shutdown_condition_missing'
+    if name == 'generator_reentry' and not positive and _has(
+            r'\b(?:unless|except|a menos que|exceto|salvo)\b', text):
+        return 'generator_reentry_condition_missing'
+    clearance_text = text
+    if name == 'generator_reentry' and not positive:
+        for original, replacement in (('until', 'only after'), ('ate', 'somente apos'),
+                                      ('hasta que', 'solo despues de que')):
+            clearance_text = re.sub(r'\b' + original + r'\b', replacement, clearance_text)
+    if name == 'generator_reentry' and (positive or _has(
+            r'\b(?:if|when|until|se|quando|ate|si|cuando|hasta)\b', text)) and (
+            _has(r'\b(?:or|ou|o si|o cuando)\b', text) or not _has(
+            r'\b(?:(?:re enter|return to|go back to) (?:the )?(?:garage|area|building|house) '
+            r'only after trained personnel declare the area safe|'
+            r'(?:volte|retorne) (?:a|ao) (?:garagem|local) '
+            r'somente apos profissionais treinados liberarem o local|'
+            r'regrese (?:al garaje|a la zona) '
+            r'solo despues de que profesionales capacitados declaren segura la zona)\b', clearance_text)):
+        return 'generator_reentry_condition_missing'
     if name == 'food_sensory' and positive:
         return 'food_sensory_safety_unsupported'
     if not positive:
@@ -173,6 +215,8 @@ def _swallowing(text):
 
 
 def _claim_text(text, name):
+    if name == 'cpr_continuation':
+        return '; '.join(normalize(part) for part in re.split(r'[;\n]', text))
     if name == 'water_chemical':
         return '; '.join(normalize(part) for part in re.split(r'[;]', text))
     return normalize(text)
@@ -270,6 +314,15 @@ def _quantities(text):
 
 def _scope_for_unit(units, index, name):
     raw = units[index][0]
+    if name == 'cpr_continuation':
+        if _has(r'\b(?:until|ate|hasta que)$', normalize(raw)):
+            for following, _, _ in units[index + 1:]:
+                if not re.match(r'\s*[*+-]\s+', following):
+                    break
+                raw += '\n' + following
+        return raw
+    if name in ('embedded_object', 'generator_shutdown', 'generator_reentry'):
+        return raw
     # Only join the specific adjacent exception, never a random safety sentence.
     if raw.lstrip().startswith('#'):
         for following, _, _ in units[index + 1:]:
@@ -309,6 +362,8 @@ def check_claims(answer, sources, plan):
         topics.add('burn')
     if _has(r'\b(?:fire|incendio|fogo|fuego)\b', question) and _has(r'\b(?:oil|grease|pan|oleo|gordura|aceite|sarten|frigideira)\b', question):
         topics.add('grease_fire')
+    if _has(r'\b(?:wound\w*|bleed\w*|ferid\w*|herid\w*|sangr\w*)\b', question):
+        topics.add('bleeding')
     for index, (raw, start, end) in enumerate(units):
         for rule in RULES:
             if rule.topics and not topics.intersection(rule.topics):
@@ -320,7 +375,7 @@ def check_claims(answer, sources, plan):
             for match in _matches(rule, text):
                 positive = _polarity(rule, text, match)
                 scope = _scope_for_unit(units, index, rule.name)
-                scoped = normalize(_CITE.sub('', scope))
+                scoped = _claim_text(_CITE.sub('', scope), rule.name)
                 condition = _condition_issue(rule.name, scoped, question, positive)
                 if condition:
                     issues.append(condition)
@@ -339,11 +394,13 @@ def check_claims(answer, sources, plan):
                         matching = _matches(rule, candidate, evidence=True)
                         if not any(_polarity(rule, candidate, m) == positive for m in matching):
                             continue
+                        if not positive and rule.name in ('embedded_object', 'generator_reentry') and _condition_issue(rule.name, candidate, question, False):
+                            continue
                         if not positive and not _negative_scope_supported(rule.name, text, candidate, facts):
                             continue
                         if positive and rule.name in ('oral', 'oral_adjunct') and not _oral_objects(text).issubset(_oral_objects(candidate)):
                             continue
-                        context = normalize(_scope_for_unit(source_units, si, rule.name))
+                        context = _claim_text(_scope_for_unit(source_units, si, rule.name), rule.name)
                         if positive and (not _source_conditions(rule.name, context) or
                                          _condition_issue(rule.name, context, question, True)):
                             continue

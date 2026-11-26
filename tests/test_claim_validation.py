@@ -23,6 +23,171 @@ class ClaimValidationTests(unittest.TestCase):
             self.assertTrue(rendered, report)
         return report
 
+    def test_captured_final_action_failures(self):
+        path = Path(__file__).parent / 'fixtures/retrieval/final-action-failures.json'
+        for case in json.loads(path.read_text(encoding='utf-8')):
+            with self.subTest(case=case['id']):
+                self.check(re.sub(r'\[(\d+)\]', r'[S\1]', case['answer']),
+                           case['sources'], case['request']['q'], case['issue'],
+                           case['request']['lang'])
+
+    def test_embedded_object_removal_boundaries(self):
+        for lang, ban, affirmative, exception, question in (
+            ('en', 'Do not remove embedded objects', 'Remove embedded objects',
+             'unless they prevent pressure', 'A wound is bleeding'),
+            ('pt', 'Não retire objetos encravados', 'Retire objetos encravados',
+             'a menos que impeçam a pressão', 'Ferida sangrando'),
+            ('es', 'No retire objetos incrustados', 'Retire objetos incrustados',
+             'a menos que impidan la presión', 'Herida sangrando')):
+            for answer in (affirmative, ban + ' ' + exception):
+                with self.subTest(answer=answer):
+                    self.check(answer + ' [S1].', ban, question,
+                               'embedded_object_removal_unsafe', lang)
+            self.check(ban + ' [S1].', ban, question, lang=lang)
+            self.check(ban + ' [S1].', affirmative, question,
+                       'claim_not_supported_by_cited_passage', lang)
+
+    def test_generator_shutdown_and_return_boundaries(self):
+        for lang, question, stop, ban, enter, no_entry, cleared in (
+            ('en', 'Generator in garage, carbon monoxide poisoning',
+             'Turn off the generator', 'Do not turn off the generator',
+             'Re-enter the garage', 'Do not re-enter the garage',
+             'only after trained personnel declare the area safe'),
+            ('pt', 'Gerador na garagem causa monóxido de carbono',
+             'Desligue o gerador', 'Não desligue o gerador',
+             'Volte à garagem', 'Não volte à garagem',
+             'somente após profissionais treinados liberarem o local'),
+            ('es', 'Generador en garaje causa monóxido de carbono',
+             'Apague el generador', 'No apague el generador',
+             'Regrese al garaje', 'No regrese al garaje',
+             'solo después de que profesionales capacitados declaren segura la zona')):
+            with self.subTest(lang=lang):
+                self.check(stop + ' [S1].', ban, question,
+                           'generator_shutdown_condition_missing', lang)
+                self.check(enter + ' [S1].', no_entry, question,
+                           'generator_reentry_condition_missing', lang)
+                self.check(ban + ' [S1].', ban, question, lang=lang)
+                self.check(no_entry + ' [S1].', no_entry, question, lang=lang)
+                safe = enter + ' ' + cleared
+                self.check(safe + ' [S1].', safe, question, lang=lang)
+                self.check(safe + ' [S1].', enter, question,
+                           'claim_not_supported_by_cited_passage', lang)
+                self.check(stop + ' [S1]. ' + safe + ' [S1].', safe, question,
+                           'generator_shutdown_condition_missing', lang)
+
+    def test_generator_shutdown_nested_prohibitions_remain_valid(self):
+        for lang, answer, question in (
+            ('en', 'Do not return to turn off the generator', 'Carbon monoxide poisoning'),
+            ('pt', 'Não volte para desligar equipamento', 'Monóxido de carbono'),
+            ('es', 'No regrese para apagar el generador', 'Monóxido de carbono')):
+            with self.subTest(lang=lang):
+                self.check(answer + ' [S1].', answer, question, lang=lang)
+                self.check(answer + ' unless everyone is outside [S1].', answer, question,
+                           'generator_reentry_condition_missing', lang)
+
+    def test_unrelated_return_instruction_is_not_generator_reentry(self):
+        self.check('Return the phone to its owner [S1].', 'Return the phone to its owner.',
+                   'Carbon monoxide poisoning')
+
+    def test_generator_clearance_cannot_be_borrowed_from_another_action(self):
+        answer = ('Re-enter the garage; call emergency services only after trained personnel '
+                  'declare the area safe [S1].')
+        self.check(answer, answer, 'Carbon monoxide poisoning',
+                   'generator_reentry_condition_missing')
+
+    def test_embedded_conditional_source_cannot_support_unconditional_ban(self):
+        self.check('Do not remove embedded objects [S1].',
+                   'Do not remove embedded objects unless they prevent pressure.',
+                   'A wound is bleeding', 'claim_not_supported_by_cited_passage')
+
+    def test_generator_conditional_prohibitions_need_professional_clearance(self):
+        for lang, bad, good in (
+            ('en', 'Do not re-enter the garage until everyone is outside',
+             'Do not re-enter the garage until trained personnel declare the area safe'),
+            ('pt', 'Não volte à garagem até todos estarem fora',
+             'Não volte à garagem até profissionais treinados liberarem o local'),
+            ('es', 'No regrese al garaje hasta que todos estén fuera',
+             'No regrese al garaje hasta que profesionales capacitados declaren segura la zona')):
+            with self.subTest(lang=lang):
+                self.check(bad + ' [S1].', good, 'Carbon monoxide poisoning',
+                           'generator_reentry_condition_missing', lang)
+                self.check(good + ' [S1].', good, 'Carbon monoxide poisoning', lang=lang)
+
+    def test_generator_clearance_cannot_offer_weaker_alternative(self):
+        question = 'Generator in the garage caused headaches; can I go back?'
+        for lang, safe, alternative in (
+            ('en', 'Re-enter the garage only after trained personnel declare the area safe',
+             'or if the door is open'),
+            ('pt', 'Volte à garagem somente após profissionais treinados liberarem o local',
+             'ou se a porta estiver aberta'),
+            ('es', 'Regrese al garaje solo después de que profesionales capacitados declaren segura la zona',
+             'o si la puerta está abierta')):
+            bad = safe + ' ' + alternative
+            with self.subTest(lang=lang):
+                self.check(bad + ' [S1].', safe + '.', question,
+                           'generator_reentry_condition_missing', lang)
+                self.check(safe + ' [S1].', bad + '.', question,
+                           'claim_not_supported_by_cited_passage', lang)
+                self.check(safe + ' [S1].', safe + '.', question, lang=lang)
+
+    def test_visible_airway_object_is_not_an_embedded_wound_object(self):
+        answer = 'Remove a clearly visible foreign object from the mouth [S1].'
+        source = 'Remove a clearly visible foreign object from the mouth.'
+        report = self.check(answer, source, 'My 8-month-old infant is choking')
+        self.assertNotIn('embedded_object',
+                         [claim['rule'] for claim in report['claim_checks']['claims']])
+
+    def test_cpr_continuation_cannot_stop_at_mere_arrival(self):
+        for lang, question, bad, good in (
+            ('en', 'My father is unresponsive and only gasping',
+             'Continue compressions until medical help or an AED arrives',
+             'Continue compressions until trained responders take over, normal breathing returns, you are exhausted or the scene is unsafe'),
+            ('pt', 'Meu pai está inconsciente e não respira normalmente',
+             'Continue as compressões até chegar ajuda médica ou um DEA',
+             'Continue as compressões até respirar normalmente, alguém assumir, ficar exausto ou o local ficar inseguro'),
+            ('es', 'Mi padre no responde y solo jadea',
+             'Continúe las compresiones hasta que llegue ayuda médica o un DEA',
+             'Continúe las compresiones hasta que respire normalmente, alguien lo releve, se agote o el lugar sea inseguro')):
+            with self.subTest(lang=lang):
+                self.check(bad + ' [S1].', good, question, 'cpr_arrival_stop_unsafe', lang)
+                self.check(good + ' [S1].', good, question, lang=lang)
+                self.check(good + ' [S1].', bad, question,
+                           'claim_not_supported_by_cited_passage', lang)
+        instruction = 'Pause compressions only when the AED tells you to, then resume immediately'
+        self.check(instruction + ' [S1].', instruction,
+                   'My father is unresponsive and only gasping')
+
+    def test_cpr_arrival_branch_cannot_borrow_takeover_from_another_bullet(self):
+        safe = ('Continue until:\n* Normal breathing returns.\n'
+                '* Trained responders arrive and take over.\n'
+                '* You are exhausted or the scene is unsafe [S1].')
+        question = 'My father is unresponsive and only gasping'
+        self.check(safe, safe, question)
+        bad = safe.replace('* You are exhausted', '* An AED arrives.\n* You are exhausted')
+        self.check(bad, safe, question, 'cpr_arrival_stop_unsafe')
+        self.check(safe, bad, question, 'claim_not_supported_by_cited_passage')
+        prohibition = 'Do not stop compressions merely because help arrives'
+        self.check(prohibition + ' [S1].', prohibition, question)
+        separate = safe + '\n### Equipment\nAn AED arrives later.'
+        self.check(separate, safe, question)
+
+    def test_each_cpr_arrival_requires_its_own_takeover_condition(self):
+        question = 'My father is unresponsive and gasping.'
+        for lang, safe, alternative in (
+            ('en', 'Continue compressions until trained responders arrive and take over',
+             'or an AED arrives'),
+            ('pt', 'Continue as compressões até a ajuda chegar e assumir',
+             'ou um DEA chegar'),
+            ('es', 'Continúe las compresiones hasta que el socorrista llegue y se haga cargo',
+             'o llegue un DEA')):
+            bad = safe + ' ' + alternative
+            with self.subTest(lang=lang):
+                self.check(bad + ' [S1].', safe + '.', question,
+                           'cpr_arrival_stop_unsafe', lang)
+                self.check(safe + ' [S1].', bad + '.', question,
+                           'claim_not_supported_by_cited_passage', lang)
+                self.check(safe + ' [S1].', safe + '.', question, lang=lang)
+
     def test_generator_ventilation_is_not_an_indoor_use_exception(self):
         source = 'Never use a generator indoors or in a garage, even with open windows.'
         question = 'Gasoline generator in garage, headaches and nausea; add a fan?'
