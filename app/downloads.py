@@ -8,6 +8,8 @@ import posixpath
 import re
 import shutil
 import subprocess
+import stat
+import tempfile
 import sys
 import tarfile
 import time
@@ -202,13 +204,17 @@ def _download_urllib(url, part, retries):
 
 def extract(archive, dest):
     os.makedirs(dest, exist_ok=True)
-    if archive.endswith(".zip"):
+    zip_archive = archive.endswith(".zip")
+    if zip_archive:
         with zipfile.ZipFile(archive) as z:
             _check_space(dest, sum(m.file_size for m in z.infolist()), len(z.infolist()))
             z.extractall(dest)
+            permission_files = [m.filename for m in z.infolist() if not m.is_dir()
+                                and not stat.S_ISLNK(m.external_attr >> 16)]
     else:
         with tarfile.open(archive) as t:
             members = t.getmembers()
+            permission_files = [m.name for m in members if m.isfile()]
             # Linux Python includes case-only terminfo aliases. On Windows these
             # symlinks can point back to themselves; copy their archived contents
             # instead, also avoiding the need for Windows symlink privileges.
@@ -240,15 +246,47 @@ def extract(archive, dest):
                 if os.path.normcase(source) != os.path.normcase(path):
                     os.makedirs(os.path.dirname(path), exist_ok=True)
                     shutil.copy2(source, path)
-    # ZIP does not preserve executable permissions
-    for dirpath, _, files in os.walk(dest):
-        for f in files:
-            p = os.path.join(dirpath, f)
-            if "." not in f or f.endswith((".so", ".dylib")) or ".so." in f:
-                try:
-                    os.chmod(p, os.stat(p).st_mode | 0o755)
-                except OSError:
-                    pass
+    if os.name != "nt":
+        _restore_permissions(dest, permission_files, zip_archive)
+
+
+_ZIP_EXECUTABLES = frozenset({
+    "llama-server", "llama-cli", "kiwix-serve", "kiwix-search", "kiwix-manage",
+    "pdftotext", "pdfinfo", "python", "python3",
+})
+
+
+def _creation_permissions(destination):
+    """Observe the umask via file creation without changing process-global state."""
+    with tempfile.TemporaryDirectory(prefix=".permissions-", dir=destination) as folder:
+        # The probe directory must remain traversable even if the umask masks x.
+        os.chmod(folder, 0o700)
+        fd = os.open(os.path.join(folder, "probe"), os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o777)
+        try:
+            return stat.S_IMODE(os.fstat(fd).st_mode) & 0o777
+        finally:
+            os.close(fd)
+
+
+def _restore_permissions(destination, members, zip_archive):
+    allowed = _creation_permissions(destination)
+    base = os.path.realpath(destination)
+    for name in members:
+        path = os.path.abspath(os.path.join(base, name))
+        # Skip links in any path component, not just the final filename.
+        if os.path.commonpath([base, path]) != base or os.path.realpath(path) != path:
+            continue
+        if not stat.S_ISREG(os.lstat(path).st_mode):
+            continue
+        fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        try:
+            mode = stat.S_IMODE(os.fstat(fd).st_mode) & 0o777
+            filename = os.path.basename(path)
+            if zip_archive and (filename in _ZIP_EXECUTABLES or re.fullmatch(r"python3\.\d+", filename)):
+                mode = 0o755
+            os.fchmod(fd, mode & allowed)
+        finally:
+            os.close(fd)
 
 
 def _tar_link_target(archive, member):
