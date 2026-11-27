@@ -314,9 +314,11 @@ class KiwixClient:
 
     def article_text(self, link, max_chars=20000):
         # Compatibility API. Retrieval uses structural article_passages instead.
-        if not self.local_link(link):
+        if isinstance(max_chars, bool) or not isinstance(max_chars, int) or max_chars < 0:
+            raise ValueError("max_chars must be a nonnegative integer")
+        if max_chars == 0 or not self.local_link(link):
             return ""
-        return html_to_text(self.article_html(link))
+        return html_to_text(self.article_html(link))[:max_chars]
 
 
 def failure_status(exc):
