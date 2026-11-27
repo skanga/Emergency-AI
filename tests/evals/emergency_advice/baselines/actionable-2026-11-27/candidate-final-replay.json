@@ -1,0 +1,305 @@
+[
+  {
+    "id": "water_bleach",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "3139d50a683aba636430ea363bf4c2c0991d993eb67db5adacca371a1f91b39e",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleach_unknown",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "3139d50a683aba636430ea363bf4c2c0991d993eb67db5adacca371a1f91b39e",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "0e2478af6ce4fbc48f62e8ac02c9ea287c8d53f33466844e524b984fa6578f17",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "snake",
+    "trial": 1,
+    "validation_input": 1,
+    "draft_sha256": "e54bcb8002db18fed69648ed454f7f5c764504775eb9c21b70237cb631f2f02b",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleeding_lay_iv",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "3ac149738c1272abf9734029dee5fc308749002c1c898836258830f09bce7ffc",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "clinical_drug_administration",
+      "tourniquet_conditions_missing",
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "bleeding_lay_iv",
+    "trial": 1,
+    "validation_input": 1,
+    "draft_sha256": "a81c0020abf8378e15c24843c53863aca0226567cbd5603c71e59d8d30806461",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake_pt",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "9d3caf69376b07bdb3be4d2921294601f378f949e077af0ade0afa5caa825218",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "cpr_prerequisites_missing",
+      "claim_not_supported_by_cited_passage",
+      "snake_tourniquet_unsafe"
+    ]
+  },
+  {
+    "id": "snake_pt",
+    "trial": 1,
+    "validation_input": 1,
+    "draft_sha256": "a8985e2c4f5c93441895862211132aeb18f6b64293cf44dab526315ff6df3be4",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake_es",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "9631724d9a76b994e7c1e67ac6293e2e782c56dd1deb1ed90436d3611dba6c8f",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "citation_not_supplied",
+      "claim_not_supported_by_cited_passage",
+      "snake_self_rescue_conditions_missing",
+      "explanation_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "snake_es",
+    "trial": 1,
+    "validation_input": 1,
+    "draft_sha256": "f0248767c76c33964876f2d2998757fb74cda3a7f2591f8172a5f38da6c7c4fe",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleeding_lay_iv_pt",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "e1fd857bd7cdba653039fd3f2202a4b340a7a7c0ad3b88b3399f6476f5935948",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "action_citation_missing",
+      "tourniquet_conditions_missing",
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "bleeding_lay_iv_pt",
+    "trial": 1,
+    "validation_input": 1,
+    "draft_sha256": "d5c8fac707a3db52b90a799a7281829b95f01d5cc92e59c3b5764bc99b3b653e",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleeding_lay_iv_es",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "65eaedea9265a5bd7c1bebe607041ce451ff88393286b0c04ffab486bc0764c5",
+    "previous_status": "passed",
+    "final_status": "blocked",
+    "issues": [
+      "clinical_drug_administration",
+      "tourniquet_conditions_missing",
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "water_bleach_pt",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "9b4b4889ba207380c025f8b260a12ced2d379531012b3c3ac32eec684967ae52",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "water_bleach_es",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "5aa9c840487b68071c59ebd7e65378977055455664fd3e70c314850a3257ba58",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "water_bleach",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "3139d50a683aba636430ea363bf4c2c0991d993eb67db5adacca371a1f91b39e",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleach_unknown",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "3139d50a683aba636430ea363bf4c2c0991d993eb67db5adacca371a1f91b39e",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "57aba0dfdbb6d40c47c5101589986eae2fca47ded911288de55a32b2c5c4ded7",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "snake",
+    "trial": 2,
+    "validation_input": 1,
+    "draft_sha256": "e54bcb8002db18fed69648ed454f7f5c764504775eb9c21b70237cb631f2f02b",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleeding_lay_iv",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "b617d9d6cf95b7550bbdfbb281c6438cc3748c37507b06841d3cd1cf841bb696",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "clinical_drug_administration",
+      "tourniquet_conditions_missing"
+    ]
+  },
+  {
+    "id": "bleeding_lay_iv",
+    "trial": 2,
+    "validation_input": 1,
+    "draft_sha256": "a81c0020abf8378e15c24843c53863aca0226567cbd5603c71e59d8d30806461",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake_pt",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "57c9ddcf7a0b9c0494ba88fc799a80e11c79bfa764bd4a54fdf613ab2e85ec6e",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "oral_intake_prerequisites_missing",
+      "snake_self_rescue_conditions_missing",
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "snake_pt",
+    "trial": 2,
+    "validation_input": 1,
+    "draft_sha256": "a8985e2c4f5c93441895862211132aeb18f6b64293cf44dab526315ff6df3be4",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake_es",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "c3567b465cde3b6d6c7afecff65f195fb6173db27ea683583a8299a67499f437",
+    "previous_status": "passed",
+    "final_status": "blocked",
+    "issues": [
+      "snake_self_rescue_conditions_missing"
+    ]
+  },
+  {
+    "id": "bleeding_lay_iv_pt",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "5b0ce5e83024c32c1c84acd50d3f2b5ab8e0b5ea816d897fd640769e4bc56b85",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "clinical_drug_administration",
+      "cpr_prerequisites_missing",
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "bleeding_lay_iv_pt",
+    "trial": 2,
+    "validation_input": 1,
+    "draft_sha256": "d5c8fac707a3db52b90a799a7281829b95f01d5cc92e59c3b5764bc99b3b653e",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleeding_lay_iv_es",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "0e06e8c0fad8a8a6aa0d59563fe5de45e174b21f5bad4cdecfad6d452ff15e77",
+    "previous_status": "passed",
+    "final_status": "blocked",
+    "issues": [
+      "clinical_drug_administration",
+      "tourniquet_conditions_missing",
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "water_bleach_pt",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "9b4b4889ba207380c025f8b260a12ced2d379531012b3c3ac32eec684967ae52",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "water_bleach_es",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "5aa9c840487b68071c59ebd7e65378977055455664fd3e70c314850a3257ba58",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  }
+]

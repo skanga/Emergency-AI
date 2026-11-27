@@ -10,7 +10,7 @@ from .query_planner import _consciousness
 _CITATION = re.compile(r'\[S([1-9][0-9]*)\]')
 _REFERENCE = re.compile(r'\[(?:[Ss][^\]\n]*|\^?\d[^\]\n]*)\]')
 _FOOTNOTE = re.compile(r'\[(\d+(?:\s*[,–-]\s*\d+)*)\]')
-_OBSERVED_ABNORMAL = re.compile(r'\b(?:not breathing(?: normally)?|no breathing(?!\s+(?:trouble|difficult(?:y|ies)|problems?)\b)|only gasping|gasping|nao respira\w*(?: normalmente)?|sem respiracao|no respira\w*(?: normalmente)?)\b')
+_OBSERVED_ABNORMAL = re.compile(r'\b(?:not breathing(?: normally)?|no breathing(?!\s+(?:trouble|difficult(?:y|ies)|problems?)\b)|only gasping|gasping|breathing abnormally|nao respira\w*(?: normalmente)?|sem respiracao|no respira\w*(?: normalmente)?)\b')
 _NORMAL = re.compile(r'\b(?:breathing normally|normal breathing|respira\w* normalmente)\b')
 _SWALLOW = re.compile(r'\b(?:able to swallow(?: safely)?|can swallow(?: safely)?|(?:consegue|puder|pode) engolir|capaz de engolir|(?:puede|pueda) tragar|capaz de tragar)\b')
 _UNSAFE_SWALLOW = re.compile(r'\b(?:nao (?:e )?capaz de engolir|no (?:es )?capaz de tragar|not able to swallow|cannot swallow|can t swallow|unable to swallow|difficulty swallowing|swollen tongue|throat swelling|nao (?:consegue|puder|pode) engolir|dificuldade para engolir|lingua inchada|no (?:puede|pueda) tragar|dificultad para tragar|lengua hinchada)\b')
@@ -18,13 +18,13 @@ _CONDITIONAL = re.compile(r'\b(?:if|when|only if|se|quando|si|cuando)\b')
 _ACTION_NEGATIVE = re.compile(r'\b(?:do not|don t|never|must not|nao|nunca|no)\s+(?:(?:attempt to|try to|tente|intente)\s+)?$')
 _CLAIM_NEGATIVE = re.compile(r'\b(?:do not|don t|never|avoid|must not|should not|cannot|can t|nao|nunca|evite|no|evitar|nem|ni|nor)\s+(?:(?:attempt to|try to|tente|intente|intentes|intenten)\s+)?$')
 _UNRESPONSIVE = r'\b(?:unresponsive|unconscious|inconsciente|nao responde|no responde)\b'
-_SOURCE_ABNORMAL = r'\b(?:not breathing(?: normally)?|no breathing(?! (?:trouble|difficulty|problems?))|only gasping|nao respir\w*|no respir\w*)\b'
+_SOURCE_ABNORMAL = r'\b(?:not breathing(?: normally)?|no breathing(?! (?:trouble|difficulty|problems?))|(?:only )?gasping|breathing abnormally|nao respir\w*|no respir\w*)\b'
 _RESPONSIVE = r'\b(?:awake|conscious|responsive|alert|acordad[oa]|consciente|despiert[oa])\b'
 _NOT_AWAKE = r'\b(?:not|nao|no) (?:awake|conscious|responsive|alert|acordad[oa]|consciente|despiert[oa])\b'
 
 
 def _breathing(text):
-    if any(not (m[0] in ('gasping', 'only gasping') and re.search(r'\b(?:not|no|nao)\s*$', text[:m.start()])) for m in _OBSERVED_ABNORMAL.finditer(text)):
+    if any(not (m[0] in ('gasping', 'only gasping', 'breathing abnormally') and re.search(r'\b(?:not|no|nao)\s*$', text[:m.start()])) for m in _OBSERVED_ABNORMAL.finditer(text)):
         return 'abnormal'
     if _NORMAL.search(text):
         return 'normal'
@@ -74,7 +74,8 @@ def _source_conditions(name, text):
     if name == 'cpr':
         text = cpr_prerequisite_scope(text)
         state, breath = re.search(_UNRESPONSIVE, text), re.search(_SOURCE_ABNORMAL, text)
-        if not state or not breath or _matches(r'\b(?:not|never|nao|no|nunca)\s+' + _UNRESPONSIVE, text):
+        if (not state or not breath or _matches(r'\b(?:not|never|nao|no|nunca)\s+' + _UNRESPONSIVE, text)
+                or re.search(r'\b(?:not|no|never) (?:gasping|breathing abnormally)\b', text)):
             return False
         return conditions_conjoined(text, state, breath)
     if name in ('oral', 'oral_adjunct'):

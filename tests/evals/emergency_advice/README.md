@@ -101,3 +101,15 @@ python -B tests/evals/emergency_advice/runner.py report --run tests/evals/emerge
 ```
 
 Use a new output path. `inspection-reviews.json` binds the separate evaluation-only draft captures; `targeted-final-replay.json` records final validator decisions without relabeling historical displayed answers. Review limits and unresolved findings stay explicit.
+
+## Actionable fallback follow-up
+
+The ten-case `actionable-cases.json` development manifest targets water conflicts, lone snakebite, and lay bleeding care in EN/PT/ES. It reuses original English requests where possible. Run two trials against the changed checkout and already-running local model/Kiwix with:
+
+```sh
+python -B tests/evals/emergency_advice/inspect_local.py --manifest tests/evals/emergency_advice/actionable-cases.json --output output/advice/actionable-001 --trials 2
+```
+
+Add `--document-index-dir /path/to/installation/indexes` when the external Kiwix service uses a separate document index. The optional `--llm-url` and `--kiwix-url` identify existing services. This evaluation-only wrapper starts a temporary loopback app from the current checkout, retains code/catalog hashes and withheld drafts in `inspection.json`, and uses the ordinary runner's captures and review bindings. It does not update the installed app or launch/upgrade external engines. Output must be new; explicitly captured drafts are for evaluation, not production logging.
+
+Use the ordinary `runner.py template` and `report` commands with the same manifest and the wrapper's `run/run.json`. Read complete displayed answers and cited evidence; correct numeric citations or a fallback outcome do not prove answer quality.
