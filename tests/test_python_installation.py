@@ -56,7 +56,7 @@ class PythonInstallationTests(unittest.TestCase):
                 raise OSError("interrupted extraction")
             original_extract(archive, destination)
         with patch.object(prepare, "RUNTIME_DIR", str(self.root / "runtime")), \
-                patch.object(prepare, "github_latest_assets", return_value=("20261110", [(asset, "https://example.invalid/python", self.archive.stat().st_size)])), \
+                patch.object(prepare, "github_latest_assets", return_value=("20261110", [(asset, "https://example.invalid/python", self.archive.stat().st_size, "sha256:" + "a" * 64)])), \
                 patch.object(prepare, "download", side_effect=fetch) as download, \
                 patch.object(prepare, "extract", side_effect=unpack), \
                 contextlib.redirect_stdout(io.StringIO()):

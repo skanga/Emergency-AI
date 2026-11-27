@@ -30,7 +30,7 @@ class InstallationTests(unittest.TestCase):
     def test_no_free_space_prevents_downloads(self):
         from types import SimpleNamespace
         with patch.object(prepare.shutil, 'disk_usage', return_value=SimpleNamespace(free=0)), \
-                patch.object(downloads.urllib.request, 'urlopen') as fetch:
+                patch.object(downloads._HTTPS_OPENER, 'open') as fetch:
             self.assertEqual(prepare.run(model='gemma4-e2b', zims='none', oses='this',
                                          yes=True, skip_tools=True), 1)
             fetch.assert_not_called()
@@ -54,7 +54,7 @@ class InstallationTests(unittest.TestCase):
         response = io.BytesIO(data)
         response.headers = headers
         response.status = status
-        return patch.object(downloads.urllib.request, "urlopen", return_value=response)
+        return patch.object(downloads._HTTPS_OPENER, "open", return_value=response)
 
     def test_short_response_never_becomes_completed_download(self):
         dest = str(self.root / "download.bin")

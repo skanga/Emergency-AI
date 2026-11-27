@@ -13,10 +13,27 @@ import tempfile
 import sys
 import tarfile
 import time
+import urllib.parse
 import urllib.request
 import zipfile
 
 from .net import USER_AGENT
+
+
+def _require_https(url):
+    parsed = urllib.parse.urlsplit(url)
+    if parsed.scheme != "https" or not parsed.hostname:
+        raise ValueError("Downloads require an HTTPS URL")
+
+
+class _HTTPSRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        _require_https(newurl)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_HTTPS_OPENER = urllib.request.build_opener(_HTTPSRedirectHandler())
+
 
 # ---------------------------------------------------------------- download
 def _human(n):
@@ -98,6 +115,7 @@ def _remaining_download(dest, expected_size):
 
 def download(url, dest, expected_size=None, sha256=None, retries=5, verify_zim=False):
     """Download with resume support (.part). Prefer curl when available; otherwise use urllib."""
+    _require_https(url)
     if ((expected_size is not None or sha256 or verify_zim) and _file_valid(dest, expected_size, sha256)
             and (not verify_zim or _zim_checksum_valid(dest))):
         return dest
@@ -118,7 +136,9 @@ def download(url, dest, expected_size=None, sha256=None, retries=5, verify_zim=F
     curl = shutil.which("curl")
     ok = False
     if curl and expected_size is not None:
-        cmd = [curl, "-L", "--fail", "--retry", str(retries), "--retry-delay", "3",
+        cmd = [curl, "-L", "--proto", "=https", "--proto-redir", "=https",
+               "--connect-timeout", "30", "--speed-time", "60", "--speed-limit", "1",
+               "--fail", "--retry", str(retries), "--retry-delay", "3",
                "-C", "-", "-A", USER_AGENT, "-o", part, url]
         for attempt in range(retries):
             _check_space(dest, _remaining_download(dest, expected_size))
@@ -149,6 +169,7 @@ def download(url, dest, expected_size=None, sha256=None, retries=5, verify_zim=F
 
 
 def _download_urllib(url, part, retries):
+    _require_https(url)
     for attempt in range(retries):
         try:
             have = os.path.getsize(part) if os.path.exists(part) else 0
@@ -156,7 +177,7 @@ def _download_urllib(url, part, retries):
             if have:
                 headers["Range"] = f"bytes={have}-"
             req = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with _HTTPS_OPENER.open(req, timeout=60) as r:
                 previous_size = have
                 if have and r.status != 206:
                     have = 0

@@ -129,7 +129,15 @@ T = {
 
 def github_latest_assets(repo):
     data = get_json(f"https://api.github.com/repos/{repo}/releases/latest", timeout=30)
-    return data.get("tag_name", ""), [(a["name"], a["browser_download_url"], a.get("size")) for a in data.get("assets", [])]
+    return data.get("tag_name", ""), [(a["name"], a["browser_download_url"], a.get("size"), a.get("digest")) for a in data.get("assets", [])]
+
+
+def _asset_sha256(asset):
+    """Require publisher integrity metadata before downloading executable archives."""
+    digest = asset[3] if len(asset) > 3 else None
+    if not isinstance(digest, str) or not re.fullmatch(r"sha256:[0-9a-fA-F]{64}", digest):
+        raise RuntimeError("Missing or invalid GitHub SHA-256 digest for " + asset[0])
+    return digest[7:].lower()
 
 
 # ---------------------------------------------------------------- components
@@ -174,7 +182,7 @@ def get_llama(plat, tr, cuda=False):
         releases = get_json(f"https://api.github.com/repos/{LLAMA_REPO}/releases?per_page=10", timeout=30)
         for rel in releases:
             tag = rel.get("tag_name", "")
-            assets = [(a["name"], a["browser_download_url"], a.get("size")) for a in rel.get("assets", [])]
+            assets = [(a["name"], a["browser_download_url"], a.get("size"), a.get("digest")) for a in rel.get("assets", [])]
             found = _llama_pick(plat, assets)
             if found:
                 break
@@ -207,7 +215,7 @@ def _install_llama(plat, tr, tag, asset, backend="cpu", companion=None):
     dest = os.path.join(RUNTIME_DIR, "llama.cpp", folder)
     label = f"llama.cpp {tag} ({folder})"
     try:
-        name, url, size = asset
+        name, url, size = asset[:3]
         release = {"tag": tag, "asset": name}
         if companion:
             release["runtime_asset"] = companion[0]
@@ -219,14 +227,16 @@ def _install_llama(plat, tr, tag, asset, backend="cpu", companion=None):
         if {k: v for k, v in installed.items() if k != "runtime_files"} == release and runtime_ok and _has_llama_server(dest, plat):
             print(tr["skip"].format(f=label))
             return True
+        sha256 = _asset_sha256(asset)
+        runtime_sha256 = _asset_sha256(companion) if companion else None
         archive = os.path.join(RUNTIME_DIR, "_downloads", name)
-        download(url, archive, expected_size=size)
+        download(url, archive, expected_size=size, sha256=sha256)
         if size is not None and os.path.getsize(archive) != size:
             raise RuntimeError("download size mismatch for " + name)
         runtime_archive = None
         if companion:
             runtime_archive = os.path.join(RUNTIME_DIR, "_downloads", companion[0])
-            download(companion[1], runtime_archive, expected_size=companion[2])
+            download(companion[1], runtime_archive, expected_size=companion[2], sha256=runtime_sha256)
             if companion[2] is not None and os.path.getsize(runtime_archive) != companion[2]:
                 raise RuntimeError("download size mismatch for " + companion[0])
         parent = os.path.dirname(dest)
@@ -331,9 +341,11 @@ def get_python(plat, tr):
             match = [a for a in assets if rx.match(a[0])]
         if not match:
             raise RuntimeError("asset not found")
-        name, url, size = sorted(match)[-1]
+        asset = sorted(match)[-1]
+        name, url, size = asset[:3]
+        sha256 = _asset_sha256(asset)
         archive = os.path.join(RUNTIME_DIR, "_downloads", name)
-        download(url, archive, expected_size=size)
+        download(url, archive, expected_size=size, sha256=sha256)
         parent = os.path.dirname(dest)
         os.makedirs(parent, exist_ok=True)
         staging = tempfile.mkdtemp(prefix=".python-install-", dir=parent)

@@ -20,7 +20,7 @@ class AccelerationTests(unittest.TestCase):
 
     def test_preparation_installs_cpu_and_vulkan_separately(self):
         assets = [{'name': 'llama-b123-bin-win-%s-x64.zip' % backend,
-                   'browser_download_url': backend, 'size': 1} for backend in ('cpu', 'vulkan')]
+                   'browser_download_url': backend, 'size': 1, 'digest': 'sha256:' + 'a' * 64} for backend in ('cpu', 'vulkan')]
         with tempfile.TemporaryDirectory() as root:
             def download(url, path, **kwargs):
                 Path(path).parent.mkdir(parents=True, exist_ok=True)

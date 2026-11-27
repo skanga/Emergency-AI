@@ -114,7 +114,7 @@ class ArchiveTests(unittest.TestCase):
             response = io.BytesIO(data)
             response.headers = {"Content-Length": str(len(data))}
             response.status = 200
-            with patch.object(downloads.urllib.request, "urlopen", return_value=response):
+            with patch.object(downloads._HTTPS_OPENER, "open", return_value=response):
                 with self.assertRaises(RuntimeError):
                     prepare.download("https://example.invalid/archive.zim", str(dest),
                                      expected_size=len(data), verify_zim=True, retries=1)
@@ -129,7 +129,7 @@ class ArchiveTests(unittest.TestCase):
         response = io.BytesIO(valid)
         response.headers = {"Content-Length": str(len(valid))}
         response.status = 200
-        with patch.object(downloads.urllib.request, "urlopen", return_value=response) as fetch:
+        with patch.object(downloads._HTTPS_OPENER, "open", return_value=response) as fetch:
             for _ in range(2):
                 prepare.download("https://example.invalid/archive.zim", str(dest),
                                  expected_size=len(valid), verify_zim=True, retries=1)
@@ -143,7 +143,7 @@ class ArchiveTests(unittest.TestCase):
         response = io.BytesIO(data)
         response.headers = {"Content-Length": str(len(data))}
         response.status = 200
-        with patch.object(downloads.urllib.request, "urlopen", return_value=response):
+        with patch.object(downloads._HTTPS_OPENER, "open", return_value=response):
             with self.assertRaisesRegex(RuntimeError, "ZIM"):
                 prepare.download("https://example.invalid/archive.zim", str(dest),
                                  expected_size=len(data), verify_zim=True, retries=1)

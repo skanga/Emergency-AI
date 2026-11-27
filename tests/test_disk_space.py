@@ -104,7 +104,7 @@ class DiskSpaceTests(unittest.TestCase):
         response.status = 200
         # Call the real fallback rather than the setup network stub.
         original = self.real_urllib
-        with patch.object(prepare.urllib.request, 'urlopen', return_value=response), \
+        with patch.object(prepare._HTTPS_OPENER, 'open', return_value=response), \
                 patch.object(prepare.shutil, 'disk_usage', return_value=SimpleNamespace(free=1)):
             with self.assertRaises(prepare.InsufficientSpaceError):
                 original('https://example.invalid/model', self.dest + '.part', 1)
