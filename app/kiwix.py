@@ -70,6 +70,7 @@ class KiwixClient:
     def __init__(self, base_url):
         self.base_url = base_url.rstrip("/")
         self._books = None
+        self._catalog_lock = threading.Lock()
         self._catalog_error = None
         self._catalog_failure = None
         self._cache = OrderedDict()
@@ -112,8 +113,33 @@ class KiwixClient:
         except (ValueError, UnicodeError):
             return None
 
+    def invalidate_catalog(self):
+        """Invalidate catalog state under the same lock used by its readers."""
+        with self._catalog_lock:
+            self._books = None
+            self._catalog_checked = 0
+            self._catalog_error = None
+            self._catalog_failure = None
+
     def books(self, deadline=None, diagnostics=None):
-        """List logical selections with archive identity and publication metadata."""
+        """Return a caller-owned catalog snapshot with matching diagnostics.
+
+        Serialize refreshes so one slow fetch cannot overwrite a newer result.
+        A retrieval deadline also bounds time spent waiting for another refresh.
+        """
+        timeout = -1 if deadline is None else max(0, deadline - time.monotonic())
+        if not self._catalog_lock.acquire(timeout=timeout):
+            if diagnostics is not None:
+                diagnostics.append(dict(status='catalog_error', failure_status='timeout',
+                                        error='Catalog refresh wait exceeded deadline'))
+            return []
+        try:
+            return [dict(book) for book in self._load_books(deadline, diagnostics)]
+        finally:
+            self._catalog_lock.release()
+
+    def _load_books(self, deadline=None, diagnostics=None):
+        """Read or refresh catalog state while the caller holds _catalog_lock."""
         if self._books is not None:
             return self._books
         books = []
@@ -156,6 +182,7 @@ class KiwixClient:
                                         error=str(exc) or type(exc).__name__))
             return []
         self._catalog_error = None
+        self._catalog_failure = None
         self._books = books
         self._catalog_checked = time.monotonic()
         return books
@@ -168,9 +195,7 @@ class KiwixClient:
         """
         if book_names == []:
             return []
-        books = self.books()
-        if self._catalog_error and diagnostics is not None:
-            diagnostics.append({"status": "catalog_error", "error": self._catalog_error})
+        books = self.books(diagnostics=diagnostics)
         if book_names is not None:
             selected = set(book_names)
             if diagnostics is not None:
@@ -229,6 +254,7 @@ class KiwixClient:
                                         archive_uuid=book.get('archive_uuid', ''), issued=book.get('issued', ''),
                                         served_name=served_name, native_rank=rank, queries=[query]))
             book['served_name'] = served_name
+            self._remember_served_name(book, served_name, deadline)
             return results, dict(diagnostic, served_name=served_name,
                                  status='success' if results else 'zero_hits', hits=len(results))
         except Exception as exc:
@@ -239,6 +265,19 @@ class KiwixClient:
             if isinstance(exc, urllib.error.HTTPError):
                 diagnostic['http_status'] = exc.code
             return [], diagnostic
+
+    def _remember_served_name(self, book, served_name, deadline):
+        """Publish legacy identity discovery only to the same catalog edition."""
+        timeout = -1 if deadline is None else max(0, deadline - time.monotonic())
+        if not self._catalog_lock.acquire(timeout=timeout):
+            return  # Cache population must not extend the retrieval deadline.
+        try:
+            identity = ('name', 'archive_uuid', 'issued', 'content_url', 'identity_error')
+            for current in self._books or []:
+                if not current.get('served_name') and all(current.get(key) == book.get(key) for key in identity):
+                    current['served_name'] = served_name
+        finally:
+            self._catalog_lock.release()
 
     def article_html(self, link, timeout=8, max_bytes=8 * 1024 * 1024, deadline=None):
         link = self.local_link(link)

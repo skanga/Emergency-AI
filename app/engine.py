@@ -46,7 +46,7 @@ class Engine:
             if force or time.time() - self._kiwix_checked > 15:
                 self._kiwix_ok = self.kiwix.available()
                 if self._kiwix_ok:
-                    self.kiwix._books = None
+                    self.kiwix.invalidate_catalog()
                 self._kiwix_checked = time.time()
             return self._kiwix_ok
 
@@ -337,7 +337,9 @@ class Engine:
                     chunks.append(tok)
             except (LLMError, OSError) as e:
                 generation.update(incomplete=True, finish_reason='error')
-                self._llm_checked = 0
+                with self._lock:
+                    if self._llm is llm:
+                        self._llm_checked = 0
                 failed = True
                 yield "token", i18n.LLM_ERROR[lang].format(err=str(e)[:120])
             if generation.get('incomplete'):
