@@ -300,10 +300,10 @@ class AssetTests(unittest.TestCase):
         archive=self.root/'bad.zip'
         with zipfile.ZipFile(archive,'w') as source:
             source.writestr('../escaped','bad')
-        with patch('app.downloads.extract') as extract:
+        with patch('app.downloads._archive_write') as write:
             with self.assertRaisesRegex(ValueError,'path'):
                 upgrade_assets._extract(archive,self.root/'staging')
-        extract.assert_not_called()
+        write.assert_not_called()
 
     def test_pdf_collection_blocks_without_download(self):
         self.record['component']='kiwix-data'

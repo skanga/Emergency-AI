@@ -100,17 +100,7 @@ def _extract(archive, destination, materialize_links=False):
             _materialize_tar(archive, sanitized)
             return _extract(sanitized, destination)
     from .downloads import extract
-    if zipfile.is_zipfile(archive):
-        with zipfile.ZipFile(archive) as source:
-            entries = [(m.filename, (m.external_attr >> 16) & 0o170000 == 0o120000) for m in source.infolist()]
-    else:
-        with tarfile.open(archive) as source:
-            entries = [(m.name, not (m.isfile() or m.isdir())) for m in source.getmembers()]
-    for name, unsafe in entries:
-        _path(destination,name.rstrip('/'))
-        if unsafe:
-            raise ValueError('Archive links and special files are unsupported')
-    extract(str(archive),str(destination))
+    extract(str(archive), str(destination), allow_links=False)
 
 
 def _binary(folder, name):

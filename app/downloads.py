@@ -223,52 +223,148 @@ def _download_urllib(url, part, retries):
     return False
 
 
-def extract(archive, dest):
+def _archive_name(name):
+    if not name or name.startswith('/') or any(c in name for c in ('\\', ':', '\0')):
+        raise ValueError('Invalid archive path: ' + name)
+    if '..' in name.split('/'):
+        raise ValueError('Archive path traverses parent: ' + name)
+    return posixpath.normpath(name)
+
+
+def _archive_path(destination, name):
+    """Reject existing symlinks before touching any destination member."""
+    name = _archive_name(name)
+    path = os.path.abspath(destination)
+    if os.path.islink(path):
+        raise ValueError('Archive destination is a symlink')
+    for part in name.split('/'):
+        path = os.path.join(path, part)
+        if os.path.islink(path):
+            raise ValueError('Archive path traverses a symlink: ' + name)
+    return path
+
+
+def _archive_write(source, path, mode):
+    # Replace rather than truncate: existing hard links must not alter outside files.
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix='.extract-', dir=os.path.dirname(path))
+    try:
+        with os.fdopen(fd, 'wb') as out:
+            shutil.copyfileobj(source, out, length=1024 * 1024)
+        os.chmod(temporary, mode)
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.remove(temporary)
+
+
+def _archive_link_target(member, members):
+    seen = set()
+    while member.issym() or member.islnk():
+        name = _archive_name(member.name)
+        if name in seen:
+            raise ValueError('Cyclic archive link: ' + name)
+        seen.add(name)
+        target = member.linkname
+        if not target or target.startswith('/') or any(c in target for c in ('\\', ':', '\0')):
+            raise ValueError('Invalid archive link target: ' + target)
+        if member.issym():
+            target = posixpath.join(posixpath.dirname(name), target)
+        target = _archive_name(posixpath.normpath(target))
+        if target not in members:
+            raise ValueError('Archive link target is missing: ' + target)
+        member = members[target]
+    return member
+
+
+def extract(archive, dest, allow_links=True):
+    """Validate the whole archive, then extract without version-dependent filters.
+
+    Callers must use a destination that is not concurrently modified by others.
+    Upgraders can reject TAR links; preparation preserves safe internal links.
+    """
+    archive, dest = os.fspath(archive), os.fspath(dest)
+    _archive_path(dest, '.')
     os.makedirs(dest, exist_ok=True)
-    zip_archive = archive.endswith(".zip")
-    if zip_archive:
-        with zipfile.ZipFile(archive) as z:
-            _check_space(dest, sum(m.file_size for m in z.infolist()), len(z.infolist()))
-            z.extractall(dest)
-            permission_files = [m.filename for m in z.infolist() if not m.is_dir()
-                                and not stat.S_ISLNK(m.external_attr >> 16)]
-    else:
-        with tarfile.open(archive) as t:
-            members = t.getmembers()
-            permission_files = [m.name for m in members if m.isfile()]
-            # Linux Python includes case-only terminfo aliases. On Windows these
-            # symlinks can point back to themselves; copy their archived contents
-            # instead, also avoiding the need for Windows symlink privileges.
-            links = [m for m in members if m.issym() or m.islnk()] if os.name == "nt" else []
-            ordinary = [m for m in members if not (m.issym() or m.islnk())] if links else members
-            sizes = {os.path.normcase(os.path.normpath(m.name)): m.size for m in members if m.isfile()}
-            for member in links:
-                target = _tar_link_target(t, member)
-                sizes[os.path.normcase(os.path.normpath(member.name))] = target.size
-            _check_space(dest, sum(sizes.values()), len(members))
-            try:
-                t.extractall(dest, members=ordinary, filter="data")
-            except TypeError:
-                t.extractall(dest, members=ordinary)
-            for member in links:
-                if hasattr(tarfile, "data_filter"):
-                    tarfile.data_filter(member, dest)
-                path = os.path.realpath(os.path.join(dest, member.name))
-                base = os.path.realpath(dest)
-                if os.path.commonpath([base, path]) != base:
-                    raise ValueError("Archive link escapes destination: " + member.name)
-                # Resolve using case-sensitive archive names. All ordinary files
-                # are already extracted, so copying avoids repeatedly seeking
-                # backwards through a large gzip archive for each alias.
-                target = _tar_link_target(t, member)
-                source = os.path.realpath(os.path.join(dest, target.name))
-                if os.path.commonpath([base, source]) != base:
-                    raise ValueError("Archive link target escapes destination: " + member.name)
-                if os.path.normcase(source) != os.path.normcase(path):
-                    os.makedirs(os.path.dirname(path), exist_ok=True)
-                    shutil.copy2(source, path)
-    if os.name != "nt":
-        _restore_permissions(dest, permission_files, zip_archive)
+    allowed = _creation_permissions(dest) if os.name != 'nt' else 0o777
+    if zipfile.is_zipfile(archive):
+        with zipfile.ZipFile(archive) as source:
+            members = source.infolist()
+            seen = set()
+            for member in members:
+                name = _archive_name(member.filename)
+                _archive_path(dest, name)
+                kind = stat.S_IFMT(member.external_attr >> 16)
+                if kind not in (0, stat.S_IFREG, stat.S_IFDIR):
+                    raise ValueError('Archive links and special files are unsupported')
+                if name in seen or (name == '.' and not member.is_dir()):
+                    raise ValueError('Duplicate or invalid archive path: ' + name)
+                seen.add(name)
+            _check_space(dest, sum(m.file_size for m in members), len(members))
+            for member in members:
+                path = _archive_path(dest, member.filename)
+                if member.is_dir():
+                    os.makedirs(path, exist_ok=True)
+                else:
+                    filename = os.path.basename(path)
+                    executable = filename in _ZIP_EXECUTABLES or re.fullmatch(r'python3\.\d+', filename)
+                    mode = (0o755 if executable else 0o666) & allowed
+                    with source.open(member) as stream:
+                        _archive_write(stream, path, mode)
+        return
+    with tarfile.open(archive) as source:
+        members = source.getmembers()
+        by_name = {}
+        for member in members:
+            name = _archive_name(member.name)
+            _archive_path(dest, name)
+            if name in by_name or (name == '.' and not member.isdir()):
+                raise ValueError('Duplicate or invalid archive path: ' + name)
+            if not (member.isfile() or member.isdir() or
+                    (allow_links and (member.issym() or member.islnk()))):
+                raise ValueError('Archive links and special files are unsupported')
+            by_name[name] = member
+        links = [m for m in members if m.issym() or m.islnk()]
+        targets = {_archive_name(m.name): _archive_link_target(m, by_name) for m in links}
+        for name in by_name:
+            parent = posixpath.dirname(name)
+            while parent:
+                if parent in by_name and not by_name[parent].isdir():
+                    raise ValueError('Archive parent is not a directory: ' + parent)
+                parent = posixpath.dirname(parent)
+        for member in links:
+            target = targets[_archive_name(member.name)]
+            if not target.isfile() and (member.islnk() or os.name == 'nt'):
+                raise ValueError('Archive directory links require manual installation')
+        size = sum(m.size for m in members if m.isfile())
+        if os.name == 'nt':
+            size += sum(m.size for m in targets.values())
+        _check_space(dest, size, len(members))
+        # Regular files first: forward links are valid and need no gzip rewinds.
+        for member in members:
+            path = _archive_path(dest, member.name)
+            if member.isdir():
+                os.makedirs(path, exist_ok=True)
+            elif member.isfile():
+                with source.extractfile(member) as stream:
+                    _archive_write(stream, path, member.mode & 0o777 & allowed)
+        for member in links:
+            path = _archive_path(dest, member.name)
+            target = targets[_archive_name(member.name)]
+            target_path = _archive_path(dest, target.name)
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            if os.name == 'nt':
+                # Case-only terminfo aliases already refer to the extracted file.
+                if os.path.normcase(path) != os.path.normcase(target_path):
+                    with open(target_path, 'rb') as stream:
+                        _archive_write(stream, path, target.mode & 0o777 & allowed)
+            else:
+                if os.path.exists(path):
+                    os.remove(path)
+                if member.issym():
+                    os.symlink(os.path.relpath(target_path, os.path.dirname(path)), path)
+                else:
+                    os.link(target_path, path)
 
 
 _ZIP_EXECUTABLES = frozenset({
@@ -287,39 +383,3 @@ def _creation_permissions(destination):
             return stat.S_IMODE(os.fstat(fd).st_mode) & 0o777
         finally:
             os.close(fd)
-
-
-def _restore_permissions(destination, members, zip_archive):
-    allowed = _creation_permissions(destination)
-    base = os.path.realpath(destination)
-    for name in members:
-        path = os.path.abspath(os.path.join(base, name))
-        # Skip links in any path component, not just the final filename.
-        if os.path.commonpath([base, path]) != base or os.path.realpath(path) != path:
-            continue
-        if not stat.S_ISREG(os.lstat(path).st_mode):
-            continue
-        fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
-        try:
-            mode = stat.S_IMODE(os.fstat(fd).st_mode) & 0o777
-            filename = os.path.basename(path)
-            if zip_archive and (filename in _ZIP_EXECUTABLES or re.fullmatch(r"python3\.\d+", filename)):
-                mode = 0o755
-            os.fchmod(fd, mode & allowed)
-        finally:
-            os.close(fd)
-
-
-def _tar_link_target(archive, member):
-    seen = set()
-    while member.issym() or member.islnk():
-        if member.name in seen:
-            raise ValueError("Cyclic archive link: " + member.name)
-        seen.add(member.name)
-        name = member.linkname
-        if member.issym():
-            name = posixpath.join(posixpath.dirname(member.name), name)
-        member = archive.getmember(posixpath.normpath(name))
-    return member
-
-
