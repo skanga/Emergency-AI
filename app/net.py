@@ -13,7 +13,7 @@ _LOCAL_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 
 def _is_local(url):
-    return any(h in url for h in ("://127.0.0.1", "://localhost", "://[::1]", "://0.0.0.0"))
+    return urllib.parse.urlsplit(url).hostname in ("127.0.0.1", "localhost", "::1", "0.0.0.0")
 
 
 class SameOriginRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -50,8 +50,11 @@ class ResponseTooLarge(ValueError):
 
 
 def _read_response(response, max_bytes, deadline):
-    length = response.headers.get('Content-Length')
-    if length and int(length) > max_bytes:
+    try:
+        length = int(response.headers.get('Content-Length', ''))
+    except ValueError:
+        length = None
+    if length is not None and length > max_bytes:
         raise ResponseTooLarge(f'Response exceeds {max_bytes} bytes')
     chunks, total = [], 0
     while True:
