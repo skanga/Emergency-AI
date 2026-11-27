@@ -7,25 +7,23 @@ from dataclasses import dataclass
 import hashlib
 import re
 
-from .query_planner import normalize, _consciousness, _age
-from .patient_facts import _breathing, _facts, _UNSAFE_SWALLOW, _SWALLOW as SWALLOW_PATTERN, cpr_prerequisite_scope
+from .query_planner import normalize, _age
+from .patient_facts import _facts
+from .safety_patterns import (
+    _CITATION as _CITE, _CLAIM_NEGATIVE as _NEGATIVE, _negative_action, _SWALLOW, _UNSAFE_SWALLOW, _NOT_AWAKE,
+    _breathing, _consciousness, _negative_swallow, _source_conditions, _swallowing,
+)
 from .claim_links import repeated_instruction
 from .action_patterns import WATER_INTAKE
 from .explanation_validation import check_explanations, relations
 from .compression_claims import PATTERN as COMPRESSION_PATTERN, positive_swelling, restrictions_preserved
 from .transport_claims import PATTERN as TRANSPORT_PATTERN, methods as transport_methods, negative_at as transport_negative
 
-_CITE = re.compile(r'\[S([1-9][0-9]*)\]')
-_NEGATIVE = re.compile(r'\b(?:do not|don t|never|avoid|must not|should not|cannot|can t|nao|nunca|evite|no|evitar|nem|ni|nor)\s+(?:(?:attempt to|try to|tente|intente|intentes|intenten)\s+)?$')
 _FIRMLY = r'\b(?:firmly|tightly|strongly|firmemente|fortemente|fuertemente)\b'
 _STUCK = r'\b(?:stuck|adher\w*|grudad\w*|pegad\w*)\b'
 _EXCEPT = r'\b(?:except|unless|leave|only if not|do not|don t|not remove|but not|nao|no|exceto|salvo|deixe|deje)\b'
-_UNRESPONSIVE = r'\b(?:unresponsive|unconscious|inconsciente|nao responde|no responde)\b'
-_ABNORMAL = r'\b(?:not breathing(?: normally)?|no breathing(?! (?:trouble|difficulty|problems?))|only gasping|nao respir\w*|no respir\w*)\b'
-_SWALLOW = SWALLOW_PATTERN.pattern
 _SAFE = r'\b(?:if safe|if it is safe|only if safe|se for seguro|se for seguro faze lo|si es seguro)\b'
 _DEVICE = r'\b(?:epipen|jext|auvi q|anapen|emerade)\b'
-_NOT_AWAKE = r'\b(?:not|nao|no) (?:awake|conscious|responsive|alert|acordad[oa]|consciente|despiert[oa])\b'
 _TOURNIQUET = r'\b(?:tourniquets?|torniquetes?|garrotes?|tight (?:arterial )?bands?|faixas? apertadas?|bandas? apretadas?|ligaduras? (?:arterial(?:es)? )?apretadas?)\b'
 
 
@@ -111,7 +109,7 @@ def _polarity(rule, text, match):
             r'\b(?:not|cannot|can t|won t|never|nao|no|nunca|incapaz)\b'
             r'.{0,35}\b(?:make|made|remove|remov\w*|torn\w*|vuelv\w*|elimin\w*|safe|segur\w*)\b', clause)
         return not (direct_prohibition or unsafe_result)
-    return not bool(_NEGATIVE.search(text[:match.start()]))
+    return not _negative_action(text, match, pattern=_NEGATIVE)
 
 
 def _tourniquet_predicate(text, match):
@@ -136,10 +134,6 @@ def _tourniquet_warning(text, match):
     if any(subject == 'tourniquet' for subject, _, _ in relations(text)):
         return True
     return _has(r'^(?: above the bite)? (?:is dangerous|are dangerous|es contraproducente y peligroso|can (?:cause|restrict)|pode causar|puede (?:causar|danar))\b', after)
-
-
-def _negative_swallow(text):
-    return _has(r'\b(?:not|never|nao|no|nunca) (?:able to swallow|can swallow|consegue engolir|capaz de engolir|puede tragar|capaz de tragar)\b|\b(?:cannot swallow|unable to swallow|can t swallow)\b', text)
 
 
 def _negative_prerequisite(text):
@@ -255,25 +249,6 @@ def _condition_issue(name, text, question, positive=True):
     return None
 
 
-def _source_conditions(name, text):
-    """Evidence for CPR/oral therapy must carry prerequisites, not just a verb."""
-    if name == 'cpr':
-        text = cpr_prerequisite_scope(text)
-        state, breath = re.search(_UNRESPONSIVE, text), re.search(_ABNORMAL, text)
-        if not state or not breath or _has(r'\b(?:not|never|nao|no|nunca)\s+' + _UNRESPONSIVE, text):
-            return False
-        between = text[min(state.end(), breath.end()):max(state.start(), breath.start())]
-        return not _has(r'\b(?:or|ou|o)\b', between)
-    if name in ('oral', 'oral_adjunct'):
-        state = re.search(r'\b(?:awake|conscious|responsive|alert|acordad[oa]|consciente|despiert[oa])\b', text)
-        swallow = re.search(_SWALLOW, text)
-        if not state or not swallow or _consciousness(text) != 'responsive' or _has(_NOT_AWAKE, text) or _negative_swallow(text) or _UNSAFE_SWALLOW.search(text):
-            return False
-        between = text[min(state.end(), swallow.end()):max(state.start(), swallow.start())]
-        return not _has(r'\b(?:or|ou|o)\b', between)
-    return True
-
-
 def _oral_objects(text):
     groups = {
         'water':r'\b(?:water|agua)\b',
@@ -282,14 +257,6 @@ def _oral_objects(text):
         'antihistamine':r'\b(?:antihistamine\w*|antihistaminico\w*)\b',
     }
     return {name for name, pattern in groups.items() if _has(pattern, text)}
-
-
-def _swallowing(text):
-    if _negative_swallow(text) or _UNSAFE_SWALLOW.search(text):
-        return 'unsafe'
-    if _has(_SWALLOW, text):
-        return 'safe'
-    return None
 
 
 def _claim_text(text, name):

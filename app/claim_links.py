@@ -3,7 +3,7 @@ import re
 
 from .query_planner import normalize
 
-CITATION = re.compile(r'\[S([1-9][0-9]*)\]')
+from .safety_patterns import _CITATION as CITATION
 _OBJECT = (r'(?:(?:a|an|the|um|un|una|o|el) )?(?:(?:tight|arterial) )*'
            r'(?:tourniquets?|torniquetes?|garrotes?|tight band(?:s|ages?)?|faixas? apertadas?|bandas? apretadas?)')
 _BAN = re.compile(

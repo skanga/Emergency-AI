@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from .config import ROOT
-from .prepare import download
+from .downloads import download
 
 CATALOG = Path(__file__).resolve().parent.parent / 'config/authority-documents.json'
 

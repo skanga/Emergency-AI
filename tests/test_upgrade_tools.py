@@ -34,7 +34,7 @@ class ToolTests(unittest.TestCase):
 
     def test_adopt_verifies_installed_tool_bytes_and_records_owned_files(self):
         api=self.api()
-        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool') as health:
+        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.downloads.download',side_effect=self.download),patch.object(api,'verify_tool') as health:
             record=api.adopt_tool(self.root,'kiwix-tools')
         self.assertEqual(record['path'],self.relative)
         self.assertEqual(record['verification'],'project-pinned-sha256')
@@ -46,7 +46,7 @@ class ToolTests(unittest.TestCase):
 
     def test_unknown_or_extra_installed_files_block_adoption(self):
         api=self.api();(self.folder/'custom').write_bytes(b'personal')
-        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool') as health:
+        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.downloads.download',side_effect=self.download),patch.object(api,'verify_tool') as health:
             with self.assertRaisesRegex(ValueError,'differ'):api.adopt_tool(self.root,'kiwix-tools')
         health.assert_not_called()
 
@@ -133,7 +133,7 @@ class ToolTests(unittest.TestCase):
         from app import upgrade_assets
         from upgrade_recovery import rollback
         api=self.api()
-        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool'):
+        with patch.object(api,'catalog',return_value=self.entry),patch.object(api,'platform_key',return_value=platform_key()),patch('app.downloads.download',side_effect=self.download),patch.object(api,'verify_tool'):
             installed=api.adopt_tool(self.root,'kiwix-tools')
         manifest=self.root/'runtime/installation.json';manifest.write_text(json.dumps({'components':{'kiwix-tools':installed}}))
         payload=io.BytesIO()
@@ -142,7 +142,7 @@ class ToolTests(unittest.TestCase):
             archive.addfile(item,io.BytesIO(b'new binary'))
         self.payload=payload.getvalue()
         candidate=dict(self.entry,version='2.0',root='release2',asset='release2.tar.gz',size=len(self.payload),sha256=hashlib.sha256(self.payload).hexdigest())
-        with patch('app.prepare.download',side_effect=self.download),patch.object(api,'verify_tool'),patch.object(upgrade_assets,'verify_runtime'):
+        with patch('app.downloads.download',side_effect=self.download),patch.object(api,'verify_tool'),patch.object(upgrade_assets,'verify_runtime'):
             transaction=upgrade_assets.upgrade(self.root,{'component':'kiwix-tools','status':'available','installed':installed,'candidate':candidate})
         updated=json.loads(manifest.read_text())['components']['kiwix-tools']
         api.verify_installed(self.root,updated)

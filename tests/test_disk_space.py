@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 import zipfile
 
-from app import prepare
+from app import downloads as prepare
 
 
 class DiskSpaceTests(unittest.TestCase):

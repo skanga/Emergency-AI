@@ -124,7 +124,7 @@ class NativeRuntimeUpgradeTests(unittest.TestCase):
 
             # Repeated transport alone is cached. All archive handling, integrity,
             # capability checks, activation and rollback execute production code.
-            with patch('app.prepare.download', side_effect=cached_download):
+            with patch('app.downloads.download', side_effect=cached_download):
                 transaction = upgrade_assets.upgrade(root, {
                     'component': component, 'status': 'available',
                     'installed': installed, 'candidate': candidate,

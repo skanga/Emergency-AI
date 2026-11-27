@@ -20,7 +20,7 @@ class AdoptionTests(unittest.TestCase):
         (self.root/'config/models.json').write_text(json.dumps({'models':[self.model]}))
 
     def test_verified_model_adoption_and_manifest_rollback(self):
-        with patch('app.prepare.download') as download:
+        with patch('app.downloads.download') as download:
             result=upgrade_inventory.adopt(self.root,['model'])
         download.assert_not_called()
         self.assertEqual(result['unknown'],[])
@@ -57,7 +57,7 @@ class AdoptionTests(unittest.TestCase):
 
     def test_exact_zim_edition_adopted_without_asset_download(self):
         name,xml,meta=self.zim()
-        with patch('app.upgrade_inventory._text',side_effect=lambda u,t:meta if u.endswith('.meta4') else xml), patch('app.prepare._zim_checksum_valid',return_value=True),patch('app.prepare.download') as download:
+        with patch('app.upgrade_inventory._text',side_effect=lambda u,t:meta if u.endswith('.meta4') else xml), patch('app.downloads._zim_checksum_valid',return_value=True),patch('app.downloads.download') as download:
             result=upgrade_inventory.adopt(self.root,['kiwix-data'])
         download.assert_not_called()
         self.assertEqual(result['unknown'],[])
@@ -81,7 +81,7 @@ class AdoptionTests(unittest.TestCase):
     def test_official_load_balancer_metalink_is_verified(self):
         name,xml,meta=self.zim()
         xml=xml.replace('download.kiwix.org','lb.download.kiwix.org')
-        with patch('app.upgrade_inventory._text',side_effect=lambda u,t:meta if u.endswith('.meta4') else xml) as fetch, patch('app.prepare._zim_checksum_valid',return_value=True):
+        with patch('app.upgrade_inventory._text',side_effect=lambda u,t:meta if u.endswith('.meta4') else xml) as fetch, patch('app.downloads._zim_checksum_valid',return_value=True):
             result=upgrade_inventory.adopt(self.root,['kiwix-data'])
         self.assertEqual(result['unknown'],[])
         self.assertEqual(len(result['adopted']),1)

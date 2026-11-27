@@ -19,7 +19,7 @@ _EFFECTS = {
 _WARNINGS = {'vomiting': r'\b(?:vomiting|vomitos)\b',
              'sweating': r'\b(?:sweating|sudor|suor|sudorese)\b',
              'agitation': r'\b(?:agitation|agitacao|agitacion)\b'}
-_CITE = re.compile(r'\[S([1-9][0-9]*)\]')
+from .safety_patterns import _CITATION as _CITE
 
 
 def subjects(text):

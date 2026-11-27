@@ -61,7 +61,7 @@ class NativeToolUpgradeTests(unittest.TestCase):
 
             # Only transport is cached. Integrity, executable checks and transactions
             # remain real, including post-activation checks and offline rollback.
-            with patch('app.prepare.download', side_effect=cached_download):
+            with patch('app.downloads.download', side_effect=cached_download):
                 installed = upgrade_tools.adopt_tool(root, component)
                 manifest = root/'runtime/installation.json'
                 manifest.write_text(json.dumps({'schema_version': 1, 'components': {component: installed}}), encoding='utf-8')
