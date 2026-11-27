@@ -10,7 +10,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: ['3.11', '3.14']
+        exclude:
+          - os: macos-latest
+            python: '3.11'
         include:
+          # Keep native ARM rollback coverage off the capacity-constrained
+          # macOS 26 pool; Python 3.14 still covers macos-latest.
+          - os: macos-15
+            python: '3.11'
           - os: ubuntu-24.04-arm
             python: '3.11'
           - os: macos-15-intel
