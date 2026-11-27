@@ -4,6 +4,7 @@ import json
 import mimetypes
 import os
 import threading
+import urllib.error
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from socketserver import TCPServer
@@ -17,6 +18,7 @@ mimetypes.add_type("text/css", ".css")
 mimetypes.add_type("image/svg+xml", ".svg")
 
 MAX_BODY = 64 * 1024
+KIWIX_PATHS = ("content", "skin", "raw", "viewer", "viewer_settings.js", "search", "suggest", "catalog", "catch", "random")
 
 
 class BoundedHTTPServer(ThreadingHTTPServer):
@@ -80,7 +82,8 @@ def make_handler(engine, settings, models=None):
             for k, v in (extra or {}).items():
                 self.send_header(k, v)
             self.end_headers()
-            self.wfile.write(body)
+            if self.command != "HEAD":
+                self.wfile.write(body)
 
         def _query(self):
             parsed = urllib.parse.urlparse(self.path)
@@ -91,6 +94,9 @@ def make_handler(engine, settings, models=None):
             return lang if lang in LANGS else "en"
 
         # ---------- GET ----------
+        def do_HEAD(self):
+            self.do_GET()
+
         def do_GET(self):
             path, q = self._query()
             try:
@@ -122,7 +128,7 @@ def make_handler(engine, settings, models=None):
                 if path.startswith("/kiwix/"):
                     return self._proxy_kiwix(path[len("/kiwix"):], urllib.parse.urlparse(self.path).query)
                 # Kiwix HTML uses root-relative links for articles, scripts and styles.
-                if path.split("/", 2)[1] in ("content", "skin", "raw", "viewer", "search", "suggest", "catalog", "catch", "random"):
+                if path.split("/", 2)[1] in KIWIX_PATHS:
                     return self._proxy_kiwix(path, urllib.parse.urlparse(self.path).query)
                 return self._static(path)
             except BrokenPipeError:
@@ -150,15 +156,73 @@ def make_handler(engine, settings, models=None):
                 self._send(200, f.read(), ctype)
 
         def _proxy_kiwix(self, subpath, query):
-            """Allow Kiwix articles to open when another device on the network accesses the UI."""
+            """Stream Kiwix on the app origin, preserving interactive archive behavior.
+
+            Archive scripts remain trusted by design: blocking or sandboxing them
+            would break functionality. Do not add a script-blocking CSP here.
+            """
             url = engine.kiwix.base_url + subpath + ("?" + query if query else "")
+            request_headers = {name: self.headers[name] for name in (
+                "Range", "If-Range", "If-None-Match", "If-Modified-Since", "Accept", "Accept-Language"
+            ) if name in self.headers}
+            started = False
             try:
-                with open_url(url, timeout=15) as r:
-                    body = r.read()
-                    ctype = r.headers.get("Content-Type", "text/html")
-                    self._send(r.status, body, ctype)
-            except Exception as e:
-                self._send(502, {"error": "kiwix: " + str(e)})
+                try:
+                    upstream = open_url(url, timeout=15, headers=request_headers,
+                                        method=self.command, allowed_origin=engine.kiwix.base_url,
+                                        follow_redirects=False)
+                except urllib.error.HTTPError as error:
+                    upstream = error  # HTTP errors have a status, headers and a readable body.
+                with upstream as response:
+                    location = None
+                    if response.status in (301, 302, 303, 307, 308) and response.headers.get("Location"):
+                        target = urllib.parse.urlsplit(urllib.parse.urljoin(url, response.headers["Location"]))
+                        base = urllib.parse.urlsplit(engine.kiwix.base_url)
+                        prefix = base.path.rstrip("/")
+                        if ((target.scheme, target.netloc) != (base.scheme, base.netloc)
+                                or (prefix and target.path != prefix and not target.path.startswith(prefix + "/"))):
+                            raise ValueError("Redirect is outside the configured Kiwix service")
+                        path = target.path[len(prefix):] or "/"
+                        browser_path = path if path.split("/", 2)[1] in KIWIX_PATHS else "/kiwix" + path
+                        location = urllib.parse.urlunsplit(("", "", browser_path, target.query, target.fragment))
+                    started = True
+                    self.send_response(response.status)
+                    self.send_header("Content-Type", response.headers.get("Content-Type", "text/html"))
+                    self.send_header("Cache-Control", "no-store")
+                    self.send_header("X-Content-Type-Options", "nosniff")
+                    self.send_header("Connection", "close")
+                    if location is not None:
+                        self.send_header("Location", location)
+                    # urllib decodes transfer framing, but not Content-Encoding.
+                    # Forward representation/range headers, never hop-by-hop headers.
+                    for name in ("Content-Encoding", "Content-Range", "Accept-Ranges", "ETag",
+                                 "Last-Modified", "Content-Disposition", "Retry-After", "Vary"):
+                        value = response.headers.get(name)
+                        if value is not None:
+                            self.send_header(name, value)
+                    length = response.headers.get("Content-Length", "")
+                    if length.isascii() and length.isdecimal():
+                        self.send_header("Content-Length", length)
+                    self.close_connection = True
+                    self.end_headers()
+                    if self.command == "HEAD" or response.status in (204, 304):
+                        return
+                    reader = getattr(response, "read1", None) or response.read
+                    while True:
+                        chunk = reader(64 * 1024)
+                        if not chunk:
+                            break
+                        self.wfile.write(chunk)
+            except (BrokenPipeError, ConnectionResetError):
+                self.close_connection = True
+            except Exception as error:
+                if started:
+                    # Once headers are sent, terminate a broken stream instead of
+                    # appending a second HTTP response to a PDF, image or video.
+                    self.close_connection = True
+                else:
+                    self._send(502, {"error": "kiwix: " + str(error)},
+                               extra={"X-Content-Type-Options": "nosniff"})
 
         # ---------- POST ----------
         def do_POST(self):

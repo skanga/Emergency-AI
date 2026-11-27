@@ -106,7 +106,7 @@ class HTTPBoundaryTests(unittest.TestCase):
 
     def test_kiwix_root_relative_article_resources_are_proxied(self):
         self.engine.kiwix.base_url = "http://127.0.0.1:8092"
-        for path in ("/content/book/image.png", "/skin/style.css", "/viewer", "/search?pattern=water"):
+        for path in ("/content/book/image.png", "/skin/style.css", "/viewer", "/viewer_settings.js", "/search?pattern=water"):
             response = io.BytesIO(b"kiwix resource")
             response.status = 200
             response.headers = {"Content-Type": "text/plain"}

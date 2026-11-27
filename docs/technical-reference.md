@@ -266,3 +266,10 @@ python3 emergency.py diagnose-retrieval --libraries wikipedia_en_medicine --outp
 Diagnostics do not start or query the generator for an answer. Default output goes to the terminal; saving potentially private prompt text requires `--output`. The manual evaluator can separately use read-only backend token accounting.
 
 The repair branch can be tested on an isolated port with `llm_backend=none`. Keep the previous code and local settings for rollback. Old application versions ignore generated indexes and the additive catalog configuration field; HTML browsing and guide-only operation do not depend on the PDF tools. Do not remove archives, local settings or knowledge files to roll back. Deployment remains gated on the retrieval and answer-review results in the implementation evaluation report.
+
+
+### Kiwix browser proxy
+
+Kiwix articles, scripts, styles, search and media use the app's existing hostname and port. No extra hostname, listener or firewall rule is required. The proxy keeps scripts enabled and does not apply a sandbox or script-blocking Content Security Policy. This intentionally prioritizes offline functionality: scripts in opened ZIM content share the app's origin and can access its browser storage and APIs, including indexed extra documents. Archive content is therefore trusted, not isolated.
+
+The proxy returns canonical redirects to the browser using app-local Kiwix paths, so relative article assets resolve correctly. Redirects outside the configured Kiwix origin are rejected. It streams responses in 64 KiB chunks with a 15-second socket inactivity timeout, without buffering whole files or imposing a total file-size limit. HEAD, range requests, representation headers, conditional requests and upstream HTTP error statuses are preserved. Responses include `X-Content-Type-Options: nosniff`; archives must supply correct script and stylesheet MIME types. A failure after response headers closes the stream rather than appending an error document to the media body.
