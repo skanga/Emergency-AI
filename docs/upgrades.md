@@ -86,7 +86,7 @@ cd /path/to/existing-kit
 ./run.sh
 ```
 
-No `--baseline`, new migration, or first-time setup is needed. If the app is already current, the updater leaves it unchanged. Keep the transaction ID and validate startup, guides, search, model and libraries before accepting the update. See [the completed merged-release installation and rollback validation](reviews/2026-11-25-standalone-release-validation.md) for a tested example.
+No `--baseline`, new migration, or first-time setup is needed. If the app is already current, the updater leaves it unchanged. Keep the transaction ID and validate startup, guides, search, model and libraries before accepting the update. Use the [backup and recovery procedure](#backups-and-recovery) if validation fails.
 
 ### Legacy installation without an app baseline
 
@@ -205,19 +205,9 @@ PDF/document collections with indexes require a manual staged migration: preserv
 
 ## Verification after any change
 
-Start the app, open local guides, verify the selected model and archive editions, and ask representative questions. Record the component identities with the results. Run the existing manual retrieval checks and saved emergency-advice replay when available. The durable versioned advice evaluation remains a separate work item; transaction journals explicitly record **advice_evaluation: not_run**.
+Start the app, open local guides, verify the selected model and archive editions, and ask representative questions. Record the component identities with the results. Run the existing manual retrieval checks and saved emergency-advice replay when available. Run the [versioned answer-quality evaluation](../tests/evals/emergency_advice/README.md) from a Git checkout; it is excluded from installation archives. Transaction journals explicitly record **advice_evaluation: not_run** until a separate evaluation is performed.
 
 Successful downloads, checksums, startup and one-token generation establish operational checks only. They do not establish that emergency answers improved. Keep the previous state until you have compared usefulness, withholding, source applicability, citations and action conditions.
-
-## Completed release validation
-
-The upgrade implementation was merged into `main` at `d22579a`. All nine native CI jobs passed for that exact commit, including the supported native activation/rollback integration jobs. The standalone installation was then upgraded from `ff7055b`, checked, rolled back with exact restoration of 9,621 recorded paths, and upgraded again. Final checks covered guides/search in three languages, all three installed llama backends, Python, Xpdf and all ten ZIM archives. Local knowledge, configuration, model weights and indexes were preserved.
-
-- [Cross-platform verification and remaining platform limits](reviews/2026-11-25-upgrades-cross-platform.md)
-- [Standalone release validation, retained backups and exact recovery command](reviews/2026-11-25-standalone-release-validation.md)
-
-These are historical validation records for a specific release and installation, not a claim that future candidates or every supported host have passed advice-quality evaluation. Xpdf remains the production PDF extractor; experimental extraction/layout validation is not enabled.
-
 
 ## Cross-platform regression checks
 
@@ -225,4 +215,4 @@ The ordinary suite runs on native Ubuntu x86_64, Windows x86_64 and Apple Silico
 
 The native integration tests download verified artifacts into disposable temporary installations. They exercise capability checks, adoption, activation and exact offline rollback; they never target the installed kit. Enable them with `EMERGENCY_NATIVE_TOOL_TESTS=1` and run `python -m unittest tests.test_native_tool_upgrades tests.test_native_runtime_upgrades -v`. On PowerShell set `$env:EMERGENCY_NATIVE_TOOL_TESTS='1'` first; on Command Prompt use `set EMERGENCY_NATIVE_TOOL_TESTS=1`.
 
-The runtime tests use test-only pinned publisher metadata for llama b12751 and Python 20261124, so CI does not consume GitHub metadata API quota or silently change its test releases. Artifact downloads still require HTTPS and the recorded size/SHA-256. These tests reinstall the same selected distribution, forcing primary executable replacement through a read-only attribute change and checking complete byte/permission restoration. They do not establish compatibility with every historical release, GPU driver, local model or archive. Missing native packages remain manual, and advice quality evaluation is separate. See the cross-platform review for actual native execution results.
+The runtime tests use test-only pinned publisher metadata for llama b12751 and Python 20261124, so CI does not consume GitHub metadata API quota or silently change its test releases. Artifact downloads still require HTTPS and the recorded size/SHA-256. These tests reinstall the same selected distribution, forcing primary executable replacement through a read-only attribute change and checking complete byte/permission restoration. They do not establish compatibility with every historical release, GPU driver, local model or archive. Missing native packages remain manual, and advice quality evaluation is separate. See the repository’s [Tests workflow](https://github.com/skanga/Emergency-AI/actions/workflows/tests.yml) for native execution results. Xpdf remains the production PDF extractor; experimental extraction/layout validation is not enabled.

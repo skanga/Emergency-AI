@@ -6,7 +6,7 @@ The [completed advice replay](2026-11-25-emergency-advice-rerun.md) exposed a we
 
 This is not one Kiwix bug, nor evidence that built-in knowledge was deleted. Some observed failures are newly introduced answer regressions, some existed before, and some vary between generations. A blanket return to local-only retrieval would hide useful library evidence and leave the local-guide and generation failures intact.
 
-The two requested follow-ups are recorded in [follow-up work](2026-11-25-follow-up-work.md): an on-demand versioned advice eval, and separate upgrade workflows for application installations, models, external runtimes/drivers and external data.
+The two requested follow-ups are now implemented: the [versioned advice eval](../../tests/evals/emergency_advice/README.md) and [component upgrade procedures](../upgrades.md). The historical regression findings below are not a current quality-pass claim.
 
 ## Evidence and method
 

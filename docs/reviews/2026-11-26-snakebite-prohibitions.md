@@ -65,8 +65,8 @@ Next work: add evaluation-only capture of rejected synthetic-test drafts (outsid
 
 ## Rejected-draft inspection follow-up
 
-[Inspection complete](2026-11-26-snakebite-draft-inspection.md) for ten new diagnostic samples: seven blocked, three released. It found both correct safety rejections and parsing false positives. The original eight hidden drafts remain unrecoverable. No validator behavior changed during inspection; fixes and renewed quality screening remain open.
+[Inspection complete](../../tests/evals/emergency_advice/baselines/snakebite-2026-11-26/draft-inspection-review.json) for ten new diagnostic samples: seven blocked, three released. It found both correct safety rejections and parsing false positives. The original eight hidden drafts remain unrecoverable. No validator behavior changed during inspection; fixes and renewed quality screening remain open.
 
 ## Prohibition-parser follow-up
 
-[Steps 1–2 implemented](2026-11-26-snakebite-draft-inspection.md#implemented-follow-up-steps-12): negative grammar and warning classification were corrected after the diagnostic inspection. Exact replay removes one unnecessary rejection while retaining the three substantive safety failures. The updated suite passes 772 tests with 20 skips. Earlier model runs remain historical evidence for the prior implementation; fresh model-backed screening of this follow-up remains open.
+[Steps 1–2 replay](../../tests/evals/emergency_advice/baselines/snakebite-2026-11-26/prohibition-parsing-replay.json): negative grammar and warning classification were corrected after the diagnostic inspection. Exact replay removes one unnecessary rejection while retaining the three substantive safety failures. The updated suite passes 772 tests with 20 skips. Earlier model runs remain historical evidence for the prior implementation; fresh model-backed screening of this follow-up remains open.
