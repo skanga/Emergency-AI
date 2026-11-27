@@ -36,3 +36,15 @@ def _facts(plan):
     return facts
 
 
+
+def cpr_prerequisite_scope(text):
+    """A directly attached 'CPR only if' is mandatory; another action cannot lend it."""
+    for original,replacement in (
+        ('nao responder','nao responde'), ('no responda','no responde'),
+        ('nao tiver respiracao normal','nao respira normalmente'),
+        ('no tenga respiracion normal','no respira normalmente'),
+    ):
+        text=re.sub(r'\b'+original+r'\b',replacement,text)
+    attached=re.search(r'\b(?:cpr|rcp)(?: reanimacao cardiopulmonar| reanimacion cardiopulmonar)? '
+                       r'(?:only if|apenas se|somente se|solo si)\b',text)
+    return 'if '+text[attached.end():].strip() if attached else text

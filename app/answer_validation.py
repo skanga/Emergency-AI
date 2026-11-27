@@ -9,7 +9,7 @@ from .applicability import inapplicability_reason
 from .claim_validation import check_claims
 from .claim_links import insert_linked_citations
 from .action_patterns import WATER_INTAKE
-from .patient_facts import _breathing, _facts, _ABNORMAL, _SWALLOW, _UNSAFE_SWALLOW, _CONDITIONAL
+from .patient_facts import _breathing, _facts, _ABNORMAL, _SWALLOW, _UNSAFE_SWALLOW, _CONDITIONAL, cpr_prerequisite_scope
 from .query_planner import normalize, plan_query, _consciousness
 
 _CITATION = re.compile(r'\[S([1-9][0-9]*)\]')
@@ -33,6 +33,7 @@ def _negative_action(text, match):
 
 
 def _cpr_condition(text, facts):
+    text = cpr_prerequisite_scope(text)
     if not _CONDITIONAL.search(text):
         return False
     state_value = _consciousness(text) or facts['consciousness']
@@ -80,7 +81,7 @@ def _action_issues(answer, plan):
                 known = facts['consciousness'] == 'unresponsive' and facts['breathing'] == 'abnormal'
                 # A stated condition must itself be sound even when the patient
                 # currently meets the prerequisites (avoid teaching an OR rule).
-                patient_condition = _CONDITIONAL.search(t) and (_consciousness(t) or _breathing(t))
+                patient_condition = _CONDITIONAL.search(t)
                 if not (_cpr_condition(t, facts) if patient_condition else known):
                     issues.append('cpr_prerequisites_missing')
             if oral:
@@ -136,4 +137,4 @@ def validate_answer(answer, sources, question, lang='en', history=None):
     return rendered, result
 
 
-PROMPT = """\nApplication citations use only [S1], [S2], etc., exactly as supplied. Source notes are original-document footnotes, not application citations. Never cite an omitted source or invent a citation. Cite each procedural instruction with its supporting supplied passage. Preserve every action prerequisite; do not convert 'and' into 'or'. CPR requires unresponsiveness AND absent/abnormal breathing, not unconsciousness alone. Oral treatment requires an awake person able to swallow safely. Preserve infant-specific technique; do not substitute adult instructions. If these facts are unknown, retain the explicit conditions instead of assuming them. Do not add clinical interventions absent from applicable lay first-aid evidence. These instructions do not authorize treatment or replace source evidence.\n"""
+PROMPT = """\nApplication citations use only [S1], [S2], etc., exactly as supplied. Source notes are original-document footnotes, not application citations. Never cite an omitted source or invent a citation. Cite each procedural instruction with its supporting supplied passage. Preserve every action prerequisite; do not convert 'and' into 'or'. CPR requires unresponsiveness AND absent/abnormal breathing, not unconsciousness alone. Oral treatment requires an awake person able to swallow safely. Preserve infant-specific technique; do not substitute adult instructions. If these facts are unknown, retain the explicit conditions instead of assuming them. Do not add clinical interventions absent from applicable lay first-aid evidence. Cite summaries too. Omit unsupported explanations and advice for other conditions, even under not-backed headings. These instructions do not authorize treatment or replace source evidence.\n"""

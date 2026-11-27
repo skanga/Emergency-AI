@@ -8,9 +8,10 @@ import hashlib
 import re
 
 from .query_planner import normalize, _consciousness, _age
-from .patient_facts import _breathing, _facts, _UNSAFE_SWALLOW, _SWALLOW as SWALLOW_PATTERN
-from .claim_links import plain_prohibition
+from .patient_facts import _breathing, _facts, _UNSAFE_SWALLOW, _SWALLOW as SWALLOW_PATTERN, cpr_prerequisite_scope
+from .claim_links import repeated_instruction
 from .action_patterns import WATER_INTAKE
+from .explanation_validation import check_explanations, relations
 from .compression_claims import PATTERN as COMPRESSION_PATTERN, positive_swelling, restrictions_preserved
 from .transport_claims import PATTERN as TRANSPORT_PATTERN, methods as transport_methods, negative_at as transport_negative
 
@@ -69,7 +70,7 @@ def _has(pattern, text):
 
 def _units(text):
     """Split sentence/list boundaries, retaining an immediately trailing citation."""
-    for match in re.finditer(r'(?:[^\n.!?]|(?<=\d)\.(?=\d))+(?:[.!?](?:[ \t]*\[S\d+\])*)?', text):
+    for match in re.finditer(r'(?:[^\n.!?]|(?<=\d)\.(?=\d))+(?:[.!?](?:\*{1,2}|_{1,2})?(?:[ \t]*(?:,[ \t]*)?\[S\d+\])*)?', text):
         value = match[0].strip()
         if value:
             yield value, match.start(), match.end()
@@ -124,7 +125,7 @@ def _tourniquet_warning(text, match):
     """Recognize bounded harm descriptions, without certifying their truth."""
     before = text[:match.start()].strip()
     before = re.sub(r'^(?:for an? unidentified snakebite|al no conocer la especie de la serpiente) ', '', before)
-    subject = (r'(?:(?:tying|applying|using|aplicar|usar) )?'
+    subject = (r'(?:(?:tying|applying|using|aplicar|usar|o uso de|el uso de|the use of) )?'
                r'(?:(?:a|an|the|um|un|una|tight|arterial|or|ou|o|nem|ni) |compresion incorrecta |presion o |'
                + _TOURNIQUET + r' )*')
     if not re.fullmatch(subject, before + ' ' if before else ''):
@@ -132,6 +133,8 @@ def _tourniquet_warning(text, match):
     after = _tourniquet_predicate(text, match)
     if _has(r'\b(?:should|must|never|not|unless|except|a menos que|exceto|salvo|contraindicat\w*|contraindicad\w*)\b', after):
         return False
+    if any(subject == 'tourniquet' for subject, _, _ in relations(text)):
+        return True
     return _has(r'^(?: above the bite)? (?:is dangerous|are dangerous|es contraproducente y peligroso|can (?:cause|restrict)|pode causar|puede (?:causar|danar))\b', after)
 
 
@@ -255,6 +258,7 @@ def _condition_issue(name, text, question, positive=True):
 def _source_conditions(name, text):
     """Evidence for CPR/oral therapy must carry prerequisites, not just a verb."""
     if name == 'cpr':
+        text = cpr_prerequisite_scope(text)
         state, breath = re.search(_UNRESPONSIVE, text), re.search(_ABNORMAL, text)
         if not state or not breath or _has(r'\b(?:not|never|nao|no|nunca)\s+' + _UNRESPONSIVE, text):
             return False
@@ -488,11 +492,14 @@ def check_claims(answer, sources, plan):
                     issues.append(condition)
                 cited = list(dict.fromkeys(_CITE.findall(scope)))
                 citation_span = None
-                if (rule.name == 'snake_tourniquet' and not positive and not condition
-                        and not cited and index <= 2 and plain_prohibition(scope)):
+                if (rule.name in ('snake_tourniquet', 'snake_transport') and not condition
+                        and (not positive or rule.name == 'snake_transport')
+                        and not cited and index <= 2 and repeated_instruction(scope, rule.name)):
                     for other_index in range(index + 1, len(units)):
                         other = _scope_for_unit(units, other_index, rule.name)
-                        if plain_prohibition(other) and _CITE.search(other):
+                        if repeated_instruction(other, rule.name) and _CITE.search(other):
+                            if rule.name == 'snake_transport' and transport_methods(scoped) != transport_methods(normalize(other)):
+                                continue
                             cited = list(dict.fromkeys(_CITE.findall(other)))
                             citation_span = list(units[other_index][1:])
                             break
@@ -572,7 +579,10 @@ def check_claims(answer, sources, plan):
                                'cited_ids':cited, 'evidence':supported,
                                'status':'blocked' if condition or not supported else 'pattern_supported'}
                 if citation_span is not None:
-                    claim.update(citation_binding='repeated_prohibition', citation_answer_span=citation_span)
+                    claim.update(citation_binding=('repeated_prohibition' if rule.name == 'snake_tourniquet' else 'repeated_instruction'), citation_answer_span=citation_span)
                 claims.append(claim)
+    explanation_issues, explanation_claims = check_explanations(answer, sources, plan, units)
+    issues.extend(explanation_issues)
+    claims.extend(explanation_claims)
     return list(dict.fromkeys(issues)), {'coverage':'known_patterns_only', 'claims':claims,
                                        'other_claims':'unverified'}

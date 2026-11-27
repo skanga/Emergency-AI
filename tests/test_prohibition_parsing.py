@@ -70,8 +70,14 @@ class ProhibitionParsingTests(unittest.TestCase):
                         'Aplicar um torniquete pode causar danos aos tecidos'):
             with self.subTest(warning=warning):
                 text,report=self.validate(warning+' [S1].','Never use a tight arterial tourniquet.')
-                self.assertTrue(text,report)
-                claims=report['claim_checks']['claims']
+                # Warnings retain their non-instruction classification; known
+                # causal claims now separately need matching explanatory evidence.
+                if any(c['rule']=='explanation' for c in report['claim_checks']['claims']):
+                    self.assertFalse(text)
+                    self.assertIn('explanation_not_supported_by_cited_passage',report['issues'])
+                else:
+                    self.assertTrue(text,report)
+                claims=[c for c in report['claim_checks']['claims'] if c['rule']=='snake_tourniquet']
                 self.assertTrue(claims)
                 self.assertTrue(all(c['status']=='unverified' and c['claim_type']=='warning' and not c['evidence'] for c in claims))
                 self.assertEqual(report['claim_support'],'not_verified')

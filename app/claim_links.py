@@ -22,8 +22,21 @@ def insert_linked_citations(answer, claims):
     """Make verified links visible; offsets refer to the original model answer."""
     additions = {}
     for claim in claims:
-        if claim.get('citation_binding') == 'repeated_prohibition' and claim['status'] == 'pattern_supported':
+        if claim.get('citation_binding') in ('repeated_prohibition', 'repeated_instruction') and claim['status'] == 'pattern_supported':
             additions.setdefault(claim['answer_span'][1], set()).update(claim['cited_ids'])
     for end, numbers in sorted(additions.items(), reverse=True):
         answer = answer[:end] + ' ' + ''.join(f'[S{n}]' for n in sorted(numbers, key=int)) + answer[end:]
     return answer
+
+
+_PASSIVE_BAN = re.compile(_OBJECT + r' (?:is|are) (?:explicitly )?(?:contraindicated|prohibited|forbidden|advised against)')
+_CARRY = re.compile(r'(?:have (?:helpers|people|your friends) carry (?:you|the person)|carry (?:you|the person))'
+                    r'(?: on a (?:makeshift )?stretcher)?')
+
+
+def repeated_instruction(text, rule):
+    """Only bounded plain instructions can link; never explanations or exceptions."""
+    clean = normalize(CITATION.sub('', text))
+    if rule == 'snake_tourniquet':
+        return plain_prohibition(text) or bool(_PASSIVE_BAN.fullmatch(clean))
+    return rule == 'snake_transport' and bool(_CARRY.fullmatch(clean))

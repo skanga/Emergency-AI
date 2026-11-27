@@ -7,6 +7,7 @@ import unicodedata
 from urllib.parse import unquote, urlsplit, quote
 
 from .applicability import inapplicability_reason
+from .source_sections import scope_local_source
 from .kiwix import failure_status
 from .document_index import DocumentIndex, document_state
 from .knowledge import STOPWORDS, is_relevant
@@ -275,7 +276,7 @@ def local_sources(kb, plan, lang, limit):
     found = {}
     for query in dict.fromkeys(queries):
         for native_score, chunk in kb.search(query, lang, k=max(12, limit * 3)):
-            source = chunk.to_dict(score=native_score)
+            source = scope_local_source(chunk.to_dict(score=native_score), plan)
             score = relevance(source, plan)
             if score > 0:
                 source['retrieval_score'] = score
