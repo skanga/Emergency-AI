@@ -60,6 +60,8 @@ class SafeExtractionTests(unittest.TestCase):
             with zipfile.ZipFile(archive, 'w') as stream:
                 stream.writestr('good', b'data')
                 member = zipfile.ZipInfo(name)
+                # Write the hostile name verbatim, even on Windows.
+                member.filename = name
                 if name == 'link':
                     member.create_system = 3
                     member.external_attr = 0o120777 << 16
@@ -67,6 +69,23 @@ class SafeExtractionTests(unittest.TestCase):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 downloads.extract(str(archive), str(self.dest))
             self.assertFalse((self.dest / 'good').exists())
+
+    def test_zip_validates_original_names_before_platform_normalization(self):
+        for name in ('dir\\escape', 'file\0hidden'):
+            with self.subTest(name=name):
+                archive = self.root / 'raw.zip'
+                with zipfile.ZipFile(archive, 'w') as stream:
+                    member = zipfile.ZipInfo(name)
+                    member.filename = name
+                    stream.writestr(member, b'data')
+                # Reproduce Windows ZipInfo normalization on every CI platform.
+                with patch.object(zipfile.os, 'sep', '\\'):
+                    with zipfile.ZipFile(archive) as stream:
+                        member = stream.infolist()[0]
+                        self.assertEqual(member.orig_filename, name)
+                        self.assertNotEqual(member.filename, name)
+                    with self.assertRaisesRegex(ValueError, 'archive path'):
+                        downloads.extract(str(archive), str(self.dest))
 
     @unittest.skipIf(os.name == 'nt', 'Requires symlink privileges')
     def test_existing_file_and_directory_symlinks_are_rejected(self):

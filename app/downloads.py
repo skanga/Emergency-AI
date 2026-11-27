@@ -292,6 +292,9 @@ def extract(archive, dest, allow_links=True):
             members = source.infolist()
             seen = set()
             for member in members:
+                # ZipInfo normalizes Windows separators and truncates at NUL.
+                # Validate the stored name before those transformations hide it.
+                _archive_name(member.orig_filename)
                 name = _archive_name(member.filename)
                 _archive_path(dest, name)
                 kind = stat.S_IFMT(member.external_attr >> 16)
