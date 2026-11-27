@@ -1,0 +1,48 @@
+{
+  "base_commit": "e44f0b0",
+  "branch": "fix/snakebite-prohibitions",
+  "recorded_at": "2026-11-26T10:12:55.088028+00:00",
+  "final_files_sha256": {
+    "app/claim_validation.py": "9c5500211581c9bfd32f64a9800e2a4b7daa4f302b957816657830ac848b9c3d",
+    "config/retrieval-topics.json": "ab469cb66f23b3fdcc207f9844deb7f1f528cfc13fc84b2e628967376b5af8b4",
+    "tests/test_snakebite_validation.py": "a823769ab0602e9982662f73660e6411b107dadb61bd7aff92fb351685eb3c9a"
+  },
+  "runs": {
+    "interim-live": "Six captures before final coordinated-list, adjacent-pronoun and source-context corrections. Model available on 8091.",
+    "offline-english": "Six captures while model on 8091 was unavailable. Not generated-answer validation.",
+    "offline-multilingual": "Four captures while model on 8091 was unavailable. Not generated-answer validation.",
+    "final-live-english": "Final implementation, local sources only, existing model on 8091, isolated app on 8199; all generations finish_reason stop. Captured after the user restarted the model.",
+    "final-live-multilingual": "Final implementation, local sources only, existing model on 8091, isolated app on 8199; all generations finish_reason stop. Captured after the user restarted the model."
+  },
+  "isolated_model_attempt": {
+    "port": 8191,
+    "runtime": "CUDA b12719",
+    "model": "Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+    "exit_code": 139,
+    "startup_log_bytes": 0,
+    "successful_captures": 0
+  },
+  "remaining": "Investigate high rejection rate and unsupported transport paraphrases before broad Kiwix-enabled screening. Targeted final-code model-backed capture and review are complete; quality screens remain incomplete because withholding is uncertain.",
+  "final_live_recorded_at": "2026-11-26T18:12:25.308407+00:00",
+  "prohibition_parsing_followup": {
+    "files_sha256": {
+      "app/claim_validation.py": "e815fb3c6bd4cab1b8dfa865130daef6866ad4dcc843ec93cce11d20e3651905",
+      "tests/test_prohibition_parsing.py": "37192581e0474506154a264f072cfe953aa1dc7496bc14f626797c76e3db15c3"
+    },
+    "verification": "772 unit tests, 20 skipped; JavaScript checks passed; exact replay of ten captured drafts.",
+    "model_backed_run": false,
+    "result": "One unnecessary rejection removed; three genuine safety failures remain blocked; citation policy unchanged."
+  },
+  "gap_fixes_followup": {
+    "report": "docs/reviews/2026-11-26-snakebite-gap-fixes.md",
+    "python_tests": 794,
+    "skipped": 20,
+    "quality_pass": false,
+    "files": {
+      "gap-fixes-replay.json": "a13d1b8e48d7d1b11bfd591c2c0b480c3861af8474491efed62b6ff41fa4102c",
+      "gap-fixes-interim-inspection.json": "da5bb19d3ad09c05b64bc87599f1024f0076a5d36535dc76e052514f660ff78c",
+      "gap-fixes-final-inspection.json": "181a33875b186c4d5a65d04a511daf339b8597dd82b601e184cc16bfff8eb4e5",
+      "gap-fixes-final-review.json": "af41ced1a7fa3ceab9ed654587af0eda07e7004138c7ea5011947ca8c63e208f"
+    }
+  }
+}

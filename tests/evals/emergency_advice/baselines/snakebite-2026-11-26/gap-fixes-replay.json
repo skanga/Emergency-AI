@@ -1,0 +1,2125 @@
+{
+  "capture_sha256": "03363c178f7531f03281a206a10ef6c0e54e6b1f8578063277efd105e5296506",
+  "method": "Exact pre-fix drafts and sources replayed. No new generation. Historical records unchanged.",
+  "code_sha256": {
+    "app/claim_validation.py": "6bb829ace359da6b9f7b00ef7c47cc96ac22e51eb1b5172b86e52ef950f400bb",
+    "app/answer_validation.py": "f12319a8f92567904f62cf2862dab0a4d6227c93ac22d62d3d960ddc238f146e",
+    "app/action_patterns.py": "2e844778622790530fa782add4f90217077015c22b99eeb83fe001f4b4004ad7",
+    "app/patient_facts.py": "b275b4035a8888bca4bdb7a776b1db35ac906150239b2c8499d316e418eaaedd",
+    "app/claim_links.py": "daed3d776a273aea4dc1b32621931035dad1764ee97dcadd4ba78fc3324caa94",
+    "app/transport_claims.py": "ac4eec7fb51044918efeca18a72ee74e565313040dba7dfe632dce06f56ed288",
+    "app/data/guidance.json": "3831cc960af19b29195b415936922afa9027a3aa00e5ef4661ef7743c1e5d973"
+  },
+  "results": [
+    {
+      "key": "snake_transport#1",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                14,
+                105
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                14,
+                105
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_pressure#1",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                102
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                102
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                104,
+                186
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                752,
+                884
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    243,
+                    375
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                102
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                102
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                104,
+                186
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                752,
+                884
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    243,
+                    375
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_transport#2",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                14,
+                107
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                573,
+                680
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                764,
+                940
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    243,
+                    375
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                1365,
+                1481
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                14,
+                107
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                573,
+                680
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                764,
+                940
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    243,
+                    375
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                1365,
+                1481
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_pressure#2",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage",
+          "snake_tourniquet_unsafe"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                44
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                44
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                48,
+                147
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                147,
+                274
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "oral_intake_prerequisites_missing",
+          "claim_not_supported_by_cited_passage",
+          "snake_tourniquet_unsafe"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                44
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                44
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                48,
+                147
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                147,
+                274
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "blocked"
+            },
+            {
+              "rule": "oral",
+              "answer_span": [
+                720,
+                766
+              ],
+              "positive": true,
+              "cited_ids": [
+                "3"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_transport#3",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage",
+          "snake_tourniquet_unsafe"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                14,
+                76
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                467,
+                563
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    243,
+                    375
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                683,
+                774
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                683,
+                774
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                14,
+                76
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                467,
+                563
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    243,
+                    375
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                683,
+                774
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                683,
+                774
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_pressure#3",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage",
+          "snake_tourniquet_unsafe"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                52
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                52
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                56,
+                148
+              ],
+              "positive": true,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                201,
+                405
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                201,
+                405
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                201,
+                405
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                1174,
+                1295
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    243,
+                    375
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                52
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                5,
+                52
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                56,
+                148
+              ],
+              "positive": false,
+              "claim_type": "warning",
+              "cited_ids": [],
+              "evidence": [],
+              "status": "unverified"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                201,
+                405
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                201,
+                405
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                201,
+                405
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1",
+                "2"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                },
+                {
+                  "source_n": 2,
+                  "span": [
+                    94,
+                    153
+                  ],
+                  "text_sha256": "a079bd1d5adec1a2ecdd5cb70623a8ac006a5e29ecc8d33d67be9d94d1a3e4f7"
+                }
+              ],
+              "status": "pattern_supported"
+            },
+            {
+              "rule": "snake_transport",
+              "answer_span": [
+                1174,
+                1295
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    243,
+                    375
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_pressure_pt#1",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage",
+          "snake_tourniquet_unsafe"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                0,
+                25
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                708,
+                912
+              ],
+              "positive": false,
+              "cited_ids": [
+                "2",
+                "3"
+              ],
+              "evidence": [
+                {
+                  "source_n": 2,
+                  "span": [
+                    116,
+                    166
+                  ],
+                  "text_sha256": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9"
+                },
+                {
+                  "source_n": 3,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                708,
+                912
+              ],
+              "positive": false,
+              "cited_ids": [
+                "2",
+                "3"
+              ],
+              "evidence": [
+                {
+                  "source_n": 2,
+                  "span": [
+                    116,
+                    166
+                  ],
+                  "text_sha256": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9"
+                },
+                {
+                  "source_n": 3,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                708,
+                912
+              ],
+              "positive": false,
+              "cited_ids": [
+                "2",
+                "3"
+              ],
+              "evidence": [
+                {
+                  "source_n": 2,
+                  "span": [
+                    116,
+                    166
+                  ],
+                  "text_sha256": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9"
+                },
+                {
+                  "source_n": 3,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage",
+          "snake_tourniquet_unsafe"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                0,
+                25
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                708,
+                912
+              ],
+              "positive": false,
+              "cited_ids": [
+                "2",
+                "3"
+              ],
+              "evidence": [
+                {
+                  "source_n": 2,
+                  "span": [
+                    116,
+                    166
+                  ],
+                  "text_sha256": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9"
+                },
+                {
+                  "source_n": 3,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                708,
+                912
+              ],
+              "positive": false,
+              "cited_ids": [
+                "2",
+                "3"
+              ],
+              "evidence": [
+                {
+                  "source_n": 2,
+                  "span": [
+                    116,
+                    166
+                  ],
+                  "text_sha256": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9"
+                },
+                {
+                  "source_n": 3,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                708,
+                912
+              ],
+              "positive": false,
+              "cited_ids": [
+                "2",
+                "3"
+              ],
+              "evidence": [
+                {
+                  "source_n": 2,
+                  "span": [
+                    116,
+                    166
+                  ],
+                  "text_sha256": "f8248397cdbf6f6693fc6e6e59c40d84ff6e1a93bc4296e158332986273c54a9"
+                },
+                {
+                  "source_n": 3,
+                  "span": [
+                    377,
+                    449
+                  ],
+                  "text_sha256": "3624e7b1f6ee4f6632ce4811a7f38effac4bb278f3467a99e7c27b9c0b3ad55c"
+                }
+              ],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_pressure_es#1",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                3,
+                116
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage",
+          "snake_compression_condition_unsafe"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                3,
+                116
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_compression",
+              "answer_span": [
+                145,
+                405
+              ],
+              "positive": true,
+              "cited_ids": [
+                "2"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "oral",
+              "answer_span": [
+                1174,
+                1246
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_pressure_pt#2",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "snake_tourniquet_unsafe",
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                4,
+                118
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                4,
+                118
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                1012,
+                1057
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                1012,
+                1057
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "oral",
+              "answer_span": [
+                1215,
+                1245
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                4,
+                118
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                4,
+                118
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "oral",
+              "answer_span": [
+                683,
+                778
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                1012,
+                1057
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                1012,
+                1057
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "oral",
+              "answer_span": [
+                1215,
+                1245
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    },
+    {
+      "key": "snake_pressure_es#2",
+      "before": {
+        "status": "blocked",
+        "issues": [
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                7,
+                88
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                1067,
+                1193
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    438,
+                    609
+                  ],
+                  "text_sha256": "230a44c5d8363cfaf5ff24043aba62040c07b318b2071c10eae02422cec61e9e"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "oral_intake_prerequisites_missing",
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                7,
+                88
+              ],
+              "positive": false,
+              "cited_ids": [],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "oral",
+              "answer_span": [
+                706,
+                779
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                1067,
+                1193
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    438,
+                    609
+                  ],
+                  "text_sha256": "230a44c5d8363cfaf5ff24043aba62040c07b318b2071c10eae02422cec61e9e"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "rendered": ""
+    }
+  ],
+  "ablation_results": [
+    {
+      "key": "snake_pressure#2",
+      "before": {
+        "status": "passed",
+        "issues": [],
+        "citation_ids": [
+          1,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "oral_intake_prerequisites_missing",
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "oral",
+              "answer_span": [
+                455,
+                501
+              ],
+              "positive": true,
+              "cited_ids": [
+                "3"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      }
+    },
+    {
+      "key": "snake_pressure_es#1",
+      "before": {
+        "status": "passed",
+        "issues": [],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "snake_compression_condition_unsafe",
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_compression",
+              "answer_span": [
+                32,
+                292
+              ],
+              "positive": true,
+              "cited_ids": [
+                "2"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "oral",
+              "answer_span": [
+                1061,
+                1133
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      }
+    },
+    {
+      "key": "snake_pressure_es#2",
+      "before": {
+        "status": "passed",
+        "issues": [],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                986,
+                1112
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    438,
+                    609
+                  ],
+                  "text_sha256": "230a44c5d8363cfaf5ff24043aba62040c07b318b2071c10eae02422cec61e9e"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      },
+      "after": {
+        "status": "blocked",
+        "issues": [
+          "oral_intake_prerequisites_missing",
+          "claim_not_supported_by_cited_passage"
+        ],
+        "citation_ids": [
+          1,
+          2,
+          3
+        ],
+        "claim_support": "not_verified",
+        "action_conditions": "known_patterns_only",
+        "patient_facts": {
+          "consciousness": null,
+          "breathing": null,
+          "swallowing": null,
+          "age_group": null
+        },
+        "claim_checks": {
+          "coverage": "known_patterns_only",
+          "claims": [
+            {
+              "rule": "oral",
+              "answer_span": [
+                625,
+                698
+              ],
+              "positive": true,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [],
+              "status": "blocked"
+            },
+            {
+              "rule": "snake_tourniquet",
+              "answer_span": [
+                986,
+                1112
+              ],
+              "positive": false,
+              "cited_ids": [
+                "1"
+              ],
+              "evidence": [
+                {
+                  "source_n": 1,
+                  "span": [
+                    438,
+                    609
+                  ],
+                  "text_sha256": "230a44c5d8363cfaf5ff24043aba62040c07b318b2071c10eae02422cec61e9e"
+                }
+              ],
+              "status": "pattern_supported"
+            }
+          ],
+          "other_claims": "unverified"
+        }
+      }
+    }
+  ]
+}
