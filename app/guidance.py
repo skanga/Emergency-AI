@@ -62,7 +62,8 @@ def _source(unit, lang):
             'provenance': 'Versioned source-backed paraphrase; reference checked, not clinical approval.',
             'prerequisites': list(unit['prerequisites']),
             'contraindications': list(unit['contraindications']),
-            'additional_references': list(unit.get('additional_references', []))}
+            'additional_references': list(unit.get('additional_references', [])),
+            'action_scope': list(unit.get('action_scope', []))}
 
 
 def guidance_sources(plan, lang):
@@ -102,8 +103,9 @@ def fallback_answer(sources, lang, conflicts):
     The caller is responsible for applicability/evidence admission and for
     displaying any used omitted sources BEFORE text citations. Omitted evidence
     is returned explicitly in fallback_evidence_ids; no draft-access claim is made.
-    Unknown unresolved topics block all guidance conservatively. Topic-wide
-    exclusion also prevents a different catalog ID from reviving disputed advice.
+    Unknown unresolved topics block all guidance conservatively. Recognized
+    water-treatment quantity conflicts permit only a canonical safe-supply unit,
+    never another treatment or a different ID for the disputed procedure.
     """
     meta = {'status': 'unavailable', 'used_source_ids': [],
             'fallback_evidence_ids': [], 'coverage': 'catalog_units_only'}
@@ -115,6 +117,7 @@ def fallback_answer(sources, lang, conflicts):
         meta['reason'] = 'policy_error'
         return '', meta
     blocked_ids, blocked_topics = set(), set()
+    treatment_conflict = False
     for conflict in conflicts:
         ids = set(conflict.get('source_ids', []))
         if conflict.get('resolution') == 'reviewed_precedence':
@@ -125,7 +128,12 @@ def fallback_answer(sources, lang, conflicts):
             if not topic or topic == 'unspecified':
                 meta['reason'] = 'unresolved_conflict'
                 return '', meta
-            blocked_topics.add(topic)
+            if (topic == 'water_disinfection'
+                    and conflict.get('detection_basis') == 'matching_statement_quantities'
+                    and conflict.get('action_scope') == ['water_treatment']):
+                treatment_conflict = True
+            else:
+                blocked_topics.add(topic)
     try:
         canonical = {_source(unit, lang)['id']: _source(unit, lang)
                      for unit in load_catalog()}
@@ -140,6 +148,8 @@ def fallback_answer(sources, lang, conflicts):
         number = source.get('n')
         if (expected is None or source['id'] in blocked_ids
                 or expected['topic'] in blocked_topics
+                or (treatment_conflict and expected['topic'] == 'water_disinfection'
+                    and expected['action_scope'] != ['safe_water_supply'])
                 or source['id'] in meta['used_source_ids']
                 or type(number) is not int or number < 1 or number in used_numbers
                 or any(source.get(key) != value for key, value in expected.items())):

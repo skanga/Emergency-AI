@@ -9,7 +9,7 @@ from .query_planner import normalize
 
 
 _ROUTE = re.compile(r'\b(iv|i v|intraven\w*|endoven\w*|intraosse\w*)\b')
-_CLINICAL_ACTION = re.compile(r'\b(give|given|giving|administer\w*|inject\w*|infus\w*|bolus|titrate\w*|establish|administ\w*|injete|inyect\w*)\b')
+_CLINICAL_ACTION = re.compile(r'\b(give|given|giving|administer\w*|inject\w*|insert\w*|insira|inserir|infus\w*|bolus|titrate\w*|establish|administ\w*|injete|inyect\w*)\b')
 _INJECTION_ROUTE = re.compile(r'\b(im|sc|subcutan\w*|intramuscul\w*)\b')
 _DOSE = re.compile(r'\b\d+(?:[.,]\d+)?\s*(?:mg|mcg|ml|g|units|unidades)\b|\bd50\b')
 _INVASIVE = re.compile(r'\b(intubat\w*|thoracotom\w*|thoracostom\w*|pericardiocentesis|reboa|craniectomy|thrombectomy|thrombolysis|neurosurg\w*|cesarean|caesarean|cesariana|cesarea|displace the uterus|push the uterus|uterus should be)\b')
@@ -33,7 +33,7 @@ def _prohibition(statement):
     """A negative instruction is not permission to perform that action."""
     if re.search(r'\b(but|however|instead|mas|porem|pero|sin embargo)\b', statement):
         return False
-    negative = re.search(r'\b(do not|never|nao|nunca|no (?=administr|inyect|dar|de ))\b', statement)
+    negative = re.search(r'\b(do not|never|nao|nunca|no (?=administr|inyect|insert|intente|dar|de ))\b', statement)
     if not negative:
         return False
     # A conjunction can introduce a second, affirmative instruction.
@@ -45,7 +45,7 @@ def _prohibition(statement):
 
 
 def inapplicability_reason(source, plan):
-    if not plan.topics or 'text' not in source:
+    if 'text' not in source:
         return None  # Candidate metadata is not a fetched procedure.
     text = source['text']
     body = normalize(text)

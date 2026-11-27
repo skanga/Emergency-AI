@@ -1,0 +1,133 @@
+[
+  {
+    "id": "snake",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "b72b0b3b394421cdc9fca747537e6edc6794b234f4784193b800541cad8fd672",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "snake_tourniquet_unsafe",
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "snake",
+    "trial": 1,
+    "validation_input": 1,
+    "draft_sha256": "e54bcb8002db18fed69648ed454f7f5c764504775eb9c21b70237cb631f2f02b",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake_es",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "3727645d9acc5a7554504f0639e5d95b320da39ec0abd0dba0af98521f137ca7",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "claim_not_supported_by_cited_passage",
+      "snake_self_rescue_conditions_missing",
+      "explanation_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "snake_es",
+    "trial": 1,
+    "validation_input": 1,
+    "draft_sha256": "f0248767c76c33964876f2d2998757fb74cda3a7f2591f8172a5f38da6c7c4fe",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleeding_lay_iv_es",
+    "trial": 1,
+    "validation_input": 0,
+    "draft_sha256": "20bffa12acc1e229c3affd86c21711fafffb2b9aa064214ddb60646b35063db2",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "oral_intake_prerequisites_missing",
+      "action_citation_missing",
+      "tourniquet_conditions_missing",
+      "claim_not_supported_by_cited_passage",
+      "claim_quantity_not_supported"
+    ]
+  },
+  {
+    "id": "bleeding_lay_iv_es",
+    "trial": 1,
+    "validation_input": 1,
+    "draft_sha256": "6af23ef330443f651cb22a1ac799fca4e6b8fd77b21bc47b93176f79ef8019d1",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "e28a8dc75a540561d7d5153ee08a68f5110b355419ac621beebca150c781bdb6",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "snake_tourniquet_unsafe",
+      "claim_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "snake",
+    "trial": 2,
+    "validation_input": 1,
+    "draft_sha256": "e54bcb8002db18fed69648ed454f7f5c764504775eb9c21b70237cb631f2f02b",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "snake_es",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "2cd04c2074cfb72d387a048adc42c6db20151d8ac99d50d9a5af84d7357892d5",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "snake_self_rescue_conditions_missing",
+      "claim_not_supported_by_cited_passage",
+      "snake_tourniquet_unsafe",
+      "explanation_not_supported_by_cited_passage"
+    ]
+  },
+  {
+    "id": "snake_es",
+    "trial": 2,
+    "validation_input": 1,
+    "draft_sha256": "f0248767c76c33964876f2d2998757fb74cda3a7f2591f8172a5f38da6c7c4fe",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  },
+  {
+    "id": "bleeding_lay_iv_es",
+    "trial": 2,
+    "validation_input": 0,
+    "draft_sha256": "c94b375c8388e664bc571506c29370c84839a647a889e368bc013d98e0d87dd0",
+    "previous_status": "blocked",
+    "final_status": "blocked",
+    "issues": [
+      "tourniquet_conditions_missing"
+    ]
+  },
+  {
+    "id": "bleeding_lay_iv_es",
+    "trial": 2,
+    "validation_input": 1,
+    "draft_sha256": "6af23ef330443f651cb22a1ac799fca4e6b8fd77b21bc47b93176f79ef8019d1",
+    "previous_status": "passed",
+    "final_status": "passed",
+    "issues": []
+  }
+]

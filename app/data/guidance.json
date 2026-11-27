@@ -89,13 +89,14 @@
       "reference_title": "American Red Cross: Life-threatening external bleeding",
       "reference_url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/bleeding-life-threatening-external",
       "reference_section": "How to stop bleeding",
-      "reference_checked_at": "2026-11-26",
+      "reference_checked_at": "2026-11-27",
       "scope": {},
       "prerequisites": [
         "external bleeding"
       ],
       "contraindications": [
-        "tourniquet outside limb or without training"
+        "tourniquet outside limb",
+        "untrained invasive vein access"
       ],
       "additional_references": [
         {
@@ -105,11 +106,11 @@
         }
       ],
       "translations": {
-        "en": "For severe external bleeding, call emergency services. Press firmly and continuously on the wound with a dressing or clean cloth. Maintain pressure until bleeding stops or help takes over. For life-threatening bleeding from an arm or leg, use a tourniquet if available and you are trained. Stay with the person. If you are untrained, do not insert an IV; leave invasive vein access to trained practitioners.",
-        "pt": "Para sangramento externo intenso, chame a emergência. Pressione a ferida com firmeza e continuamente com gaze ou pano limpo. Mantenha a pressão até parar ou chegar ajuda. Para hemorragia com risco de vida num braço ou perna, use torniquete se disponível e se tiver treinamento. Fique com a pessoa. Se não tiver treinamento, não insira um acesso IV; deixe o acesso invasivo à veia para profissionais treinados.",
-        "es": "Para sangrado externo intenso, llame a emergencias. Presione la herida firmemente y sin interrupción con una gasa o paño limpio. Mantenga la presión hasta que pare o llegue ayuda. Para hemorragia mortal de un brazo o pierna, use un torniquete si está disponible y tiene formación. Permanezca con la persona. Si no tiene formación, no inserte una vía IV; deje el acceso invasivo a la vena a profesionales capacitados."
+        "en": "For severe external bleeding, call emergency services. Press firmly and continuously on the wound with a dressing or clean cloth. Maintain pressure until bleeding stops or help takes over. Keep firm pressure while obtaining a commercial tourniquet for life-threatening limb bleeding; follow the separate tourniquet instructions. Stay with the person. If you are untrained, do not insert an IV; leave invasive vein access to trained practitioners.",
+        "pt": "Para sangramento externo intenso, chame a emergência. Pressione a ferida com firmeza e continuamente com gaze ou pano limpo. Mantenha a pressão até parar ou chegar ajuda. Mantenha pressão firme enquanto obtém um torniquete comercial para hemorragia com risco de vida num membro; siga as instruções separadas do torniquete. Fique com a pessoa. Se não tiver treinamento, não insira um acesso IV; deixe o acesso invasivo à veia para profissionais treinados.",
+        "es": "Para sangrado externo intenso, llame a emergencias. Presione la herida firmemente y sin interrupción con una gasa o paño limpio. Mantenga la presión hasta que pare o llegue ayuda. Mantenga presión firme mientras obtiene un torniquete comercial para hemorragia mortal de una extremidad; siga las instrucciones separadas del torniquete. Permanezca con la persona. Si no tiene formación, no inserte una vía IV; deje el acceso invasivo a la vena a profesionales capacitados."
       },
-      "content_hash": "e20e398f69932a79c5523ddc6c56eea2bdf9ad59ded1c638f1ad98a3fb6fb57f"
+      "content_hash": "7a2ef56aab91777c2f0608b70f25e1cedba6189b538bf028c6984ef8de70dd44"
     },
     {
       "id": "water-product",
@@ -252,11 +253,11 @@
       ],
       "additional_references": [],
       "translations": {
-        "en": "For a suspected snakebite, keep the person and bitten limb still and arrange urgent transport to medical care. Have helpers carry the person on a stretcher to transport rather than making them walk. Do not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging depends on venom type and local guidance; an unknown snake or location does not establish that it is appropriate. Monitor breathing while obtaining help.",
-        "pt": "Para suspeita de picada de cobra, mantenha a pessoa e o membro picado imóveis e providencie transporte urgente para atendimento médico. Peça que ajudantes carreguem a pessoa em uma maca até o transporte, em vez de fazê-la caminhar. Não use torniquete arterial apertado nem remédios tradicionais sem comprovação. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada. Observe a respiração enquanto busca ajuda.",
-        "es": "Ante una posible mordedura de serpiente, mantenga a la persona y el miembro mordido inmóviles y organice traslado urgente a atención médica. Pida que ayudantes lleven a la persona en una camilla hasta el transporte en vez de hacerla caminar. No use un torniquete arterial apretado ni remedios tradicionales sin eficacia demostrada. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado. Vigile la respiración mientras obtiene ayuda."
+        "en": "For a suspected snakebite, keep the person and bitten limb still and arrange urgent transport to medical care. If helpers are available, have them carry the person on a stretcher to transport rather than making them walk. Do not use a tight arterial tourniquet or unproven traditional remedies. Pressure-immobilization bandaging depends on venom type and local guidance; an unknown snake or location does not establish that it is appropriate. Monitor breathing while obtaining help.",
+        "pt": "Para suspeita de picada de cobra, mantenha a pessoa e o membro picado imóveis e providencie transporte urgente para atendimento médico. Se houver ajudantes, peça que carreguem a pessoa em uma maca até o transporte, em vez de fazê-la caminhar. Não use torniquete arterial apertado nem remédios tradicionais sem comprovação. A bandagem compressiva depende do veneno e da orientação local; cobra ou local desconhecido não permite concluir que seja adequada. Observe a respiração enquanto busca ajuda.",
+        "es": "Ante una posible mordedura de serpiente, mantenga a la persona y el miembro mordido inmóviles y organice traslado urgente a atención médica. Si hay ayudantes, pida que lleven a la persona en una camilla hasta el transporte en vez de hacerla caminar. No use un torniquete arterial apretado ni remedios tradicionales sin eficacia demostrada. El vendaje compresivo depende del veneno y de las indicaciones locales; desconocer la especie o ubicación no permite determinar que sea adecuado. Vigile la respiración mientras obtiene ayuda."
       },
-      "content_hash": "d2cedefea989c9120d2d83c7bee52c9f548f9226a4b4c7cdf0f41153979c7806"
+      "content_hash": "6c1139b7be5b6988be8985188613166070ab4ad2ec415f2ba1838be78a439bc5"
     },
     {
       "id": "flood-shelter",
@@ -495,12 +496,10 @@
       "reference_title": "American Red Cross: How to apply a tourniquet",
       "reference_url": "https://www.redcross.org/take-a-class/resources/articles/how-to-apply-a-tourniquet",
       "reference_section": "How to apply; windlass rod tourniquet",
-      "reference_checked_at": "2026-11-26",
+      "reference_checked_at": "2026-11-27",
       "scope": {},
       "prerequisites": [
         "life-threatening limb bleeding",
-        "pressure not controlling bleeding",
-        "trained",
         "commercial tourniquet available"
       ],
       "contraindications": [
@@ -516,11 +515,11 @@
         }
       ],
       "translations": {
-        "en": "If life-threatening arm or leg bleeding continues despite firm pressure, and you are trained with a commercial tourniquet available, place it 5–7.5 cm above the wound toward the heart, not over a joint. Tighten according to its instructions until bleeding stops, then secure it. Do not loosen or remove it. Keep emergency help coming; maintain pressure if no tourniquet is available.",
-        "pt": "Se hemorragia com risco de vida num braço ou perna continuar apesar de pressão firme, e você tiver treinamento e torniquete comercial disponível, coloque-o 5–7,5 cm acima da ferida, em direção ao coração, nunca sobre articulação. Aperte conforme as instruções até parar o sangramento e fixe. Não afrouxe nem retire. Mantenha o pedido de socorro; continue a pressão se não houver torniquete.",
-        "es": "Si una hemorragia mortal de brazo o pierna continúa pese a presión firme, y tiene formación y un torniquete comercial disponible, colóquelo 5–7,5 cm por encima de la herida hacia el corazón, nunca sobre una articulación. Apriete según sus instrucciones hasta detener el sangrado y fíjelo. No lo afloje ni retire. Mantenga la ayuda solicitada; continúe presionando si no hay torniquete."
+        "en": "For life-threatening bleeding from an arm or leg, use a commercial tourniquet if available, following its instructions. Place it 5–7.5 cm above the wound toward the heart, not over a joint. Tighten until bleeding stops and secure it. Do not loosen or remove it. Call emergency services; keep firm direct pressure while obtaining the tourniquet or if none is available. Training is ideal, but do not delay life-saving care while waiting for a trained responder.",
+        "pt": "Para hemorragia com risco de vida num braço ou perna, use um torniquete comercial se disponível, seguindo suas instruções. Coloque-o 5–7,5 cm acima da ferida em direção ao coração, nunca sobre uma articulação. Aperte até parar o sangramento e fixe. Não afrouxe nem retire. Chame a emergência; mantenha pressão direta firme enquanto obtém o torniquete ou se não houver um disponível. O treinamento é ideal, mas não atrase cuidados vitais esperando uma pessoa treinada.",
+        "es": "Para hemorragia mortal de un brazo o pierna, use un torniquete comercial si está disponible, siguiendo sus instrucciones. Colóquelo 5–7,5 cm por encima de la herida hacia el corazón, nunca sobre una articulación. Apriete hasta detener el sangrado y fíjelo. No lo afloje ni retire. Llame a emergencias; mantenga presión directa firme mientras obtiene el torniquete o si no hay uno disponible. La formación es ideal, pero no retrase cuidados vitales esperando a una persona capacitada."
       },
-      "content_hash": "4f71b69203832e9a935f0c9b5dc93f51fb7e1529d55f5e325302ef146e568721"
+      "content_hash": "8e81518d90c42c1b7d2201cb4a37610af8b47e1f7b778aed602b5eeb2020822d"
     },
     {
       "id": "stroke-response",
@@ -659,6 +658,66 @@
         "es": "Ante sospecha de deshidratación, busque atención urgente si hay cansancio inusual o mucha menos orina. Si la persona está más somnolienta de lo normal, cuesta despertarla, está confusa o tiene dificultad para respirar, llame a emergencias inmediatamente. Pueden ser signos de choque; no retrase la búsqueda de ayuda para preparar un remedio casero."
       },
       "content_hash": "114e6eb0be80bbbf05c0229775776f7668851245a635e5a25ff973ab2e38b464"
+    },
+    {
+      "id": "water-safe-supply",
+      "topic": "water_disinfection",
+      "reference_title": "CDC: How to make water safe in an emergency",
+      "reference_url": "https://www.cdc.gov/water-emergency/about/",
+      "reference_section": "Overview; Water with fuel or toxic chemicals in it",
+      "reference_checked_at": "2026-11-27",
+      "scope": {},
+      "prerequisites": [
+        "safe alternative supply available"
+      ],
+      "contraindications": [
+        "suspected contaminated supply"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "Use sealed bottled water from a safe supply for drinking and preparing food when available. If water may contain fuel or toxic chemicals, use a different safe supply and contact local health authorities; boiling or adding disinfectant cannot make that contaminated water safe.",
+        "pt": "Use água engarrafada lacrada de uma fonte segura para beber e preparar alimentos quando disponível. Se a água pode conter combustível ou produtos químicos tóxicos, use outra fonte segura e consulte as autoridades locais de saúde; ferver ou adicionar desinfetante não torna segura essa água contaminada.",
+        "es": "Use agua embotellada sellada de una fuente segura para beber y preparar alimentos cuando esté disponible. Si el agua puede contener combustible o sustancias químicas tóxicas, use otra fuente segura y consulte a las autoridades sanitarias locales; hervir o añadir desinfectante no vuelve segura esa agua contaminada."
+      },
+      "action_scope": [
+        "safe_water_supply"
+      ],
+      "content_hash": "bbce75c032daa75d0bb3985221727e199b90837d9c74c57ac8b3248f689d4870"
+    },
+    {
+      "id": "snakebite-no-contact",
+      "topic": "snakebite",
+      "reference_title": "NPS: Outdoor Emergency Plan; American Red Cross: Venomous snake bites",
+      "reference_url": "https://www.nps.gov/articles/gtgemergencyplan.htm",
+      "reference_section": "Signaling for help; injury assessment; snakebite movement only when necessary",
+      "reference_checked_at": "2026-11-27",
+      "scope": {},
+      "prerequisites": [
+        "suspected snakebite",
+        "no immediate contact with help"
+      ],
+      "contraindications": [
+        "unnecessary exertion",
+        "unsafe route"
+      ],
+      "additional_references": [
+        {
+          "title": "American Red Cross: Venomous snake bites, General Care (walking only if absolutely necessary)",
+          "url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/venomous-snake-bites",
+          "checked_at": "2026-11-27"
+        },
+        {
+          "title": "AHA/Red Cross 2024 First Aid Guidelines, Snakebite: balance exertion and delay to care",
+          "url": "https://cpr.heart.org/en/resuscitation-science/2024-first-aid-guidelines/",
+          "checked_at": "2026-11-27"
+        }
+      ],
+      "translations": {
+        "en": "If you are alone without phone service after a snakebite, signal nearby people with a whistle, light or mirror if available. Ask anyone who reaches you to summon rescue and help arrange transport. Minimize movement while help can reach you. If moving to help is your only option, and you can do so safely on a known route, walk toward help with as little exertion as possible. If you cannot move safely or do not know a safe route, stay in a safe place and keep signaling. There is no universal safe walking distance or waiting time after a snakebite.",
+        "pt": "Se estiver sozinho sem sinal de telefone após picada de cobra, sinalize para pessoas próximas com apito, luz ou espelho, se disponível. Peça a quem chegar que chame o resgate e ajude a providenciar transporte. Minimize movimentos enquanto a ajuda puder chegar até você. Se ir até a ajuda for sua única opção, e puder fazê-lo com segurança por uma rota conhecida, caminhe até a ajuda com o mínimo de esforço possível. Se não puder se mover com segurança ou não conhecer uma rota segura, fique num local seguro e continue sinalizando. Não há distância de caminhada ou tempo de espera universalmente seguro após uma picada.",
+        "es": "Si está solo sin señal de teléfono tras una mordedura de serpiente, señale a personas cercanas con silbato, luz o espejo, si dispone de ellos. Pida a quien llegue que avise al rescate y ayude a organizar el traslado. Minimice el movimiento mientras la ayuda pueda llegar hasta usted. Si ir hasta la ayuda es su única opción, y puede hacerlo con seguridad por una ruta conocida, camine hacia la ayuda con el mínimo esfuerzo posible. Si no puede moverse con seguridad o no conoce una ruta segura, permanezca en un lugar seguro y siga señalando. No existe una distancia de caminata ni un tiempo de espera universalmente seguro tras una mordedura."
+      },
+      "content_hash": "731306c5d028d967c5309ff69268646537692d05b76966afa12cad7b75fd24ba"
     }
   ]
 }

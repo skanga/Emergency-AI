@@ -1,5 +1,6 @@
 """Regressions from the fresh multilingual run, including masked hazards."""
 import json
+import re
 from pathlib import Path
 import unittest
 
@@ -125,6 +126,6 @@ class LiveSafetyGapsTests(unittest.TestCase):
                 sources = [dict(s, n=i+1) for i,s in enumerate(guidance_sources(plan_query(Q, lang), lang))]
                 text, meta = fallback_answer(sources, lang, [])
                 self.assertIn(word, text)
-                text, report = validate_answer(text.replace('[1]', '[S1]'), sources, Q, lang)
+                text, report = validate_answer(re.sub(r'\[(\d+)\]', r'[S\1]', text), sources, Q, lang)
                 self.assertTrue(text, report)
                 self.assertNotIn('narrow tourniquet', text)

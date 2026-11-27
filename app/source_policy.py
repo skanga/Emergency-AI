@@ -123,6 +123,11 @@ def evaluate_conflicts(sources, topics=(), scope=None, policy=None):
                           'detection_basis': 'matching_statement_quantities', 'resolution': 'unresolved',
                           'policy_rule_id': None,
                           'explanation': 'No applicable reviewed precedence rule resolves this disagreement.'})
+        # Water-treatment quantities may be ambiguous table fragments. Do not
+        # infer a specific bleach dose or authorize another treatment (boiling).
+        # A separately reviewed safe-supply unit does not perform treatment.
+        if topics and topics[0] == 'water_disinfection':
+            conflicts[-1]['action_scope'] = ['water_treatment']
     for record in conflicts:
         payload = json.dumps(record, sort_keys=True, ensure_ascii=False).encode()
         record['id'] = 'conflict-' + hashlib.sha256(payload).hexdigest()[:16]

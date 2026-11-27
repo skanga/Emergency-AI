@@ -36,7 +36,9 @@ The multi-domain run displayed 5 generated answers, 24 fallbacks and 3 notices. 
 
 The new dehydration unit fixes the notice-only fallback gap in selected repeats; it does not retroactively improve the original run's score. The subsequent Spanish kidney-failure assertion was attributed to a passage that only supports escalation. Its failing capture, isolated regression and final rejection remain visible. Final replay records validation decisions separately from what was actually displayed.
 
-## Remaining findings
+## Remaining findings at this revision
+
+The first four items received subsequent bounded fixes and new model-backed evaluation in [actionable fallbacks](2026-11-27-actionable-fallbacks.md). This historical run and its failures remain unchanged.
 
 1. Bleach-source conflicts still produce a notice without a safe-supply alternative. Resolving this requires action-level conflict handling; a new source ID must not bypass the existing topic-wide conflict guard.
 2. The snakebite fallback is useful when helpers are available, but does not solve a lone person's transport/help problem without phone service. Do not invent a universal walk-versus-wait rule.

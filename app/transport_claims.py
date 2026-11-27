@@ -1,5 +1,6 @@
 """Bounded transport actions and methods, including unsupported alternatives."""
 import re
+from .safety_patterns import conditions_conjoined
 
 _DRAG = r'(?:drag(?:ging|ged)?|arrast\w*)'
 PATTERN = (r'\b(?:carry|carried|carrying|carreg\w*|levem|lleven|llevar|cargu\w*|'
@@ -27,3 +28,17 @@ def methods(text):
     return {name for name, pattern in _METHODS.items()
             for match in re.finditer(pattern, text)
             if not negative_at(text, match.start())}
+
+
+def self_rescue_conditions(text):
+    """Preserve necessity AND a known safe route across bounded paraphrases."""
+    matches = [re.search(pattern, text) for pattern in (
+        r'\b(?:only option|last option|last resort|unica opcao|unica opcion)\b',
+        r'\b(?:known route|route (?:is )?known|rota conhecida|ruta conocida)\b',
+        r'\b(?:safely|safe|com seguranca|con seguridad)\b',
+    )]
+    if not all(matches):
+        return False
+    if any(re.search(r'\b(?:not|never|nao|no|nunca) (?:\w+ ){0,2}$', text[:m.start()]) for m in matches):
+        return False
+    return all(conditions_conjoined(text, matches[0], other) for other in matches[1:])

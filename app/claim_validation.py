@@ -18,7 +18,7 @@ from .action_patterns import WATER_INTAKE
 from .snake_claims import BODY, POSITION, CLEANING, positions, cleaning_scope_supported
 from .explanation_validation import check_explanations, relations
 from .compression_claims import PATTERN as COMPRESSION_PATTERN, positive_swelling, restrictions_preserved
-from .transport_claims import PATTERN as TRANSPORT_PATTERN, methods as transport_methods, negative_at as transport_negative
+from .transport_claims import PATTERN as TRANSPORT_PATTERN, methods as transport_methods, negative_at as transport_negative, self_rescue_conditions
 
 _FIRMLY = r'\b(?:firmly|tightly|strongly|firmemente|fortemente|fuertemente)\b'
 _STUCK = r'\b(?:stuck|adher\w*|grudad\w*|pegad\w*)\b'
@@ -38,6 +38,8 @@ class Rule:
 # Object-specific verbs keep an unrelated "give" from turning a prohibition
 # elsewhere in the sentence into a positive instruction.
 RULES = (
+    Rule('bleeding_tourniquet', r'\b(?:use|apply|aplique|utilice|coloque)\b.{0,30}\b(?:tourniquet|torniquete)\b', ('bleeding',)),
+    Rule('snake_self_rescue', r'\b(?:walk (?:toward|to) help|caminhe|camine|moverse (?:solo )?hacia)\b', ('snakebite',)),
     Rule('dehydration_renal_failure', r'\b(?:kidney failure|renal failure|fallo renal|insuficiencia renal|falencia renal)\b', ('dehydration',)),
     Rule('snake_transport', TRANSPORT_PATTERN, ('snakebite',)),
     Rule('snake_cleaning', CLEANING, ('snakebite',)),
@@ -59,7 +61,7 @@ RULES = (
     Rule('fire_cover', r'\b(?:cover|smother|slide|cubra|abafe|tape|deslice|cobrir)\b', ('fire', 'grease_fire')),
     Rule('extinguisher', r'\b(?:use|using|apply|utilize|usar|utilice)\b.{0,55}\b(?:extinguisher|extintor)\b', ('fire', 'grease_fire')),
     Rule('cpr', r'\b(?:(?:start|begin|perform|give|initiate|continue|do(?= (?:cpr|rcp|chest compressions))|inicie|comece|faca|realize|comience|inicia|haga|realizar)\s+(?:\w+\s+){0,3}(?:cpr|rcp|chest compressions|compressoes toracicas|compresiones toracicas)|(?:cpr|rcp) (?:now|immediately|agora|ahora))\b'),
-    Rule('oral', r'\b(?:give|offer|take|eat|drink|administer|dar|de|ofereca|ofrezca(?:le)?|ofrecer|tome|beba|coma|dele|administre)\b.{0,60}\b(?:glucose|sugar|juice|honey|food|drinks?|anything by mouth|oral|antihistamine\w*|tablet\w*|glicose|acucar|suco|mel|comprimido\w*|alimento\w*|bebida\w*|glucosa|azucar|jugo|miel|pastilla\w*|antihistaminico\w*)\b'),
+    Rule('oral', r'\b(?:give|offer|take|eat|drink|administer|dar|ofereca|ofrezca(?:le)?|ofrecer|tome|beba|coma|dele|administre)\b.{0,60}\b(?:glucose|sugar|juice|honey|food|drinks?|anything by mouth|oral|antihistamine\w*|tablet\w*|glicose|acucar|suco|mel|comprimido\w*|alimento\w*|bebida\w*|glucosa|azucar|jugo|miel|pastilla\w*|antihistaminico\w*)\b'),
     Rule('oral_adjunct', r'\b(?:consider\w*|adjunct|adjuvante|complemento|complementario)\b', ('anaphylaxis',)),
     Rule('water_chemical', r'\b(?:boil\w*|disinfect\w*|ferv\w*|desinfet\w*|herv\w*|desinfect\w*)\b', ('water_chemical',)),
     Rule('injector', r'\b(?:use|inject|administer|give|apply|aplique|administre|injete|inyecte|utilice)\b.{0,70}\b(?:epinephrine|adrenaline|auto injector|epipen|jext|anapen|adrenalina|epinefrina|autoinjetor|autoinyector)\b', ('anaphylaxis',)),
@@ -152,6 +154,13 @@ def _negative_prerequisite(text):
 
 
 def _condition_issue(name, text, question, positive=True):
+    if name == 'bleeding_tourniquet' and positive and (_has(
+            r'\b(?:not|never|no|nao|sem|sin) (?:life threatening|risco de vida|mortal)\b', text) or not all((
+            _has(r'\b(?:life threatening|risco de vida|mortal)\b', text),
+            _has(r'\b(?:arm|leg|limb|braco|perna|membro|brazo|pierna|extremidad)\b', text)))):
+        return 'tourniquet_conditions_missing'
+    if name == 'snake_self_rescue' and positive and not self_rescue_conditions(text):
+        return 'snake_self_rescue_conditions_missing'
     if name == 'snake_tourniquet':
         if positive:
             return 'snake_tourniquet_unsafe'
@@ -384,6 +393,12 @@ def _list_prefix(units, index, name):
 
 def _scope_for_unit(units, index, name):
     raw = _list_prefix(units, index, name) + units[index][0]
+    if name == 'bleeding_tourniquet' and index + 1 < len(units):
+        following = units[index + 1][0]
+        if ((raw.replace('*', '').strip().endswith(':')
+             and re.match(r'\s*[*+-]\s+', following)) or
+                _has(r'^(?:use it only if trained|only trained responders should apply the tourniquet)\b', normalize(following))):
+            raw += ' ' + following
     if name == 'snake_tourniquet':
         if index + 1 < len(units):
             following = units[index + 1][0]
@@ -509,6 +524,10 @@ def check_claims(answer, sources, plan):
                             method_failure = True
                             continue
                         context = _claim_text(_scope_for_unit(source_units, si, rule.name), rule.name)
+                        if rule.name == 'bleeding_tourniquet':
+                            training = r'\b(?:you are trained|only if trained|if trained|only trained responders|tiver treinamento|tiene formacion)\b'
+                            if _has(training, context) and not _has(training, scoped):
+                                continue
                         if rule.name == 'snake_cleaning' and not cleaning_scope_supported(text, candidate):
                             continue
                         if rule.name == 'snake_position':
