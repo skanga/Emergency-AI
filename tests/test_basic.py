@@ -93,7 +93,8 @@ class EngineTests(unittest.TestCase):
         self.assertIn("Ferva a água", text)
         self.assertIn("⚠️", text)  # medical disclaimer
         kinds = {s["kind"] for s in sources}
-        self.assertEqual(kinds, {"kit", "kiwix"})
+        self.assertEqual(kinds, {"kit", "kiwix", "guidance"})
+        self.assertTrue(any(s.get("guidance_unit") == "dehydration-escalation" for s in sources))
         kiwix_src = [s for s in sources if s["kind"] == "kiwix"][0]
         self.assertIn("reidratação oral", kiwix_src["text"])
         self.assertNotIn("var x", kiwix_src["text"])

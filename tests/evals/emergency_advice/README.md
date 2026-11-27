@@ -89,3 +89,15 @@ The latest [fresh evaluation after steps 3–4](../../../docs/reviews/2026-11-26
 [Grounding replay evidence](baselines/grounding-2026-11-26/replay.json) records citation/summary repairs, scoped local passages and bounded explanation support. All ten historical drafts retain blocking issues. The subsequent fresh evaluation is recorded below.
 
 [Fresh grounding evaluation](../../../docs/reviews/2026-11-26-grounding-live-evaluation.md) records twenty inspected multilingual generations: ten local-only and ten Kiwix-enabled. Neither establishes a quality pass; captures retain the released unsupported positioning instruction, prohibition false positives and source-interpretation failures.
+
+## November 27 quality follow-up
+
+[Latest follow-up](../../../docs/reviews/2026-11-27-quality-followup.md) records bounded validator fixes, a dehydration fallback, 60 fresh captures across distinct revisions, final-validator replays, and the refreshed retrieval/operating checks. The 32-case screen still fails; targeted improvements do not replace that result. [Source mappings](../../../docs/references/guidance-sources.md) are maintained separately from historical reviews.
+
+To regenerate the preserved multi-domain report using the unchanged default manifest:
+
+```sh
+python -B tests/evals/emergency_advice/runner.py report --run tests/evals/emergency_advice/baselines/quality-followup-2026-11-27/broad-run.json --reviews tests/evals/emergency_advice/baselines/quality-followup-2026-11-27/broad-reviews.json --output output/advice/nov27-report.md
+```
+
+Use a new output path. `inspection-reviews.json` binds the separate evaluation-only draft captures; `targeted-final-replay.json` records final validator decisions without relabeling historical displayed answers. Review limits and unresolved findings stay explicit.

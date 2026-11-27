@@ -49,7 +49,7 @@ The development suite then exposed natural-language routing misses for cooking o
 
 - General claim entailment and condition understanding remain unverified. A replay of the refined snakebite self-travel answer still passes the final bounded validator even though its travel advice is unsupported by the cited passage.
 - Some known wording and conditions remain outside coverage, including blanket CPR movement restrictions. Some emergencies still receive notices when no eligible fallback is available.
-- Conservative checks can withhold legitimate paraphrases, including generator maintenance/shutdown advice outside the supported emergency procedure. These limitations are documented in the [guard review](2026-11-26-final-action-guards.md).
+- Conservative checks can withhold legitimate paraphrases, including generator maintenance/shutdown advice outside the supported emergency procedure. These limitations are documented in the [guard review](../references/action-conditions.md).
 - Independent clinical and native-language adjudication, new holdout cases, and a new complete release screen remain necessary before any clinical-approval claim. This work does not provide that approval.
 - Native Windows/macOS execution of this revision awaits CI. Linux tests are not native-platform verification. Broader annotated retrieval precision and cold/warm/offline operating-matrix work remain outside this follow-up.
 

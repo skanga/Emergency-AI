@@ -1,0 +1,4781 @@
+{
+  "summary": {
+    "cases": 59,
+    "gold_recall": {
+      "matched": 15,
+      "annotated": 30,
+      "rate": 0.5
+    },
+    "by_language": {
+      "en": {
+        "matched": 8,
+        "annotated": 18
+      },
+      "pt": {
+        "matched": 4,
+        "annotated": 6
+      },
+      "es": {
+        "matched": 3,
+        "annotated": 6
+      }
+    },
+    "retrieval_p95_seconds": 0.99,
+    "unannotated_cases": 29,
+    "human_precision": null,
+    "answer_safety_review": "pending",
+    "release_gates_passed": false,
+    "limitation": "Gold-section matches only. Independent relevance and safety annotation is required."
+  },
+  "results": [
+    {
+      "id": "heldout-01",
+      "split": "heldout",
+      "question": "My father collapsed. He will not respond and takes an occasional snorting breath.",
+      "language": "en",
+      "seconds": 0.919,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 30,
+        "included": 7,
+        "library_passages": 106,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:2",
+          "guidance:cpr-boundary:en:v1",
+          "guidance:adult-cpr-compressions:en:v1",
+          "guidance:adult-cpr-continuation:en:v1",
+          "7b01e1adec0cec26d63cc9e3",
+          "89420eef3118222ed6a6116c",
+          "45fc74c190fdac04549835bf"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:2",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:cpr-boundary:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "CPR first aid",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-compressions:en:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Giving CPR; adult scope",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-continuation:en:v1",
+          "n": 4,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "How long should I do compressions?; breathing technique",
+          "context_omitted": false
+        },
+        {
+          "id": "7b01e1adec0cec26d63cc9e3",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Order of CPR in a first aid sequence",
+          "context_omitted": false
+        },
+        {
+          "id": "89420eef3118222ed6a6116c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Cardiopulmonary resuscitation",
+          "context_omitted": false
+        },
+        {
+          "id": "45fc74c190fdac04549835bf",
+          "n": 7,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Chain_of_survival",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Chain of survival",
+          "context_omitted": false
+        },
+        {
+          "id": "en:07-first-aid-medicine:1",
+          "n": 8,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Initial assessment: safety and X-ABCDE",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-02",
+      "split": "heldout",
+      "question": "Meu pai caiu, não responde e só dá suspiros espaçados.",
+      "language": "pt",
+      "seconds": 0.664,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 30,
+        "included": 7,
+        "library_passages": 106,
+        "included_source_ids": [
+          "pt:07-first-aid-medicine:2",
+          "guidance:cpr-boundary:pt:v1",
+          "guidance:adult-cpr-compressions:pt:v1",
+          "guidance:adult-cpr-continuation:pt:v1",
+          "7b01e1adec0cec26d63cc9e3",
+          "89420eef3118222ed6a6116c",
+          "45fc74c190fdac04549835bf"
+        ]
+      },
+      "sources": [
+        {
+          "id": "pt:07-first-aid-medicine:2",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Parada cardíaca: RCP (reanimação cardiopulmonar)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:cpr-boundary:pt:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "CPR first aid",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-compressions:pt:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Giving CPR; adult scope",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-continuation:pt:v1",
+          "n": 4,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "How long should I do compressions?; breathing technique",
+          "context_omitted": false
+        },
+        {
+          "id": "7b01e1adec0cec26d63cc9e3",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Order of CPR in a first aid sequence",
+          "context_omitted": false
+        },
+        {
+          "id": "89420eef3118222ed6a6116c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Cardiopulmonary resuscitation",
+          "context_omitted": false
+        },
+        {
+          "id": "45fc74c190fdac04549835bf",
+          "n": 7,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Chain_of_survival",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Chain of survival",
+          "context_omitted": false
+        },
+        {
+          "id": "pt:07-first-aid-medicine:1",
+          "n": 8,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Avaliação inicial: segurança e X-ABCDE",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-03",
+      "split": "heldout",
+      "question": "Mi padre se desplomó, no responde y sólo jadea de vez en cuando.",
+      "language": "es",
+      "seconds": 0.66,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 30,
+        "included": 7,
+        "library_passages": 106,
+        "included_source_ids": [
+          "es:07-first-aid-medicine:2",
+          "guidance:cpr-boundary:es:v1",
+          "guidance:adult-cpr-compressions:es:v1",
+          "guidance:adult-cpr-continuation:es:v1",
+          "7b01e1adec0cec26d63cc9e3",
+          "89420eef3118222ed6a6116c",
+          "45fc74c190fdac04549835bf"
+        ]
+      },
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:2",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Paro cardíaco: RCP (reanimación cardiopulmonar)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:cpr-boundary:es:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "CPR first aid",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-compressions:es:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Giving CPR; adult scope",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-continuation:es:v1",
+          "n": 4,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "How long should I do compressions?; breathing technique",
+          "context_omitted": false
+        },
+        {
+          "id": "7b01e1adec0cec26d63cc9e3",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Order of CPR in a first aid sequence",
+          "context_omitted": false
+        },
+        {
+          "id": "89420eef3118222ed6a6116c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Cardiopulmonary resuscitation",
+          "context_omitted": false
+        },
+        {
+          "id": "45fc74c190fdac04549835bf",
+          "n": 7,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Chain_of_survival",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Chain of survival",
+          "context_omitted": false
+        },
+        {
+          "id": "es:07-first-aid-medicine:1",
+          "n": 8,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Evaluación inicial: seguridad y X-ABCDE",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-04",
+      "split": "heldout",
+      "question": "My eight-month-old cannot cry or cough after swallowing food.",
+      "language": "en",
+      "seconds": 0.734,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 26,
+        "included": 4,
+        "library_passages": 44,
+        "included_source_ids": [
+          "guidance:infant-choking-responsive:en:v1",
+          "guidance:infant-choking-unresponsive:en:v1",
+          "e225be0ae6238908e4b7a947",
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:infant-choking-responsive:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Relief of severe foreign body airway obstruction in infants",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:infant-choking-unresponsive:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Infant CPR after choking; single rescuer",
+          "context_omitted": false
+        },
+        {
+          "id": "e225be0ae6238908e4b7a947",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Basic treatment (first aid)",
+          "context_omitted": false
+        },
+        {
+          "id": "10d1449b1c65ef32d6a25f7e",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "context_omitted": false
+        },
+        {
+          "id": "d2178c962fb1b059c91680ca",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Prevention › Prevention for babies and children",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-05",
+      "split": "heldout",
+      "question": "Meu bebê de oito meses engasgou e não consegue chorar nem tossir.",
+      "language": "pt",
+      "seconds": 0.611,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 26,
+        "included": 5,
+        "library_passages": 44,
+        "included_source_ids": [
+          "pt:07-first-aid-medicine:3",
+          "guidance:infant-choking-responsive:pt:v1",
+          "guidance:infant-choking-unresponsive:pt:v1",
+          "e225be0ae6238908e4b7a947",
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "sources": [
+        {
+          "id": "pt:07-first-aid-medicine:3",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Engasgo (obstrução das vias aéreas)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:infant-choking-responsive:pt:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Relief of severe foreign body airway obstruction in infants",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:infant-choking-unresponsive:pt:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Infant CPR after choking; single rescuer",
+          "context_omitted": false
+        },
+        {
+          "id": "e225be0ae6238908e4b7a947",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Basic treatment (first aid)",
+          "context_omitted": false
+        },
+        {
+          "id": "10d1449b1c65ef32d6a25f7e",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "context_omitted": false
+        },
+        {
+          "id": "d2178c962fb1b059c91680ca",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Prevention › Prevention for babies and children",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-06",
+      "split": "heldout",
+      "question": "Mi bebé de ocho meses se atragantó y no puede toser ni llorar.",
+      "language": "es",
+      "seconds": 0.6,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 26,
+        "included": 5,
+        "library_passages": 44,
+        "included_source_ids": [
+          "es:07-first-aid-medicine:3",
+          "guidance:infant-choking-responsive:es:v1",
+          "guidance:infant-choking-unresponsive:es:v1",
+          "e225be0ae6238908e4b7a947",
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:3",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Atragantamiento (obstrucción de la vía aérea)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:infant-choking-responsive:es:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Relief of severe foreign body airway obstruction in infants",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:infant-choking-unresponsive:es:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Infant CPR after choking; single rescuer",
+          "context_omitted": false
+        },
+        {
+          "id": "e225be0ae6238908e4b7a947",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Basic treatment (first aid)",
+          "context_omitted": false
+        },
+        {
+          "id": "10d1449b1c65ef32d6a25f7e",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "context_omitted": false
+        },
+        {
+          "id": "d2178c962fb1b059c91680ca",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Prevention › Prevention for babies and children",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-07",
+      "split": "heldout",
+      "question": "After a bee sting she has swollen lips and trouble breathing.",
+      "language": "en",
+      "seconds": 0.803,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 24,
+        "included": 6,
+        "library_passages": 84,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:14",
+          "guidance:allergy-action-plan:en:v1",
+          "guidance:anaphylaxis-injector:en:v1",
+          "9e486b57c4e56a79431bb0bb",
+          "fbb67c3dec0e76816192419f",
+          "f84c7ce0b6d12a78c8088b8c"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:14",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:allergy-action-plan:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Personalized emergency care plan; monitoring for changes",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:anaphylaxis-injector:en:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "What to do if you have anaphylaxis",
+          "context_omitted": false
+        },
+        {
+          "id": "9e486b57c4e56a79431bb0bb",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Adjuncts",
+          "context_omitted": false
+        },
+        {
+          "id": "fbb67c3dec0e76816192419f",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Preparedness",
+          "context_omitted": false
+        },
+        {
+          "id": "f84c7ce0b6d12a78c8088b8c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Anaphylaxis#Biphasic_%2810-20%25%29",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Anaphylaxis › Clinical Features › Expected Course › Biphasic (10-20%)",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-08",
+      "split": "heldout",
+      "question": "Depois de uma picada de abelha, ela está com os lábios inchados e falta de ar.",
+      "language": "pt",
+      "seconds": 0.584,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 24,
+        "included": 6,
+        "library_passages": 88,
+        "included_source_ids": [
+          "pt:07-first-aid-medicine:14",
+          "guidance:allergy-action-plan:pt:v1",
+          "guidance:anaphylaxis-injector:pt:v1",
+          "9e486b57c4e56a79431bb0bb",
+          "fbb67c3dec0e76816192419f",
+          "4d8279c676251349e6f8418d"
+        ]
+      },
+      "sources": [
+        {
+          "id": "pt:07-first-aid-medicine:14",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Reação alérgica grave (anafilaxia)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:allergy-action-plan:pt:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Personalized emergency care plan; monitoring for changes",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:anaphylaxis-injector:pt:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "What to do if you have anaphylaxis",
+          "context_omitted": false
+        },
+        {
+          "id": "9e486b57c4e56a79431bb0bb",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Adjuncts",
+          "context_omitted": false
+        },
+        {
+          "id": "fbb67c3dec0e76816192419f",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Preparedness",
+          "context_omitted": false
+        },
+        {
+          "id": "4d8279c676251349e6f8418d",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Anaphylaxis#Admit",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Anaphylaxis › Disposition › Admit",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-09",
+      "split": "heldout",
+      "question": "Tras una picadura de abeja tiene los labios hinchados y le cuesta respirar.",
+      "language": "es",
+      "seconds": 0.585,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 24,
+        "included": 6,
+        "library_passages": 88,
+        "included_source_ids": [
+          "es:07-first-aid-medicine:14",
+          "guidance:allergy-action-plan:es:v1",
+          "guidance:anaphylaxis-injector:es:v1",
+          "9e486b57c4e56a79431bb0bb",
+          "fbb67c3dec0e76816192419f",
+          "4d8279c676251349e6f8418d"
+        ]
+      },
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:14",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Reacción alérgica grave (anafilaxia)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:allergy-action-plan:es:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Personalized emergency care plan; monitoring for changes",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:anaphylaxis-injector:es:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "What to do if you have anaphylaxis",
+          "context_omitted": false
+        },
+        {
+          "id": "9e486b57c4e56a79431bb0bb",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Adjuncts",
+          "context_omitted": false
+        },
+        {
+          "id": "fbb67c3dec0e76816192419f",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Preparedness",
+          "context_omitted": false
+        },
+        {
+          "id": "4d8279c676251349e6f8418d",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Anaphylaxis#Admit",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Anaphylaxis › Disposition › Admit",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-10",
+      "split": "heldout",
+      "question": "His smile is crooked and suddenly he cannot lift his left arm.",
+      "language": "en",
+      "seconds": 0.648,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 31,
+        "included": 4,
+        "library_passages": 113,
+        "included_source_ids": [
+          "guidance:stroke-response:en:v1",
+          "01844ec2fa8cd838c2b8537a",
+          "25ab479cba45a20999b9f9d9",
+          "bbb6e06672556129526d8d20"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:stroke-response:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "B.E. F.A.S.T.; transient symptoms",
+          "context_omitted": false
+        },
+        {
+          "id": "01844ec2fa8cd838c2b8537a",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management",
+          "context_omitted": false
+        },
+        {
+          "id": "25ab479cba45a20999b9f9d9",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Stroke (main) › Management",
+          "context_omitted": false
+        },
+        {
+          "id": "bbb6e06672556129526d8d20",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Embolic_stroke",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Causes › Embolic stroke",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-11",
+      "split": "heldout",
+      "question": "O sorriso dele ficou torto e de repente não consegue levantar um braço.",
+      "language": "pt",
+      "seconds": 0.413,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 31,
+        "included": 4,
+        "library_passages": 113,
+        "included_source_ids": [
+          "guidance:stroke-response:pt:v1",
+          "01844ec2fa8cd838c2b8537a",
+          "25ab479cba45a20999b9f9d9",
+          "ca745adc2909b315b828bff2"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:stroke-response:pt:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "B.E. F.A.S.T.; transient symptoms",
+          "context_omitted": false
+        },
+        {
+          "id": "01844ec2fa8cd838c2b8537a",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management",
+          "context_omitted": false
+        },
+        {
+          "id": "25ab479cba45a20999b9f9d9",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Stroke (main) › Management",
+          "context_omitted": false
+        },
+        {
+          "id": "ca745adc2909b315b828bff2",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Cerebral_hypoperfusion",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Causes › Cerebral hypoperfusion",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-12",
+      "split": "heldout",
+      "question": "De repente tiene la sonrisa torcida y no puede levantar un brazo.",
+      "language": "es",
+      "seconds": 0.406,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 31,
+        "included": 4,
+        "library_passages": 113,
+        "included_source_ids": [
+          "guidance:stroke-response:es:v1",
+          "01844ec2fa8cd838c2b8537a",
+          "25ab479cba45a20999b9f9d9",
+          "ca745adc2909b315b828bff2"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:stroke-response:es:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "B.E. F.A.S.T.; transient symptoms",
+          "context_omitted": false
+        },
+        {
+          "id": "01844ec2fa8cd838c2b8537a",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management",
+          "context_omitted": false
+        },
+        {
+          "id": "25ab479cba45a20999b9f9d9",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Stroke (main) › Management",
+          "context_omitted": false
+        },
+        {
+          "id": "ca745adc2909b315b828bff2",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Cerebral_hypoperfusion",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Causes › Cerebral hypoperfusion",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-13",
+      "split": "heldout",
+      "question": "Everyone in the cabin has a headache while the generator runs indoors.",
+      "language": "en",
+      "seconds": 0.609,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 32,
+        "included": 6,
+        "library_passages": 54,
+        "included_source_ids": [
+          "en:02-fire:7",
+          "guidance:carbon-monoxide-escape:en:v1",
+          "cae2aaa84c5e9e4a4f350caf",
+          "e2304d5c0b271611d0a1b585",
+          "en:10-energy-light:5",
+          "en:10-energy-light:3"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:02-fire:7",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Safety",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:carbon-monoxide-escape:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "cae2aaa84c5e9e4a4f350caf",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment",
+          "context_omitted": false
+        },
+        {
+          "id": "e2304d5c0b271611d0a1b585",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "fa2a43a3e2c48d8c1422653d",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Hyperbaric oxygen",
+          "context_omitted": true
+        },
+        {
+          "id": "en:10-energy-light:5",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Devices and data",
+          "context_omitted": false
+        },
+        {
+          "id": "en:10-energy-light:3",
+          "n": 7,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Car batteries and generators",
+          "context_omitted": false
+        },
+        {
+          "id": "en:03-shelter:6",
+          "n": 8,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Safe heating",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-14",
+      "split": "heldout",
+      "question": "Todos na cabana têm dor de cabeça e o gerador está funcionando lá dentro.",
+      "language": "pt",
+      "seconds": 0.394,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 32,
+        "included": 6,
+        "library_passages": 54,
+        "included_source_ids": [
+          "pt:02-fire:7",
+          "guidance:carbon-monoxide-escape:pt:v1",
+          "cae2aaa84c5e9e4a4f350caf",
+          "e2304d5c0b271611d0a1b585",
+          "pt:10-energy-light:3",
+          "pt:03-shelter:6"
+        ]
+      },
+      "sources": [
+        {
+          "id": "pt:02-fire:7",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Segurança",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:carbon-monoxide-escape:pt:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "cae2aaa84c5e9e4a4f350caf",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment",
+          "context_omitted": false
+        },
+        {
+          "id": "e2304d5c0b271611d0a1b585",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "fa2a43a3e2c48d8c1422653d",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Hyperbaric oxygen",
+          "context_omitted": true
+        },
+        {
+          "id": "pt:10-energy-light:3",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Baterias de carro e geradores",
+          "context_omitted": false
+        },
+        {
+          "id": "pt:03-shelter:6",
+          "n": 7,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Aquecimento seguro",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-15",
+      "split": "heldout",
+      "question": "Todos en la cabaña tienen dolor de cabeza con el generador funcionando dentro.",
+      "language": "es",
+      "seconds": 0.423,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 32,
+        "included": 6,
+        "library_passages": 54,
+        "included_source_ids": [
+          "es:02-fire:7",
+          "guidance:carbon-monoxide-escape:es:v1",
+          "cae2aaa84c5e9e4a4f350caf",
+          "e2304d5c0b271611d0a1b585",
+          "es:03-shelter:6",
+          "es:10-energy-light:3"
+        ]
+      },
+      "sources": [
+        {
+          "id": "es:02-fire:7",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Seguridad",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:carbon-monoxide-escape:es:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "cae2aaa84c5e9e4a4f350caf",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment",
+          "context_omitted": false
+        },
+        {
+          "id": "e2304d5c0b271611d0a1b585",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "fa2a43a3e2c48d8c1422653d",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Hyperbaric oxygen",
+          "context_omitted": true
+        },
+        {
+          "id": "es:03-shelter:6",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Calefacción segura",
+          "context_omitted": false
+        },
+        {
+          "id": "es:10-energy-light:3",
+          "n": 7,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Baterías de auto y generadores",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-16",
+      "split": "heldout",
+      "question": "Floodwater near a pesticide store entered our drinking-water tank.",
+      "language": "en",
+      "seconds": 0.763,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5,
+        "library_passages": 3,
+        "included_source_ids": [
+          "en:authority/cdc-water:0",
+          "guidance:water-chemical:en:v1",
+          "2014f4a6162e0623136e233f",
+          "3cca240828a8f09c6abd1bfb",
+          "en:01-water:6"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:authority/cdc-water:0",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Boiling cloudy drinking water: chemical contamination and elevation limits",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:water-chemical:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Water with fuel or toxic chemicals in it",
+          "context_omitted": false
+        },
+        {
+          "id": "2014f4a6162e0623136e233f",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 30",
+          "context_omitted": false
+        },
+        {
+          "id": "3cca240828a8f09c6abd1bfb",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 25",
+          "context_omitted": false
+        },
+        {
+          "id": "en:01-water:6",
+          "n": 5,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Storage",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-17",
+      "split": "heldout",
+      "question": "Água da enchente com pesticida entrou no tanque de água potável.",
+      "language": "pt",
+      "seconds": 0.631,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 6,
+        "library_passages": 3,
+        "included_source_ids": [
+          "pt:authority/cdc-water:0",
+          "guidance:water-chemical:pt:v1",
+          "2014f4a6162e0623136e233f",
+          "3cca240828a8f09c6abd1bfb",
+          "pt:00-priorities:2",
+          "pt:07-first-aid-medicine:6"
+        ]
+      },
+      "sources": [
+        {
+          "id": "pt:authority/cdc-water:0",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Boiling cloudy drinking water: chemical contamination and elevation limits",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:water-chemical:pt:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Water with fuel or toxic chemicals in it",
+          "context_omitted": false
+        },
+        {
+          "id": "2014f4a6162e0623136e233f",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 30",
+          "context_omitted": false
+        },
+        {
+          "id": "3cca240828a8f09c6abd1bfb",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 25",
+          "context_omitted": false
+        },
+        {
+          "id": "pt:00-priorities:2",
+          "n": 5,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "As primeiras 72 horas",
+          "context_omitted": false
+        },
+        {
+          "id": "pt:07-first-aid-medicine:6",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Queimaduras",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-18",
+      "split": "heldout",
+      "question": "Entró agua de inundación con pesticidas al depósito de agua potable.",
+      "language": "es",
+      "seconds": 0.605,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5,
+        "library_passages": 3,
+        "included_source_ids": [
+          "es:authority/cdc-water:0",
+          "guidance:water-chemical:es:v1",
+          "2014f4a6162e0623136e233f",
+          "3cca240828a8f09c6abd1bfb",
+          "es:07-first-aid-medicine:6"
+        ]
+      },
+      "sources": [
+        {
+          "id": "es:authority/cdc-water:0",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Boiling cloudy drinking water: chemical contamination and elevation limits",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:water-chemical:es:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Water with fuel or toxic chemicals in it",
+          "context_omitted": false
+        },
+        {
+          "id": "2014f4a6162e0623136e233f",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 30",
+          "context_omitted": false
+        },
+        {
+          "id": "3cca240828a8f09c6abd1bfb",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 25",
+          "context_omitted": false
+        },
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "n": 5,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Quemaduras",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-19",
+      "split": "heldout",
+      "question": "Hot soup spilled over my forearm and it is blistering.",
+      "language": "en",
+      "seconds": 0.861,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5,
+        "library_passages": 113,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:6",
+          "guidance:burn-cooling:en:v1",
+          "f8f196bda44f39972abf7dd3",
+          "3d414c1f96752b0947a6cd1f",
+          "c2ee2d302ca75b500c2dbcfa"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:6",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Burns",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:burn-cooling:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "What to do if you have a burn or scald",
+          "context_omitted": false
+        },
+        {
+          "id": "f8f196bda44f39972abf7dd3",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Burns › Management",
+          "context_omitted": false
+        },
+        {
+          "id": "3d414c1f96752b0947a6cd1f",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Fluid_Quantity",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Burns › Management › Fluid Resuscitation › Indications based on Total Body Surface Area (TBSA) of Burn › Fluid Quantity",
+          "context_omitted": false
+        },
+        {
+          "id": "c2ee2d302ca75b500c2dbcfa",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Burns › Management › Fluid Resuscitation › Indications based on Total Body Surface Area (TBSA) of Burn › Types of fluids",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-20",
+      "split": "heldout",
+      "question": "A runner is confused and extremely hot after exercising in the sun.",
+      "language": "en",
+      "seconds": 0.737,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 6,
+        "library_passages": 55,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:12",
+          "guidance:heat-cooling:en:v1",
+          "0899ba2bc0dc6f3e09214a10",
+          "68aa7faba734621a0ac6113a",
+          "a80cec681ddf2a5291d3033f",
+          "en:03-shelter:5"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:12",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Heatstroke and heat exhaustion",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:heat-cooling:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Heat stroke: First aid",
+          "context_omitted": false
+        },
+        {
+          "id": "0899ba2bc0dc6f3e09214a10",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_exhaustion#First_aid",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › First aid",
+          "context_omitted": false
+        },
+        {
+          "id": "68aa7faba734621a0ac6113a",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Techniques",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Heat stroke › Management › Rapid Cooling › Techniques",
+          "context_omitted": false
+        },
+        {
+          "id": "a80cec681ddf2a5291d3033f",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Rapid_Cooling",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Heat stroke › Management › Rapid Cooling",
+          "context_omitted": false
+        },
+        {
+          "id": "en:03-shelter:5",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Extreme heat",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-21",
+      "split": "heldout",
+      "question": "My brother is jerking on the floor and does not respond.",
+      "language": "en",
+      "seconds": 0.949,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 32,
+        "included": 3,
+        "library_passages": 178,
+        "included_source_ids": [
+          "0c1dc175fe90d253ead7831b",
+          "286360ad3d62defd7f0b0e2c",
+          "108eacc1885b304fd69fdf7f"
+        ]
+      },
+      "sources": [
+        {
+          "id": "0c1dc175fe90d253ead7831b",
+          "n": 1,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Seizure#First_aid_during_a_seizure",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › First aid during a seizure",
+          "context_omitted": false
+        },
+        {
+          "id": "286360ad3d62defd7f0b0e2c",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Epilepsy#First_aid_and_acute_management_of_seizures",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › First aid and acute management of seizures",
+          "context_omitted": false
+        },
+        {
+          "id": "108eacc1885b304fd69fdf7f",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Seizure#Management",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Seizure › Management",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "0c1dc175fe90d253ead7831b"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-22",
+      "split": "heldout",
+      "question": "Now he is unconscious. What changes?",
+      "language": "en",
+      "seconds": 0.706,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 26,
+        "included": 3,
+        "library_passages": 46,
+        "included_source_ids": [
+          "guidance:infant-choking-unresponsive:en:v1",
+          "73a08625ae443f925c5edde5",
+          "e225be0ae6238908e4b7a947"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:infant-choking-unresponsive:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Infant CPR after choking; single rescuer",
+          "context_omitted": false
+        },
+        {
+          "id": "73a08625ae443f925c5edde5",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Unconscious_infants",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old) › Unconscious infants",
+          "context_omitted": false
+        },
+        {
+          "id": "e225be0ae6238908e4b7a947",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Basic treatment (first aid)",
+          "context_omitted": false
+        },
+        {
+          "id": "10d1449b1c65ef32d6a25f7e",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-23",
+      "split": "heldout",
+      "question": "It has been several minutes and breathing is still difficult. We have another injector.",
+      "language": "en",
+      "seconds": 0.775,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 24,
+        "included": 6,
+        "library_passages": 70,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:14",
+          "guidance:allergy-action-plan:en:v1",
+          "guidance:anaphylaxis-injector:en:v1",
+          "9e486b57c4e56a79431bb0bb",
+          "fbb67c3dec0e76816192419f",
+          "f84c7ce0b6d12a78c8088b8c"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:14",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:allergy-action-plan:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Personalized emergency care plan; monitoring for changes",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:anaphylaxis-injector:en:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "What to do if you have anaphylaxis",
+          "context_omitted": false
+        },
+        {
+          "id": "9e486b57c4e56a79431bb0bb",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Adjuncts",
+          "context_omitted": false
+        },
+        {
+          "id": "fbb67c3dec0e76816192419f",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Preparedness",
+          "context_omitted": false
+        },
+        {
+          "id": "f84c7ce0b6d12a78c8088b8c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Anaphylaxis#Biphasic_%2810-20%25%29",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Anaphylaxis › Clinical Features › Expected Course › Biphasic (10-20%)",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "heldout-24",
+      "split": "heldout",
+      "question": "Different problem: the frying oil on my stove has caught fire.",
+      "language": "en",
+      "seconds": 0.706,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 26,
+        "included": 1,
+        "library_passages": 0,
+        "included_source_ids": [
+          "guidance:cooking-fire:en:v1"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:cooking-fire:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "To put out a cooking fire in your kitchen",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-01",
+      "split": "negative",
+      "question": "How does a two-stroke diesel engine work?",
+      "language": "en",
+      "seconds": 0.592,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 16,
+        "included": 3,
+        "library_passages": 19,
+        "included_source_ids": [
+          "52742c00f84f3563f5f74609",
+          "83ad252a4eb167df9cba2349",
+          "9b576338a9ccd9a85781389a"
+        ]
+      },
+      "sources": [
+        {
+          "id": "52742c00f84f3563f5f74609",
+          "n": 1,
+          "kind": "kiwix",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine#The_four_stroke_cycle_-_diesel_engine",
+          "book": null,
+          "book_name": "appropedia_en_all",
+          "section": "The four stroke cycle - diesel engine",
+          "context_omitted": false
+        },
+        {
+          "id": "83ad252a4eb167df9cba2349",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine",
+          "book": null,
+          "book_name": "appropedia_en_all",
+          "section": "Diesel engine",
+          "context_omitted": false
+        },
+        {
+          "id": "9b576338a9ccd9a85781389a",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Diesel_engine#Diesel_engine_suppliers",
+          "book": null,
+          "book_name": "appropedia_en_all",
+          "section": "Diesel engine suppliers",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-02",
+      "split": "negative",
+      "question": "How can I repair an Infant Optics baby camera?",
+      "language": "en",
+      "seconds": 0.561,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 4,
+        "candidates": 4,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-03",
+      "split": "negative",
+      "question": "What ingredients are in Seizure Salad?",
+      "language": "en",
+      "seconds": 0.281,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 2,
+        "candidates": 2,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-04",
+      "split": "negative",
+      "question": "How do I dismantle a carbon monoxide detector?",
+      "language": "en",
+      "seconds": 0.199,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-05",
+      "split": "negative",
+      "question": "My food processor motor stopped. How do I repair it?",
+      "language": "en",
+      "seconds": 0.209,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-06",
+      "split": "negative",
+      "question": "Explain the butterfly swimming stroke.",
+      "language": "en",
+      "seconds": 0.348,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 2,
+        "candidates": 2,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-07",
+      "split": "negative",
+      "question": "How do I water a snake plant?",
+      "language": "en",
+      "seconds": 0.537,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 17,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-08",
+      "split": "negative",
+      "question": "My computer froze during a heat simulation.",
+      "language": "en",
+      "seconds": 0.2,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-09",
+      "split": "negative",
+      "question": "How does a flood-fill algorithm work?",
+      "language": "en",
+      "seconds": 1.134,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 12,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-10",
+      "split": "negative",
+      "question": "How do I burn an ISO image to a disc?",
+      "language": "en",
+      "seconds": 0.782,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 11,
+        "candidates": 11,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-11",
+      "split": "negative",
+      "question": "Someone feels strange. What happened?",
+      "language": "en",
+      "seconds": 0.511,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 19,
+        "included": 0,
+        "library_passages": 0,
+        "included_source_ids": []
+      },
+      "sources": [],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "negative-12",
+      "split": "negative",
+      "question": "Can you explain allergy testing in general?",
+      "language": "en",
+      "seconds": 0.499,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 17,
+        "included": 3,
+        "library_passages": 4,
+        "included_source_ids": [
+          "ac732bc7b2e590e3adc4081f",
+          "2969943ae131e03ccc8b9881",
+          "58aae1bfd3f84043e5503350"
+        ]
+      },
+      "sources": [
+        {
+          "id": "ac732bc7b2e590e3adc4081f",
+          "n": 1,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Blood_testing",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Diagnosis › Blood testing",
+          "context_omitted": false
+        },
+        {
+          "id": "2969943ae131e03ccc8b9881",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Skin_prick_testing",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Diagnosis › Skin prick testing",
+          "context_omitted": false
+        },
+        {
+          "id": "58aae1bfd3f84043e5503350",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Allergy#Other_testing",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Diagnosis › Other testing",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-allergy_followup",
+      "split": "original",
+      "question": "I used the injector 6 minutes ago. She is still wheezing and faint. We have a second injector. What now?",
+      "language": "en",
+      "seconds": 0.865,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 24,
+        "included": 6,
+        "library_passages": 81,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:14",
+          "guidance:allergy-action-plan:en:v1",
+          "guidance:anaphylaxis-injector:en:v1",
+          "fbb67c3dec0e76816192419f",
+          "9e486b57c4e56a79431bb0bb",
+          "f84c7ce0b6d12a78c8088b8c"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:14",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:allergy-action-plan:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Personalized emergency care plan; monitoring for changes",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:anaphylaxis-injector:en:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "What to do if you have anaphylaxis",
+          "context_omitted": false
+        },
+        {
+          "id": "fbb67c3dec0e76816192419f",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Preparedness",
+          "context_omitted": false
+        },
+        {
+          "id": "9e486b57c4e56a79431bb0bb",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Adjuncts",
+          "context_omitted": false
+        },
+        {
+          "id": "f84c7ce0b6d12a78c8088b8c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Anaphylaxis#Biphasic_%2810-20%25%29",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Anaphylaxis › Clinical Features › Expected Course › Biphasic (10-20%)",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-anaphylaxis",
+      "split": "original",
+      "question": "My child ate peanuts and now has a swollen tongue, wheezing and feels faint. We have her prescribed epinephrine auto-injector. Should I try antihistamine first?",
+      "language": "en",
+      "seconds": 0.594,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 24,
+        "included": 6,
+        "library_passages": 81,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:14",
+          "guidance:allergy-action-plan:en:v1",
+          "guidance:anaphylaxis-injector:en:v1",
+          "fbb67c3dec0e76816192419f",
+          "9e486b57c4e56a79431bb0bb",
+          "f84c7ce0b6d12a78c8088b8c"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:14",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Severe allergic reaction (anaphylaxis)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:allergy-action-plan:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Personalized emergency care plan; monitoring for changes",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:anaphylaxis-injector:en:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "What to do if you have anaphylaxis",
+          "context_omitted": false
+        },
+        {
+          "id": "fbb67c3dec0e76816192419f",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Preparedness",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Preparedness",
+          "context_omitted": false
+        },
+        {
+          "id": "9e486b57c4e56a79431bb0bb",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Anaphylaxis#Adjuncts",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Adjuncts",
+          "context_omitted": false
+        },
+        {
+          "id": "f84c7ce0b6d12a78c8088b8c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Anaphylaxis#Biphasic_%2810-20%25%29",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Anaphylaxis › Clinical Features › Expected Course › Biphasic (10-20%)",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-bleeding",
+      "split": "original",
+      "question": "A chainsaw cut my friend's thigh. Blood is spurting and soaking towels despite firm pressure. We are 45 minutes from help. What now?",
+      "language": "en",
+      "seconds": 0.761,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 34,
+        "included": 8,
+        "library_passages": 76,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:4",
+          "guidance:bleeding-pressure:en:v1",
+          "guidance:bleeding-tourniquet:en:v1",
+          "318b58994be35576a8b67565",
+          "eac56cf90c89074ebdf98165",
+          "05690a5a5f1b0ce89815e3e9",
+          "en:07-first-aid-medicine:7",
+          "en:00-priorities:2"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:4",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Severe bleeding",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:bleeding-pressure:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "How to stop bleeding",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:bleeding-tourniquet:en:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "How to apply; windlass rod tourniquet",
+          "context_omitted": false
+        },
+        {
+          "id": "318b58994be35576a8b67565",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Bleeding#Management",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management",
+          "context_omitted": false
+        },
+        {
+          "id": "eac56cf90c89074ebdf98165",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Emergency_bleeding_control#Direct_pressure",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "External wound management › Direct pressure",
+          "context_omitted": false
+        },
+        {
+          "id": "05690a5a5f1b0ce89815e3e9",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Emergency_bleeding_control",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Emergency bleeding control",
+          "context_omitted": false
+        },
+        {
+          "id": "en:07-first-aid-medicine:7",
+          "n": 7,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Wounds and infection prevention",
+          "context_omitted": false
+        },
+        {
+          "id": "en:00-priorities:2",
+          "n": 8,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "The first 72 hours",
+          "context_omitted": false
+        },
+        {
+          "id": "en:00-priorities:1",
+          "n": 9,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "The rule of 3",
+          "context_omitted": true
+        },
+        {
+          "id": "en:07-first-aid-medicine:1",
+          "n": 10,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Initial assessment: safety and X-ABCDE",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-burn",
+      "split": "original",
+      "question": "Boiling water spilled on my arm two minutes ago and the skin is blistering. Should I put ice or butter on it?",
+      "language": "en",
+      "seconds": 0.786,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5,
+        "library_passages": 94,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:6",
+          "guidance:burn-cooling:en:v1",
+          "f8f196bda44f39972abf7dd3",
+          "732bf23517c134131db719e8",
+          "c2ee2d302ca75b500c2dbcfa"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:6",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Burns",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:burn-cooling:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "What to do if you have a burn or scald",
+          "context_omitted": false
+        },
+        {
+          "id": "f8f196bda44f39972abf7dd3",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Burns › Management",
+          "context_omitted": false
+        },
+        {
+          "id": "732bf23517c134131db719e8",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Burn#Wound_care",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Wound care",
+          "context_omitted": false
+        },
+        {
+          "id": "c2ee2d302ca75b500c2dbcfa",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Burns › Management › Fluid Resuscitation › Indications based on Total Body Surface Area (TBSA) of Burn › Types of fluids",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-co",
+      "split": "original",
+      "question": "We are using a gasoline generator in the garage with the door open during an outage. Everyone has headaches and nausea. Is it safe if I add a fan?",
+      "language": "en",
+      "seconds": 0.515,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 32,
+        "included": 6,
+        "library_passages": 54,
+        "included_source_ids": [
+          "en:02-fire:7",
+          "guidance:carbon-monoxide-escape:en:v1",
+          "cae2aaa84c5e9e4a4f350caf",
+          "e2304d5c0b271611d0a1b585",
+          "en:03-shelter:6",
+          "en:10-energy-light:3"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:02-fire:7",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Safety",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:carbon-monoxide-escape:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "cae2aaa84c5e9e4a4f350caf",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment",
+          "context_omitted": false
+        },
+        {
+          "id": "e2304d5c0b271611d0a1b585",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "fa2a43a3e2c48d8c1422653d",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Hyperbaric oxygen",
+          "context_omitted": true
+        },
+        {
+          "id": "en:03-shelter:6",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Safe heating",
+          "context_omitted": false
+        },
+        {
+          "id": "en:10-energy-light:3",
+          "n": 7,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Car batteries and generators",
+          "context_omitted": false
+        },
+        {
+          "id": "en:10-energy-light:5",
+          "n": 8,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Devices and data",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-cpr",
+      "split": "original",
+      "question": "My dad just collapsed. He is unresponsive and only gasping every few seconds. What should I do right now?",
+      "language": "en",
+      "seconds": 0.913,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 30,
+        "included": 7,
+        "library_passages": 106,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:2",
+          "guidance:cpr-boundary:en:v1",
+          "guidance:adult-cpr-compressions:en:v1",
+          "guidance:adult-cpr-continuation:en:v1",
+          "7b01e1adec0cec26d63cc9e3",
+          "89420eef3118222ed6a6116c",
+          "61bc8538189b549aebc7001d"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:2",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Cardiac arrest: CPR (cardiopulmonary resuscitation)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:cpr-boundary:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "CPR first aid",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-compressions:en:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Giving CPR; adult scope",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-continuation:en:v1",
+          "n": 4,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "How long should I do compressions?; breathing technique",
+          "context_omitted": false
+        },
+        {
+          "id": "7b01e1adec0cec26d63cc9e3",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Order of CPR in a first aid sequence",
+          "context_omitted": false
+        },
+        {
+          "id": "89420eef3118222ed6a6116c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Cardiopulmonary resuscitation",
+          "context_omitted": false
+        },
+        {
+          "id": "61bc8538189b549aebc7001d",
+          "n": 7,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Exception_to_the_main_sequence",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Order of CPR in a first aid sequence › Exception to the main sequence",
+          "context_omitted": false
+        },
+        {
+          "id": "en:07-first-aid-medicine:1",
+          "n": 8,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Initial assessment: safety and X-ABCDE",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-dehydration",
+      "split": "original",
+      "question": "My 2-year-old has diarrhea, is very sleepy, cannot keep fluids down and has not peed for 10 hours. Can I just make oral rehydration solution at home?",
+      "language": "en",
+      "seconds": 0.814,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 6,
+        "library_passages": 71,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:9",
+          "c1b5e547a1d7bb1324f5c664",
+          "21b81c9f5c0b8b71d63aea2c",
+          "9a69b022209d28d3730e33c6",
+          "en:01-water:8",
+          "en:07-first-aid-medicine:5"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:9",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Diarrhea and dehydration — oral rehydration solution",
+          "context_omitted": false
+        },
+        {
+          "id": "c1b5e547a1d7bb1324f5c664",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Oral_rehydration_therapy",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Oral rehydration therapy",
+          "context_omitted": false
+        },
+        {
+          "id": "21b81c9f5c0b8b71d63aea2c",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Oral_rehydration_therapy#Preparation",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Preparation",
+          "context_omitted": false
+        },
+        {
+          "id": "9a69b022209d28d3730e33c6",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Oral_rehydration_therapy",
+          "book": null,
+          "book_name": "appropedia_en_all",
+          "section": "Oral rehydration therapy",
+          "context_omitted": false
+        },
+        {
+          "id": "en:01-water:8",
+          "n": 5,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Signs of dehydration",
+          "context_omitted": false
+        },
+        {
+          "id": "en:07-first-aid-medicine:5",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Shock",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-diabetes",
+      "split": "original",
+      "question": "My diabetic husband took insulin but missed lunch. Now he is unconscious. Should I pour orange juice or honey into his mouth?",
+      "language": "en",
+      "seconds": 1.025,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 33,
+        "included": 4,
+        "library_passages": 121,
+        "included_source_ids": [
+          "guidance:hypoglycemia-unresponsive:en:v1",
+          "e65df3a20575977a6fb99df4",
+          "dc806fa831f4ebf978600c5a",
+          "2a4c22c685bb972fd42616b0"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:hypoglycemia-unresponsive:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "How to treat severe low blood sugar",
+          "context_omitted": false
+        },
+        {
+          "id": "e65df3a20575977a6fb99df4",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Diabetic_hypoglycemia",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Diabetic hypoglycemia",
+          "context_omitted": false
+        },
+        {
+          "id": "dc806fa831f4ebf978600c5a",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Hypoglycemia#Surreptitious_insulin_use",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Causes › Non-diabetic › Surreptitious insulin use",
+          "context_omitted": false
+        },
+        {
+          "id": "2a4c22c685bb972fd42616b0",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Hypoglycemia#Autoimmune_hypoglycemia",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Causes › Non-diabetic › Autoimmune hypoglycemia",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-flood",
+      "split": "original",
+      "question": "The road ahead has moving floodwater, maybe six inches deep. I have a large SUV and need to get home. Can I drive through slowly?",
+      "language": "en",
+      "seconds": 0.68,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 36,
+        "included": 2,
+        "library_passages": 0,
+        "included_source_ids": [
+          "en:08-hygiene-sanitation:5",
+          "guidance:flood-shelter:en:v1"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:08-hygiene-sanitation:5",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Floodwater and rats",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:flood-shelter:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Avoid flood waters",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-food",
+      "split": "original",
+      "question": "The power has been out for 10 hours. The refrigerator stayed closed. Can we eat the chicken and milk if they smell normal?",
+      "language": "en",
+      "seconds": 0.778,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 39,
+        "included": 4,
+        "library_passages": 1,
+        "included_source_ids": [
+          "en:authority/food-outage:0",
+          "guidance:food-outage:en:v1",
+          "0cb2753df8521ecf7fdbee3b",
+          "en:04-food:2"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:authority/food-outage:0",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Refrigerated soft cheese and milk: outage duration versus food temperature",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:food-outage:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "After a power outage",
+          "context_omitted": false
+        },
+        {
+          "id": "0cb2753df8521ecf7fdbee3b",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Food_safety#Safe_food_handling_procedures_%28from_market_to_consumer%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Safe food handling procedures (from market to consumer)",
+          "context_omitted": false
+        },
+        {
+          "id": "en:04-food:2",
+          "n": 4,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Order of consumption in a crisis",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-grease_fire",
+      "split": "original",
+      "question": "A pan of cooking oil is on fire on my stove. Should I carry it outside or pour water on it?",
+      "language": "en",
+      "seconds": 0.742,
+      "retrieval": {
+        "status": "zero_hits",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 26,
+        "included": 1,
+        "library_passages": 0,
+        "included_source_ids": [
+          "guidance:cooking-fire:en:v1"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:cooking-fire:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "To put out a cooking fire in your kitchen",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-heatstroke",
+      "split": "original",
+      "question": "My friend collapsed while hiking in extreme heat. He is confused and very hot but still sweating. We have water and a stream nearby. What should we do?",
+      "language": "en",
+      "seconds": 0.774,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 6,
+        "library_passages": 52,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:12",
+          "guidance:heat-cooling:en:v1",
+          "68aa7faba734621a0ac6113a",
+          "0899ba2bc0dc6f3e09214a10",
+          "a80cec681ddf2a5291d3033f",
+          "en:03-shelter:5"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:12",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Heatstroke and heat exhaustion",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:heat-cooling:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Heat stroke: First aid",
+          "context_omitted": false
+        },
+        {
+          "id": "68aa7faba734621a0ac6113a",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Techniques",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Heat stroke › Management › Rapid Cooling › Techniques",
+          "context_omitted": false
+        },
+        {
+          "id": "0899ba2bc0dc6f3e09214a10",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Heat_exhaustion#First_aid",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › First aid",
+          "context_omitted": false
+        },
+        {
+          "id": "a80cec681ddf2a5291d3033f",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Heat_stroke#Rapid_Cooling",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Heat stroke › Management › Rapid Cooling",
+          "context_omitted": false
+        },
+        {
+          "id": "en:03-shelter:5",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Extreme heat",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-infant_choking",
+      "split": "original",
+      "question": "My 8-month-old is choking on food, cannot cry or breathe, and is turning blue. What do I do?",
+      "language": "en",
+      "seconds": 0.756,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 26,
+        "included": 4,
+        "library_passages": 44,
+        "included_source_ids": [
+          "guidance:infant-choking-responsive:en:v1",
+          "guidance:infant-choking-unresponsive:en:v1",
+          "e225be0ae6238908e4b7a947",
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:infant-choking-responsive:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Relief of severe foreign body airway obstruction in infants",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:infant-choking-unresponsive:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Infant CPR after choking; single rescuer",
+          "context_omitted": false
+        },
+        {
+          "id": "e225be0ae6238908e4b7a947",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Basic treatment (first aid)",
+          "context_omitted": false
+        },
+        {
+          "id": "10d1449b1c65ef32d6a25f7e",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Infants_%28babies_under_1_year-old%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old)",
+          "context_omitted": false
+        },
+        {
+          "id": "d2178c962fb1b059c91680ca",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Prevention_for_babies_and_children",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Prevention › Prevention for babies and children",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "10d1449b1c65ef32d6a25f7e"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-infant_followup",
+      "split": "original",
+      "question": "She is unconscious now and still not breathing. I have never learned CPR. Tell me exactly what to do.",
+      "language": "en",
+      "seconds": 0.679,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 26,
+        "included": 4,
+        "library_passages": 70,
+        "included_source_ids": [
+          "en:07-first-aid-medicine:1",
+          "guidance:infant-choking-unresponsive:en:v1",
+          "73a08625ae443f925c5edde5",
+          "e225be0ae6238908e4b7a947"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:07-first-aid-medicine:1",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Initial assessment: safety and X-ABCDE",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:infant-choking-unresponsive:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Infant CPR after choking; single rescuer",
+          "context_omitted": false
+        },
+        {
+          "id": "73a08625ae443f925c5edde5",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Unconscious_infants",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Particular cases › Infants (babies under 1 year-old) › Unconscious infants",
+          "context_omitted": false
+        },
+        {
+          "id": "e225be0ae6238908e4b7a947",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Basic_treatment_%28first_aid%29",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Basic treatment (first aid)",
+          "context_omitted": false
+        },
+        {
+          "id": "dcc06156848d0e27ba3116e5",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Choking#Unconscious_victims",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Basic treatment (first aid) › Unconscious victims",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-poison",
+      "split": "original",
+      "question": "My 3-year-old swallowed drain cleaner five minutes ago. Should I make him vomit or give vinegar to neutralize it?",
+      "language": "en",
+      "seconds": 0.688,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 23,
+        "included": 4,
+        "library_passages": 8,
+        "included_source_ids": [
+          "guidance:poison-swallowed:en:v1",
+          "45c0835107736e7015522939",
+          "423474f3ba5bce4d81205d23",
+          "b4649ea056d1c2c0ce094454"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:poison-swallowed:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Poison in the mouth; emergency advice",
+          "context_omitted": false
+        },
+        {
+          "id": "45c0835107736e7015522939",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Caustic_ingestion#Management",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Caustic ingestion › Management",
+          "context_omitted": false
+        },
+        {
+          "id": "423474f3ba5bce4d81205d23",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Caustic_ingestion#Controversial_or_Contraindicated",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Caustic ingestion › Management › Controversial or Contraindicated",
+          "context_omitted": false
+        },
+        {
+          "id": "b4649ea056d1c2c0ce094454",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Caustic_ingestion",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Caustic ingestion",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-portuguese",
+      "split": "original",
+      "question": "Estamos usando um gerador a gasolina dentro da garagem com a porta aberta. Todos estão com dor de cabeça e enjoo. O que fazer?",
+      "language": "pt",
+      "seconds": 0.653,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 32,
+        "included": 6,
+        "library_passages": 54,
+        "included_source_ids": [
+          "pt:02-fire:7",
+          "guidance:carbon-monoxide-escape:pt:v1",
+          "cae2aaa84c5e9e4a4f350caf",
+          "e2304d5c0b271611d0a1b585",
+          "pt:10-energy-light:3",
+          "pt:03-shelter:6"
+        ]
+      },
+      "sources": [
+        {
+          "id": "pt:02-fire:7",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Segurança",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:carbon-monoxide-escape:pt:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "cae2aaa84c5e9e4a4f350caf",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Treatment",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment",
+          "context_omitted": false
+        },
+        {
+          "id": "e2304d5c0b271611d0a1b585",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Carbon monoxide poisoning",
+          "context_omitted": false
+        },
+        {
+          "id": "fa2a43a3e2c48d8c1422653d",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Carbon_monoxide_poisoning#Hyperbaric_oxygen",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Hyperbaric oxygen",
+          "context_omitted": true
+        },
+        {
+          "id": "pt:10-energy-light:3",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Baterias de carro e geradores",
+          "context_omitted": false
+        },
+        {
+          "id": "pt:03-shelter:6",
+          "n": 7,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Aquecimento seguro",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "cae2aaa84c5e9e4a4f350caf"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-seizure",
+      "split": "original",
+      "question": "My sister has been shaking in a seizure for six minutes. Should I hold her down and put a spoon in her mouth?",
+      "language": "en",
+      "seconds": 0.99,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 32,
+        "included": 3,
+        "library_passages": 176,
+        "included_source_ids": [
+          "0c1dc175fe90d253ead7831b",
+          "286360ad3d62defd7f0b0e2c",
+          "99ef49d7675591a6827bd99b"
+        ]
+      },
+      "sources": [
+        {
+          "id": "0c1dc175fe90d253ead7831b",
+          "n": 1,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Seizure#First_aid_during_a_seizure",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › First aid during a seizure",
+          "context_omitted": false
+        },
+        {
+          "id": "286360ad3d62defd7f0b0e2c",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Epilepsy#First_aid_and_acute_management_of_seizures",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › First aid and acute management of seizures",
+          "context_omitted": false
+        },
+        {
+          "id": "99ef49d7675591a6827bd99b",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Generalized_tonic%E2%80%93clonic_seizure#Management",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "0c1dc175fe90d253ead7831b"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-snake",
+      "split": "original",
+      "question": "A snake bit my ankle while hiking. I am alone with no phone service. Should I cut it, suck out the venom, or tie a tourniquet?",
+      "language": "en",
+      "seconds": 0.665,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 14,
+        "included": 5,
+        "library_passages": 57,
+        "included_source_ids": [
+          "en:authority/who-snakebite:0",
+          "guidance:snakebite-still:en:v1",
+          "edf24f07d569416f73b3d725",
+          "52243e39c82363d5b0cdec1f",
+          "a93403409f5ddc8c0365ca0f"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Snakebite: keep still and arrange transport; do not walk to care",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Box 1: First aid for snakebites; Box 2: Barriers to Early Antivenom Access",
+          "context_omitted": false
+        },
+        {
+          "id": "edf24f07d569416f73b3d725",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#First_aid",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › First aid",
+          "context_omitted": false
+        },
+        {
+          "id": "52243e39c82363d5b0cdec1f",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Treatment",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment",
+          "context_omitted": false
+        },
+        {
+          "id": "a93403409f5ddc8c0365ca0f",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Outmoded",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Treatment › Outmoded",
+          "context_omitted": false
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Snakebite (Brazil)",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-spanish",
+      "split": "original",
+      "question": "Mi padre no responde y solo jadea de vez en cuando. Estamos en España. ¿Qué hago ahora?",
+      "language": "es",
+      "seconds": 0.941,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 30,
+        "included": 7,
+        "library_passages": 106,
+        "included_source_ids": [
+          "es:07-first-aid-medicine:2",
+          "guidance:cpr-boundary:es:v1",
+          "guidance:adult-cpr-compressions:es:v1",
+          "guidance:adult-cpr-continuation:es:v1",
+          "7b01e1adec0cec26d63cc9e3",
+          "89420eef3118222ed6a6116c",
+          "45fc74c190fdac04549835bf"
+        ]
+      },
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:2",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Paro cardíaco: RCP (reanimación cardiopulmonar)",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:cpr-boundary:es:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "CPR first aid",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-compressions:es:v1",
+          "n": 3,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Giving CPR; adult scope",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:adult-cpr-continuation:es:v1",
+          "n": 4,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "How long should I do compressions?; breathing technique",
+          "context_omitted": false
+        },
+        {
+          "id": "7b01e1adec0cec26d63cc9e3",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation#Order_of_CPR_in_a_first_aid_sequence",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Order of CPR in a first aid sequence",
+          "context_omitted": false
+        },
+        {
+          "id": "89420eef3118222ed6a6116c",
+          "n": 6,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiopulmonary_resuscitation",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Cardiopulmonary resuscitation",
+          "context_omitted": false
+        },
+        {
+          "id": "45fc74c190fdac04549835bf",
+          "n": 7,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Cardiac_arrest#Chain_of_survival",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management › Chain of survival",
+          "context_omitted": false
+        },
+        {
+          "id": "es:07-first-aid-medicine:1",
+          "n": 8,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Evaluación inicial: seguridad y X-ABCDE",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-stroke",
+      "split": "original",
+      "question": "My mother suddenly has a drooping face and slurred speech but says she feels fine. It started 20 minutes ago. Should we wait?",
+      "language": "en",
+      "seconds": 0.727,
+      "retrieval": {
+        "status": "success",
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 31,
+        "included": 4,
+        "library_passages": 113,
+        "included_source_ids": [
+          "guidance:stroke-response:en:v1",
+          "01844ec2fa8cd838c2b8537a",
+          "25ab479cba45a20999b9f9d9",
+          "0c23ea7c35fd404fe0994ac8"
+        ]
+      },
+      "sources": [
+        {
+          "id": "guidance:stroke-response:en:v1",
+          "n": 1,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "B.E. F.A.S.T.; transient symptoms",
+          "context_omitted": false
+        },
+        {
+          "id": "01844ec2fa8cd838c2b8537a",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Management",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Management",
+          "context_omitted": false
+        },
+        {
+          "id": "25ab479cba45a20999b9f9d9",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Stroke_(main)#Management",
+          "book": null,
+          "book_name": "wikem_en_all",
+          "section": "Stroke (main) › Management",
+          "context_omitted": false
+        },
+        {
+          "id": "0c23ea7c35fd404fe0994ac8",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Stroke#Subtypes",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Signs and symptoms › Subtypes",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": true,
+        "matched": true,
+        "source_ids": [
+          "01844ec2fa8cd838c2b8537a"
+        ]
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-water_bleach",
+      "split": "original",
+      "question": "We have clear water of uncertain safety, a 1-liter bottle, and plain unscented 6% sodium hypochlorite bleach. How many drops and how long should we wait?",
+      "language": "en",
+      "seconds": 0.823,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 0,
+        "library_passages": 19,
+        "included_source_ids": []
+      },
+      "sources": [
+        {
+          "id": "en:01-water:4",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Step 2 — disinfect",
+          "context_omitted": true
+        },
+        {
+          "id": "guidance:water-product:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Disinfect water using household bleach",
+          "context_omitted": true
+        },
+        {
+          "id": "e94e3fa769427141cbc49e3f",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/energypedia_en_all_maxi_2026-06/Solar_Powered_Water_Systems_in_Humanitarian_Context_III_-_Q%26A#Why_chlorination_but_no_modern_and_less_dangerous_technologies_to_purify_water%3F_Especially_from_boreholes_with_expected_low_turbidity%3F_Chlorine_is_pretty_dangerous_stuff_and_the_supply_change_is_another_hazard_as_well_as_special_requirements_to_the_equipment._Why_not_Ultra-Filtration_or_UV-C_treatment%3F",
+          "book": null,
+          "book_name": "energypedia_en_all",
+          "section": "Questions to Jared › Why chlorination but no modern and less dangerous technologies to purify water? Especially from boreholes with expected low turbidity? Chlorine is pretty dangerous stuff and the supply change is another hazard as well as special requirements to the equipment. Why not Ultra-Filtration or UV-C treatment?",
+          "context_omitted": true
+        },
+        {
+          "id": "20e82f7e9435f0227f91a8ee",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Sodium_hypochlorite#Packaging_and_sale",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Packaging and sale",
+          "context_omitted": true
+        },
+        {
+          "id": "fabcd2645cebf1c0b447cc1f",
+          "n": 5,
+          "kind": "kiwix",
+          "link": "/content/appropedia_en_all_maxi_2026-02/Decreasing_turbidity_to_optimize_solar_water_disinfection_lit_review/Disadvantages#Solar_disinfection_in_Nigerian_slum",
+          "book": null,
+          "book_name": "appropedia_en_all",
+          "section": "Other › Solar disinfection in Nigerian slum",
+          "context_omitted": true
+        },
+        {
+          "id": "en:10-energy-light:1",
+          "n": 6,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Light without electricity",
+          "context_omitted": true
+        },
+        {
+          "id": "en:01-water:6",
+          "n": 7,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Storage",
+          "context_omitted": true
+        },
+        {
+          "id": "53e9ba85485f9f809e10e2dd",
+          "n": 8,
+          "kind": "kiwix",
+          "link": "/content/zimgit-post-disaster_en_2024-05/files/Water%20%285%29.pdf#page=32",
+          "book": null,
+          "book_name": "zimgit-post-disaster_en",
+          "section": "Safe Water School — page 32",
+          "context_omitted": true
+        },
+        {
+          "id": "165f70cfb14b387ebf71475f",
+          "n": 9,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=32",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 32",
+          "context_omitted": true
+        },
+        {
+          "id": "4f21f633930d4d9df5fb050c",
+          "n": 10,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=50",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 50",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": false,
+      "fitting_error": null,
+      "blocked_reason": "source_conflict",
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-water_chemical",
+      "split": "original",
+      "question": "Floodwater got into our well and the water smells of gasoline. How long should I boil it to make it safe to drink?",
+      "language": "en",
+      "seconds": 0.738,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5,
+        "library_passages": 3,
+        "included_source_ids": [
+          "en:authority/cdc-water:0",
+          "guidance:water-chemical:en:v1",
+          "2014f4a6162e0623136e233f",
+          "3cca240828a8f09c6abd1bfb",
+          "en:01-water:6"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:authority/cdc-water:0",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Boiling cloudy drinking water: chemical contamination and elevation limits",
+          "context_omitted": false
+        },
+        {
+          "id": "guidance:water-chemical:en:v1",
+          "n": 2,
+          "kind": "guidance",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Water with fuel or toxic chemicals in it",
+          "context_omitted": false
+        },
+        {
+          "id": "2014f4a6162e0623136e233f",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=30",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 30",
+          "context_omitted": false
+        },
+        {
+          "id": "3cca240828a8f09c6abd1bfb",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/zimgit-water_en_2024-08/files/Water%20%285%29.pdf#page=25",
+          "book": null,
+          "book_name": "zimgit-water_en",
+          "section": "Safe Water School — page 25",
+          "context_omitted": false
+        },
+        {
+          "id": "en:01-water:6",
+          "n": 5,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Storage",
+          "context_omitted": false
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    },
+    {
+      "id": "original-electrical",
+      "split": "original",
+      "question": "A storm knocked a power line onto my car. I am inside and the car is not burning. Should I get out and walk away?",
+      "language": "en",
+      "seconds": 0.829,
+      "retrieval": {
+        "status": "success",
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 2,
+        "library_passages": 3,
+        "included_source_ids": [
+          "en:authority/fema-ready:0",
+          "3947f68854edaeb6413d3d98"
+        ]
+      },
+      "sources": [
+        {
+          "id": "en:authority/fema-ready:0",
+          "n": 1,
+          "kind": "kit",
+          "link": null,
+          "book": null,
+          "book_name": null,
+          "section": "Evacuation or shelter: accessible transport and local instructions",
+          "context_omitted": false
+        },
+        {
+          "id": "3947f68854edaeb6413d3d98",
+          "n": 2,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#Basic_electrical_safety",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Prevention › Basic electrical safety",
+          "context_omitted": false
+        },
+        {
+          "id": "2297981fdf66facde7cc5437",
+          "n": 3,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_injury",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Electrical injury",
+          "context_omitted": true
+        },
+        {
+          "id": "ee7005973d018aca15c3afd3",
+          "n": 4,
+          "kind": "kiwix",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#Causes",
+          "book": null,
+          "book_name": "wikipedia_en_medicine",
+          "section": "Causes",
+          "context_omitted": true
+        }
+      ],
+      "model_token_fit": true,
+      "fitting_error": null,
+      "blocked_reason": null,
+      "gold": {
+        "annotated": false,
+        "matched": false,
+        "source_ids": []
+      },
+      "human_review": {
+        "relevance": null,
+        "safety": null
+      }
+    }
+  ],
+  "raw_sha256": "e0524cdf869df9acf616a4546e236b4fcdbaebe50c1c6eb1a850d5b92821be16",
+  "manifest_sha256": "39ee9e744ca37118a4beafbdff3a0db2edff9f06621a611d347108bdaa45f02f",
+  "limitations": [
+    "Historical gold annotations, not fresh independent precision review",
+    "Concurrent generation ran during retrieval; timing is not an isolated performance benchmark",
+    "Full raw diagnostics retained in /tmp/quality-retrieval-2026-11-27.json"
+  ]
+}

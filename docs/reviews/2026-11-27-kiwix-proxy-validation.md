@@ -27,3 +27,7 @@ Browser checks exposed two pre-existing compatibility defects repaired in this c
 ## Limits
 
 This is representative compatibility evidence, not exhaustive testing of every ZIM or browser. No live video playback/codec test was completed: the inspected archive pages offered PDFs. Video range transport is covered by the automated fixture. Native Windows/macOS and phone/LAN browser testing were not performed. `nosniff` requires archives to supply correct script/style MIME types. Streaming keeps memory bounded but permits large, long-running transfers subject to socket inactivity timeouts and the existing concurrent-request limit.
+
+## Integration status (2026-11-27)
+
+The proxy changes are committed at `ebf2dcf`, with the Windows archive-extraction CI correction at `299c3c5`. The branch tip before the quality follow-up, `f1ef95e`, passed [GitHub Actions](https://github.com/skanga/Emergency-AI/actions/runs/45978016859). There is no open pull request and these changes are not yet merged into main. New local quality changes do not inherit that CI result; their verification is recorded separately. Merge remains pending the requested integration decision. This record must not be deleted as already-merged evidence.
