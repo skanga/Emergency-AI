@@ -10,7 +10,7 @@ root=Path.cwd()
 engine=Engine({'llm_backend':'llamacpp','llm_url':'http://127.0.0.1:8091/v1','kiwix_enabled':False})
 model=engine.llm(force=True)
 if model is None:raise SystemExit('Model unavailable; no fallback-only diagnostic run permitted')
-result={'warning':'Synthetic test drafts may contain unsafe advice. These are validation inputs, not user guidance.', 'created_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'model':model.describe(),'options':model.options(),'files_sha256':{p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in ['app/engine.py','app/claim_validation.py','app/answer_validation.py','app/action_patterns.py','app/claim_links.py','app/transport_claims.py','app/patient_facts.py','app/data/guidance.json','config/retrieval-topics.json']},'results':[]}
+result={'warning':'Synthetic test drafts may contain unsafe advice. These are validation inputs, not user guidance.', 'created_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'model':model.describe(),'options':model.options(),'files_sha256':{p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in ['app/engine.py','app/claim_validation.py','app/answer_validation.py','app/action_patterns.py','app/compression_claims.py','app/claim_links.py','app/transport_claims.py','app/patient_facts.py','app/data/guidance.json','config/retrieval-topics.json']},'results':[]}
 base=root/'tests/evals/emergency_advice/baselines/snakebite-2026-11-26'
 requests=[]
 for name in ['final-live-english-run.json','final-live-multilingual-run.json']:

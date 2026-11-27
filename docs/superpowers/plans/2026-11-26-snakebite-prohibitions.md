@@ -25,5 +25,5 @@ Execution evidence: docs/reviews/2026-11-26-snakebite-prohibitions.md. Initial f
 - [x] Step 5: repeat model-backed multilingual evaluation. All ten generations completed; all used fallback. Findings and remaining defects: docs/reviews/2026-11-26-snakebite-steps34-live.md. Completion is not a quality pass.
 - [x] Repair the captured condition-detection gaps and demonstrated parsing/citation forms; improve transport fallback. Regression evidence: docs/reviews/2026-11-26-snakebite-gap-fixes.md.
 - [x] Inspect the final-code repeat and record remaining language/source-support limitations separately from repaired fixtures: ten complete generations, two generated answers, eight improved fallbacks; not a broad quality pass.
-- [ ] Address newly observed compound/adjective prohibitions, swallowing/offer verb variants and unspecified transport alternatives recorded in the gap-fix review.
+- [x] Address the recorded compound/adjective prohibitions, swallowing/offer verb variants and unspecified transport alternatives. Follow-up audit and remaining general quality limits: docs/reviews/2026-11-26-safety-detection-audit.md.
 - [ ] Broader Kiwix-enabled answer-quality screening.

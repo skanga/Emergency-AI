@@ -8,10 +8,11 @@ import hashlib
 import re
 
 from .query_planner import normalize, _consciousness, _age
-from .patient_facts import _breathing, _facts, _UNSAFE_SWALLOW
+from .patient_facts import _breathing, _facts, _UNSAFE_SWALLOW, _SWALLOW as SWALLOW_PATTERN
 from .claim_links import plain_prohibition
 from .action_patterns import WATER_INTAKE
-from .transport_claims import PATTERN as TRANSPORT_PATTERN, methods as transport_methods
+from .compression_claims import PATTERN as COMPRESSION_PATTERN, positive_swelling, restrictions_preserved
+from .transport_claims import PATTERN as TRANSPORT_PATTERN, methods as transport_methods, negative_at as transport_negative
 
 _CITE = re.compile(r'\[S([1-9][0-9]*)\]')
 _NEGATIVE = re.compile(r'\b(?:do not|don t|never|avoid|must not|should not|cannot|can t|nao|nunca|evite|no|evitar|nem|ni|nor)\s+(?:(?:attempt to|try to|tente|intente|intentes|intenten)\s+)?$')
@@ -20,11 +21,11 @@ _STUCK = r'\b(?:stuck|adher\w*|grudad\w*|pegad\w*)\b'
 _EXCEPT = r'\b(?:except|unless|leave|only if not|do not|don t|not remove|but not|nao|no|exceto|salvo|deixe|deje)\b'
 _UNRESPONSIVE = r'\b(?:unresponsive|unconscious|inconsciente|nao responde|no responde)\b'
 _ABNORMAL = r'\b(?:not breathing(?: normally)?|no breathing(?! (?:trouble|difficulty|problems?))|only gasping|nao respir\w*|no respir\w*)\b'
-_SWALLOW = r'\b(?:able to swallow(?: safely)?|can swallow(?: safely)?|consegue engolir|capaz de engolir|puede tragar|capaz de tragar)\b'
+_SWALLOW = SWALLOW_PATTERN.pattern
 _SAFE = r'\b(?:if safe|if it is safe|only if safe|se for seguro|se for seguro faze lo|si es seguro)\b'
 _DEVICE = r'\b(?:epipen|jext|auvi q|anapen|emerade)\b'
 _NOT_AWAKE = r'\b(?:not|nao|no) (?:awake|conscious|responsive|alert|acordad[oa]|consciente|despiert[oa])\b'
-_TOURNIQUET = r'\b(?:tourniquets?|torniquetes?|garrotes?|tight (?:arterial )?bands?|faixas? apertadas?|bandas? apretadas?)\b'
+_TOURNIQUET = r'\b(?:tourniquets?|torniquetes?|garrotes?|tight (?:arterial )?bands?|faixas? apertadas?|bandas? apretadas?|ligaduras? (?:arterial(?:es)? )?apretadas?)\b'
 
 
 @dataclass(frozen=True)
@@ -49,7 +50,7 @@ RULES = (
     Rule('burn_jewelry_delay', r'\b(?:keep|leave|mantenha|deixe|manten|mantenga|deje|deja)\b.{0,50}\b(?:jewelry|jewellery|rings?|joias?|aneis|joyas?|anillos?)\b', ('burn',)),
     Rule('burn_cooling', r'\b(?:cool|run|hold|resfrie|arrefeca|enfrie|enfriar)\b.{0,90}\b(?:water|agua)\b', ('burn',)),
     Rule('immersion', r'\b(?:immerse|immersion|submerge|mergulh\w*|imersao|sumerj\w*|inmersion|sumerg\w*)\b', ('heatstroke',)),
-    Rule('snake_compression', r'\b(?:apply|use|wrap|apliqu(?:e|ese|es)|coloque|aplica)\b.{0,45}\b(?:(?:compression|pressure|compress\w*|pressao|presion)\b.{0,35}\b(?:bandage|bandaging|bandagem|vendagem|vendaje|venda)|(?:bandagem|vendagem|vendaje|venda)\s+compress?iv\w*)\b', ('snakebite',)),
+    Rule('snake_compression', COMPRESSION_PATTERN, ('snakebite',)),
     Rule('injector_hold', r'\b(?:hold|keep|mantenha|segure|mantenga|sujete)\b.{0,65}\b(?:seconds?|segundos?)\b', ('anaphylaxis',)),
     Rule('flood_wait', r'\b(?:wait|stay|remain|espere|permaneca|quedese|permanezca)\b.{0,85}\b(?:water|vehicle|car|inside|recede|agua|veiculo|carro|vehiculo|dentro)\b', ('flood',)),
     Rule('fire_cover', r'\b(?:cover|smother|slide|cubra|abafe|tape|deslice|cobrir)\b', ('fire', 'grease_fire')),
@@ -75,10 +76,14 @@ def _units(text):
 
 
 def _polarity(rule, text, match):
+    if rule.name == 'snake_compression' and _has(r'\b(?:must|should|can|may) not be\b', match[0]):
+        return False
+    if rule.name == 'snake_transport':
+        return not transport_negative(text, match.start())
     if rule.name == 'snake_tourniquet':
         before = re.split(r';|\b(?:but|however|mas|pero)\b', text[:match.start()])[-1]
         # Permit coordinated prohibitions, but not unrelated 'do not panic'.
-        objects = r'(?:(?:a|an|the|um|un|una|o|el|tight|narrow|arterial|or|ou|nem|ni) |' + _TOURNIQUET + r' )*'
+        objects = r'(?:(?:a|an|the|um|un|una|o|el|tight|narrow|arterial|apertado|apertada|apretado|apretada|band|banda|ligadura|or|ou|o|nem|ni) |' + _TOURNIQUET + r' )*'
         verbs = r'(?:use|apply|tie|usar|apliqu(?:e|es|en|em)|aplicar|amarre|atar|utilice|do|faca|haga)'
         coordinated = r'(?:(?:cut(?: the wound)?|suck(?: the venom)?|burn|corte|sugue|succione|or|nem|ni) )*'
         modal = r'(?:(?:debe|debes|deben|deve|devem) )?'
@@ -110,23 +115,24 @@ def _polarity(rule, text, match):
 
 def _tourniquet_predicate(text, match):
     # A shared predicate belongs to each coordinated noun in the subject.
+    tail = re.sub(r'^(?: (?:arterial|apertado|apretado))+', '', text[match.end():])
     return re.sub(r'^(?: (?:or|ou|o|nem|ni) (?:(?:a|an|um|un|una|tight|arterial) )*'
-                  + _TOURNIQUET + r')+', '', text[match.end():])
+                  + _TOURNIQUET + r')+', '', tail)
 
 
 def _tourniquet_warning(text, match):
     """Recognize bounded harm descriptions, without certifying their truth."""
     before = text[:match.start()].strip()
-    before = re.sub(r'^for an? unidentified snakebite ', '', before)
+    before = re.sub(r'^(?:for an? unidentified snakebite|al no conocer la especie de la serpiente) ', '', before)
     subject = (r'(?:(?:tying|applying|using|aplicar|usar) )?'
-               r'(?:(?:a|an|the|um|un|una|tight|arterial|or|ou|o|nem|ni) |compresion incorrecta |'
+               r'(?:(?:a|an|the|um|un|una|tight|arterial|or|ou|o|nem|ni) |compresion incorrecta |presion o |'
                + _TOURNIQUET + r' )*')
     if not re.fullmatch(subject, before + ' ' if before else ''):
         return False
     after = _tourniquet_predicate(text, match)
     if _has(r'\b(?:should|must|never|not|unless|except|a menos que|exceto|salvo|contraindicat\w*|contraindicad\w*)\b', after):
         return False
-    return _has(r'^(?: above the bite)? (?:is dangerous|are dangerous|can (?:cause|restrict)|pode causar|puede (?:causar|danar))\b', after)
+    return _has(r'^(?: above the bite)? (?:is dangerous|are dangerous|es contraproducente y peligroso|can (?:cause|restrict)|pode causar|puede (?:causar|danar))\b', after)
 
 
 def _negative_swallow(text):
@@ -154,6 +160,7 @@ def _condition_issue(name, text, question, positive=True):
             clause = text[start:end if end >= 0 else len(text)]
             if end >= 0 and _has(r'^\s*(?:unless|except|a menos que|exceto|salvo)\b', text[end + 1:]):
                 clause += text[end:]
+            clause = re.sub(r'^based on the provided sources ', '', clause)
             clause = re.sub(r'\b(?:even if|even when|especially when|especially if|mesmo se|mesmo quando|especialmente quando|especialmente se|incluso si|incluso cuando|especialmente cuando|especialmente si)\b', '', clause)
             if _has(r'\b(?:unless|except|only if|if|when|provided|a menos que|exceto|salvo|se|si|quando|cuando)\b', clause):
                 return 'snake_tourniquet_unsafe'
@@ -213,10 +220,8 @@ def _condition_issue(name, text, question, positive=True):
             _has(r'\b(?:head|face|cabeca|rosto|cabeza|cara)\b (?:stays |kept |is |sempre |siempre )?(?:above|out of|fora|acima|fuera|encima)\b', text)
             and _has(r'\b(?:helper|someone|monitor\w*|assist\w*|ajud\w*|vigie|vigile|outra pessoa|otra persona)\b', text)):
         return 'immersion_airway_condition_missing'
-    if name == 'snake_compression':
-        for condition in re.finditer(r'\b(?:if|when|si|se)\b([^;]{0,80}?)\b(?:swelling|hinchazon|inchaco)\b', text):
-            if not _has(r'\b(?:no|not|without|sin|sem|nao|absence|ausencia)\b', condition[1]):
-                return 'snake_compression_condition_unsafe'
+    if name == 'snake_compression' and positive_swelling(text):
+        return 'snake_compression_condition_unsafe'
     if name == 'snake_compression' and (not _has(r'\b(?:in australia|na australia|en australia)\b', question)
             or _has(r'\b(?:not|nao|no) (?:\w+ )?(?:in|na|en) australia\b', question)):
         return 'snake_compression_scope_missing'
@@ -286,6 +291,8 @@ def _swallowing(text):
 def _claim_text(text, name):
     if name == 'cpr_continuation':
         return '; '.join(normalize(part) for part in re.split(r'[;\n]', text))
+    if name == 'snake_transport':
+        return '; '.join(normalize(part) for part in re.split(r'[;,]', text))
     if name in ('water_chemical', 'snake_tourniquet'):
         return '; '.join(normalize(part) for part in re.split(r'[;]', text))
     if name == 'oral':
@@ -489,11 +496,17 @@ def check_claims(answer, sources, plan):
                             cited = list(dict.fromkeys(_CITE.findall(other)))
                             citation_span = list(units[other_index][1:])
                             break
+                if rule.name == 'snake_transport' and not positive and any(
+                        _polarity(rule, text, other) for other in _matches(rule, text)):
+                    claims.append({'rule':rule.name, 'answer_span':[start, end], 'positive':False,
+                                   'claim_type':'excluded_transport_alternative', 'cited_ids':cited,
+                                   'evidence':[], 'status':'unverified'})
+                    continue
                 if rule.name == 'snake_tourniquet' and _tourniquet_warning(text, match) and not condition:
                     claims.append({'rule':rule.name, 'answer_span':[start, end], 'positive':False,
                                    'claim_type':'warning', 'cited_ids':cited, 'evidence':[], 'status':'unverified'})
                     continue
-                supported, quantity_failure, method_failure = [], False, False
+                supported, quantity_failure, method_failure, restriction_failure = [], False, False, False
                 for n in cited:
                     source = by_n.get(n)
                     if not source:
@@ -534,6 +547,9 @@ def check_claims(answer, sources, plan):
                                     or not claimed_devices.issubset(devices.intersection(re.findall(_DEVICE, candidate)))):
                                 continue
                         if positive and rule.name == 'snake_compression':
+                            if not restrictions_preserved(scoped, context):
+                                restriction_failure = True
+                                continue
                             if not _has(r'\baustrali\w*\b', context):
                                 continue
                             # No species-identification/binding policy exists yet.
@@ -549,7 +565,8 @@ def check_claims(answer, sources, plan):
                                           'text_sha256':hashlib.sha256(source['text'].encode()).hexdigest()})
                         break
                 if not supported:
-                    issues.append('transport_method_not_supported' if method_failure else
+                    issues.append('snake_compression_source_conditions_missing' if restriction_failure else
+                                  'transport_method_not_supported' if method_failure else
                                   'claim_quantity_not_supported' if quantity_failure else 'claim_not_supported_by_cited_passage')
                 claim = {'rule':rule.name, 'answer_span':[start, end], 'positive':positive,
                                'cited_ids':cited, 'evidence':supported,

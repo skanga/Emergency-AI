@@ -78,6 +78,8 @@ Use `--manifest tests/evals/emergency_advice/authority-cases.json` for the eight
 
 ## Snakebite prohibition regressions
 
+The [safety-detection audit](../../../docs/reviews/2026-11-26-safety-detection-audit.md) closes the remaining recorded action/method/condition escapes, adds isolated-clause adversarial tests, and retains 30 historical replays plus a fresh ten-request capture with final-validator replay. Its evidence is under `baselines/safety-audit-2026-11-26/`. General answer quality remains below a pass; the report distinguishes detection repairs from residual withholding and unverified claims.
+
 [Gap-fix verification](../../../docs/reviews/2026-11-26-snakebite-gap-fixes.md) records the subsequent condition checks, parsing controls and improved transport fallback. The exact ablation fixtures must fail for the relevant hazard even after unrelated blocking spans are removed. Interim model runs are labeled separately from final-code captures.
 
 The latest [fresh evaluation after steps 3–4](../../../docs/reviews/2026-11-26-snakebite-steps34-live.md) records ten complete model generations with evaluation-only draft capture. All ten displayed fallback guidance; it is not a quality pass. Bound reviews distinguish draft safety issues, citation failures, parsing false positives and displayed usefulness. Counterfactual probes expose hazards that were hidden by unrelated rejection reasons. Previous captures and assessments remain unchanged.
