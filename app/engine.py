@@ -46,7 +46,7 @@ class Engine:
             if force or time.time() - self._kiwix_checked > 15:
                 self._kiwix_ok = self.kiwix.available()
                 if self._kiwix_ok:
-                    self.kiwix._books = None
+                    self.kiwix.invalidate_catalog()
                 self._kiwix_checked = time.time()
             return self._kiwix_ok
 
@@ -176,22 +176,59 @@ class Engine:
         history = list(history or [])[-4:]
         sources = [dict(s) for s in sources]
         dropped_history = False
+        def result(messages, fitted, count):
+            return messages, fitted, {'input_tokens': count, 'history_omitted': dropped_history,
+                                     'included_source_ids': [s.get('id', s['n']) for s in fitted if not s.get('context_omitted')],
+                                     'sources_omitted': [s['n'] for s in fitted if s.get('context_omitted')]}
+
+        # There are at most two old conversation pairs. Keep their precedence
+        # over evidence unchanged, and avoid searching when the prompt fits.
         while True:
             messages = self.build_messages(question, lang, sources, history)
             count = llm.count_prompt(messages)
             if count <= budget:
-                return messages, sources, {'input_tokens': count, 'history_omitted': dropped_history,
-                                          'included_source_ids': [s.get('id', s['n']) for s in sources if not s.get('context_omitted')],
-                                          'sources_omitted': [s['n'] for s in sources if s.get('context_omitted')]}
-            if history:
-                history = history[2:]
-                dropped_history = True
-                continue
-            included = [s for s in sources if not s.get('context_omitted')]
-            if not included:
-                raise LLMError('The question exceeds the available input context budget')
-            included[-1].setdefault('original_text', included[-1]['text'])
-            included[-1].update(context_omitted=True, context_omitted_reason='token_budget', text=i18n.READ_FULL_SOURCE[lang])
+                return result(messages, sources, count)
+            if not history:
+                break
+            history = history[2:]
+            dropped_history = True
+
+        included = [i for i, source in enumerate(sources) if not source.get('context_omitted')]
+
+        def candidate(keep):
+            fitted = [dict(source) for source in sources]
+            for index in included[keep:]:
+                source = fitted[index]
+                source.setdefault('original_text', source['text'])
+                source.update(context_omitted=True, context_omitted_reason='token_budget',
+                              text=i18n.READ_FULL_SOURCE[lang])
+            messages = self.build_messages(question, lang, fitted)
+            return messages, fitted, llm.count_prompt(messages)
+
+        # Search complete evidence prefixes. Every accepted candidate is counted
+        # by the backend; no estimated token count can authorize generation.
+        # Token boundaries can be non-monotonic, so this finds a verified fitting
+        # prefix rather than promising the globally largest possible prefix.
+        low, high = 1, len(included) - 1
+        best = None
+        while low <= high:
+            keep = (low + high) // 2
+            trial = candidate(keep)
+            if trial[2] <= budget:
+                best = trial
+                low = keep + 1
+            else:
+                high = keep - 1
+        if best is not None:
+            return result(*best)
+
+        # Zero sources changes the system prompt. Count it separately rather
+        # than assuming that it is smaller than a prompt containing evidence.
+        if included:
+            trial = candidate(0)
+            if trial[2] <= budget:
+                return result(*trial)
+        raise LLMError('The question exceeds the available input context budget')
 
     def extractive_answer(self, lang, sources, model_unavailable=True):
         if not sources:
@@ -300,7 +337,9 @@ class Engine:
                     chunks.append(tok)
             except (LLMError, OSError) as e:
                 generation.update(incomplete=True, finish_reason='error')
-                self._llm_checked = 0
+                with self._lock:
+                    if self._llm is llm:
+                        self._llm_checked = 0
                 failed = True
                 yield "token", i18n.LLM_ERROR[lang].format(err=str(e)[:120])
             if generation.get('incomplete'):

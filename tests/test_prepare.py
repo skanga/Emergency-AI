@@ -59,7 +59,7 @@ class LlamaReleaseTests(unittest.TestCase):
                 return result, fetch.call_args_list, extract.call_count
 
     def asset(self, name):
-        return {"name": name, "browser_download_url": "https://example.invalid/" + name, "size": 123}
+        return {"name": name, "browser_download_url": "https://example.invalid/" + name, "size": 123, "digest": "sha256:" + "a" * 64}
 
     def test_skips_release_without_binaries(self):
         name = "llama-b123-bin-win-cpu-x64.zip"

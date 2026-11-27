@@ -1,6 +1,6 @@
-# Guidance catalog reference check — 2026-11-26 UTC
+# Guidance catalog sources and review status
 
-This is an implementation evidence record, not clinician adjudication or medical certification. The catalog contains original short paraphrases with English, Portuguese and Spanish variants. The translations were checked during implementation for retained prerequisites, prohibitions, quantities and units; independent clinical and native-language review remains outstanding. Reference pages were opened or searched on the date above. Runtime is offline.
+This is an implementation evidence record, not clinician adjudication or medical certification. The catalog contains original short paraphrases with English, Portuguese and Spanish variants. The translations were checked during implementation for retained prerequisites, prohibitions, quantities and units; independent clinical and native-language review remains outstanding. The original reference checks were performed on 2026-11-26 UTC. Moving this record does not renew those checks. Runtime is offline.
 
 ## Source and scope decisions
 
@@ -83,3 +83,21 @@ Tests were added before each behavior change. Initial refinement tests failed fo
 ### Pre-evaluation burn audit correction
 
 A separate answer-rating audit identified missing loose covering, warmth and an explicit ice prohibition in the burn fallback. Before any refined-candidate answer request, the unused server was stopped and this unit was extended in all three languages. [NHS burns guidance](https://www.nhs.uk/conditions/burns-and-scalds/) supports cooling, stuck-clothing protection, loose film and escalation; [St John Ambulance's burn guidance](https://shop.sja.org.uk/blogs/workplace-first-aid/how-to-treat-burns-and-scalds) additionally supports keeping the rest of the person warm, avoiding ice, and excluding the face from film coverage. The supplied passage retains the no-circumferential-wrap condition. The original candidate's incomplete answers and their usefulness-2 ratings remain unchanged. A failing-first three-language regression and the complete catalog/fallback/claim tests passed (69 tests).
+
+## Maintenance and review status
+
+This is a maintained source-reference record, not a disposable completion report. The canonical references and content hashes remain in [guidance.json](../../app/data/guidance.json); the six separately curated authority summaries are recorded in [authority-documents.json](../../config/authority-documents.json). Keep historical evaluation captures unchanged when a reference changes.
+
+The WHO snakebite first-aid section was reopened on 2026-11-27. It supports the catalog's stillness, urgent transport, tourniquet avoidance and qualified compression scope. This check does not validate archive statements about cleaning, limb elevation or species-specific tourniquet effectiveness. The new source-support regressions test fidelity to supplied passages, not permission to use those interventions.
+
+Independent clinical review and native-language review are still required before describing the translations as independently approved. A reviewer should record the exact catalog content hash, unit, language, source section, decision and any correction. Engineering test success does not substitute for that review.
+
+The Red Cross [tourniquet article](https://www.redcross.org/take-a-class/resources/articles/how-to-apply-a-tourniquet) was also reopened on 2026-11-27. Its training wording is an ideal, and it emphasizes that delaying care can be life-threatening. The catalog's explicit training prerequisite is a conservative editorial boundary, not a claim that this article prohibits every untrained rescuer from acting. Independent clinical review should adjudicate whether that boundary causes unnecessary withholding. Do not add a blanket validator prohibition on that basis alone.
+
+### Dehydration escalation addition (2026-11-27)
+
+| Stable unit | Primary reference | Section and scope decision |
+| --- | --- | --- |
+| `dehydration-escalation` | [NHS: Dehydration](https://www.nhs.uk/conditions/dehydration/), checked 2026-11-27; publisher review 2026-05-01 | Urgent-advice and immediate-action sections. Escalation only; no home ORS recipe, fluid administration, diagnosis, dosing or positioning procedure. |
+
+The catalog now has 23 units. The added EN/PT/ES unit passes actual planner-to-fallback validation. It addresses the recorded notice-only dehydration failure; the original failed run remains unchanged. Independent clinical/native-language approval remains outstanding, as for the earlier units.

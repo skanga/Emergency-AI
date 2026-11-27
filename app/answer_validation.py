@@ -9,12 +9,14 @@ from .applicability import inapplicability_reason
 from .claim_validation import check_claims
 from .claim_links import insert_linked_citations
 from .action_patterns import WATER_INTAKE
-from .patient_facts import _breathing, _facts, _ABNORMAL, _SWALLOW, _UNSAFE_SWALLOW, _CONDITIONAL, cpr_prerequisite_scope
-from .query_planner import normalize, plan_query, _consciousness
+from .patient_facts import _facts
+from .safety_patterns import (
+    _CITATION, _REFERENCE, _FOOTNOTE, _SWALLOW, _UNSAFE_SWALLOW,
+    _CONDITIONAL, _RESPONSIVE, _consciousness, _negative_action, _cpr_condition,
+    conditions_conjoined,
+)
+from .query_planner import normalize, plan_query
 
-_CITATION = re.compile(r'\[S([1-9][0-9]*)\]')
-_REFERENCE = re.compile(r'\[(?:[Ss][^\]\n]*|\^?\d[^\]\n]*)\]')
-_FOOTNOTE = re.compile(r'\[(\d+(?:\s*[,–-]\s*\d+)*)\]')
 _CPR = re.compile(r'\b(?:cpr|rcp|cardiopulmonary resuscitation|chest compressions|compressoes toracicas|compresiones toracicas)\b')
 _ACTION = re.compile(r'\b(?:start|begin|perform|give|do(?= cpr)|initiate|continue|administer|offer|take|drink|feed|inicie|iniciar|faca|realize|comece|dar|tome|beba|ofereca|ofrezca(?:le)?|ofrecer|administre|comience|inicia|haga|realizar|dele)\b')
 _ORAL = re.compile(r'\b(?:oral|by mouth|tablet\w*|pill\w*|antihistamine\w*|antihistaminico\w*|comprimido\w*|pastilla\w*|por boca|pela boca|glucose|glicose|glucosa|sugar|acucar|azucar|honey|mel|miel|juice|suco|zumo|jugo|food|drink|alimento\w*|bebida\w*)\b')
@@ -25,28 +27,6 @@ def source_for_prompt(text):
     """Original source footnotes are not application evidence identifiers."""
     text = _FOOTNOTE.sub(lambda m: '(source note ' + m[1] + ')', text)
     return _CITATION.sub(lambda m: '(source marker S' + m[1] + ')', text)
-
-
-def _negative_action(text, match):
-    prefix = text[:match.start()]
-    return bool(re.search(r'\b(?:do not|don t|never|must not|nao|nunca|no)\s+(?:(?:attempt to|try to|tente|intente)\s+)?$', prefix))
-
-
-def _cpr_condition(text, facts):
-    text = cpr_prerequisite_scope(text)
-    if not _CONDITIONAL.search(text):
-        return False
-    state_value = _consciousness(text) or facts['consciousness']
-    breath_value = _breathing(text) or facts['breathing']
-    if state_value != 'unresponsive' or breath_value != 'abnormal':
-        return False
-    state = re.search(r'\b(?:unresponsive|unconscious|inconsciente|nao responde|no responde)\b', text)
-    breath = _ABNORMAL.search(text)
-    if state and breath:
-        between = text[min(state.end(), breath.end()):max(state.start(), breath.start())]
-        if re.search(r'\b(?:or|ou|o)\b', between):
-            return False
-    return True
 
 
 def _action_issues(answer, plan):
@@ -89,10 +69,9 @@ def _action_issues(answer, plan):
                                    and _SWALLOW.search(t) and not _UNSAFE_SWALLOW.search(t))
                 known = facts['consciousness'] == 'responsive' and facts['swallowing'] == 'safe'
                 if conditional:
-                    state = re.search(r'\b(?:awake|conscious|responsive|alert|acordad[oa]|consciente|despiert[oa])\b', t)
+                    state = re.search(_RESPONSIVE, t)
                     swallow = _SWALLOW.search(t)
-                    between = t[min(state.end(), swallow.end()):max(state.start(), swallow.start())] if state else 'or'
-                    conditional = not re.search(r'\b(?:or|ou|o)\b', between)
+                    conditional = conditions_conjoined(t, state, swallow)
                 patient_condition = _CONDITIONAL.search(t) and (_consciousness(t) or _SWALLOW.search(t))
                 if facts['swallowing'] == 'unsafe' or not (conditional if patient_condition else known):
                     issues.append('oral_intake_prerequisites_missing')

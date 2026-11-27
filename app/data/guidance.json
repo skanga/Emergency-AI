@@ -637,6 +637,28 @@
         "es": "Tras 4 horas sin electricidad en el refrigerador ni otra fuente de frío, deseche perecederos como carne, leche y sobras, salvo que un control fiable confirme que estuvieron a 4°C (40°F) o menos. Nunca pruebe alimentos para evaluar seguridad; aspecto y olor no la demuestran. Use alimentos seguros que no necesiten refrigeración. Mantenga cerrado el refrigerador durante el corte."
       },
       "content_hash": "4297671629578a55d4fd79463b6246e53dbfb3113a45a3d453511a5538b95d32"
+    },
+    {
+      "id": "dehydration-escalation",
+      "topic": "dehydration",
+      "reference_title": "NHS: Dehydration",
+      "reference_url": "https://www.nhs.uk/conditions/dehydration/",
+      "reference_section": "Urgent advice; Immediate action required",
+      "reference_checked_at": "2026-11-27",
+      "scope": {},
+      "prerequisites": [
+        "suspected dehydration"
+      ],
+      "contraindications": [
+        "delaying emergency care for a home recipe"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "With suspected dehydration, seek urgent medical help for unusual tiredness or much less urine. If the person is sleepier than normal, difficult to wake, confused or has difficulty breathing, call emergency services immediately. These may be signs of shock; do not delay seeking help to prepare a home remedy.",
+        "pt": "Com suspeita de desidratação, procure atendimento urgente se houver cansaço incomum ou muito menos urina. Se a pessoa estiver mais sonolenta que o normal, difícil de acordar, confusa ou com dificuldade para respirar, chame a emergência imediatamente. Podem ser sinais de choque; não adie a busca de ajuda para preparar um remédio caseiro.",
+        "es": "Ante sospecha de deshidratación, busque atención urgente si hay cansancio inusual o mucha menos orina. Si la persona está más somnolienta de lo normal, cuesta despertarla, está confusa o tiene dificultad para respirar, llame a emergencias inmediatamente. Pueden ser signos de choque; no retrase la búsqueda de ayuda para preparar un remedio casero."
+      },
+      "content_hash": "114e6eb0be80bbbf05c0229775776f7668851245a635e5a25ff973ab2e38b464"
     }
   ]
 }

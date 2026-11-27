@@ -1,6 +1,6 @@
-# Final candidate: observed action failures
+# Action-condition references and bounded validation
 
-These changes belong only to `feature/answer-quality-final`, based on `ecf0d23`. The three full generated answers and exact supplied source texts are preserved in `tests/fixtures/retrieval/final-action-failures.json`; duplicated retrieval metadata is omitted. Evaluation prompts and rubrics are unchanged.
+These guards are integrated in main. The implementation narrative below records their original validation, based on `ecf0d23`; its branch-specific test counts and proposed repeats are historical, not current open tasks. The three full generated answers and exact supplied source texts are preserved in `tests/fixtures/retrieval/final-action-failures.json`; duplicated retrieval metadata is omitted. Evaluation prompts and rubrics are unchanged.
 
 | Guard family | Verified primary guidance | Boundary |
 | --- | --- | --- |
@@ -34,3 +34,7 @@ The clothing guard now recognizes bounded separation/removal verb forms in EN/PT
 Both actual captures and the EN/PT/ES variants failed before the change. Verification: 55 claim tests, 33 guidance tests (including all 22 units in all three languages), and `git diff --check` passed. This is bounded matching: unlisted synonyms, distant qualifiers and other jewelry-delay paraphrases remain unverified. These changes do not establish universal burn-answer correctness; new live captures and integration tests are separate work.
 
 The routing follow-up exposed two distinct Spanish burn failures despite relevant evidence: separating clothing if not *firmly* stuck, and retaining jewelry until swelling. The final burn correction expands the existing removal/separation verbs, preserves negative-attempt wording, rejects degree-qualified stuck exceptions in claims and evidence, and rejects the recognized jewelry-delay instruction. Both full captures are preserved in `tests/fixtures/retrieval/burn-action-failures.json`. No clinical catalog text or routing changes in this correction. Failing-first tests include English/Portuguese/Spanish counterparts, valid unstuck removal, explicit prohibitions, keeping genuinely stuck jewelry and removal before swelling. Independent reviewers approved the bounded change; final full suite: **740 tests run, 20 skipped, no failures**. Six separate burn repeats follow on a frozen revision; earlier failures remain in the evaluation record.
+
+## Current follow-up
+
+The completed repeated runs are recorded in [answer-quality results](../reviews/2026-11-26-answer-quality-results.md). Current source mappings are in [guidance sources](guidance-sources.md). Keep the references, fixture links and limitations here even after implementation plans are removed. Do not infer complete semantic validation from these bounded guards.

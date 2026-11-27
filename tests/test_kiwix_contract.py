@@ -132,3 +132,26 @@ class CatalogContractTests(unittest.TestCase):
                              [LOGICAL + '_maxi_2026-11'])
         self.assertEqual(client.books()[0]['archive_uuid'], new_uuid)
         self.assertEqual(client.books()[0]['name'], LOGICAL)
+
+
+class ArticleTextLimitTests(unittest.TestCase):
+    def setUp(self):
+        self.client = KiwixClient('http://localhost:8092')
+        self.link = '/content/book/article'
+
+    def test_limit_applies_to_extracted_unicode_text(self):
+        with patch.object(self.client, 'article_html', return_value='<p>água &amp; 水</p>'):
+            self.assertEqual(self.client.article_text(self.link, 6), 'água &')
+            self.assertEqual(self.client.article_text(self.link, 100), 'água & 水')
+
+    def test_default_limit(self):
+        with patch.object(self.client, 'article_html', return_value='<p>' + 'x' * 20001 + '</p>'):
+            self.assertEqual(len(self.client.article_text(self.link)), 20000)
+
+    def test_zero_and_invalid_limits_do_not_fetch(self):
+        with patch.object(self.client, 'article_html') as fetch:
+            self.assertEqual(self.client.article_text(self.link, 0), '')
+            for limit in (-1, 1.5, '10', None, True, False):
+                with self.subTest(limit=limit), self.assertRaises(ValueError):
+                    self.client.article_text(self.link, limit)
+            fetch.assert_not_called()

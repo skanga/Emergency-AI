@@ -41,7 +41,7 @@ def _hash(path):
 
 
 def _download(candidate, stage):
-    from .prepare import download
+    from .downloads import download
     url = candidate.get('url','')
     sha = candidate.get('sha256','') or ''
     size = candidate.get('size')
@@ -99,18 +99,8 @@ def _extract(archive, destination, materialize_links=False):
             sanitized = Path(temp)/'materialized.tar'
             _materialize_tar(archive, sanitized)
             return _extract(sanitized, destination)
-    from .prepare import extract
-    if zipfile.is_zipfile(archive):
-        with zipfile.ZipFile(archive) as source:
-            entries = [(m.filename, (m.external_attr >> 16) & 0o170000 == 0o120000) for m in source.infolist()]
-    else:
-        with tarfile.open(archive) as source:
-            entries = [(m.name, not (m.isfile() or m.isdir())) for m in source.getmembers()]
-    for name, unsafe in entries:
-        _path(destination,name.rstrip('/'))
-        if unsafe:
-            raise ValueError('Archive links and special files are unsupported')
-    extract(str(archive),str(destination))
+    from .downloads import extract
+    extract(str(archive), str(destination), allow_links=False)
 
 
 def _binary(folder, name):
@@ -278,7 +268,7 @@ def upgrade(root, record, allow_unverified=False):
             destination=installed['path']
             changes={destination:str(artifact)}
         elif component=='kiwix-data':
-            from .prepare import _zim_checksum_valid
+            from .downloads import _zim_checksum_valid
             if candidate.get('collection')!=installed.get('collection') or candidate.get('variant')!=installed.get('variant') or installed.get('fixed') or installed.get('snapshot'):
                 raise ValueError('Archive collection/variant mismatch or fixed snapshot')
             destination=candidate.get('destination','')

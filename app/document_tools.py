@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 
 from .config import platform_key
-from .prepare import download, extract
+from .downloads import download, extract
 
 
 def _artifact(platform):

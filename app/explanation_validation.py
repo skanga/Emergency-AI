@@ -2,6 +2,7 @@
 import hashlib
 import re
 from .query_planner import normalize
+from .snake_claims import efficacy_relations
 from .source_sections import scope_local_source
 
 _SUBJECTS = {
@@ -10,16 +11,16 @@ _SUBJECTS = {
 }
 _EFFECTS = {
     'venom_spread': r'\b(?:accelerat\w*|aceler\w*)\b.{0,65}\b(?:venom|veneno)\b',
-    'tissue_damage': r'\b(?:(?:caus\w*|provoc\w*)\b[^;.!?]{0,100}\b(?:tissue damage|danos? (?:graves )?(?:aos tecidos|ao membro)|danos? tisular(?:es)?)|(?:danar|damage) (?:los )?(?:tejidos|tissues))\b',
+    'tissue_damage': r'\b(?:(?:caus\w*|provoc\w*|worsen\w*|empeor\w*|pior\w*)\b[^;.!?]{0,100}\b(?:tissue damage|danos? (?:graves )?(?:aos tecidos|ao membro)|danos? (?:tisular(?:es)?|tecidual|teciduais))|(?:danar|damage) (?:los )?(?:tejidos|tissues))\b',
     'nerve_injury': r'\bcaus\w*\b[^;.!?]{0,100}\bnerve injury\b',
     'limb_loss': r'\bcaus\w*\b[^;.!?]{0,100}\blimb loss\b',
     'necrosis': r'\bcaus\w*\b[^;.!?]{0,100}\bnecros\w*\b',
-    'blood_flow': r'\b(?:cut(?:ting)? off|restrict\w*|cortar)\b.{0,35}\b(?:blood flow|circulacao|circulacion)\b',
+    'blood_flow': r'\b(?:cut(?:ting)? off|restrict\w*|restring\w*|cort\w*)\b.{0,35}\b(?:blood flow|circulacao(?: sanguinea)?|circulacion)\b',
 }
 _WARNINGS = {'vomiting': r'\b(?:vomiting|vomitos)\b',
              'sweating': r'\b(?:sweating|sudor|suor|sudorese)\b',
              'agitation': r'\b(?:agitation|agitacao|agitacion)\b'}
-_CITE = re.compile(r'\[S([1-9][0-9]*)\]')
+from .safety_patterns import _CITATION as _CITE
 
 
 def subjects(text):
@@ -28,14 +29,14 @@ def subjects(text):
 
 def relations(text, antecedent=None):
     text=normalize(_CITE.sub('',text))
-    found=set()
+    found=efficacy_relations(text)
     for effect,pattern in _EFFECTS.items():
         for match in re.finditer(pattern,text):
             preceding=[(m.start(),name) for name,p in _SUBJECTS.items()
                        for m in re.finditer(p,text[:match.start()])]
             subject=max(preceding)[1] if preceding else None
-            if subject is None and re.match(r'^(?:it|they|this|isso|isto|esto|ellos)\b',text):
-                subject=antecedent
+            if subject is None and re.match(r'^(?:it|they|this|isso|isto|esto|ellos|essa pratica|esta pratica|esta practica)\b',text):
+                subject=antecedent or 'unresolved'
             if subject:
                 negative=bool(re.search(r'\b(?:not|never|cannot|nao|no|nunca)\s*$',text[:match.start()]))
                 uncertain=bool(re.search(r'\b(?:not known|not proven|not shown|no evidence|uncertain|nao comprovad\w*|no demostrado)\b.{0,30}$',text[:match.start()]))
@@ -73,7 +74,7 @@ def check_explanations(answer,sources,plan,units):
                 for match in re.finditer(r'[^\n.!?]+(?:[.!?])?',source.get('text','')):
                     if retained and not any(a<=match.start() and match.end()<=b for a,b in retained):continue
                     actual=relations(match[0]) if kind=='explanation' else warning_details(match[0])
-                    if expected.issubset(actual):
+                    if not (kind == 'explanation' and any(item[0] == 'unresolved' for item in expected)) and expected.issubset(actual):
                         evidence.append({'source_n':source['n'],'span':[match.start(),match.end()],
                                          'text_sha256':hashlib.sha256(source['text'].encode()).hexdigest()})
                         break

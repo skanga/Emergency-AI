@@ -25,7 +25,7 @@ class ReviewFixTests(unittest.TestCase):
             dest = str(Path(folder) / 'model')
             data = b'complete verified file'
             Path(dest + '.part').write_bytes(data)
-            with patch('app.prepare._download_urllib', return_value=False) as fetch, patch('app.prepare.shutil.which', return_value=None):
+            with patch('app.downloads._download_urllib', return_value=False) as fetch, patch('app.prepare.shutil.which', return_value=None):
                 prepare.download('https://example.invalid/model', dest, len(data), hashlib.sha256(data).hexdigest())
                 fetch.assert_not_called()
             self.assertEqual(Path(dest).read_bytes(), data)
@@ -55,7 +55,7 @@ class ReviewFixTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             dest = str(Path(folder) / 'model')
             Path(dest + '.part').write_bytes(b'wrong')
-            with patch('app.prepare._download_urllib', return_value=False), patch('app.prepare.shutil.which', return_value=None):
+            with patch('app.downloads._download_urllib', return_value=False), patch('app.prepare.shutil.which', return_value=None):
                 with self.assertRaises(RuntimeError):
                     prepare.download('https://example.invalid/model', dest, 5, hashlib.sha256(b'right').hexdigest())
             self.assertFalse(Path(dest).exists())

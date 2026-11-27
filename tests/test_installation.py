@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from app import prepare
+from app import prepare, downloads
 
 
 class InstallationTests(unittest.TestCase):
@@ -30,7 +30,7 @@ class InstallationTests(unittest.TestCase):
     def test_no_free_space_prevents_downloads(self):
         from types import SimpleNamespace
         with patch.object(prepare.shutil, 'disk_usage', return_value=SimpleNamespace(free=0)), \
-                patch.object(prepare.urllib.request, 'urlopen') as fetch:
+                patch.object(downloads._HTTPS_OPENER, 'open') as fetch:
             self.assertEqual(prepare.run(model='gemma4-e2b', zims='none', oses='this',
                                          yes=True, skip_tools=True), 1)
             fetch.assert_not_called()
@@ -48,13 +48,13 @@ class InstallationTests(unittest.TestCase):
         for name in ("runtime", "models", "zim"):
             (self.root / name).mkdir()
         self.enter.enter_context(patch.object(prepare.shutil, "which", return_value=None))
-        self.enter.enter_context(patch.object(prepare.time, "sleep"))
+        self.enter.enter_context(patch.object(downloads.time, "sleep"))
 
     def fake_response(self, data, headers, status=200):
         response = io.BytesIO(data)
         response.headers = headers
         response.status = status
-        return patch.object(prepare.urllib.request, "urlopen", return_value=response)
+        return patch.object(downloads._HTTPS_OPENER, "open", return_value=response)
 
     def test_short_response_never_becomes_completed_download(self):
         dest = str(self.root / "download.bin")

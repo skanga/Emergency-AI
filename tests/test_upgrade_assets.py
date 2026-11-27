@@ -77,7 +77,7 @@ class AssetTests(unittest.TestCase):
 
     def test_checksum_failure_never_mutates(self):
         self.payload=b'bad'
-        with patch('app.prepare.download',side_effect=self.download):
+        with patch('app.downloads.download',side_effect=self.download):
             with self.assertRaisesRegex(ValueError,'integrity'):
                 upgrade_assets.upgrade(self.root,self.record)
         self.assertEqual((self.root/'models/old.gguf').read_bytes(),b'GGUFold')
@@ -91,14 +91,14 @@ class AssetTests(unittest.TestCase):
 
     def test_model_upgrade_and_offline_rollback(self):
         from upgrade_recovery import rollback
-        with patch('app.prepare.download',side_effect=self.download), patch.object(upgrade_assets,'verify_model'):
+        with patch('app.downloads.download',side_effect=self.download), patch.object(upgrade_assets,'verify_model'):
             transaction = upgrade_assets.upgrade(self.root,self.record)
         self.assertEqual((self.root/'models/old.gguf').read_bytes(),self.payload)
         rollback(self.root,transaction)
         self.assertEqual((self.root/'models/old.gguf').read_bytes(),b'GGUFold')
 
     def test_failed_activation_check_restores_model(self):
-        with patch('app.prepare.download',side_effect=self.download), patch.object(upgrade_assets,'verify_model',side_effect=[None,RuntimeError('load failed')]):
+        with patch('app.downloads.download',side_effect=self.download), patch.object(upgrade_assets,'verify_model',side_effect=[None,RuntimeError('load failed')]):
             with self.assertRaisesRegex(RuntimeError,'load failed'):
                 upgrade_assets.upgrade(self.root,self.record)
         self.assertEqual((self.root/'models/old.gguf').read_bytes(),b'GGUFold')
@@ -108,7 +108,7 @@ class AssetTests(unittest.TestCase):
         (self.root/'zim/c_en_nopic_2025-01.zim').write_bytes(b'old')
         (self.root/'zim/custom.zim').write_bytes(b'custom')
         self.record={'component':'kiwix-data','status':'available','installed':{'path':'zim/c_en_nopic_2025-01.zim','collection':'c_en','variant':'nopic','sha256':hashlib.sha256(b'old').hexdigest()},'candidate':{'path':'zim/c_en_nopic_2025-01.zim','destination':'zim/c_en_nopic_2026-01.zim','file':'c_en_nopic_2026-01.zim','collection':'c_en','variant':'nopic','url':'https://example.com/c_en_nopic_2026-01.zim','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
-        with patch('app.prepare.download',side_effect=self.download), patch('app.prepare._zim_checksum_valid',return_value=True), patch.object(upgrade_assets,'verify_zim'):
+        with patch('app.downloads.download',side_effect=self.download), patch('app.downloads._zim_checksum_valid',return_value=True), patch.object(upgrade_assets,'verify_zim'):
             upgrade_assets.upgrade(self.root,self.record)
         self.assertFalse((self.root/'zim/c_en_nopic_2025-01.zim').exists())
         self.assertTrue((self.root/'zim/c_en_nopic_2026-01.zim').exists())
@@ -132,7 +132,7 @@ class AssetTests(unittest.TestCase):
                 archive.addfile(info,io.BytesIO(b'new'))
         self.payload=payload.getvalue()
         record={'component':'llama','status':'available','installed':{'path':relative,'tag':'b1'},'candidate':{'path':relative,'tag':'b2','asset':'new.tar.gz','platform':platform_key(),'url':'https://example.com/new.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
-        with patch('app.prepare.download',side_effect=self.download), patch('app.upgrade_assets.subprocess.run'):
+        with patch('app.downloads.download',side_effect=self.download), patch('app.upgrade_assets.subprocess.run'):
             transaction=upgrade_assets.upgrade(self.root,record)
         self.assertEqual((folder/exe('llama-server')).read_bytes(),b'new')
         self.assertEqual((folder/'LICENSE').read_bytes(),b'new')
@@ -167,7 +167,7 @@ class AssetTests(unittest.TestCase):
                 archive.addfile(info,io.BytesIO(b'new'))
         self.payload=payload.getvalue()
         record={'component':'python','status':'available','installed':{'path':relative,'asset':'cpython-3.12.1+old'},'candidate':{'path':relative,'asset':'cpython-3.12.9+new','platform':platform_key(),'url':'https://example.com/python.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
-        with patch('app.prepare.download',side_effect=self.download), patch('app.upgrade_assets.subprocess.run'):
+        with patch('app.downloads.download',side_effect=self.download), patch('app.upgrade_assets.subprocess.run'):
             transaction=upgrade_assets.upgrade(self.root,record)
         self.assertEqual((folder/'python/bin/python3').read_bytes(),b'new')
         self.assertFalse((folder/'python/bin/python3').is_symlink())
@@ -183,7 +183,7 @@ class AssetTests(unittest.TestCase):
         folder=self.root/relative;folder.mkdir(parents=True)
         (folder/'external').symlink_to(self.root/'models/old.gguf')
         record={'component':'python','status':'available','installed':{'path':relative},'candidate':{'path':relative}}
-        with patch('app.prepare.download') as fetch:
+        with patch('app.downloads.download') as fetch:
             with self.assertRaises(ValueError): upgrade_assets.upgrade(self.root,record)
         fetch.assert_not_called()
 
@@ -207,7 +207,7 @@ class AssetTests(unittest.TestCase):
         folder.mkdir(parents=True)
         record={'component':'python','status':'available','installed':{'path':relative},'candidate':{'path':relative}}
         executable=folder/('python/python.exe' if os.name=='nt' else 'python/bin/python3')
-        with patch('app.upgrade_assets.sys.executable',str(executable)),patch('app.prepare.download') as fetch:
+        with patch('app.upgrade_assets.sys.executable',str(executable)),patch('app.downloads.download') as fetch:
             with self.assertRaisesRegex(ValueError,'separate system Python'):
                 upgrade_assets.upgrade(self.root,record)
         fetch.assert_not_called()
@@ -228,7 +228,7 @@ class AssetTests(unittest.TestCase):
                 archive.addfile(info,io.BytesIO(b'new'))
         self.payload=payload.getvalue()
         record={'component':'document-tools','status':'available','installed':{'path':relative,'files':{relative+'/pdftotext':hashlib.sha256(b'old').hexdigest()}},'candidate':{'root':'new','binary':'bin/pdftotext','pdfinfo':'bin/pdfinfo','version':'2','platform':platform_key(),'url':'https://example.com/doc.tar.gz','size':len(self.payload),'sha256':hashlib.sha256(self.payload).hexdigest()}}
-        with patch('app.prepare.download',side_effect=self.download),patch('app.upgrade_assets.verify_document'),patch('app.upgrade_assets.subprocess.run',return_value=__import__('subprocess').CompletedProcess([],0,stdout=b'Emergency AI tool verification')):
+        with patch('app.downloads.download',side_effect=self.download),patch('app.upgrade_assets.verify_document'),patch('app.upgrade_assets.subprocess.run',return_value=__import__('subprocess').CompletedProcess([],0,stdout=b'Emergency AI tool verification')):
             upgrade_assets.upgrade(self.root,record)
         self.assertEqual((self.root/'runtime/document-tools/new/COPYING').read_bytes(),b'new')
         self.assertEqual(json.loads((self.root/'config/document-tools.json').read_text())['supported_platforms'][platform_key()]['root'],'new')
@@ -237,7 +237,7 @@ class AssetTests(unittest.TestCase):
     def test_document_indexes_block_tool_activation(self):
         (self.root/'indexes').mkdir()
         (self.root/'indexes/collection.sqlite3').write_bytes(b'index')
-        with patch('app.prepare.download') as fetch:
+        with patch('app.downloads.download') as fetch:
             with self.assertRaisesRegex(ValueError,'index migration'):
                 upgrade_assets._document_changes(self.root,{'path':'runtime/document-tools/old'},{},self.root/'stage')
         fetch.assert_not_called()
@@ -290,7 +290,7 @@ class AssetTests(unittest.TestCase):
         (self.root/'config').mkdir()
         (self.root/'config/source-policy.json').write_text(json.dumps({'rules':[{'sources':{'kiwix:entry':'edition-uuid'}}]}))
         self.record['component']='kiwix-data'
-        with patch('app.prepare.download') as download:
+        with patch('app.downloads.download') as download:
             with self.assertRaisesRegex(ValueError,'policy'):
                 upgrade_assets.upgrade(self.root,self.record)
         download.assert_not_called()
@@ -300,15 +300,15 @@ class AssetTests(unittest.TestCase):
         archive=self.root/'bad.zip'
         with zipfile.ZipFile(archive,'w') as source:
             source.writestr('../escaped','bad')
-        with patch('app.prepare.extract') as extract:
+        with patch('app.downloads._archive_write') as write:
             with self.assertRaisesRegex(ValueError,'path'):
                 upgrade_assets._extract(archive,self.root/'staging')
-        extract.assert_not_called()
+        write.assert_not_called()
 
     def test_pdf_collection_blocks_without_download(self):
         self.record['component']='kiwix-data'
         self.record['installed']['document_format']='nautilus'
-        with patch('app.prepare.download') as download:
+        with patch('app.downloads.download') as download:
             with self.assertRaisesRegex(ValueError,'index'):
                 upgrade_assets.upgrade(self.root,self.record)
         download.assert_not_called()

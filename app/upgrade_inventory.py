@@ -49,7 +49,7 @@ def _official(url, hosts):
 
 
 def _zim(root, path, catalog, timeout):
-    from .prepare import _zim_checksum_valid
+    from .downloads import _zim_checksum_valid
     _path(root,path.relative_to(root).as_posix())
     matches=[]
     for entry in catalog.get('zims',[]):

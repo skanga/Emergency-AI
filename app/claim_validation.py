@@ -7,26 +7,25 @@ from dataclasses import dataclass
 import hashlib
 import re
 
-from .query_planner import normalize, _consciousness, _age
-from .patient_facts import _breathing, _facts, _UNSAFE_SWALLOW, _SWALLOW as SWALLOW_PATTERN, cpr_prerequisite_scope
+from .query_planner import normalize, _age
+from .patient_facts import _facts
+from .safety_patterns import (
+    _CITATION as _CITE, _CLAIM_NEGATIVE as _NEGATIVE, _negative_action, _SWALLOW, _UNSAFE_SWALLOW, _NOT_AWAKE,
+    _breathing, _consciousness, _negative_swallow, _source_conditions, _swallowing,
+)
 from .claim_links import repeated_instruction
 from .action_patterns import WATER_INTAKE
+from .snake_claims import BODY, POSITION, CLEANING, positions, cleaning_scope_supported
 from .explanation_validation import check_explanations, relations
 from .compression_claims import PATTERN as COMPRESSION_PATTERN, positive_swelling, restrictions_preserved
 from .transport_claims import PATTERN as TRANSPORT_PATTERN, methods as transport_methods, negative_at as transport_negative
 
-_CITE = re.compile(r'\[S([1-9][0-9]*)\]')
-_NEGATIVE = re.compile(r'\b(?:do not|don t|never|avoid|must not|should not|cannot|can t|nao|nunca|evite|no|evitar|nem|ni|nor)\s+(?:(?:attempt to|try to|tente|intente|intentes|intenten)\s+)?$')
 _FIRMLY = r'\b(?:firmly|tightly|strongly|firmemente|fortemente|fuertemente)\b'
 _STUCK = r'\b(?:stuck|adher\w*|grudad\w*|pegad\w*)\b'
 _EXCEPT = r'\b(?:except|unless|leave|only if not|do not|don t|not remove|but not|nao|no|exceto|salvo|deixe|deje)\b'
-_UNRESPONSIVE = r'\b(?:unresponsive|unconscious|inconsciente|nao responde|no responde)\b'
-_ABNORMAL = r'\b(?:not breathing(?: normally)?|no breathing(?! (?:trouble|difficulty|problems?))|only gasping|nao respir\w*|no respir\w*)\b'
-_SWALLOW = SWALLOW_PATTERN.pattern
 _SAFE = r'\b(?:if safe|if it is safe|only if safe|se for seguro|se for seguro faze lo|si es seguro)\b'
 _DEVICE = r'\b(?:epipen|jext|auvi q|anapen|emerade)\b'
-_NOT_AWAKE = r'\b(?:not|nao|no) (?:awake|conscious|responsive|alert|acordad[oa]|consciente|despiert[oa])\b'
-_TOURNIQUET = r'\b(?:tourniquets?|torniquetes?|garrotes?|tight (?:arterial )?bands?|faixas? apertadas?|bandas? apretadas?|ligaduras? (?:arterial(?:es)? )?apretadas?)\b'
+_TOURNIQUET = r'\b(?:tourniquets?|torniquetes?|garrotes?|tight (?:arterial )?bands?|faixas? apertadas?|bandas? apretadas?|ligaduras? (?:arterial(?:es)? )?(?:apretadas?|fuertes?))\b'
 
 
 @dataclass(frozen=True)
@@ -39,7 +38,10 @@ class Rule:
 # Object-specific verbs keep an unrelated "give" from turning a prohibition
 # elsewhere in the sentence into a positive instruction.
 RULES = (
+    Rule('dehydration_renal_failure', r'\b(?:kidney failure|renal failure|fallo renal|insuficiencia renal|falencia renal)\b', ('dehydration',)),
     Rule('snake_transport', TRANSPORT_PATTERN, ('snakebite',)),
+    Rule('snake_cleaning', CLEANING, ('snakebite',)),
+    Rule('snake_position', POSITION, ('snakebite',)),
     Rule('snake_tourniquet', _TOURNIQUET, ('snakebite',)),
     Rule('cpr_continuation', r'\b(?:continue|keep going)\b.{0,45}\b(?:until|ate|hasta que)\b', ('cpr',)),
     Rule('embedded_object', r'\b(?:remove|pull out|retire|remova|quite|extraiga)\b.{0,45}\b(?:embedded objects?|foreign objects?|objetos? (?:encravad\w*|incrustad\w*|cravad\w*|empalad\w*))\b', ('bleeding',)),
@@ -79,13 +81,17 @@ def _units(text):
 def _polarity(rule, text, match):
     if rule.name == 'snake_compression' and _has(r'\b(?:must|should|can|may) not be\b', match[0]):
         return False
+    if rule.name == 'snake_position':
+        return not _has(r'\b(?:do not|never|not|nao|no|nunca) '
+                        r'(?:(?:keep|hold|maintain|mantenha|mantenga|manten|deje|deixe) (?:\w+ ){0,5})?$',
+                        text[:match.start()])
     if rule.name == 'snake_transport':
         return not transport_negative(text, match.start())
     if rule.name == 'snake_tourniquet':
         before = re.split(r';|\b(?:but|however|mas|pero)\b', text[:match.start()])[-1]
         # Permit coordinated prohibitions, but not unrelated 'do not panic'.
-        objects = r'(?:(?:a|an|the|um|un|una|o|el|tight|narrow|arterial|apertado|apertada|apretado|apretada|band|banda|ligadura|or|ou|o|nem|ni) |' + _TOURNIQUET + r' )*'
-        verbs = r'(?:use|apply|tie|usar|apliqu(?:e|es|en|em)|aplicar|amarre|atar|utilice|do|faca|haga)'
+        objects = r'(?:(?:a|an|the|um|un|una|o|el|tight|narrow|strong|fuertes?|arterial|apertado|apertada|apretado|apretada|band|banda|ligadura|or|ou|o|nem|ni) |' + _TOURNIQUET + r' )*'
+        verbs = r'(?:uses?|apply|tie|usar|utilices?|apliqu(?:e|es|en|em)|aplicar|amarre|atar|utilice|do|faca|haga)'
         coordinated = r'(?:(?:cut(?: the wound)?|suck(?: the venom)?|burn|corte|sugue|succione|or|nem|ni) )*'
         modal = r'(?:(?:debe|debes|deben|deve|devem) )?'
         ban = r'\b(?:do not|don t|never|must not|should not|nao|no|nunca) ' + modal + coordinated + verbs + r' '
@@ -111,7 +117,7 @@ def _polarity(rule, text, match):
             r'\b(?:not|cannot|can t|won t|never|nao|no|nunca|incapaz)\b'
             r'.{0,35}\b(?:make|made|remove|remov\w*|torn\w*|vuelv\w*|elimin\w*|safe|segur\w*)\b', clause)
         return not (direct_prohibition or unsafe_result)
-    return not bool(_NEGATIVE.search(text[:match.start()]))
+    return not _negative_action(text, match, pattern=_NEGATIVE)
 
 
 def _tourniquet_predicate(text, match):
@@ -126,7 +132,7 @@ def _tourniquet_warning(text, match):
     before = text[:match.start()].strip()
     before = re.sub(r'^(?:for an? unidentified snakebite|al no conocer la especie de la serpiente) ', '', before)
     subject = (r'(?:(?:tying|applying|using|aplicar|usar|o uso de|el uso de|the use of) )?'
-               r'(?:(?:a|an|the|um|un|una|tight|arterial|or|ou|o|nem|ni) |compresion incorrecta |presion o |'
+               r'(?:(?:a|an|the|los|os|um|un|una|tight|arterial|or|ou|o|nem|ni) |compresion incorrecta |presion o |'
                + _TOURNIQUET + r' )*')
     if not re.fullmatch(subject, before + ' ' if before else ''):
         return False
@@ -136,10 +142,6 @@ def _tourniquet_warning(text, match):
     if any(subject == 'tourniquet' for subject, _, _ in relations(text)):
         return True
     return _has(r'^(?: above the bite)? (?:is dangerous|are dangerous|es contraproducente y peligroso|can (?:cause|restrict)|pode causar|puede (?:causar|danar))\b', after)
-
-
-def _negative_swallow(text):
-    return _has(r'\b(?:not|never|nao|no|nunca) (?:able to swallow|can swallow|consegue engolir|capaz de engolir|puede tragar|capaz de tragar)\b|\b(?:cannot swallow|unable to swallow|can t swallow)\b', text)
 
 
 def _negative_prerequisite(text):
@@ -255,25 +257,6 @@ def _condition_issue(name, text, question, positive=True):
     return None
 
 
-def _source_conditions(name, text):
-    """Evidence for CPR/oral therapy must carry prerequisites, not just a verb."""
-    if name == 'cpr':
-        text = cpr_prerequisite_scope(text)
-        state, breath = re.search(_UNRESPONSIVE, text), re.search(_ABNORMAL, text)
-        if not state or not breath or _has(r'\b(?:not|never|nao|no|nunca)\s+' + _UNRESPONSIVE, text):
-            return False
-        between = text[min(state.end(), breath.end()):max(state.start(), breath.start())]
-        return not _has(r'\b(?:or|ou|o)\b', between)
-    if name in ('oral', 'oral_adjunct'):
-        state = re.search(r'\b(?:awake|conscious|responsive|alert|acordad[oa]|consciente|despiert[oa])\b', text)
-        swallow = re.search(_SWALLOW, text)
-        if not state or not swallow or _consciousness(text) != 'responsive' or _has(_NOT_AWAKE, text) or _negative_swallow(text) or _UNSAFE_SWALLOW.search(text):
-            return False
-        between = text[min(state.end(), swallow.end()):max(state.start(), swallow.start())]
-        return not _has(r'\b(?:or|ou|o)\b', between)
-    return True
-
-
 def _oral_objects(text):
     groups = {
         'water':r'\b(?:water|agua)\b',
@@ -282,14 +265,6 @@ def _oral_objects(text):
         'antihistamine':r'\b(?:antihistamine\w*|antihistaminico\w*)\b',
     }
     return {name for name, pattern in groups.items() if _has(pattern, text)}
-
-
-def _swallowing(text):
-    if _negative_swallow(text) or _UNSAFE_SWALLOW.search(text):
-        return 'unsafe'
-    if _has(_SWALLOW, text):
-        return 'safe'
-    return None
 
 
 def _claim_text(text, name):
@@ -442,6 +417,8 @@ def _scope_for_unit(units, index, name):
 def _matches(rule, text, evidence=False):
     if rule.name == 'generator_indoor' and not _has(r'\b(?:generator\w*|gerador\w*|generador\w*)\b', text):
         return []
+    if rule.name == 'snake_position' and not _has(BODY, text):
+        return []
     if rule.name == 'oral_adjunct' and not _has(r'\b(?:antihistamine\w*|antihistaminico\w*)\b', text):
         return []
     if evidence and rule.name == 'water_chemical' and not _has(r'\b(?:fuel|gasoline|petrol|toxic chemicals?|chemical contaminants?|combustivel|gasolina|quimic\w*|combustible)\b', text):
@@ -532,6 +509,18 @@ def check_claims(answer, sources, plan):
                             method_failure = True
                             continue
                         context = _claim_text(_scope_for_unit(source_units, si, rule.name), rule.name)
+                        if rule.name == 'snake_cleaning' and not cleaning_scope_supported(text, candidate):
+                            continue
+                        if rule.name == 'snake_position':
+                            if not positions(text).issubset(positions(candidate)):
+                                continue
+                            # A blanket instruction cannot borrow conditional
+                            # evidence, nor invent a fracture exception.
+                            qualifiers = r'\b(?:if|unless|only|except|se|si|salvo|exceto)\b.*'
+                            claim_scope = re.search(qualifiers, text)
+                            source_scope = re.search(qualifiers, candidate)
+                            if (claim_scope[0] if claim_scope else '') != (source_scope[0] if source_scope else ''):
+                                continue
                         if not positive and rule.name in ('embedded_object', 'generator_reentry', 'snake_tourniquet') and _condition_issue(rule.name, context, question, False):
                             continue
                         if not positive and not _negative_scope_supported(rule.name, text, candidate, facts):

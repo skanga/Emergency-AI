@@ -1,0 +1,1133 @@
+{
+  "limitations": [
+    "Client cold only, not flushed OS caches",
+    "Three development prompts per scenario; not a statistical p95 benchmark",
+    "No token-fitting calls while generation evaluation is running"
+  ],
+  "blocked_external_connections": [],
+  "results": [
+    {
+      "scenario": "cold_client",
+      "question": "An unidentified snake bit my leg.",
+      "lang": "en",
+      "seconds": 0.64,
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "edf24f07d569416f73b3d725",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#First_aid"
+        },
+        {
+          "id": "52243e39c82363d5b0cdec1f",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Treatment"
+        },
+        {
+          "id": "fc8395fbc43744be52536462",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Snake_identification"
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 14,
+        "included": 6
+      }
+    },
+    {
+      "scenario": "cold_client",
+      "question": "Como desinfetar água para beber?",
+      "lang": "pt",
+      "seconds": 0.208,
+      "sources": [
+        {
+          "id": "pt:01-water:7",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:4",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:5",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:2",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "zero_hits",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "cold_client",
+      "question": "Una persona tiene una quemadura.",
+      "lang": "es",
+      "seconds": 0.78,
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:burn-cooling:es:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "f8f196bda44f39972abf7dd3",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management"
+        },
+        {
+          "id": "54fba03bcf1b3d16768f1a07",
+          "kind": "kiwix",
+          "title": "Electrical burn",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#First_aid"
+        },
+        {
+          "id": "c2ee2d302ca75b500c2dbcfa",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids"
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "warm_client",
+      "question": "An unidentified snake bit my leg.",
+      "lang": "en",
+      "seconds": 0.372,
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "edf24f07d569416f73b3d725",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#First_aid"
+        },
+        {
+          "id": "52243e39c82363d5b0cdec1f",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Treatment"
+        },
+        {
+          "id": "fc8395fbc43744be52536462",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Snake_identification"
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 14,
+        "included": 6
+      }
+    },
+    {
+      "scenario": "warm_client",
+      "question": "Como desinfetar água para beber?",
+      "lang": "pt",
+      "seconds": 0.199,
+      "sources": [
+        {
+          "id": "pt:01-water:7",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:4",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:5",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:2",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "zero_hits",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "warm_client",
+      "question": "Una persona tiene una quemadura.",
+      "lang": "es",
+      "seconds": 0.636,
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:burn-cooling:es:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "f8f196bda44f39972abf7dd3",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management"
+        },
+        {
+          "id": "54fba03bcf1b3d16768f1a07",
+          "kind": "kiwix",
+          "title": "Electrical burn",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#First_aid"
+        },
+        {
+          "id": "c2ee2d302ca75b500c2dbcfa",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids"
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "native_only",
+      "question": "An unidentified snake bit my leg.",
+      "lang": "en",
+      "seconds": 0.559,
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "edf24f07d569416f73b3d725",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#First_aid"
+        },
+        {
+          "id": "52243e39c82363d5b0cdec1f",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Treatment"
+        },
+        {
+          "id": "fc8395fbc43744be52536462",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Snake_identification"
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 14,
+        "included": 6
+      }
+    },
+    {
+      "scenario": "native_only",
+      "question": "Como desinfetar água para beber?",
+      "lang": "pt",
+      "seconds": 0.184,
+      "sources": [
+        {
+          "id": "pt:01-water:7",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:4",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:5",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:2",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "zero_hits",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "native_only",
+      "question": "Una persona tiene una quemadura.",
+      "lang": "es",
+      "seconds": 0.678,
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:burn-cooling:es:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "f8f196bda44f39972abf7dd3",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management"
+        },
+        {
+          "id": "54fba03bcf1b3d16768f1a07",
+          "kind": "kiwix",
+          "title": "Electrical burn",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#First_aid"
+        },
+        {
+          "id": "c2ee2d302ca75b500c2dbcfa",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids"
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "one_library",
+      "question": "An unidentified snake bit my leg.",
+      "lang": "en",
+      "seconds": 0.044,
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "zero_hits",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 1,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 3
+      }
+    },
+    {
+      "scenario": "one_library",
+      "question": "Como desinfetar água para beber?",
+      "lang": "pt",
+      "seconds": 0.056,
+      "sources": [
+        {
+          "id": "pt:01-water:7",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:4",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:5",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:2",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "zero_hits",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 1,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "one_library",
+      "question": "Una persona tiene una quemadura.",
+      "lang": "es",
+      "seconds": 0.072,
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:burn-cooling:es:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "bc1f417bfb70b281d59fff14",
+          "kind": "kiwix",
+          "title": "Dutch Oven Grill BBQ recipes",
+          "link": "/content/zimgit-food-preparation_en_2025-04/files/Food%20Preparation%20%285%29.pdf#page=130"
+        },
+        {
+          "id": "f62bb7858cbb097e46ef3c50",
+          "kind": "kiwix",
+          "title": "Dutch Oven Grill BBQ recipes",
+          "link": "/content/zimgit-food-preparation_en_2025-04/files/Food%20Preparation%20%285%29.pdf#page=131"
+        },
+        {
+          "id": "d2460e5987c9f4808f51e7ce",
+          "kind": "kiwix",
+          "title": "Dutch Oven Grill BBQ recipes",
+          "link": "/content/zimgit-food-preparation_en_2025-04/files/Food%20Preparation%20%285%29.pdf#page=144"
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 2,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "all_libraries",
+      "question": "An unidentified snake bit my leg.",
+      "lang": "en",
+      "seconds": 0.612,
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "edf24f07d569416f73b3d725",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#First_aid"
+        },
+        {
+          "id": "52243e39c82363d5b0cdec1f",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Treatment"
+        },
+        {
+          "id": "fc8395fbc43744be52536462",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Snake_identification"
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 14,
+        "included": 6
+      }
+    },
+    {
+      "scenario": "all_libraries",
+      "question": "Como desinfetar água para beber?",
+      "lang": "pt",
+      "seconds": 0.194,
+      "sources": [
+        {
+          "id": "pt:01-water:7",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:4",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:5",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:2",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "zero_hits",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "all_libraries",
+      "question": "Una persona tiene una quemadura.",
+      "lang": "es",
+      "seconds": 0.833,
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:burn-cooling:es:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "f8f196bda44f39972abf7dd3",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management"
+        },
+        {
+          "id": "54fba03bcf1b3d16768f1a07",
+          "kind": "kiwix",
+          "title": "Electrical burn",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#First_aid"
+        },
+        {
+          "id": "c2ee2d302ca75b500c2dbcfa",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids"
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "kiwix_unavailable",
+      "question": "An unidentified snake bit my leg.",
+      "lang": "en",
+      "seconds": 0.023,
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "catalog_error",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 0,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 3
+      }
+    },
+    {
+      "scenario": "kiwix_unavailable",
+      "question": "Como desinfetar água para beber?",
+      "lang": "pt",
+      "seconds": 0.05,
+      "sources": [
+        {
+          "id": "pt:01-water:7",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:4",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:5",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:2",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "catalog_error",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 0,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "kiwix_unavailable",
+      "question": "Una persona tiene una quemadura.",
+      "lang": "es",
+      "seconds": 0.042,
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:burn-cooling:es:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "catalog_error",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 0,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 2
+      }
+    },
+    {
+      "scenario": "model_unavailable",
+      "question": "An unidentified snake bit my leg.",
+      "lang": "en",
+      "seconds": 0.649,
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "edf24f07d569416f73b3d725",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#First_aid"
+        },
+        {
+          "id": "52243e39c82363d5b0cdec1f",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Treatment"
+        },
+        {
+          "id": "fc8395fbc43744be52536462",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Snake_identification"
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": null,
+        "mode": "fallback",
+        "answer_nonempty": true,
+        "searches": null,
+        "fetched": null,
+        "candidates": null,
+        "included": null
+      }
+    },
+    {
+      "scenario": "model_unavailable",
+      "question": "Como desinfetar água para beber?",
+      "lang": "pt",
+      "seconds": 0.206,
+      "sources": [
+        {
+          "id": "pt:01-water:7",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:4",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:5",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:2",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": null,
+        "mode": "search",
+        "answer_nonempty": true,
+        "searches": null,
+        "fetched": null,
+        "candidates": null,
+        "included": null
+      }
+    },
+    {
+      "scenario": "model_unavailable",
+      "question": "Una persona tiene una quemadura.",
+      "lang": "es",
+      "seconds": 0.799,
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:burn-cooling:es:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "f8f196bda44f39972abf7dd3",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management"
+        },
+        {
+          "id": "54fba03bcf1b3d16768f1a07",
+          "kind": "kiwix",
+          "title": "Electrical burn",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#First_aid"
+        },
+        {
+          "id": "c2ee2d302ca75b500c2dbcfa",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids"
+        }
+      ],
+      "diagnostics": {
+        "status": null,
+        "mode": "fallback",
+        "answer_nonempty": true,
+        "searches": null,
+        "fetched": null,
+        "candidates": null,
+        "included": null
+      }
+    },
+    {
+      "scenario": "outbound_blocked",
+      "question": "An unidentified snake bit my leg.",
+      "lang": "en",
+      "seconds": 0.599,
+      "sources": [
+        {
+          "id": "en:authority/who-snakebite:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:snakebite-still:en:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "edf24f07d569416f73b3d725",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#First_aid"
+        },
+        {
+          "id": "52243e39c82363d5b0cdec1f",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Treatment"
+        },
+        {
+          "id": "fc8395fbc43744be52536462",
+          "kind": "kiwix",
+          "title": "Snakebite",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Snakebite#Snake_identification"
+        },
+        {
+          "id": "en:07-first-aid-medicine:13:scope-snakebite",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 12,
+        "candidates": 14,
+        "included": 6
+      }
+    },
+    {
+      "scenario": "outbound_blocked",
+      "question": "Como desinfetar água para beber?",
+      "lang": "pt",
+      "seconds": 0.206,
+      "sources": [
+        {
+          "id": "pt:01-water:7",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:4",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:0",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:5",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "pt:01-water:2",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        }
+      ],
+      "diagnostics": {
+        "status": "zero_hits",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 10,
+        "fetched": 0,
+        "candidates": 0,
+        "included": 5
+      }
+    },
+    {
+      "scenario": "outbound_blocked",
+      "question": "Una persona tiene una quemadura.",
+      "lang": "es",
+      "seconds": 0.804,
+      "sources": [
+        {
+          "id": "es:07-first-aid-medicine:6",
+          "kind": "kit",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "guidance:burn-cooling:es:v1",
+          "kind": "guidance",
+          "title": null,
+          "link": null
+        },
+        {
+          "id": "f8f196bda44f39972abf7dd3",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Management"
+        },
+        {
+          "id": "54fba03bcf1b3d16768f1a07",
+          "kind": "kiwix",
+          "title": "Electrical burn",
+          "link": "/content/wikipedia_en_medicine_maxi_2026-10/Electrical_burn#First_aid"
+        },
+        {
+          "id": "c2ee2d302ca75b500c2dbcfa",
+          "kind": "kiwix",
+          "title": "Burns",
+          "link": "/content/wikem_en_all_maxi_2020-06/A/Burns#Types_of_fluids"
+        }
+      ],
+      "diagnostics": {
+        "status": "success",
+        "mode": null,
+        "answer_nonempty": null,
+        "searches": 20,
+        "fetched": 12,
+        "candidates": 40,
+        "included": 5
+      }
+    }
+  ],
+  "raw_sha256": "4ddff84d40d45f14768ca61d6177c847ad2b6aafd17d8109ba5c374ccbe6b2ca"
+}

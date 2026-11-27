@@ -13,21 +13,26 @@ _LOCAL_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 
 def _is_local(url):
-    return any(h in url for h in ("://127.0.0.1", "://localhost", "://[::1]", "://0.0.0.0"))
+    return urllib.parse.urlsplit(url).hostname in ("127.0.0.1", "localhost", "::1", "0.0.0.0")
 
 
 class SameOriginRedirectHandler(urllib.request.HTTPRedirectHandler):
-    def __init__(self, origin):
+    def __init__(self, origin, follow_redirects=True):
+        self.follow_redirects = follow_redirects
         self.origin = urllib.parse.urlsplit(origin)
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         target = urllib.parse.urlsplit(newurl)
         if (target.scheme, target.netloc) != (self.origin.scheme, self.origin.netloc):
             raise ValueError('Redirect is outside the configured service')
+        if not self.follow_redirects:
+            return None
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
-def open_url(url, data=None, headers=None, timeout=10, method=None, allowed_origin=None):
+def open_url(url, data=None, headers=None, timeout=10, method=None, allowed_origin=None, follow_redirects=True):
+    if not follow_redirects and allowed_origin is None:
+        raise ValueError("Preserving redirects requires an allowed origin")
     hdrs = {"User-Agent": USER_AGENT}
     if headers:
         hdrs.update(headers)
@@ -36,7 +41,7 @@ def open_url(url, data=None, headers=None, timeout=10, method=None, allowed_orig
         hdrs.setdefault("Content-Type", "application/json")
     req = urllib.request.Request(url, data=data, headers=hdrs, method=method)
     if allowed_origin is not None:
-        handlers = [SameOriginRedirectHandler(allowed_origin)]
+        handlers = [SameOriginRedirectHandler(allowed_origin, follow_redirects)]
         if _is_local(url):
             handlers.append(urllib.request.ProxyHandler({}))
         return urllib.request.build_opener(*handlers).open(req, timeout=timeout)
@@ -50,8 +55,11 @@ class ResponseTooLarge(ValueError):
 
 
 def _read_response(response, max_bytes, deadline):
-    length = response.headers.get('Content-Length')
-    if length and int(length) > max_bytes:
+    try:
+        length = int(response.headers.get('Content-Length', ''))
+    except ValueError:
+        length = None
+    if length is not None and length > max_bytes:
         raise ResponseTooLarge(f'Response exceeds {max_bytes} bytes')
     chunks, total = [], 0
     while True:

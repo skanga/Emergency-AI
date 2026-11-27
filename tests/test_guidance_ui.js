@@ -5,7 +5,7 @@ const boxes = [];
 const context = vm.createContext({lang:'en', t:x=>x, retrievalLabel:x=>x,
   esc:x=>String(x ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'),
   document:{createElement:()=>({})}});
-vm.runInContext(source.slice(source.indexOf('  function renderSources('),
+vm.runInContext(source.slice(source.indexOf('  let sourceSequence'),
                             source.indexOf('  async function ask(')), context);
 context.renderSources({appendChild:x=>boxes.push(x)}, [
   {kind:'guidance', n:1, doc_title:'Reference', section:'Safety',

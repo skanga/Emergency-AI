@@ -16,6 +16,10 @@ For failed model, library, or engine downloads after installation, resume the sa
 
 This repairs components for the current computer. Omit `--os this` to prepare all platforms saved in the previous setup. If no choices were saved, run `.\run.bat prepare` or `./run.sh prepare` and choose again.
 
+Setup downloads require HTTPS, including redirects. Python and llama.cpp downloads (including CUDA companion libraries) also require a valid GitHub SHA-256 digest. If setup reports a missing or invalid digest, it stops that component before downloading; it does not replace the existing installation. Retry when the publisher provides valid metadata. A checksum mismatch rejects the new download and retains the installed version.
+
+Preparation and component upgrades reject archive paths that escape the destination, existing destination symlinks, and special files. These checks also apply on older supported Python versions. Safe internal TAR links are preserved during preparation or materialized when required by the platform or upgrade procedure. ZIP symlink entries are rejected. If an archive is rejected, retain the error message and retry with a corrected publisher archive.
+
 For the bootstrap installer, `install.log` normally lives in the sibling `.Emergency-AI-downloads` folder. At a drive or mounted-volume root, the cache is inside that root. See [installer details](technical-reference.md#installer-details).
 
 ## The window closed or the browser did not open

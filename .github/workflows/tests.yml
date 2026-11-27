@@ -10,6 +10,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: ['3.11', '3.14']
+        exclude:
+          - os: macos-latest
+            python: '3.11'
         include:
           - os: ubuntu-24.04-arm
             python: '3.11'
@@ -40,3 +43,22 @@ jobs:
       - run: node --check web/app.js
       - run: node tests/test_stream_completion.js
       - run: node tests/test_guidance_ui.js
+      # Run both Python versions on one scarce macOS ARM runner rather than
+      # requiring a second allocation that can expire without starting.
+      - uses: actions/setup-python@v5
+        if: matrix.os == 'macos-latest'
+        with:
+          python-version: '3.11'
+      - name: macOS ARM Python 3.11 suite
+        if: matrix.os == 'macos-latest'
+        run: python -B -m unittest discover -s tests
+        env:
+          PYTHONUTF8: '1'
+          PYTHONDONTWRITEBYTECODE: '1'
+      - name: macOS ARM native activation and rollback
+        if: matrix.os == 'macos-latest'
+        run: python -B -m unittest tests.test_native_tool_upgrades tests.test_native_runtime_upgrades -v
+        env:
+          EMERGENCY_NATIVE_TOOL_TESTS: '1'
+          PYTHONUTF8: '1'
+          PYTHONDONTWRITEBYTECODE: '1'

@@ -212,21 +212,23 @@
     return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
   }
   function inline(s, opts) {
-    s = esc(s);
-    const codes = [];
+    s = esc(s).replace(/[\u0000\u0001]/g, "");
+    const codes = [], links = [];
+    const protectLink = html => { links.push(html); return "\u0001" + (links.length - 1) + "\u0001"; };
     s = s.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return "\u0000" + (codes.length - 1) + "\u0000"; });
     s = normalizeArrows(s);
     s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
     s = s.replace(/(^|[\s(])_([^_\n]+)_(?=[\s).,;:!?]|$)/g, "$1<em>$2</em>");
-    s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, txt, href) => {
+    s = s.replace(/\[((?:[^\[\]]|\[[^\[\]]*\])+)\]\(([^)\s]+)\)/g, (_, txt, href) => {
       const m = href.match(/^([\w-]+)\.md(#[\w-]+)?$/);
-      if (m) return `<a href="#" data-guide="${m[1]}" data-anchor="${(m[2] || "").slice(1)}">${txt}</a>`;
-      if (/^https?:\/\//.test(href)) return `<a href="${href}" target="_blank" rel="noopener">${txt}</a>`;
+      if (m) return protectLink(`<a href="#" data-guide="${m[1]}" data-anchor="${(m[2] || "").slice(1)}">${txt}</a>`);
+      if (/^https?:\/\//.test(href)) return protectLink(`<a href="${href}" target="_blank" rel="noopener">${txt}</a>`);
       return txt;
     });
-    s = s.replace(/(^|[\s(])(https?:\/\/[^\s<)]+[^\s<).,;])/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>');
+    s = s.replace(/(^|[\s(])(https?:\/\/[^\s<)\u0000\u0001]+[^\s<).,;\u0000\u0001])/g, (_, prefix, url) => prefix + protectLink(`<a href="${url}" target="_blank" rel="noopener">${url}</a>`));
     if (opts && opts.cites) s = s.replace(/\[(\d{1,2})\]/g, '<a href="#" class="cite" data-cite="$1">[$1]</a>');
+    s = s.replace(/\u0001(\d+)\u0001/g, (_, i) => links[+i]);
     s = s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${codes[+i]}</code>`);
     return s;
   }
@@ -528,11 +530,15 @@
     box.innerHTML = `<summary>${label}</summary><div>${esc(retrievalSummary(report, sources)).replace(/\n/g, "<br>")}</div>`;
   }
 
+  let sourceSequence = 0;
+  const sourceScopes = new WeakMap();
   function renderSources(container, sources) {
     container.querySelector?.('.sources')?.remove();
     if (!sources || !sources.length) return;
     const box = document.createElement("div");
     box.className = "sources";
+    if (!sourceScopes.has(container)) sourceScopes.set(container, ++sourceSequence);
+    const scope = sourceScopes.get(container);
     const render = (s) => {
       let label = esc(s.doc_title) + " › " + esc(s.section);
       if (s.issued) label += " · " + ({en:"Snapshot",pt:"Arquivo",es:"Archivo"}[lang]) + ": " + esc(s.issued.slice(0, 10));
@@ -543,18 +549,46 @@
           : {en:"Source-backed guidance",pt:"Orientação baseada em fontes",es:"Orientación basada en fuentes"}[lang];
         const publisher = /^https:\/\//i.test(s.url || "")
           ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.doc_title)}</a>` : "";
-        return `<details class="src" id="src-${s.n}"><summary>[${s.n}] ${label} · ${tag}</summary><p>${esc(s.original_text || s.text)}</p>${publisher}</details>`;
+        return `<details class="src" id="src-${scope}-${s.n}" data-source-number="${s.n}"><summary>[${s.n}] ${label} · ${tag}</summary><p>${esc(s.original_text || s.text)}</p>${publisher}</details>`;
       }
       if (s.kind === "kiwix") {
-        return `<a class="src" id="src-${s.n}" href="/kiwix${esc(s.link)}" target="_blank" rel="noopener"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kiwix")}</span></a>`;
+        return `<a class="src" id="src-${scope}-${s.n}" data-source-number="${s.n}" href="/kiwix${esc(s.link)}" target="_blank" rel="noopener"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kiwix")}</span></a>`;
       }
-      return `<a class="src" id="src-${s.n}" href="#" data-guide="${esc(s.doc_id)}" data-anchor="${esc(s.anchor)}"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kit")}</span></a>`;
+      return `<a class="src" id="src-${scope}-${s.n}" data-source-number="${s.n}" href="#" data-guide="${esc(s.doc_id)}" data-anchor="${esc(s.anchor)}"><span class="num">[${s.n}]</span><span>${label}</span><span class="tag">${t("kit")}</span></a>`;
     };
     const included = sources.filter(s => !s.context_omitted).map(render).join("");
     const omitted = sources.filter(s => s.context_omitted).map(render).join("");
     const notUsed = {en:"Not used in this answer",pt:"Não usadas nesta resposta",es:"No usadas en esta respuesta"}[lang];
     box.innerHTML = `<h4>${t("sources")}</h4>` + included + (omitted ? `<details><summary>${notUsed}</summary>${omitted}</details>` : "");
     container.appendChild(box);
+  }
+
+  function updateChat(update) {
+    const chat = $("#chat");
+    const follow = chat.scrollHeight - chat.clientHeight - chat.scrollTop <= 80;
+    update();
+    if (follow) chat.scrollTop = chat.scrollHeight;
+  }
+
+  function createStreamRenderer(out) {
+    let frame = null, pending = null;
+    const render = () => {
+      frame = null;
+      if (pending === null) return;
+      const text = pending;
+      pending = null;
+      updateChat(() => { out.innerHTML = md(text, { cites: true }); });
+    };
+    return {
+      schedule(text) {
+        pending = text;
+        if (frame === null) frame = requestAnimationFrame(render);
+      },
+      flush() {
+        if (frame !== null) cancelAnimationFrame(frame);
+        render();
+      },
+    };
   }
 
   async function ask(question) {
@@ -566,6 +600,7 @@
     const w = addMsg("ai", `<div class="md typing">${t("thinking")}</div>`);
     const body = w.querySelector(".bubble");
     const out = body.querySelector(".md");
+    const renderer = createStreamRenderer(out);
     let text = "", sources = [], started = false, retrieval = null;
     const t0 = Date.now();
     try {
@@ -592,14 +627,13 @@
           const dataLine = (block.match(/^data: (.*)$/m) || [])[1];
           if (!ev || dataLine === undefined) continue;
           const data = JSON.parse(dataLine);
-          if (ev === "retrieval") { retrieval = data; renderRetrieval(body, retrieval); }
-          else if (ev === "sources") { sources = data; renderSources(body, sources); if (retrieval) renderRetrieval(body, retrieval, sources); }
+          if (ev === "retrieval") { retrieval = data; updateChat(() => renderRetrieval(body, retrieval)); }
+          else if (ev === "sources") { sources = data; updateChat(() => { renderSources(body, sources); if (retrieval) renderRetrieval(body, retrieval, sources); }); }
           else if (ev === "token") {
             if (!started) { started = true; text = ""; }
             text += data;
-            out.innerHTML = md(text, { cites: true });
-            w.scrollIntoView({ block: "end" });
-          } else if (ev === "done") { info = data; completed = true; if (info.retrieval) renderRetrieval(body, info.retrieval, sources); }
+            renderer.schedule(text);
+          } else if (ev === "done") { info = data; completed = true; renderer.flush(); if (info.retrieval) updateChat(() => renderRetrieval(body, info.retrieval, sources)); }
           else if (ev === "error") throw new Error(data.error);
         }
       }
@@ -610,10 +644,11 @@
           es: "Respuesta interrumpida: la respuesta puede estar incompleta.",
         }[lang];
         text += "\n\n**" + notice + "**";
-        out.innerHTML = md(text, { cites: true });
+        renderer.schedule(text);
       }
+      renderer.flush();
       out.classList.remove("typing");
-      renderSources(body, sources);
+      updateChat(() => renderSources(body, sources));
       const meta = document.createElement("div");
       meta.className = "meta";
       const secs = info.seconds ?? ((Date.now() - t0) / 1000).toFixed(1);
@@ -625,12 +660,17 @@
         ? {en:"Source-backed fallback",pt:"Orientação alternativa baseada em fontes",es:"Orientación alternativa basada en fuentes"}[lang]
         : t(modeKey);
       meta.textContent = (completed ? modeLabel + " · " : "") + secs + "s";
-      body.appendChild(meta);
+      updateChat(() => body.appendChild(meta));
       chatHistory.push({ role: "user", content: question }, { role: "assistant", content: text });
       chatHistory = chatHistory.slice(-8);
     } catch (e) {
       out.classList.remove("typing");
-      out.textContent = t("error") + e.message;
+      renderer.flush();
+      if (!started) out.textContent = "";
+      const error = document.createElement("p");
+      error.className = "stream-error";
+      error.textContent = t("error") + e.message;
+      updateChat(() => out.appendChild(error));
     } finally {
       busy = false;
       renderModels();
@@ -691,7 +731,7 @@
     const c = e.target.closest("[data-cite]");
     if (c) {
       e.preventDefault();
-      const src = c.closest(".bubble").querySelector("#src-" + c.dataset.cite);
+      const src = c.closest(".bubble").querySelector(`[data-source-number="${c.dataset.cite}"]`);
       if (src) { src.scrollIntoView({ block: "center" }); src.classList.add("flash"); setTimeout(() => src.classList.remove("flash"), 1700); }
       return;
     }

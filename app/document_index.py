@@ -2,6 +2,7 @@
 
 import ast
 from contextlib import closing
+from functools import lru_cache
 import hashlib
 import json
 import os
@@ -15,6 +16,26 @@ from urllib.parse import quote, unquote, urlsplit
 
 INDEX_VERSION = 1
 
+ZIM_CONFIG_PATH = Path(__file__).resolve().parent.parent / 'config/zims.json'
+
+
+@lru_cache(maxsize=1)
+def _fts5_supported():
+    """SQLite capabilities are fixed for this process, unlike index contents."""
+    try:
+        with closing(sqlite3.connect(':memory:')) as db:
+            db.execute('CREATE VIRTUAL TABLE probe USING fts5(text)')
+        return True
+    except sqlite3.OperationalError:
+        return False
+
+
+@lru_cache(maxsize=8)
+def _document_collections(path, mtime_ns, size, inode):
+    """Cache immutable derived data; replacement and edits get a fresh key."""
+    configured = json.loads(Path(path).read_text(encoding='utf-8')).get('zims', [])
+    return frozenset(entry['name'] for entry in configured if entry.get('document_format') == 'nautilus')
+
 
 class _RetainPreviousIndex(RuntimeError):
     """A rebuild failed; the active version must remain available."""
@@ -22,9 +43,9 @@ class _RetainPreviousIndex(RuntimeError):
 
 def document_state(book, index):
     """Known document formats need preparation; native archives do not."""
-    path = Path(__file__).resolve().parent.parent / 'config/zims.json'
-    configured = json.loads(path.read_text(encoding='utf-8')).get('zims', [])
-    collections = {entry['name'] for entry in configured if entry.get('document_format') == 'nautilus'}
+    path = ZIM_CONFIG_PATH.resolve()
+    metadata = path.stat()
+    collections = _document_collections(str(path), metadata.st_mtime_ns, metadata.st_size, metadata.st_ino)
     state = index.status(book)
     if book['name'] in collections or state['state'] in ('indexed', 'partially_indexed', 'browse_only'):
         return state
@@ -244,12 +265,7 @@ class DocumentIndex:
 
     @staticmethod
     def supported():
-        try:
-            with closing(sqlite3.connect(':memory:')) as db:
-                db.execute('CREATE VIRTUAL TABLE probe USING fts5(text)')
-            return True
-        except sqlite3.OperationalError:
-            return False
+        return _fts5_supported()
 
     def status(self, book):
         if not self.supported():

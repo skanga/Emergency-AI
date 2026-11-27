@@ -24,8 +24,8 @@ class CudaTests(unittest.TestCase):
 
     def test_install_bundles_runtime_next_to_executable_and_is_reusable(self):
         with tempfile.TemporaryDirectory() as root:
-            engine = ('llama-b123-bin-win-cuda-13.5-x64.zip', 'engine', 1)
-            runtime = ('cudart-llama-bin-win-cuda-13.5-x64.zip', 'runtime', 1)
+            engine = ('llama-b123-bin-win-cuda-13.5-x64.zip', 'engine', 1, 'sha256:' + 'a' * 64)
+            runtime = ('cudart-llama-bin-win-cuda-13.5-x64.zip', 'runtime', 1, 'sha256:' + 'b' * 64)
             def download(url, dest, **kwargs):
                 Path(dest).parent.mkdir(parents=True, exist_ok=True)
                 Path(dest).write_bytes(b'x')
@@ -41,6 +41,7 @@ class CudaTests(unittest.TestCase):
                     self.assertTrue(prepare._install_llama('windows-x86_64', prepare.T['en'], 'b123',
                                                          engine, 'cuda', runtime))
                 self.assertEqual(fetch.call_count, 2)
+                self.assertEqual([c.kwargs['sha256'] for c in fetch.call_args_list], ['a' * 64, 'b' * 64])
                 (Path(root) / 'llama.cpp/windows-x86_64-cuda/bin/cudart64_13.dll').unlink()
                 self.assertTrue(prepare._install_llama('windows-x86_64', prepare.T['en'], 'b123',
                                                      engine, 'cuda', runtime))
@@ -123,6 +124,6 @@ class CudaTests(unittest.TestCase):
                     patch.object(prepare, 'extract', side_effect=extract), \
                     contextlib.redirect_stdout(io.StringIO()):
                 self.assertFalse(prepare._install_llama('windows-x86_64', prepare.T['en'], 'new',
-                    ('engine.zip', 'engine', 1), 'cuda', ('cudart.zip', 'runtime', 1)))
+                    ('engine.zip', 'engine', 1, 'sha256:' + 'a' * 64), 'cuda', ('cudart.zip', 'runtime', 1, 'sha256:' + 'b' * 64)))
             self.assertEqual((dest / 'llama-server.exe').read_bytes(), b'old engine')
             self.assertEqual((dest / 'cudart64_13.dll').read_bytes(), b'old library')
