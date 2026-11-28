@@ -31,4 +31,9 @@ The software license does not relicense original third-party publications. IFRC'
 
 The full CFAR guide contains trained-responder procedures. Its searchable summary is restricted to handover communication, without instructions for those procedures. Full manuals require audience and procedure review before any future retrieval activation. Do not copy raw extraction into `knowledge/extra/` as a way around that boundary.
 
-PDF layout checks rejected many pages in these documents. The shipped sections were reviewed against their cited source sections instead of accepting raw extraction as reliable. Adding an authoritative source does not prove that generated answers preserve its conditions. See the batch's answer-quality evidence and remaining limitations in `docs/reviews/2026-11-26-authority-first-batch.md`.
+PDF layout checks rejected many pages in these documents. The shipped sections were reviewed against their cited source sections instead of accepting raw extraction as reliable. Adding an authoritative source does not prove that generated answers preserve its conditions. The initial 16-answer screen had two major unsafe and two major citation findings; three selected chemical-water repeats passed. These are agent assessments of development cases, not clinical certification. The full evidence is retained in the Git-only evaluation suite (`tests/evals/emergency_advice/baselines/authorities-2026-11-26/`).
+
+
+## Recorded extraction validation
+
+The November 26 Linux/Xpdf check accepted 437/594 IFRC pages, 1/12 WHO CFAR pages and 7/29 FEMA pages. Acceptance by the layout filter is not semantic approval. WHO PDF page 9, FEMA page 17 and IFRC page 115 were visually compared with the selected source sections; only the reviewed summaries were activated. Optional originals passed size/hash verification and offline reuse checks. These counts describe that extraction run, not a current download or a full-manual retrieval evaluation.

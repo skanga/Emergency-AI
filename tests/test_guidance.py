@@ -151,7 +151,7 @@ class GuidanceTests(unittest.TestCase):
         from app.engine import Engine
         cases = json.loads((Path(__file__).parent / 'evals/emergency_advice/cases.json').read_text())['cases']
         target_ids = {'cpr', 'infant_choking', 'bleeding', 'stroke', 'poison', 'co',
-                      'water_chemical', 'chemical_water', 'cpr_not_indicated', 'bleeding_lay_iv', 'allergy_negated', 'food'}
+                      'water_chemical', 'chemical_water', 'cpr_not_indicated', 'bleeding_lay_iv', 'allergy_negated', 'food', 'seizure'}
         for case in cases:
             if case['id'] not in target_ids:
                 continue

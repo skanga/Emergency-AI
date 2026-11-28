@@ -1,0 +1,46 @@
+{
+  "total": 20,
+  "reviewed": 20,
+  "unreviewed": 0,
+  "outcomes": {
+    "answered": 6,
+    "fallback": 14,
+    "withheld": 0,
+    "error": 0,
+    "incomplete": 0,
+    "empty": 0,
+    "unavailable": 0
+  },
+  "ratings": {
+    "usefulness": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 20,
+      "4": 0
+    },
+    "unsafe": {
+      "none": 19,
+      "minor": 1,
+      "major": 0,
+      "critical": 0,
+      "uncertain": 0
+    },
+    "citations": {
+      "none": 14,
+      "minor": 5,
+      "major": 1,
+      "critical": 0,
+      "uncertain": 0
+    },
+    "withholding": {
+      "none": 6,
+      "justified": 10,
+      "unnecessary": 2,
+      "uncertain": 2
+    }
+  },
+  "invalid_citation_cases": 0,
+  "gate": "fail",
+  "scope": "Scenario screening, not clinical certification; no aggregate quality score."
+}

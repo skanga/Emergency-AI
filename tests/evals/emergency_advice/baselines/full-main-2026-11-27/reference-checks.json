@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-11-27",
+  "method": "Primary publisher pages opened and relevant sections read with the web tool during agent adjudication. This supplements, and does not mutate, the frozen case rubric or source passages. No independent clinical sign-off.",
+  "checks": [
+    {"url":"https://www.redcross.org/take-a-class/resources/learn-first-aid/adult-cardiac-arrest","scope":"Adult arrest recognition, CPR and continuation boundaries"},
+    {"url":"https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/pediatric-basic-life-support","scope":"2025 infant choking and CPR techniques; current guidance eliminates two-finger CPR"},
+    {"url":"https://www.redcross.org/take-a-class/resources/articles/how-to-apply-a-tourniquet","scope":"Commercial tourniquet positioning, manufacturer directions, training ideal without delaying life-saving care"},
+    {"url":"https://www.nhs.uk/conditions/anaphylaxis/","scope":"Device instructions, positioning, persistent symptoms after five minutes and second injector"},
+    {"url":"https://www.foodallergy.org/resources/recognizing-and-treating-reaction-symptoms","scope":"Individualized plans may prescribe epinephrine before severe symptoms, or before symptoms emerge"},
+    {"url":"https://www.nhs.uk/conditions/low-blood-sugar-hypoglycaemia/","scope":"Consciousness/swallowing, no oral intake when unconscious, glucagon knowledge and escalation"},
+    {"url":"https://www.nhs.uk/conditions/dehydration/","scope":"Sleepiness, difficulty waking and severe dehydration escalation"},
+    {"url":"https://www.nhs.uk/conditions/burns-and-scalds/","scope":"Twenty-minute cooling, stuck clothing and covering conditions"},
+    {"url":"https://www.poison.org/need-immediate-assistance","scope":"No induced vomiting; product-dependent fluids with consciousness, seizure and swallowing conditions"},
+    {"url":"https://www.epa.gov/ground-water-and-drinking-water/emergency-disinfection-drinking-water","scope":"Suitable bleach, concentration and treatment conditions; chemical-contamination limits"},
+    {"url":"https://www.cdc.gov/water-emergency/about/index.html","scope":"Safe alternative supply and chemical-contamination limits; /about/ URL failed in this browsing session"},
+    {"url":"https://www.cdc.gov/niosh/heat-stress/about/illnesses.html","scope":"Immediate emergency help and cooling for heatstroke"},
+    {"url":"https://www.cdc.gov/epilepsy/first-aid-for-seizures/index.html","scope":"Seizures over five minutes, no restraint or objects in mouth, side positioning"},
+    {"url":"https://www.cdc.gov/stroke/signs-symptoms/index.html","scope":"Immediate stroke response"},
+    {"url":"https://www.weather.gov/pbz/floods","scope":"Avoid floodwater; trapped fast-moving-water vehicle and water rising inside distinction"},
+    {"url":"https://www.usfa.fema.gov/prevention/home-fires/prevent-fires/cooking/","scope":"Cooking fire prevention and lid response"},
+    {"url":"https://www.usfa.fema.gov/downloads/fief/handouts/fief_cooking_safety_flyer_custom.pdf","scope":"Cover pan, turn off burner, no water or moving pan, evacuate when in doubt"},
+    {"url":"https://www.cpsc.gov/safety-education/safety-guides/home-fire/recipe-safer-cooking","scope":"Lid before heat shutoff, no carrying pan, proper extinguisher and training; safe-approach prerequisite is explicit in the app's supplied catalog passage"},
+    {"url":"https://www.foodsafety.gov/food-safety-charts/food-safety-during-power-outage","scope":"Outage and measured-temperature distinctions, dairy and cheese rows, no tasting for safety"},
+    {"url":"https://www.cdc.gov/carbon-monoxide/about/","scope":"CO exposure and generator safety"},
+    {"url":"https://www.cdc.gov/niosh/npg/npgd0105.html","scope":"Carbon monoxide properties; relative density 0.97"},
+    {"url":"https://www.nhs.uk/conditions/snake-bites/","scope":"Urgent help, keep still, avoid cutting/sucking/tight tourniquet; UK context does not establish global washing or pressure-bandaging protocol"},
+    {"url":"https://www.nps.gov/articles/gtgemergencyplan.htm","scope":"Emergency signaling/planning; catalog lone-snakebite guidance remains an editorial synthesis, not a universal travel distance prescription"}
+  ]
+}

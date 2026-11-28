@@ -22,8 +22,9 @@ from .transport_claims import PATTERN as TRANSPORT_PATTERN, methods as transport
 
 _FIRMLY = r'\b(?:firmly|tightly|strongly|firmemente|fortemente|fuertemente)\b'
 _STUCK = r'\b(?:stuck|adher\w*|grudad\w*|pegad\w*)\b'
-_EXCEPT = r'\b(?:except|unless|leave|only if not|do not|don t|not remove|but not|nao|no|exceto|salvo|deixe|deje)\b'
+_EXCEPT = r'\b(?:except|unless|leave|only if (?:they are |it is )?not|do not|don t|not remove|but not|nao|no|exceto|salvo|deixe|deje)\b'
 _SAFE = r'\b(?:if safe|if it is safe|only if safe|se for seguro|se for seguro faze lo|si es seguro)\b'
+_REPEAT_INJECTOR = r'\b(?:second|another|repeat|repeated|segundo|segunda|outro|outra|repita|otro|otra)\b'
 _DEVICE = r'\b(?:epipen|jext|auvi q|anapen|emerade)\b'
 _TOURNIQUET = r'\b(?:tourniquets?|torniquetes?|garrotes?|tight (?:arterial )?bands?|faixas? apertadas?|bandas? apretadas?|ligaduras? (?:arterial(?:es)? )?(?:apretadas?|fuertes?))\b'
 
@@ -58,13 +59,14 @@ RULES = (
     Rule('snake_compression', COMPRESSION_PATTERN, ('snakebite',)),
     Rule('injector_hold', r'\b(?:hold|keep|mantenha|segure|mantenga|sujete)\b.{0,65}\b(?:seconds?|segundos?)\b', ('anaphylaxis',)),
     Rule('flood_wait', r'\b(?:wait|stay|remain|espere|permaneca|quedese|permanezca)\b.{0,85}\b(?:water|vehicle|car|inside|recede|agua|veiculo|carro|vehiculo|dentro)\b', ('flood',)),
+    Rule('fire_shutdown', r'\b(?:turn off|shut off|switch off|desligue|apague)\b.{0,30}\b(?:heat|burner|stove|fogo|fogao|calor|hornilla)\b', ('fire', 'grease_fire')),
     Rule('fire_cover', r'\b(?:cover|smother|slide|cubra|abafe|tape|deslice|cobrir)\b', ('fire', 'grease_fire')),
     Rule('extinguisher', r'\b(?:use|using|apply|utilize|usar|utilice)\b.{0,55}\b(?:extinguisher|extintor)\b', ('fire', 'grease_fire')),
     Rule('cpr', r'\b(?:(?:start|begin|perform|give|initiate|continue|do(?= (?:cpr|rcp|chest compressions))|inicie|comece|faca|realize|comience|inicia|haga|realizar)\s+(?:\w+\s+){0,3}(?:cpr|rcp|chest compressions|compressoes toracicas|compresiones toracicas)|(?:cpr|rcp) (?:now|immediately|agora|ahora))\b'),
     Rule('oral', r'\b(?:give|offer|take|eat|drink|administer|dar|ofereca|ofrezca(?:le)?|ofrecer|tome|beba|coma|dele|administre)\b.{0,60}\b(?:glucose|sugar|juice|honey|food|drinks?|anything by mouth|oral|antihistamine\w*|tablet\w*|glicose|acucar|suco|mel|comprimido\w*|alimento\w*|bebida\w*|glucosa|azucar|jugo|miel|pastilla\w*|antihistaminico\w*)\b'),
     Rule('oral_adjunct', r'\b(?:consider\w*|adjunct|adjuvante|complemento|complementario)\b', ('anaphylaxis',)),
     Rule('water_chemical', r'\b(?:boil\w*|disinfect\w*|ferv\w*|desinfet\w*|herv\w*|desinfect\w*)\b', ('water_chemical',)),
-    Rule('injector', r'\b(?:use|inject|administer|give|apply|aplique|administre|injete|inyecte|utilice)\b.{0,70}\b(?:epinephrine|adrenaline|auto injector|epipen|jext|anapen|adrenalina|epinefrina|autoinjetor|autoinyector)\b', ('anaphylaxis',)),
+    Rule('injector', r'\b(?:use|inject|administer|give|apply|aplique|administre|injete|inyecte|utilice)\b.{0,70}\b(?:epinephrine|adrenaline|auto injector|injector|epipen|jext|anapen|adrenalina|epinefrina|autoinjetor|autoinyector)\b', ('anaphylaxis',)),
 )
 
 
@@ -241,8 +243,14 @@ def _condition_issue(name, text, question, positive=True):
         return 'snake_compression_scope_missing'
     if name == 'injector_hold' and not _has(_DEVICE, question):
         return 'injector_device_scope_missing'
+    if name == 'fire_shutdown' and not _has(_SAFE, text):
+        return 'fire_approach_condition_missing'
     if name == 'flood_wait' and not (
-            _has(r'\b(?:rising|rises|subindo|subir|sube|subiendo)\b', text)
+            _has(r'\b(?:trapped|stuck|preso|atrapado)\b', text)
+            and _has(r'\b(?:fast moving|rapidly moving|agua corrente|corre rapidamente)\b', text)
+            and not _has(r'\b(?:not|never|nao|no) (?:trapped|stuck|preso|atrapado)\b', text)
+            and not _has(r'\b(?:significantly|substantially|significativamente)\b', text)
+            and _has(r'\b(?:rising|rises|subindo|subir|sube|subiendo)\b', text)
             and _has(r'\b(?:inside|dentro|interior)\b', text)
             and _has(r'\b(?:get|climb|go|seek refuge|procure abrigo|refugiese|suba|subir|subase)\b.{0,25}\b(?:roof|teto|techo)\b', text)
             and not _has(r'\b(?:not|never|nao|no|nunca) (?:get|climb|go|seek|suba|subir|procure|refugiese)\b.{0,35}\b(?:roof|teto|techo)\b', text)):
@@ -304,8 +312,34 @@ def _negative_scope_supported(name, claim, evidence, facts):
         if required and stated != required:
             return False
     if _has(r'\b(?:or|ou|o)\b', claim) and not _has(r'\b(?:or|ou|o)\b', evidence):
-        return False
+        # The conservative no-oral-intake boundary also covers inability to
+        # swallow. Do not generalize this to other OR branches or actions.
+        unsafe_or = (name == 'oral' and _has(r'\b(?:unconscious|unresponsive) or unable to swallow safely\b', claim)
+                     and _has(r'\bunconscious(?:ness)?\b', evidence)
+                     and not _has(r'\b(?:awake|responsive|conscious|breathing normally)\b', claim))
+        if not unsafe_or:
+            return False
     return True
+
+
+def _injector_repeat_supported(claim, evidence, question):
+    """A second dose needs repeat evidence and its timing, not initial-dose advice."""
+    if not _has(_REPEAT_INJECTOR, normalize(claim)):
+        return True
+    if not _has(_REPEAT_INJECTOR, normalize(evidence)):
+        return False
+    durations = {q[2] for q in _quantities(evidence) if q[-1] == 'min'}
+    claimed = {q[2] for q in _quantities(claim) if q[-1] == 'min'}
+    persistent = r'\b(?:persist\w*|not improv\w*|no improvement|still wheezing|still.*faint|nao melhorar\w*|no mejor\w*)\b'
+    if claimed:
+        return claimed.issubset(durations) and _has(persistent, normalize(claim))
+    # Only explicit user timing can fill an omitted repeat interval. Assistant
+    # history is absent from the planner's context_turns used here.
+    elapsed = re.search(r'\b(?:used|gave|injected)\b.{0,65}\b(\d+) minutes? ago\b', question)
+    if not elapsed or not _has(persistent, question) or not durations:
+        return False
+    minimum = min(float(value.split('–')[0]) for value in durations)
+    return int(elapsed[1]) >= minimum
 
 
 def _repeat_supported(claim, evidence):
@@ -372,8 +406,8 @@ def _quantities(text):
         action = actions[segments[index - 1]] if index else 'initial'
         counts[action] = counts.get(action, 0) + 1
         for match in re.finditer(
-                r'(?<![\w.])([0-9]+(?:[.,][0-9]+)?)\s*(seconds?|segundos?|minutes?|minutos?|ml|mg|mcg|g|grams?|gramas?|gramos?|drops?|gotas?|cm|mm|°c|°f)\b', segments[index]):
-            result.add((action, counts[action], match[1].replace(',', '.'), units.get(match[2], match[2])))
+                r'(?<![\w.])([0-9]+(?:[.,][0-9]+)?(?:\s*(?:[-–—]|to)\s*[0-9]+(?:[.,][0-9]+)?)?)\s*(seconds?|segundos?|minutes?|minutos?|min|ml|mg|mcg|g|grams?|gramas?|gramos?|drops?|gotas?|cm|mm|°c|°f)\b', segments[index]):
+            result.add((action, counts[action], re.sub(r'\s*(?:[-–—]|to)\s*', '–', match[1].replace(',', '.')), units.get(match[2], match[2])))
     return result
 
 
@@ -391,8 +425,27 @@ def _list_prefix(units, index, name):
     return ''
 
 
+def _oral_menu_context(units, index):
+    """Attach a food-example bullet only to its explicit safe-swallowing preamble."""
+    if not re.match(r'^\s*[-*]\s+', units[index][0]):
+        return ''
+    heading = index - 1
+    while heading >= 0 and re.match(r'^\s*[-*]\s+', units[heading][0]):
+        heading -= 1
+    if heading < 0 or normalize(units[heading][0]) != 'examples of products to consume are':
+        return ''
+    for raw, _, _ in reversed(units[max(0, heading - 4):heading]):
+        if _source_conditions('oral', normalize(raw)):
+            return raw
+    return ''
+
+
 def _scope_for_unit(units, index, name):
     raw = _list_prefix(units, index, name) + units[index][0]
+    if name == 'oral':
+        menu = _oral_menu_context(units, index)
+        if menu:
+            return menu + ' ' + raw
     if name == 'bleeding_tourniquet' and index + 1 < len(units):
         following = units[index + 1][0]
         if ((raw.replace('*', '').strip().endswith(':')
@@ -446,6 +499,8 @@ def _matches(rule, text, evidence=False):
         return [match for word in re.finditer(r'\b\w+', text)
                 if (match := pattern.match(text, word.start())) is not None] + list(WATER_INTAKE.finditer(text))
     matches = list(re.finditer(rule.pattern, text))
+    if rule.name == 'injector':
+        matches.extend(re.finditer(r'\b(?:(?:use|give|administer) (?:a |the )?(?:second|another) (?:dose|injection)|repeat (?:the )?(?:epinephrine|adrenaline) injection)\b', text))
     if rule.name == 'oral':
         matches.extend(WATER_INTAKE.finditer(text))
     return matches
@@ -484,12 +539,22 @@ def check_claims(answer, sources, plan):
                     issues.append(condition)
                 cited = list(dict.fromkeys(_CITE.findall(scope)))
                 citation_span = None
-                if (rule.name in ('snake_tourniquet', 'snake_transport') and not condition
+                # A citation at the end of the next sentence on the same line
+                # can support a leading instruction. Check the original action
+                # and its quantities/conditions against that evidence below;
+                # never borrow the following sentence's safety conditions.
+                if rule.name in ('burn_cooling', 'oral', 'injector', 'cpr') and not cited and index + 1 < len(units):
+                    following, next_start, next_end = units[index + 1]
+                    if '\n' not in answer[end:next_start] and '\n' not in answer[end:next_end]:
+                        cited = list(dict.fromkeys(_CITE.findall(following)))
+                        if cited:
+                            citation_span = [next_start, next_end]
+                if (rule.name in ('snake_tourniquet', 'snake_transport', 'cpr') and not condition
                         and (not positive or rule.name == 'snake_transport')
                         and not cited and index <= 2 and repeated_instruction(scope, rule.name)):
                     for other_index in range(index + 1, len(units)):
                         other = _scope_for_unit(units, other_index, rule.name)
-                        if repeated_instruction(other, rule.name) and _CITE.search(other):
+                        if (repeated_instruction(other, rule.name) or (rule.name == 'cpr' and _has(r'\b(?:cpr|rcp|chest compressions)\b', normalize(other)))) and _CITE.search(other):
                             if rule.name == 'snake_transport' and transport_methods(scoped) != transport_methods(normalize(other)):
                                 continue
                             cited = list(dict.fromkeys(_CITE.findall(other)))
@@ -517,6 +582,15 @@ def check_claims(answer, sources, plan):
                     for si, (snippet, source_start, source_end) in enumerate(source_units):
                         candidate = _claim_text(_list_prefix(source_units, si, rule.name) + snippet, rule.name)
                         matching = _matches(rule, candidate, evidence=True)
+                        if (rule.name == 'injector' and si > 0
+                                and _has(r'^it can be repeated\b', candidate)
+                                and _matches(rule, normalize(source_units[si - 1][0]), evidence=True)):
+                            matching += list(re.finditer(r'\brepeated\b', candidate))
+                        if (rule.name == 'injector' and positive and _has(_REPEAT_INJECTOR, text)
+                                and not _has(_REPEAT_INJECTOR, candidate)):
+                            continue
+                        if rule.name == 'oral' and _oral_menu_context(source_units, si):
+                            matching += list(re.finditer(r'\b(?:glucose|juice|sugar|honey)\b', candidate))
                         if not any(_polarity(rule, candidate, m) == positive and not (
                                 rule.name == 'snake_tourniquet' and _tourniquet_warning(candidate, m)) for m in matching):
                             continue
@@ -574,11 +648,18 @@ def check_claims(answer, sources, plan):
                         if not _quantities(raw).issubset(_quantities(snippet)):
                             quantity_failure = True
                             continue
+                        if positive and rule.name == 'injector' and not _injector_repeat_supported(raw, snippet, question):
+                            continue
                         if positive and rule.name in ('oral', 'oral_adjunct') and not _repeat_supported(raw, snippet):
                             continue
                         supported.append({'source_n':source['n'], 'span':[source_start, source_end],
                                           'text_sha256':hashlib.sha256(source['text'].encode()).hexdigest()})
                         break
+                if supported and rule.name == 'injector' and quantity_failure:
+                    # Conflicting cited repeat intervals cannot be excused by a
+                    # different citation that happens to match the claim.
+                    condition = 'claim_quantity_not_supported'
+                    issues.append(condition)
                 if not supported:
                     issues.append('snake_compression_source_conditions_missing' if restriction_failure else
                                   'transport_method_not_supported' if method_failure else
@@ -587,7 +668,7 @@ def check_claims(answer, sources, plan):
                                'cited_ids':cited, 'evidence':supported,
                                'status':'blocked' if condition or not supported else 'pattern_supported'}
                 if citation_span is not None:
-                    claim.update(citation_binding=('repeated_prohibition' if rule.name == 'snake_tourniquet' else 'repeated_instruction'), citation_answer_span=citation_span)
+                    claim.update(citation_binding=('repeated_prohibition' if rule.name in ('snake_tourniquet', 'cpr') else 'repeated_instruction'), citation_answer_span=citation_span)
                 claims.append(claim)
     explanation_issues, explanation_claims = check_explanations(answer, sources, plan, units)
     issues.extend(explanation_issues)

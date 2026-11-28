@@ -1,6 +1,6 @@
 # Repeated answer-quality evidence — 26 November 2026
 
-All 345 captures across eight runs have exact bound agent reviews. The latest full-suite screen remains failed. Selected-case passes below are not whole-suite or clinical approval. [Interpretation and limits](../../../../../docs/reviews/2026-11-26-answer-quality-results.md).
+All 345 captures across eight runs have exact bound agent reviews. The latest full-suite screen remains failed. Selected-case passes below are not whole-suite or clinical approval. [Interpretation and limits](../../RESULTS.md).
 
 | Run / commit | Manifest | Captures and reviews | Report | Provenance |
 | --- | --- | --- | --- | --- |

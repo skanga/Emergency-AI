@@ -718,6 +718,29 @@
         "es": "Si está solo sin señal de teléfono tras una mordedura de serpiente, señale a personas cercanas con silbato, luz o espejo, si dispone de ellos. Pida a quien llegue que avise al rescate y ayude a organizar el traslado. Minimice el movimiento mientras la ayuda pueda llegar hasta usted. Si ir hasta la ayuda es su única opción, y puede hacerlo con seguridad por una ruta conocida, camine hacia la ayuda con el mínimo esfuerzo posible. Si no puede moverse con seguridad o no conoce una ruta segura, permanezca en un lugar seguro y siga señalando. No existe una distancia de caminata ni un tiempo de espera universalmente seguro tras una mordedura."
       },
       "content_hash": "731306c5d028d967c5309ff69268646537692d05b76966afa12cad7b75fd24ba"
+    },
+    {
+      "id": "seizure-first-aid",
+      "topic": "seizure",
+      "reference_title": "CDC: First Aid for Seizures",
+      "reference_url": "https://www.cdc.gov/epilepsy/first-aid-for-seizures/index.html",
+      "reference_section": "How to keep someone safe during a seizure; When to call for help; What to avoid",
+      "reference_checked_at": "2026-11-27",
+      "scope": {},
+      "prerequisites": [
+        "suspected seizure"
+      ],
+      "contraindications": [
+        "restraining movements",
+        "putting objects in the mouth"
+      ],
+      "additional_references": [],
+      "translations": {
+        "en": "For a seizure lasting more than 5 minutes, call emergency services immediately. Also call immediately for another seizure soon afterward or trouble breathing or waking up after the seizure. Stay with the person and time the seizure. Clear nearby objects that could cause injury and put something soft and flat under the head. If the person is lying down, gently turn them on their side with their mouth pointing toward the ground. Do not hold them down or stop their movements. Do not put anything in their mouth.",
+        "pt": "Se uma convulsão durar mais de 5 minutos, chame a emergência imediatamente. Chame também imediatamente se houver outra convulsão logo depois ou dificuldade para respirar ou acordar após a convulsão. Fique com a pessoa e marque o tempo da convulsão. Afaste objetos próximos que possam causar ferimentos e coloque algo macio e plano sob a cabeça. Se a pessoa estiver deitada, vire-a suavemente de lado com a boca voltada para o chão. Não segure a pessoa nem tente parar seus movimentos. Não coloque nada na boca.",
+        "es": "Si una convulsión dura más de 5 minutos, llame a emergencias inmediatamente. Llame también inmediatamente si tiene otra convulsión poco después o dificultad para respirar o despertarse tras la convulsión. Quédese con la persona y mida el tiempo de la convulsión. Retire objetos cercanos que puedan causar lesiones y coloque algo blando y plano debajo de la cabeza. Si la persona está acostada, gírela suavemente de lado con la boca hacia el suelo. No la sujete ni intente detener sus movimientos. No ponga nada en su boca."
+      },
+      "content_hash": "9f7b642dfb947f0dfdde47910d16134ff591851f713e261e4527eeb997b33694"
     }
   ]
 }

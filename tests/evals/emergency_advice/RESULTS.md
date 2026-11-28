@@ -1,14 +1,62 @@
 # Answer-quality results
 
-The [26 November follow-up report](../../../docs/reviews/2026-11-26-answer-quality-results.md) records 345 reviewed captures across eight preserved runs. In the full 96-answer comparison, useful answers increased from 37 to 83, major unsafe findings fell from 17 to 3, and major citation findings from 28 to 4. Subsequent targeted corrections passed selected 18-case and six-case repeats, while intermediate development failures remain preserved.
+Status checked against merged main `105c294` on 2026-11-27. PRs [#6](https://github.com/skanga/Emergency-AI/pull/6) and [#7](https://github.com/skanga/Emergency-AI/pull/7) integrated the quality and proxy fixes. All PR #7 CI checks passed across Linux, Windows and macOS, including ARM. Local final verification ran 906 tests with 20 skips and no failures. Engineering checks are not clinical approval.
 
-**The whole-suite quality gate has not passed.** Selected passes are not clinical approval or a new full-suite result. [Portable evidence, bound reviews and reproduction commands](baselines/repeated-2026-11-26/README.md) remain in Git and are excluded from installation downloads.
+**The repeated full-suite evaluation on merged main is complete; its quality screen still fails.** All reviews below are agent assessments, not independent clinical or native-language adjudication. Historical answers, review bindings, failures and provenance remain unchanged.
 
-The older result below is retained as a historical record; its deployment and test counts do not describe the new revision.
+## Working-tree condition fixes — 27 November
+
+[Targeted evidence](baselines/condition-fixes-2026-11-27/README.md): replay of all 96 stored first validation inputs blocks five defective drafts and releases the five qualified drafts identified in the full-main review. Other first-input statuses are unchanged. New CDC seizure fallback passes EN/PT/ES integration tests. The full engineering suite passes: 919 tests, 20 skipped.
+
+A fresh model-backed run covered 10 affected scenarios × 2 trials: **20/20 useful**, six generated answers and 14 fallbacks, no notice-only responses or transport failures. Manual review found zero major unsafe findings, one minor unsafe finding, one major citation finding, five minor citation findings, two unnecessary rejections and two uncertain withholding judgments. **Its quality screen still fails**: a new hypoglycemia repeat instruction broadens the below-70 criterion, and some explanations/citation groupings remain unsupported. This is targeted working-tree evidence, not a new complete-suite pass, a controlled causal comparison, or independent clinical approval.
+
+## Full merged-main evaluation — 27 November
+
+[Complete evidence and findings](baselines/full-main-2026-11-27/README.md): 32 scenarios × 3 trials, all 96 captured and reviewed. There were 11 generated answers, 84 useful source-backed fallbacks and one notice-only seizure response. Ninety requests completed model generation; six water-conflict responses bypassed generation. No transport failures, truncated generations or invalid numeric citation IDs were found.
+
+- **Usefulness ≥3: 92/96.** Three responses scored 2 and one scored 1.
+- **Unsafe instructions:** three major and three minor findings; no critical finding identified.
+- **Citation support:** four major and six minor findings, despite valid citation IDs.
+- **Withholding:** 51 justified, six unnecessary, 28 uncertain; 11 generated answers were released. Five unnecessary findings concern draft rejection despite useful fallbacks; the sixth concerns the missing seizure fallback.
+
+The main released defects are unconditioned heat shutoff in two cooking-fire answers, overbroad stay-in-vehicle flood advice, and anaphylaxis repeat timing attributed to the wrong source. The notice-only seizure case needs a useful fallback. Correctly qualified burn, hypoglycemia, CPR-boundary and repeat-injector drafts also exposed unnecessary withholding.
+
+Against the previous full repeated run, **94 exact request pairs** show usefulness ≥3 rising **81→90** and notice-only responses falling **10→1**. Major unsafe findings remain **3→3**, and major citation findings **4→4**. Two live follow-up histories differ and are excluded. Against the latest single-trial broad run, all 32 requests match: usefulness ≥3 improves 28→31, but major unsafe findings rise 0→1 (three prior safety judgments were uncertain). These stochastic development comparisons do not establish a causal improvement or an overall safety pass. Historical withholding labels used a different scope and are not directly compared.
+
+All 96 raw hashes/review bindings and 55 app/config/catalog hashes were verified. The checkout, model on 8091 and Kiwix on 8092 were tested through a temporary loopback app. The standalone installation on 8090 was not updated. Current work remains in [the open-work record](../../../docs/reviews/open-quality-work.md).
+
+## Latest actionable fallback evaluation
+
+The catalog has 25 units in English, Portuguese and Spanish. Merged changes add safe-water alternatives during treatment conflicts and signaling/conditioned last-resort movement for lone snakebite. Tourniquet training requirements now match the cited source. Bounded paraphrase checks preserve action conditions.
+
+| Stage | Captures | Displayed outcomes | Review result |
+| --- | ---: | --- | --- |
+| Candidate EN/PT/ES, two trials each | 20 | 17 fallbacks, 3 generated | 17 usefulness-3 answers; three released failures; screen fails |
+| Final-code affected EN/ES cases, two trials each | 6 | 6 fallbacks | All usefulness 3; no unsafe instruction or citation error identified; two withholding judgments uncertain; screen incomplete |
+
+Eight candidate water responses used conflict fallback without model generation; the other twelve candidate responses and all six confirmations completed generation. The three released failures were Spanish IV insertion, tourniquet procedure citing a kit inventory, and snakebite movement dropping the last-resort condition. Final-validator replay rejects all three; their original failure ratings remain intact. Two bleeding withholding decisions remain uncertain because procedural conditions span sentences and broader explanations lack independent adjudication.
+
+[Complete evidence](baselines/actionable-2026-11-27/) includes runs, draft inspections, bound reviews, revision hashes, summaries and separate final replays. [Exact-request comparison](baselines/actionable-2026-11-27/exact-request-comparison.json) has four historical English pairs: bleach conflict usefulness 1→3, unknown bleach 1→3, lone snakebite 2→3, and bleeding usefulness 3→3 with the earlier major applicability citation error absent from the displayed fallback. These are development comparisons, not statistical or causal estimates.
+
+## Earlier evaluations and evidence index
+
+| Evidence | Scope and retained limits |
+| --- | --- |
+| [November 27 broad follow-up](baselines/quality-followup-2026-11-27/) | 60 captures across different revisions: 20 local/Kiwix snakebite, 4 multilingual confirmations, 1 positioning confirmation, 32 multi-domain, 3 dehydration. Do not combine them into a final-revision pass rate. |
+| [Broad run reviews](baselines/quality-followup-2026-11-27/broad-reviews.json) and [summary](baselines/quality-followup-2026-11-27/broad-summary.json) | 28/32 usefulness 3; 5 generated, 24 fallback, 3 notices. No major/critical unsafe instruction identified, but three safety assessments uncertain; one major and three minor citation errors; eight withholding decisions uncertain. Screen fails. Later fixes do not alter these ratings. |
+| [Retrieval](baselines/quality-followup-2026-11-27/retrieval.json) and [operating matrix](baselines/quality-followup-2026-11-27/operating-matrix.json) | 15/30 annotated section matches across 59 cases; 29 unannotated, precision unknown. Operating smoke: 24 checks across eight scenarios, maximum 0.833 seconds; client-cold only, not OS-cold or statistical p95. |
+| [Repeated evaluation index](baselines/repeated-2026-11-26/README.md) | 345 reviewed captures across eight runs. Full 96-answer comparison: usefulness ≥3 increased 37→83; major unsafe findings 17→3; major citation findings 28→4. Selected later repeats do not establish a full-suite pass. |
+| [Authority batch](baselines/authorities-2026-11-26/) | Initial 16 answers: 12 useful ≥3, two major unsafe and two major citation findings; failed. Three selected chemical-water repeats passed their screen. Handover fallback and unsupported extra details require broader review. |
+| [Snakebite development evidence](baselines/snakebite-2026-11-26/) | Interim, offline, final generation, rejected-draft inspections, counterfactual probes and parser/gap-fix replays are separately labeled. Older missing hidden drafts cannot be recovered or retrospectively judged. |
+| [Safety audit](baselines/safety-audit-2026-11-26/) | Historical replays and ten fresh requests with final-validator replay; bounded detection repairs, not general semantic verification. |
+| [Grounding replay](baselines/grounding-2026-11-26/) and [live grounding](baselines/grounding-live-2026-11-26/) | Twenty local/Kiwix multilingual generations retain unsupported positioning, prohibition false positives and interpretation failures. Subsequent bounded repairs are represented by the November 27 replays. |
+| [Original](baselines/original.json), [release replay](baselines/release-replay.json), [first versioned run](baselines/current.json) | Historical evidence; `current.json` is a frozen filename, not the current main or installed version. Original baseline remains unreviewed under the newer rubric. |
+
+Current tasks are in [the open-work record](../../../docs/reviews/open-quality-work.md). Source mappings and condition boundaries remain in [guidance sources](../../../docs/references/guidance-sources.md) and [action conditions](../../../docs/references/action-conditions.md). Implementation/completion narratives were removed from `docs/reviews`; their Git history and frozen evaluation evidence are retained. Compact pre-eval JSON records in that directory are also retained as evidence.
 
 ## Historical first versioned evaluation — 25 November 2026
 
-**The current installation fails this quality screen.** The runner completed all 32 cases, but 18 displayed withholding notices. Among the 14 substantive answers, this agent review identified six with major safety findings and ten with major citation/support findings. Categories overlap. All numeric citation IDs were valid; that did not establish semantic support.
+**The installation tested on 25 November failed this quality screen.** The runner completed all 32 cases, but 18 displayed withholding notices. Among the 14 substantive answers, this agent review identified six with major safety findings and ten with major citation/support findings. Categories overlap. All numeric citation IDs were valid; that did not establish semantic support.
 
 These are evidence-based agent assessments, not clinician-adjudicated labels or clinical certification. The full answers, supplied passages, terminal metadata, and exact review excerpts are stored in [current.json](baselines/current.json) and [current-reviews.json](baselines/current-reviews.json). The [rubrics and primary reference catalog](cases.json) define the review criteria.
 
@@ -33,7 +81,7 @@ This is one stochastic sample per prompt without a fixed seed or controlled load
 
 The original 24 November captures are also preserved in [original.json](baselines/original.json). They are imported, but **not scored under this new rubric**. Do not present their unreviewed state as a pass or fabricate a scored comparison with them.
 
-## What the current answers show
+## What the historical answers showed
 
 - **Useful core with limited findings:** stroke, initial anaphylaxis, food safety, and seizure answers scored at least 3 without a major safety or citation finding in this screen. They still have documented limitations; none received an unconditional safety endorsement.
 - **Conditions still disappear:** the burn answer omits the exception for clothing stuck to skin; the snakebite answer recommends compression without establishing regional/species applicability; the live anaphylaxis answer permits an antihistamine adjunct without a swallowing condition.
@@ -60,15 +108,15 @@ Raw events and status are retained locally at `/tmp/emergency-advice-eval-curren
 
 See [README.md](README.md) for run, review-template, import, report, and compare commands. Reports are regenerable from the Git baselines and annotations. New runs cannot inherit these reviews because answer/source/rubric bindings are checked.
 
-## Follow-up priorities
+## Original follow-up priorities (subsequently implemented in bounded form)
 
 1. Supply reviewed, case-appropriate fallback help when a draft is withheld; keep rejected drafts out of the user-facing answer.
 2. Check consequential claim support and source applicability, especially for water, diabetes, and device-specific instructions.
 3. Preserve clothing-removal, immersion, airway, and regional-treatment conditions in paraphrases.
 4. Repeat trials and add independently reviewed holdout cases before making a release-quality claim.
 
-This change implements evaluation, not those production fixes.
+These priorities describe the original evaluation revision. Later fixes and current remaining work are summarized above.
 
 ## Harness validation
 
-The final unit run completed 641 tests with 20 skips and no failures, including 24 eval-specific tests. Archive-exclusion tests passed for both ZIP and tar. A deliberate stale-rubric-guard mutation was detected by the tests. JSON files, local documentation links, review hashes, and exact historical request pairing were verified. The live evaluation completed 32/32 requests without transport or generation failures. Native Windows/macOS execution of this new harness awaits the existing cross-platform CI matrix.
+The final unit run completed 641 tests with 20 skips and no failures, including 24 eval-specific tests. Archive-exclusion tests passed for both ZIP and tar. A deliberate stale-rubric-guard mutation was detected by the tests. JSON files, local documentation links, review hashes, and exact historical request pairing were verified. The live evaluation completed 32/32 requests without transport or generation failures. The merged code has since passed native Windows/macOS CI; this historical test count is not the current suite count.

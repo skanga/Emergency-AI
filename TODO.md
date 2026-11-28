@@ -1,8 +1,8 @@
 # Content review TODO
 
-Recorded: November 12, 2026.
+Recorded: November 12, 2026. Status refreshed against main `105c294` on November 27, 2026.
 
-This backlog covers the remaining nontechnical issues. The README glossary and archived-library date labels are already implemented. The items below remain open; confirmed errors are distinguished from areas needing further review.
+This backlog covers the remaining nontechnical issues. The README glossary and archived-library date labels are already implemented. Unchecked items remain open; confirmed errors are distinguished from areas needing further review. The newer 25-unit fallback catalog does not replace or certify the original guides. Engineering/evaluation follow-ups are tracked separately in `docs/reviews/open-quality-work.md` (Git checkout only).
 
 Apply relevant corrections consistently across the English, Portuguese and Spanish guides. The English file links below identify examples, not the full extent of the review.
 
@@ -19,7 +19,7 @@ Reference: [2025 AHA Guidelines highlights](https://www.heart.org/en/-/media/CPR
 
 ### Food preservation
 
-- [ ] Correct the advice in [Food](knowledge/en/04-food.md) that offers boiling questionable home-canned food as an alternative to discarding it. Do not present boiling as a way to rescue food when safe canning cannot be confirmed.
+- [x] Correct questionable home-canned food advice in all three languages. The [English](knowledge/en/04-food.md), [Portuguese](knowledge/pt/04-food.md) and [Spanish](knowledge/es/04-food.md) guides now say to discard without tasting and not rely on boiling suspect food.
 - [ ] Review meat drying, salting, smoking and storage under fat. Replace unsupported shortcuts and shelf-life claims with validated procedures and explicit temperature, equipment and storage limits.
 - [ ] Review fermentation and mold advice, and link to tested preservation recipes rather than implying that a short summary is a complete process.
 
@@ -54,7 +54,7 @@ Reference: [CDC: Home water treatment systems](https://www.cdc.gov/drinking-wate
 - [ ] Review English text for leftover project branding and unexplained regional terminology, while preserving attribution and intentional multilingual content.
 - [ ] Check translations for consistent quantities, units, warnings and procedure boundaries after each substantive correction.
 - [ ] Separate basic emergency actions from advanced procedures requiring training, specialist equipment or supervision.
-- [ ] Narrow claims such as "answers any question" in the README and related wording so they accurately describe source coverage and the limitations of generated answers.
+- [x] Remove the README claim that the app "answers any question". The three README introductions now describe reading guides, searching libraries and asking emergency questions. Ongoing coverage/limitation review remains part of the sourcing work.
 
 ## Completion checks
 

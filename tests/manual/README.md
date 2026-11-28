@@ -65,7 +65,7 @@ Target-section matching is narrower than a complete human relevance judgment. Th
 
 ## Relevance follow-up validation
 
-Run `python3 -B tests/manual/relevance_validation.py --output /tmp/relevance-validation.json` for the 24-case EN/PT/ES follow-up set. It uses production retrieval and read-only token fitting, without generation. Report topic/intent checks separately from passage applicability and clinical accuracy. The older 59-case manifest remains unchanged and is now observed regression data. See [the follow-up report](../../docs/reviews/2026-11-25-relevance-followup.md).
+Run `python3 -B tests/manual/relevance_validation.py --output /tmp/relevance-validation.json` for the 24-case EN/PT/ES follow-up set. It uses production retrieval and read-only token fitting, without generation. Report topic/intent checks separately from passage applicability and clinical accuracy. The older 59-case manifest remains unchanged and is now observed regression data. See [current results and evidence](../evals/emergency_advice/RESULTS.md).
 
 ## Answer quality
 

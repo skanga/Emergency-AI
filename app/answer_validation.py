@@ -29,6 +29,25 @@ def source_for_prompt(text):
     return _CITATION.sub(lambda m: '(source marker S' + m[1] + ')', text)
 
 
+def _listed_condition(lines, index):
+    """Read a short if/bullet/then block, stopping at any unrelated heading."""
+    if not re.match(r'^\s*(?:Then|Entao|Entonces)\b', normalize(lines[index]), re.I):
+        return ''
+    previous = []
+    for line in reversed(lines[max(0, index - 6):index]):
+        if not line.strip():
+            continue
+        if re.match(r'^\s*#{1,6}\s', line):
+            return ''
+        if re.match(r'^\s*[*+-]\s+', line):
+            previous.insert(0, line)
+            continue
+        if normalize(line).startswith(('if ', 'se ', 'si ')) and line.rstrip().endswith(':'):
+            return ' '.join([line, *previous])
+        return ''
+    return ''
+
+
 def _action_issues(answer, plan):
     facts = _facts(plan)
     issues = []
@@ -61,8 +80,9 @@ def _action_issues(answer, plan):
                 known = facts['consciousness'] == 'unresponsive' and facts['breathing'] == 'abnormal'
                 # A stated condition must itself be sound even when the patient
                 # currently meets the prerequisites (avoid teaching an OR rule).
-                patient_condition = _CONDITIONAL.search(t)
-                if not (_cpr_condition(t, facts) if patient_condition else known):
+                condition_text = normalize(_listed_condition(lines, index)) + ' ' + t
+                patient_condition = _CONDITIONAL.search(condition_text)
+                if not (_cpr_condition(condition_text, facts) if patient_condition else known):
                     issues.append('cpr_prerequisites_missing')
             if oral:
                 conditional = bool(_CONDITIONAL.search(t) and _consciousness(t) == 'responsive'

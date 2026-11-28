@@ -4,7 +4,7 @@ Run this from a Git checkout against a running Emergency AI installation. Python
 
 All files here are under `tests/`, which `.gitattributes` excludes from installation ZIP/tar downloads. A Git clone includes the suite. Raw new runs should go outside the checkout or under ignored `output/`. Historical baselines and deliberately selected reviewed evidence belong in Git.
 
-Latest evidence: [repeated evaluation results](../../../docs/reviews/2026-11-26-answer-quality-results.md), including failed runs and explicit coverage limits.
+Latest evidence and historical comparisons: [answer-quality results](RESULTS.md). [Open work](../../../docs/reviews/open-quality-work.md) tracks the remaining evaluation and review obligations.
 
 ## Run and review
 
@@ -74,25 +74,17 @@ Imports require all 22 exact historical request bodies and keep answer/source/te
 
 ## Authority-source development probes
 
-Use `--manifest tests/evals/emergency_advice/authority-cases.json` for the eight first-batch source probes. These disable Kiwix to isolate local reference additions. The manifest must also be supplied for templates and reports. [Recorded results](../../../docs/reviews/2026-11-26-authority-first-batch.md) retain failures and the selected chemical-water follow-up; they do not establish a whole-suite pass.
+Use `--manifest tests/evals/emergency_advice/authority-cases.json` for the eight first-batch source probes. These disable Kiwix to isolate local reference additions. The manifest must also be supplied for templates and reports. [Recorded results](baselines/authorities-2026-11-26/initial-report.md) retain failures and the selected chemical-water follow-up; they do not establish a whole-suite pass.
 
-## Snakebite prohibition regressions
+## Snakebite and quality regression evidence
 
-The [safety-detection audit](../../../docs/reviews/2026-11-26-safety-detection-audit.md) closes the remaining recorded action/method/condition escapes, adds isolated-clause adversarial tests, and retains 30 historical replays plus a fresh ten-request capture with final-validator replay. Its evidence is under `baselines/safety-audit-2026-11-26/`. General answer quality remains below a pass; the report distinguishes detection repairs from residual withholding and unverified claims.
+Use `--manifest tests/evals/emergency_advice/snakebite-cases.json` for Portuguese/Spanish unknown-snake probes with `--trials 2` or more. Repeat `snake_pressure` and `snake_transport` from `authority-cases.json` with `--trials 3`. These manifests disable Kiwix. Supply the same manifest for templates and reports.
 
-[Gap-fix verification](../../../docs/reviews/2026-11-26-snakebite-gap-fixes.md) records the subsequent condition checks, parsing controls and improved transport fallback. The exact ablation fixtures must fail for the relevant hazard even after unrelated blocking spans are removed. Interim model runs are labeled separately from final-code captures.
+[The evidence index](RESULTS.md#earlier-evaluations-and-evidence-index) distinguishes interim/final model captures, offline fallbacks, hidden-draft limitations, isolated counterfactual probes and final-validator replays. Historical failures are retained; selected passes do not establish a whole-suite pass. Source mappings are maintained separately in [guidance sources](../../../docs/references/guidance-sources.md).
 
-The latest [fresh evaluation after steps 3–4](../../../docs/reviews/2026-11-26-snakebite-steps34-live.md) records ten complete model generations with evaluation-only draft capture. All ten displayed fallback guidance; it is not a quality pass. Bound reviews distinguish draft safety issues, citation failures, parsing false positives and displayed usefulness. Counterfactual probes expose hazards that were hidden by unrelated rejection reasons. Previous captures and assessments remain unchanged.
+## November 27 broad follow-up
 
-`--manifest tests/evals/emergency_advice/snakebite-cases.json` adds Portuguese/Spanish unknown-snake probes. Run it with `--trials 2` or more, and repeat `snake_pressure` and `snake_transport` from `authority-cases.json` with `--trials 3`. These manifests disable Kiwix. [Recorded results](../../../docs/reviews/2026-11-26-snakebite-prohibitions.md) distinguish interim live generation, offline fallback attempts, and the completed final-code model-backed repeat. Its quality screens remain incomplete because eight hidden-draft withholding decisions cannot yet be adjudicated; model-unavailable captures do not validate generated answers.
-
-[Grounding replay evidence](baselines/grounding-2026-11-26/replay.json) records citation/summary repairs, scoped local passages and bounded explanation support. All ten historical drafts retain blocking issues. The subsequent fresh evaluation is recorded below.
-
-[Fresh grounding evaluation](../../../docs/reviews/2026-11-26-grounding-live-evaluation.md) records twenty inspected multilingual generations: ten local-only and ten Kiwix-enabled. Neither establishes a quality pass; captures retain the released unsupported positioning instruction, prohibition false positives and source-interpretation failures.
-
-## November 27 quality follow-up
-
-[Latest follow-up](../../../docs/reviews/2026-11-27-quality-followup.md) records bounded validator fixes, a dehydration fallback, 60 fresh captures across distinct revisions, final-validator replays, and the refreshed retrieval/operating checks. The 32-case screen still fails; targeted improvements do not replace that result. [Source mappings](../../../docs/references/guidance-sources.md) are maintained separately from historical reviews.
+The preserved 32-case screen predates the final actionable-fallback changes and fails its quality gate. A fresh current-main full-suite run remains open.
 
 To regenerate the preserved multi-domain report using the unchanged default manifest:
 

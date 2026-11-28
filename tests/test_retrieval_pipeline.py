@@ -50,6 +50,8 @@ class PipelineTests(unittest.TestCase):
         with patch('app.kiwix.get_text', side_effect=fetch):
             sources = engine.retrieve('seizure first aid', 'en')
         self.assertTrue(sources)
+        sources = [source for source in sources if source.get('kind') == 'kiwix']
+        self.assertTrue(sources, 'Catalog fallback must not replace Kiwix retrieval')
         self.assertIn('Protect the person', sources[0]['text'])
         self.assertEqual(sources[0]['anchor'], 'aid')
         self.assertTrue(sources[0]['link'].endswith('#aid'))
@@ -191,7 +193,8 @@ class PreparedIndexTests(unittest.TestCase):
             report = {}
             with patch('app.kiwix.get_text', return_value='<rss/>'):
                 sources = engine.retrieve('seizure first aid', 'en', diagnostics=report)
-            self.assertEqual(sources[0]['page'], 2)
+            documents = [source for source in sources if 'page' in source]
+            self.assertEqual([source['page'] for source in documents], [2])
             self.assertEqual(report['libraries'][0]['index']['state'], 'indexed')
 
 class BudgetFailureTests(unittest.TestCase):
@@ -268,7 +271,7 @@ class CandidateSelectionRegressions(unittest.TestCase):
         with patch('app.kiwix.get_text', side_effect=fetch):
             sources = engine.retrieve('seizure first aid', 'en')
         self.assertTrue(sources)
-        self.assertEqual([s['link'] for s in sources], ['/content/book0/aid'])
+        self.assertEqual([s['link'] for s in sources if s.get('kind') == 'kiwix'], ['/content/book0/aid'])
         self.assertEqual(fetched, ['http://localhost:8092/content/book0/aid'])
 
     def test_weak_library_does_not_displace_stronger_local_context(self):

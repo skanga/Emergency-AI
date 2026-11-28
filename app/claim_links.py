@@ -37,6 +37,8 @@ _CARRY = re.compile(r'(?:have (?:helpers|people|your friends) carry (?:you|the p
 def repeated_instruction(text, rule):
     """Only bounded plain instructions can link; never explanations or exceptions."""
     clean = normalize(CITATION.sub('', text))
+    if rule == 'cpr':
+        return bool(re.fullmatch(r'(?:do not|don t|never) (?:start|begin|perform|give) (?:cpr|chest compressions)', clean))
     if rule == 'snake_tourniquet':
         return plain_prohibition(text) or bool(_PASSIVE_BAN.fullmatch(clean))
     return rule == 'snake_transport' and bool(_CARRY.fullmatch(clean))
